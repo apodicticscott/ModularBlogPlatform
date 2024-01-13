@@ -69,7 +69,7 @@ const Navbar = () => {
   return (
     <>
       {/* Drop Down */}
-      <motion.div ref={dropDownRef} initial="closed" animate={open ? "open" : "closed"} variants={dropdownVariants} style={{ top: `-${navHeight}px`}} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark ${swsDrop}`}>
+      <motion.div ref={dropDownRef} initial="closed" animate={open ? "open" : "closed"} variants={dropdownVariants} style={{ top: `-${navHeight}px`}} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${swsDrop}`}>
         <div className="flex flex-row justify-center lg:py-2 md:py-5 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className="navbar-end lg:hidden w-full md:w-3/4 md:flex flex gap-1 text-t-header-light dark:text-t-header-dark">
             <RiSearchFill style={{fontSize: "30px"}}/>
@@ -78,7 +78,7 @@ const Navbar = () => {
           </div>
           <div className="flex flex-row flex-wrap justify-center items-center w-full md:items-start md:w-full lg:w-max">
             <DropDownItem title="USCA" background="bg-sunset">
-              <img src="/_next/static/media/uscalogo.f84310d7.png" className="h-2/3" alt="USCA Logo"/>
+              <image src="/_next/static/media/uscalogo.f84310d7.png" className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
             <DropDownItem title="USCA" background="bg-pale-green">
                 <div className="flex w-[322px] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
@@ -101,8 +101,8 @@ const Navbar = () => {
             <div className="lg:h-2/4 flex justify-between px-2 md:px-0">
               <ul className="w-max lg:inline-block hidden whitespace-nowrap">
                 {
-                  dropDownLinks.map((link) => 
-                    <li>
+                  dropDownLinks.map((index, link) => 
+                    <li key={index}>
                       <a className="hover:text-t-header-light dark:hover:text-t-header-dark"> {link.text} </a>
                     </li>
                   )
@@ -118,7 +118,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map(({text}, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
-                    <li>
+                    <li key={index}>
                       <a> {text} </a>
                     </li>
                     :
@@ -130,7 +130,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map(({text}, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                    <li className="text-right">
+                    <li key={index} className="text-right">
                       <a className="hover:text-"> {text} </a>
                     </li>
                     :
@@ -145,7 +145,7 @@ const Navbar = () => {
         </div>
       </motion.div>
     {/* Nav Bar */}
-    <div ref={navRef} className="fixed w-screen border-b-2 md:border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark ">
+    <div ref={navRef} className="fixed w-screen border-b-2 md:border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
       <div className="navbar p-0 h-16 items-stretch">
         <div className="flex flex-row grow justify-between lg:justify-between ">
           <RxHamburgerMenu onClick={() => handleDropDownClick()} className="lg:hidden text-2xl" />

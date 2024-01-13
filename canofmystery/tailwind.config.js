@@ -22,17 +22,58 @@ module.exports = {
 
       't-header-light' : '#1c1b1c',
       't-header-dark' : '#ebebeb',
-      't-dark' :  '#b7b7b7',
+      't-dark' :  '#ebebeb',
       't-light' :  '#59595a'
     },
     borderWidth: {
+      '0': "0px",
       '2': "2px",
       '3': "3px"
+    },
+    boxShadow: {
+      'md': '0px 5px 0px 0px #000',
+      'lg': '0px 10px 0px 0px #000',
     },
     borderColor: {
       DEFAULT: '#000000',
     },
+    fontSize: {
+      'xl': '15px',
+      '2xl': '19px',
+      '2.2xl': '20px',
+      '2.5xl': '22px',
+      '2.7xl': '25px',
+      '3xl': '29px',
+      '4xl': '42px',
+      '5xl': '52px',
+      '6xl': '62px',
+      '7xl': '72px',
+    },
+    borderRadius: {
+      'none': '0',
+      'md': '10px',
+      'lg': '20px',
+    },
+    screens: {
+      'xs': '0px',
 
+      'sm': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '1134px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+      '3xl': '1980px',
+      // => @media (min-width: 1536px) { ... }
+    }
   },
   daisyui: {
       themes: [
@@ -41,7 +82,7 @@ module.exports = {
 
             'primary' : '#fcc800',           /* Primary color */
             'primary-focus' : '#fad02d',     /* Primary color - focused */
-            'primary-content' : '#black',   /* Foreground content color to use on primary color */
+            'primary-content' : '#000000',   /* Foreground content color to use on primary color */
 
             'secondary' : '#29ff80',         /* Secondary color */
             'secondary-focus' : '#61fa9f',   /* Secondary color - focused */
