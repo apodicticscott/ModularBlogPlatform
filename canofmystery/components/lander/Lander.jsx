@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Header, SubHeader, SubText} from "../../components/DisplayComp/Components"
+// import {Button, Header, SubHeader, SubText} from "../../components/DisplayComp/Components"
 
 
 const Lander = () => {
