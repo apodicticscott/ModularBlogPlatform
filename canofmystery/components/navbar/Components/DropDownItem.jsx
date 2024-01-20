@@ -1,3 +1,4 @@
+import { Link } from "@/components/TextComponents";
 import React from "react";
 
 const DropDownItem = ({ title, background, itemClass, children }) => {
@@ -6,9 +7,9 @@ const DropDownItem = ({ title, background, itemClass, children }) => {
 
     return (
         <div className={`flex flex-col justify-center lg:m-2 md:mx-2 mx-2 items-row gap-1 my-3 lg:my-0 ${itemClass} ${swsDropItemTop}`}>
-            <span>
+            <Link>
                 {title}
-            </span>
+            </Link>
             <div className={`w-full h-full lg:h-2/3 flex flex-col justify-center items-center overflow-hidden ${background}  ${swsDropBtn}`}>
                 {children}
             </div>

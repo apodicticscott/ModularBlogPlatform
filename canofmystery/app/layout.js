@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html data-theme="mytheme" className="" lang="en">
       <body className={`${LexM.className} tracking-tighter `}>
-          <div className="container k h-screen min-w-full bg-base-100 dark:bg-base-100-dark">  
+          <div className="container k h-screen min-w-full">  
             <Navbar className="z-50"/>
             {children}
             <Footer />

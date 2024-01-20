@@ -78,9 +78,9 @@ const Navbar = () => {
           </div>
           <div className="flex flex-row flex-wrap justify-center items-center w-full md:items-start md:w-full lg:w-max">
             <DropDownItem title="USCA" background="bg-sunset">
-              <image src="/_next/static/media/uscalogo.f84310d7.png" className="h-2/3" alt="USCA Logo"/>
+              <img src="/_next/static/media/uscalogo.f84310d7.png" className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
-            <DropDownItem title="USCA" background="bg-pale-green">
+            <DropDownItem title="Can Items" background="bg-pale-green">
                 <div className="flex w-[322px] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                   <div className="w-[644px] h-15 whitespace-nowrap">
                     Example Text
@@ -90,7 +90,7 @@ const Navbar = () => {
                   </div>
                 </div>
             </DropDownItem>
-            <DropDownItem title="USCA" background="bg-dark-purple" itemClass="explore-itm-btm-size-sm md:explore-itm-btm-size-md">
+            <DropDownItem title="Articles" background="bg-dark-purple" itemClass="explore-itm-btm-size-sm md:explore-itm-btm-size-md">
               <div className="flex justify-center h-[110%] w-[90%] border-2 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
                 <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>    
                 </div>
