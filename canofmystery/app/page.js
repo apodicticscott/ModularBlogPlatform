@@ -7,9 +7,12 @@ export default function Home() {
   return (
     <div className={styles.container}>
         <Lander/>
-        <div className="h-max dark:bg-base-100-dark text-t-header-light bg-base-100">
-          <DisplayTextComp />
+        <div className="w-full h-[500px]">
+
         </div>
+        {/* <div className="h-max dark:bg-base-100-dark text-t-header-light bg-base-100">
+          <DisplayTextComp />
+        </div> */}
         {/* <Components /> */}
     </div>
   )

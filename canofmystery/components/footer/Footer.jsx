@@ -26,86 +26,86 @@ const Footer = () => {
               </div>
         </div>
       </div>
-      <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous border-t-2 border-t-black lg:border-t-3 ">
+      <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous border-t-2 border-t-black dark:bg-base-100-dark lg:border-t-3 ">
         <div className="w-[784px] h-max flex md:flex-row flex-col gap-[25px] justify-between">
           <div className="h-max w-full md:w-[22.22%] flex flex-row md:flex-col justify-between">
-            <div className="w-max md:w-full  text-2.2xl tracking-[-4.5px] font-bold">
+            <div className="w-max md:w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
               Can Of Mystery
             </div>
             <img className="w-[35px] md:w-[35px] mt-[10px]" src={"/_next/static/media/uscalogo.f84310d7.png"} alt="Usca Logo"/>
           </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] hidden md:flex">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold">
+              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
                 Explore
               </div>
               <div className="flex flex-col justify-between gap-[10px]">
-                <Link>
+                <Link href="www.usca.edu">
                   USCA
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   MLA Citations
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Articles
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Can Items
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Our Project
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Old Can Of Mystery
                 </Link>
               </div>
             </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] text-right md:text-left hidden md:flex">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold">
+              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
                 Quick Links
               </div>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link>
+                <Link href="www.usca.edu">
                   Home
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   About
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Login
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Account
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Our Project
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Instructions
                 </Link>
               </div>
             </div>
           <div className="flex flex-row visible md:hidden">
             <div className="h-max w-[50%] flex flex-col justify-items-right gap-[10px]">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold">
+              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
                 Explore
               </div>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link>
+                <Link href="www.usca.edu">
                   USCA
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   MLA Citations
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Articles
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Can Items
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Our Project
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Old Can Of Mystery
                 </Link>
               </div>
@@ -114,23 +114,23 @@ const Footer = () => {
               <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold">
                 Quick Links
               </div>
-              <div className="flex flex-wrap justify-between gap-[10px]">
-              <Link>
+              <div className="flex flex-wrap justify-between gap-[10px] text-t-header-light dark:text-t-dark">
+                <Link href="www.usca.edu">
                   Home
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   About
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Login
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Account
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Our Project
                 </Link>
-                <Link>
+                <Link href="www.usca.edu">
                   Instructions
                 </Link>
               </div>

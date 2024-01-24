@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useRef, useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { motion } from '../../node_modules/framer-motion';
 import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
@@ -13,6 +14,8 @@ import DropDownItem from "./Components/DropDownItem";
 console.log(uscaLogo)
 
 const Navbar = () => {
+
+
   const navRef = useRef(null);
   const dropDownRef = useRef(null);
 
@@ -22,30 +25,40 @@ const Navbar = () => {
   const [hideTheme, setHideTheme] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const [dropDownHeight, setDropDownHeight,] = useState(0);
+  const [isPageReady, setIsPageReady] = useState(false);
 
   const dropDownLinks = [{text: "Create Project"}, {text: "Our Project"}, {text: "Instructions"}, {text: "Old Can Of Mystery"}]
+
+  
+
   
   useEffect(() => {
+
     if (navRef.current) {
       setNavHeight((navRef.current.offsetHeight - 3));
     }
     if (dropDownRef.current) {
-      setDropDownHeight((dropDownRef.current.offsetHeight));
+      setDropDownHeight(dropDownRef.current.offsetHeight);
+      setIsPageReady(true); // Set the page as ready after setting the dropDownHeight
     }
   }, [open]);
 
-  const dropdownVariants = {
-    open: {
-      top: navHeight,
-      ease: "easeInOut",
-      transition: { duration: 0.5 }
-    },
-    closed: {
-      top: -dropDownHeight, // You can also use the calculated height if needed
-      ease: "easeInOut",
-      transition: { duration: 0.5 }
-    }
-  };
+    let dropdownVariants = {
+      open: {
+        top: navHeight,
+        ease: "easeInOut",
+        opacity: 1,
+        transition: { duration: 0.5 }
+      },
+      closed: {
+        top: -dropDownHeight, // You can also use the calculated height if needed
+        ease: "easeInOut",
+      
+        transition: { duration: 0.5 }
+      }
+    };
+  
+
 
   const handleLinkClick = (name) => {
     setActive(name);
@@ -66,10 +79,12 @@ const Navbar = () => {
 
   const swsDrop = "px-7 lg:px-14 border-y-2 explore-size-md lg:border-y-3 lg:explore-size-lg xl:explore-size-xl 2xl:explore-size-2xl"
 
+  console.log(open)
   return (
     <>
       {/* Drop Down */}
-      <motion.div ref={dropDownRef} initial="closed" animate={open ? "open" : "closed"} variants={dropdownVariants} style={{ top: `-${navHeight}px`}} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${swsDrop}`}>
+
+      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={{  opacity: 0 }}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${swsDrop}`}>
         <div className="flex flex-row justify-center lg:py-2 md:py-5 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className="navbar-end lg:hidden w-full md:w-3/4 md:flex flex gap-1 text-t-header-light dark:text-t-header-dark">
             <RiSearchFill style={{fontSize: "30px"}}/>
