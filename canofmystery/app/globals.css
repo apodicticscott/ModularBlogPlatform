@@ -13,3 +13,11 @@ html {
   -moz-appearance: none;
   appearance: none;
 }
+
+#text-editor a{
+  color: #fcc800;
+}
+
+#article a{
+  color: #fcc800;
+}

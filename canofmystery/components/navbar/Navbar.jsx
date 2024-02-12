@@ -7,6 +7,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdWbSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
+import { Link } from "next/router";
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
 import DropDownItem from "./Components/DropDownItem";
@@ -125,7 +126,7 @@ const Navbar = () => {
               </ul>
               <ul className="w-max md:flex-wrap lg:hidden h-max whitespace-nowrap">
                 <li>
-                  <a> Home </a>
+                  <a > Home </a>
                 </li>
                 <li>
                   <a> About </a>
@@ -170,7 +171,7 @@ const Navbar = () => {
           <div className="navbar-center  justify-center pb-0 pt-0 flex-grow h-full hidden lg:flex">
             <ul style={{fontSize: '20px', fontWeight: "700"}} className="menu menu-horizontal items-center items-stretch justify-center h-full pt-0 pb-0 m-0 ">
               <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
-                <a  className="flex flex-1 rounded-none text-lg">Home</a>
+                <a  className="flex flex-1 rounded-none text-lg" href="\">Home</a>
               </li>
               <li>
                 <details className="flex flex-1 h-full">

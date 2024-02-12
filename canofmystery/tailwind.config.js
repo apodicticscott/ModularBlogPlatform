@@ -41,9 +41,9 @@ module.exports = {
       'xl': '15px',
       '2xl': '19px',
       '2.2xl': '20px',
-      '2.5xl': '22px',
-      '2.7xl': '25px',
-      '3xl': '29px',
+      '2.5xl': '21px',
+      '2.7xl': '27px',
+      '3xl': '32px',
       '4xl': '42px',
       '5xl': '52px',
       '6xl': '62px',
@@ -51,6 +51,7 @@ module.exports = {
     },
     borderRadius: {
       'none': '0',
+      DEFAULT: '4px',
       'md': '10px',
       'lg': '20px',
     },
@@ -60,13 +61,13 @@ module.exports = {
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 
-      'md': '768px',
+      'md': '806px',
       // => @media (min-width: 768px) { ... }
 
       'lg': '1134px',
       // => @media (min-width: 1024px) { ... }
 
-      'xl': '1280px',
+      'xl': '1290px',
       // => @media (min-width: 1280px) { ... }
 
       '2xl': '1536px',
@@ -187,6 +188,9 @@ module.exports = {
           'height' : 'calc(100vh - 67px)',
           'font-size' : '12.62px'
         },
+        '.article-link': {
+          'color': '#fcc800',
+        }
       });
     },
     require("daisyui")
