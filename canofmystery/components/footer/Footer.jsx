@@ -110,7 +110,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="h-max w-[50%] flex flex-col justify-items-right gap-[10px] text-right">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold">
+              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
                 Quick Links
               </div>
               <div className="flex flex-wrap justify-between gap-[10px] text-t-header-light dark:text-t-dark">

@@ -15,6 +15,8 @@ module.exports = {
       "sunset" : "#f9af7d",
       "pale-green" : "#74be81",
       "dark-purple" : "#836589",
+      "light-purple" : "#c4bfff",
+      "light-green" : "#7fffb3",
 
       'primary-dark' : '#29ff80',
       'secondary-dark' : '#5c578d',
@@ -38,6 +40,7 @@ module.exports = {
       DEFAULT: '#000000',
     },
     fontSize: {
+      'lg': '13px',
       'xl': '15px',
       '2xl': '19px',
       '2.2xl': '20px',
@@ -57,6 +60,8 @@ module.exports = {
     },
     screens: {
       'xs': '0px',
+      'xs-sm': '480px',
+      // => @media (min-width: 640px) { ... }
 
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
@@ -77,9 +82,10 @@ module.exports = {
     },
     extend: {
       backgroundImage:{
-        'grid-image': 'url("../components/Assets/grid.png")'
-      }
-    }
+        'grid-image': 'url("../components/Assets/grid.png")',
+        'dark-grid-image': 'url("../components/Assets/dark-grid.png")',
+      },
+    },
   },
   daisyui: {
       themes: [

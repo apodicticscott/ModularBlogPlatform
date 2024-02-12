@@ -85,7 +85,7 @@ const Navbar = () => {
     <>
       {/* Drop Down */}
 
-      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={{  opacity: 0 }}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${swsDrop}`}>
+      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={{  opacity: 0 }}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
         <div className="flex flex-row justify-center lg:py-2 md:py-5 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className="navbar-end lg:hidden w-full md:w-3/4 md:flex flex gap-1 text-t-header-light dark:text-t-header-dark">
             <RiSearchFill style={{fontSize: "30px"}}/>
@@ -171,15 +171,15 @@ const Navbar = () => {
           <div className="navbar-center  justify-center pb-0 pt-0 flex-grow h-full hidden lg:flex">
             <ul style={{fontSize: '20px', fontWeight: "700"}} className="menu menu-horizontal items-center items-stretch justify-center h-full pt-0 pb-0 m-0 ">
               <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
-                <a  className="flex flex-1 rounded-none text-lg" href="\">Home</a>
+                <a  className="flex flex-1 rounded-none text-2xl" href="\">Home</a>
               </li>
               <li>
                 <details className="flex flex-1 h-full">
-                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-lg  ${active === "Explore" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>Explore</summary>
+                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl  ${active === "Explore" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>Explore</summary>
                 </details>
               </li>
               <li className="flex items-center">
-                <a onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-lg ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
+                <a onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
               </li>
             </ul>
           </div>
