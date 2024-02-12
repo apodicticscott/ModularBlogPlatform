@@ -89,12 +89,12 @@ const Navbar = () => {
         <div className="flex flex-row justify-center lg:py-2 md:py-5 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className="navbar-end lg:hidden w-full md:w-3/4 md:flex flex gap-1 text-t-header-light dark:text-t-header-dark">
             <RiSearchFill style={{fontSize: "30px"}}/>
-            <input type="text" name="search" required minlength="4" className="neo-input md:w-full w-full"/>
+            <input type="text" name="search" required minLength="4" className="neo-input md:w-full w-full"/>
             <MdAccountCircle style={{fontSize: "35px"}}/>
           </div>
           <div className="flex flex-row flex-wrap justify-center items-center w-full md:items-start md:w-full lg:w-max">
             <DropDownItem title="USCA" background="bg-sunset">
-              <img src="/_next/static/media/uscalogo.f84310d7.png" className="h-2/3" alt="USCA Logo"/>
+              <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
             <DropDownItem title="Can Items" background="bg-pale-green">
                 <div className="flex w-[322px] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
@@ -117,7 +117,7 @@ const Navbar = () => {
             <div className="lg:h-2/4 flex justify-between px-2 md:px-0">
               <ul className="w-max lg:inline-block hidden whitespace-nowrap">
                 {
-                  dropDownLinks.map((index, link) => 
+                  dropDownLinks.map((link, index) => 
                     <li key={index}>
                       <a className="hover:text-t-header-light dark:hover:text-t-header-dark"> {link.text} </a>
                     </li>
@@ -146,7 +146,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map(({text}, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                    <li key={index} className="text-right">
+                    <li key={text} className="text-right">
                       <a className="hover:text-"> {text} </a>
                     </li>
                     :
@@ -185,7 +185,7 @@ const Navbar = () => {
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} />
-            <input type="text" name="search" required minlength="4" className="neo-input" style={{width: "180px"}}/>
+            <input type="text" name="search" required minLength="4" className="neo-input" style={{width: "180px"}}/>
             <MdAccountCircle style={{fontSize: "35px"}} />
           </div>
         </div>

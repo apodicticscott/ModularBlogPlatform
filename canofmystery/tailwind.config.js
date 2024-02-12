@@ -74,6 +74,11 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
       '3xl': '1980px',
       // => @media (min-width: 1536px) { ... }
+    },
+    extend: {
+      backgroundImage:{
+        'grid-image': 'url("../components/Assets/grid.png")'
+      }
     }
   },
   daisyui: {

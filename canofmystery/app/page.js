@@ -2,7 +2,7 @@ import styles from "./homepage.module.css";
 import Lander from "../components/lander/Lander"
 import DisplayTextComp from "@/components/displayTextComp/DisplayTextComp";
 import Header from "../components/TextComponents/Header1"
-
+import CategoriesSection from "../components/categories/categories";
 
 export default function Home() {
 
@@ -14,8 +14,10 @@ export default function Home() {
         <div className="w-full h-[500px] dark:bg-base-100-dark">
 
         </div>
+        <CategoriesSection/>
         {/* <div className="h-max dark:bg-base-100-dark text-t-header-light bg-base-100">
           <DisplayTextComp />
+        
         </div> */}
         {/* <Components /> */}
     </div>
