@@ -9,7 +9,7 @@ const PageNotFound = () => {
                 <XLHeader style="text-7xl md:text-7xl lg:text-7xl  ">
                     404
                 </XLHeader>
-                <LargeHeader>UH OH! You're lost.</LargeHeader>
+                <LargeHeader>UH OH! You are lost!</LargeHeader>
                 <div className="flex flex-col gap-[15px] text-t-header-light dark:text-t-dark">
                     <p>The page you are looking for does not exist.
                     How you got here is a mystery. But you can click the button below

@@ -194,7 +194,7 @@ const TextEditor = () => {
           window.removeEventListener('click', handleClick);
           document.removeEventListener('selectionchange', handleSelectionChange);
         };
-      }, [window.getSelection()]); 
+      }, []); 
     
 
     const moveComponent = useCallback((dragIndex, hoverIndex) => {
