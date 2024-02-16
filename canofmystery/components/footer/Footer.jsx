@@ -1,22 +1,23 @@
 import React from "react";
 
 import { Link, LargeHeader } from "../TextComponents"
+import Header from "../TextComponents/Header1"
 
 const Footer = () => {
   return (
     <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-2 border-t-black lg:border-t-3">
       <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
             <div className="flex flex-col gap-[15px] md:w-[784px] w-full">
-              <LargeHeader className="flex flex-wrap text-3xl md:text-4xl tracking-[-3.76px] md:tracking-[-7.2px] font-bold text-t-header-light gap-[10px] text-t-header-light dark:text-t-dark">
+              <Header type={"sm"} classes="flex flex-wrap text-[6.65vw] md:text-4xl tracking-[-3.76px] md:tracking-[-7.2px] font-bold text-t-header-light gap-[10px] text-t-header-light dark:text-t-dark">
                 <span>
                   Subscribe 
                 </span>
                 <span>
                   To The Can
                 </span>
-              </LargeHeader>
+              </Header>
               <div className="flex flex-row gap-[15px] ">
-                <input className="grow text-xl xs:tracking-[-1.76px] 3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md">
+                <input className=" w-full xs-sm:grow text-xl xs:tracking-[-1.76px]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md">
               
                 </input>
                 <button className="grow-0 text-xl xs:tracking-[-1.76px] 3xl:w-[11vw]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md bg-primary-dark shadow-md">
