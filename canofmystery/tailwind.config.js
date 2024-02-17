@@ -136,6 +136,11 @@ module.exports = {
           'border-left': '3px solid black'
           // You can add more styles if needed
         },
+        '.neo-bottom-sm': {
+          'box-shadow': '0px 4px 0px 0px rgba(0,0,0,1)',
+          'border': '2px solid black',
+          'border-radius': '10px'
+        },
         '.neo-bottom-lg': {
           'box-shadow': '0px 4px 0px 0px rgba(0,0,0,1)',
           'border': '2px solid black',
@@ -148,6 +153,11 @@ module.exports = {
         },
         '.neo-input': {
           'border': '3px solid black',
+          'border-radius': '6px',
+          'min-height' : '29.17px',
+        },
+        '.neo-input-sm': {
+          'border': '2px solid black',
           'border-radius': '6px',
           'min-height' : '29.17px',
         },
@@ -164,12 +174,12 @@ module.exports = {
           'height' : '100%'
         },
         '.explore-itm-top-size-md': {
-          'width' : '36.5%',
-          'height' : '25vw'
+          'width' : '250px',
+          'height' : '165px'
         },
         '.explore-itm-btm-size-md': {
-          'width' : '75%',
-          'height' : '25vw'
+          'width' : '520px',
+          'height' : '200px'
         },
         '.explore-itm-top-size-sm': {
           'width' : 'calc(50% - 16px)', 
@@ -178,6 +188,10 @@ module.exports = {
         '.explore-itm-btm-size-sm': {
           'width' : '100%',
           'height' : '40vw'
+        },
+        '.explore-itm-top-size-xs': {
+          'width' : 'calc(50% - 20px) ', 
+          'height' : '30vw'
         },
         '.explore-size-2xl': {
           'font-size' : '15px',

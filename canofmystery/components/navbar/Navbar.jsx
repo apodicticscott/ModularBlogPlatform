@@ -86,18 +86,18 @@ const Navbar = () => {
       {/* Drop Down */}
 
       <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={{  opacity: 0 }}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
-        <div className="flex flex-row justify-center lg:py-2 md:py-5 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
-          <div className="navbar-end lg:hidden w-full md:w-3/4 md:flex flex gap-1 text-t-header-light dark:text-t-header-dark">
+        <div className="flex flex-row justify-center w-full lg:py-2 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
+          <div className="navbar-end lg:hidden w-full md:w-[750px]  md:flex flex justify-center gap-1 text-t-header-light dark:text-t-header-dark ">
             <RiSearchFill style={{fontSize: "30px"}}/>
-            <input type="text" name="search" required minLength="4" className="neo-input md:w-full w-full"/>
+            <input type="text" name="search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
             <MdAccountCircle style={{fontSize: "35px"}}/>
           </div>
-          <div className="flex flex-row flex-wrap justify-center items-center w-full md:items-start md:w-full lg:w-max">
-            <DropDownItem title="USCA" background="bg-sunset">
+          <div className=" flex flex-row flex-wrap justify-between sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
+            <DropDownItem title="USCA" background="bg-sunset" classes="w-full w-full xs-sm:explore-itm-top-size-xs">
               <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
-            <DropDownItem title="Can Items" background="bg-pale-green">
-                <div className="flex w-[322px] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
+            <DropDownItem title="Can Items" background="bg-pale-green" classes="w-full xs-sm:explore-itm-top-size-xs">
+                <div className="flex w-[calc(100%_-_16px)] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                   <div className="w-[644px] h-15 whitespace-nowrap">
                     Example Text
                   </div>
@@ -106,15 +106,15 @@ const Navbar = () => {
                   </div>
                 </div>
             </DropDownItem>
-            <DropDownItem title="Articles" background="bg-dark-purple" itemClass="explore-itm-btm-size-sm md:explore-itm-btm-size-md">
+            <DropDownItem title="Articles" background="bg-dark-purple" classes="w-full sm:w-[500px] lg:w-[230.38px] xl:w-[267.3px]">
               <div className="flex justify-center h-[110%] w-[90%] border-2 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
                 <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>    
                 </div>
               </div>
             </DropDownItem>
           </div>
-          <div className="flex flex-col justify-center shrink-1 w-full md:w-3/4 lg:w-0 ml-0 lg:ml-2">
-            <div className="lg:h-2/4 flex justify-between px-2 md:px-0">
+          <div className="flex flex-col justify-center items-center shrink-1 w-full  lg:w-0 ml-0 lg:ml-2">
+            <div className="w-full sm:w-[530px] lg:w-full lg:h-2/4 flex justify-between px-2 md:px-0">
               <ul className="w-max lg:inline-block hidden whitespace-nowrap">
                 {
                   dropDownLinks.map((link, index) => 
@@ -185,7 +185,7 @@ const Navbar = () => {
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} />
-            <input type="text" name="search" required minLength="4" className="neo-input" style={{width: "180px"}}/>
+            <input type="text" name="search" required minLength="4" className="neo-input w-[180px]"/>
             <MdAccountCircle style={{fontSize: "35px"}} />
           </div>
         </div>
