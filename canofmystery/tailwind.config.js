@@ -40,6 +40,7 @@ module.exports = {
       DEFAULT: '#000000',
     },
     fontSize: {
+      'md': '10px',
       'lg': '13px',
       'xl': '15px',
       '2xl': '19px',

@@ -2,21 +2,21 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { GrDrag } from "react-icons/gr";
-import { FaPlus, FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink } from "react-icons/fa";
+import { FaPlus, FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 import { RiFontSize } from "react-icons/ri";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { DndProvider, useDrag, useDrop,  } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { RiFontFamily } from "react-icons/ri";
-import { Paragraph} from "../TextComponents/Paragraph"
-import { debounce, includes } from 'lodash';
+import Paragraph from "../TextComponents/Paragraph"
+import Resource from "../TextComponents/Resource";
+import "../../app/globals.css"
 
-import rangy from "rangy";
 import Image from "../../components/TextComponents/Image";
 import ControlPanel from "./ControlPanel"
 import Tag from "../../components/TextComponents/NeoTag"
 import Header from "../../components/TextComponents/Header1";
-import Container from "../containers/containers";
 import { m } from "framer-motion";
 
 const ItemType = {
@@ -46,7 +46,7 @@ const SizeDropDown = ({className, onClick}) => {
 
 
 
-const DraggableComponent = ({ comp, index, moveComponent, onClick, handleBlur, handleInput, handleSelection, selected, onSelect, removeComp, editContent, isEnabled}) => {
+const DraggableComponent = ({ comp, index, length, moveComponent, onClick, handleBlur, handleInput, handleSelection, selected, onSelect, removeComp, editContent, isEnabled, isBookMarked, onLoad, isLoaded, loadBookMarks, isPreview}) => {
     const ref = useRef(null);
     const editableRef = useRef(null);
     const [, drop] = useDrop({
@@ -68,6 +68,13 @@ const DraggableComponent = ({ comp, index, moveComponent, onClick, handleBlur, h
     });
 
 
+    if(comp.id.toString() === length.toString()){
+        if(!isLoaded){
+            onLoad();
+        }
+    }
+
+
     const [{ isDragging }, drag] = useDrag({
         type: ItemType.COMPONENT,
         item: () => {
@@ -77,6 +84,9 @@ const DraggableComponent = ({ comp, index, moveComponent, onClick, handleBlur, h
             isDragging: monitor.isDragging(),
         }),
     });
+
+    
+    loadBookMarks(comp)
 
     const handleKeyUp = (e) => {
         let id = e.target.getAttribute('data-compid');
@@ -102,49 +112,111 @@ const DraggableComponent = ({ comp, index, moveComponent, onClick, handleBlur, h
         }
     };
 
-    const handleKeyDown = (e) => {
-
-
-    };
-    
     drag(drop(ref));
 
     return (
         <div id="clickable-parent" ref={ref} style={{ opacity: isDragging ? 0 : 1, borderColor: "rgba(101, 101, 101, 0.7)" }} className={`${(selected === comp.id) && "border-[3px]"} flex items-center w-full gap-[30px] rounded-md`}  onClick={(e) => onClick(comp.id, e)}>
-            <GrDrag className={`text-2.5xl ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
 
                 {comp.type === "header" && (
-                    <Header 
+                    <>
+                        <GrDrag className={`text-[25px] ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>   
+                        <Header 
+                        id={isBookMarked ? "bookmarked-header-" + comp.id : "header-" + comp.id}
+                        type={comp.size} 
+                        style={comp.style} 
+                        data-key={comp.id}
+                        editable={true}
+                        onKeyDown={(e) => ({})}
+                        onClick={(e) => onClick(comp.id, e)}
+                        onKeyUp={handleKeyUp}
+                        onSelect={onSelect}
+                        data-compid={comp.id}
+                        >
+                            <div ref={editableRef}  contentEditable={!isEnabled} data-compid={comp.id}  onInput={(e) => handleInput(e, comp.id)} onMouseUp={(e) => handleSelection(e)} onMouseLeave={(e) => handleBlur(e, comp.id, comp)} id="clickable-child"  />
+                        </Header>
+                        <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                    </>
+
+                )}
+                {comp.type === "image" && (
+                    <>
+                        <GrDrag className={`text-[25px] ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                        <Image src={comp.content} key={comp.id} >
+                        
+                        </Image>
+                        <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                    </>
+                )}
+                {comp.type === "paragraph" && (
+                    <>
+                        <GrDrag className={`text-[25px] ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                        <Paragraph 
                         type={comp.size} 
                         style={comp.style} 
                         id={comp.id} 
                         data-key={comp.id}
                         editable={true}
+                        onKeyDown={(e) => ({})}
                         onClick={(e) => onClick(comp.id, e)}
                         onKeyUp={handleKeyUp}
-                        onKeyDown={handleKeyDown}
                         onSelect={onSelect}
                         data-compid={comp.id}
-                    >
-                        <div ref={editableRef}  contentEditable={!isEnabled} data-compid={comp.id}  onInput={(e) => handleInput(e, comp.id)} onMouseUp={(e) => handleSelection(e)} onMouseLeave={(e) => handleBlur(e, comp.id)} id="clickable-child"  />
-                    </Header>
+                        >
+                            <div ref={editableRef}  contentEditable={!isEnabled} data-compid={comp.id}  onInput={(e) => handleInput(e, comp.id)} onMouseUp={(e) => handleSelection(e)} onMouseLeave={(e) => handleBlur(e, comp.id, comp)} id="clickable-child"  />
+                        </Paragraph>
+                        <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                    </>
                 )}
-                {comp.type === "image" && (
-                    <Image src={comp.content} key={comp.id} >
-                        
-                    </Image>
+                {comp.type === "resource" && (
+                    <>
+                        <GrDrag className={`text-[25px] ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                        <Resource 
+                        type={comp.size} 
+                        style={comp.style} 
+                        id={comp.id} 
+                        data-key={comp.id}
+                        editable={true}
+                        onKeyDown={(e) => ({})}
+                        onClick={(e) => onClick(comp.id, e)}
+                        onKeyUp={handleKeyUp}
+                        onSelect={onSelect}
+                        data-compid={comp.id}
+                        >
+                            <div ref={editableRef}  contentEditable={!isEnabled} data-compid={comp.id}  onInput={(e) => handleInput(e, comp.id)} onMouseUp={(e) => handleSelection(e)} onMouseLeave={(e) => handleBlur(e, comp.id, comp)} id="clickable-child"  />
+                        </Resource>
+                        <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+                    </>
                 )}
                 {/* Add cases for other types if needed */}
-            <TiDelete className={`text-3xl ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+            
         </div>
     );
 };
 
 const TextEditor = () => {
-    const [compArray, setCompArray] = useState([
-        { type: "header", size: "md", style: [], id: "1", content: "This here Here here here here here" },
-        { type: "header", size: "sm", style: [], id: "2", content: "Text Here" },
-        { type: "image", size: "", style: [], id: "3", content: "" }
+    const [compArray, setCompArray] = useState([    
+        { type: "paragraph", size: "md", style: [], id: "1", isTagged: false, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
+        { type: "image", size: "", style: [], id: "2", content: "" },
+        { type: "paragraph", size: "md", style: [], id: "3", isTagged: false, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
+        { type: "paragraph", size: "md", style: [], id: "4", isTagged: false, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
+        { type: "paragraph", size: "md", style: [], id: "5", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "paragraph", size: "md", style: [], id: "6", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "header", size: "sm", style: [], id: "7", isTagged: true, content: 'Work Cited'},
+        { type: "resource", size: "md", style: [], id: "8", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "9", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "10", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
+  
+    ]);
+    const [bookMarks, setBookMarks] = useState([])
+
+    const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
+    const [title, setTitle] = useState("Kentucky Meat Rain")
+    const [author, setAuthor] = useState("Name or Sudonim")
+    const [tags, setTags] = useState([["Text Here", "#f1fd66"]])
+    const [category, setCategory] = useState("Example Category")
+
+
+    const [resources, setResources] = useState([
     ]);
 
  
@@ -154,16 +226,13 @@ const TextEditor = () => {
     const [sizeDrop, setSizeDrop] = useState(false);
     const [linkInput, setLinkInput] = useState(false);
     const [textIsHighlighted, setTextIsHighlighted] = useState(false)
-    const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
-    const [title, setTitle] = useState("Example Title")
-    const [author, setAuthor] = useState("Name or Sudonim")
-    const [tags, setTags] = useState([["Text Here", "#f1fd66"]])
-    const [category, setCategory] = useState("Example Category")
     const [innerHtmlContent, setInnerHtmlContent] = useState([]);
     const [styleClick, setStyleClick] = useState()
     const [numStyles, setNumStyles] = useState(0)
     const [compWithStyleChange, setCompWithStyleChange] = useState(null);
     const [isPreviewEnabled, setIsPreviewEnabled] = useState(false)
+    const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const [lastCompWithStyleChange, setLastCompWithStyleChange] = useState(null);
     const [lastHrefId, setLastHrefId] = useState("")
@@ -214,9 +283,13 @@ const TextEditor = () => {
             newComponent = { type: type, size: "md", style: [], id: `${newId}`, content: "New Text"}
         }else if(type === "image"){
             newComponent = { type: type, size: "", style: [], id: `${newId}`, content: "" };
+        }else if(type === "resource"){
+            newComponent = { type: type, size: "", style: [], id: `${newId}`, content: "Test Resource" };
         }
         
+
         setCompArray([...compArray, newComponent]);
+        
     };
 
     const handleRemoveComponent = (id) => {
@@ -249,7 +322,7 @@ const TextEditor = () => {
             if(nodeName === "svg"){
                 let parent = e.target.parentElement;
                 if(parent.id === "clickable-parent"){
-                    setInnerHtmlContent([parent.children[0].getAttribute('data-compid'), target.innerHTML]);
+                    setInnerHtmlContent([parent.children[0].getAttribute('data-compid'), e.target.innerHTML]);
                 }
             }
         }
@@ -578,7 +651,6 @@ const TextEditor = () => {
                         newContainer = selection.getRangeAt(0).commonAncestorContainer.parentNode;
 
                         if(i === 0){
-                            console.log("ISNIDE I === 0 if")
                             if(selection.anchorOffset === (focusOffset - 1) && selection.focusOffset === (focusOffset - 1)){
                                 let tempAnchorOffset = anchorOffset
                                 anchorOffset = focusOffset;
@@ -604,7 +676,6 @@ const TextEditor = () => {
                                         }
                                     }
                                 }
-                                console.log("POSITION: " + i, (i + r.toString().length + offset))
                                 return [i, (i + r.toString().length + offset)]
                             }else{
                                 j++;
@@ -618,14 +689,12 @@ const TextEditor = () => {
                                 let position = fullContentArray.indexOf(containerArray[0]) + 1
 
                                 const startPosition = position + anchorOffset;
-                                console.log(startPosition);
 
                                 let offset = 0;
                                 for(let i = 0; i < fullContentArray.length; i++){
                                     if(i >= startPosition){
                                         if(i < (startPosition + r.toString().length + offset)){
                                             if(anyTag.test(fullContentArray[i])){
-                                                console.log(fullContentArray[i])
                                                 offset++;;
                                             }
                                         }
@@ -840,13 +909,12 @@ const TextEditor = () => {
                         }
                     }
                 }
-                console.log(parcedContent)
             }else{
                 if(Array.isArray(position)){
                     for(let i = 0; i < fullContentArray.length - 1; i++){
                         if(i >= position[0]){
                             if(i <= (position[1])){
-                                content = content + fullContentArray[i]; console.log(fullContentArray[i])
+                                content = content + fullContentArray[i];
                             }
                         }
                     }
@@ -857,8 +925,6 @@ const TextEditor = () => {
             
             let tempString;
             
-            console.log(parcedContent[0][1])
-            console.log(direction)
             if(direction){
                 let tempNewContentArray = [];
                 
@@ -869,8 +935,6 @@ const TextEditor = () => {
                         if(i > 0 && pushOffset === 0){
                             j = (parcedContent[i][1] + (i * 2))
                         }
-                        console.log(parcedContent[i][1], parcedContent[i][2])
-                        console.log(j)
                         if(j >= parcedContent[i][1]){
                             if(j <= parcedContent[i][2]){
                                 console.log("INSIDE RANGE")
@@ -955,10 +1019,6 @@ const TextEditor = () => {
         let newStyleContent;
         let newContent;
 
-
-
-
-        console.log(backupRange)
         if(!regex.test(oldContent) && numStyles === 0){
             newStyleContent = toggleIndividualStyle([anchorOffset, focusOffset - 1], newStyle);
             newContent = replaceByRange(fullContent, anchorOffset, focusOffset, newStyleContent);
@@ -975,14 +1035,10 @@ const TextEditor = () => {
             if(direction){
                 if(direction === "left"){
                     const position = getSelectionPosition(range)
-                    console.log(position)
                     newStyleContent = toggleIndividualStyle(position, newStyle);
-                    console.log(newStyleContent)
                 }else if(direction === "right"){
                     const position = getSelectionPosition(range)
-                    console.log(position)
                     newStyleContent = toggleIndividualStyle(position, newStyle, "right");
-                    console.log(newStyleContent)
                 }
             }if(hasStyleAlready){
                 newStyleContent = toggleIndividualStyle(hasStyleAlready, newStyle);
@@ -1062,6 +1118,10 @@ const TextEditor = () => {
         setIsPreviewEnabled(prevState => !prevState);
     }
 
+    const toggleSideBar = () => {
+        setIsSideBarOpen(prevState => !prevState);
+    }
+
     const handleLinkInput = (e) => {
         let url = e.target.value;
         if(e.key === "Enter"){
@@ -1094,31 +1154,31 @@ const TextEditor = () => {
 
     const editContent = (id, newContent, from) => {
         setCompArray(compArray.map(comp => {
+            console.log(comp)
             if (comp.id === id) {
                 return { ...comp, content: newContent };
+            }else if(comp.id === ("header-" + id) || comp.id === ("bookmarked-header-" + id)){
+                return { ...comp, content: newContent }
             }
             if(from === "toggleStyles"){
                 if(compWithStyleChange !== id){
-                    setCompWithStyleChange(id)
+                    setCompWithStyleChange(id, comp)
                 }else{
                     setCompWithStyleChange(null)
-                    setLastCompWithStyleChange(id)
+                    setLastCompWithStyleChange(id, comp)
                 }
-                
             }
-            
             return comp;
-            
         }));
-
-        
     };
 
     useEffect(() => {
         if(compWithStyleChange !== null){
-            handleCompBlur(null, compWithStyleChange)
+            console.log(compWithStyleChange)
+            handleCompBlur(null, compWithStyleChange, compWithStyleChange[1])
         }else if(lastCompWithStyleChange !== null){
-            handleCompBlur(null, lastCompWithStyleChange)
+            console.log(compWithStyleChange)
+            handleCompBlur(null, lastCompWithStyleChange, lastCompWithStyleChange[1])
             setLastCompWithStyleChange(null)
             setCompWithStyleChange(lastCompWithStyleChange)
         }
@@ -1126,18 +1186,85 @@ const TextEditor = () => {
 
 
 
-    const handleCompBlur = (e, id, from) => {
-        const element = document.getElementById(id)
+    const handleCompBlur = (e, id, comp) => {
+        let element;
+        console.log(comp)
+        if(comp.type === "header"){
+            if(comp.isBookMarked){
+                element = document.getElementById("bookmarked-header-" + id)
+            }else{
+                element = document.getElementById("header-" + id)
+            }
+        }else{
+            element = document.getElementById(id)
+        }
+        
+
+        console.log(element)
         if(element.firstChild.hasAttribute("data-compid")){
             let child = element.firstChild
+            console.log(child)
             compArray.map(comp => {
+                console.log(child)
                 if(comp.id === id){
+                    console.log(child)
                     if(child.innerHTML !== comp.content){
+                        console.log(child)
                         child.innerHTML = comp.content;
 
                     }
                 }
             })
+        }
+    }
+
+    const handleLoadCompData = () => {
+        const textContainer = document.getElementById("text-editor-container")
+        console.log("HANDLE LOAD COMP DATA")
+        console.log(textContainer)
+        if(textContainer){
+            const childrenArray = textContainer.childNodes
+            childrenArray.forEach(child => {
+                if(child.id === "clickable-parent"){
+                    const grandChildren = child.childNodes
+                    console.log(grandChildren)
+                    grandChildren.forEach(child => {
+                        console.log(child)
+                        
+                        const id = child.id
+                        compArray.map(comp => {
+                            console.log("Inside if")
+                            if(comp.id === id || comp.id === id[id.length - 1] || comp.id === id[id.length - 1]){
+                                console.log("Inside if")
+                                if(child.innerHTML !== comp.content){
+                                    child.firstChild.innerHTML = comp.content;
+                                }
+                            }
+                        })
+                        console.log("  ")
+                    })
+                }
+            })
+            setIsContentLoaded(true);
+        }
+    }
+
+    const handleLoadBookMarks = (comp) => {
+
+        let headerBookmark = "#bookmarked-header-" + comp.id
+
+        if(comp.type === "header"){
+            if(bookMarks.length === 0){
+                setBookMarks([...bookMarks, [comp.content, headerBookmark]])
+            }else{
+                for(let i = 0; i <= bookMarks.length - 1; i++){
+                    if(bookMarks[i][1].includes(headerBookmark)){
+                        break;
+                    }else if(i === bookMarks.length - 1){
+                        setBookMarks([...bookMarks, [comp.content, headerBookmark]])
+                    }
+                }
+            }
         }
     }
 
@@ -1162,12 +1289,16 @@ const TextEditor = () => {
         }));
     };
 
+    const handleExportContent = () => {
+        const articleContent = {title: title, author: author, components: compArray, tags: tags, category: category}
+        console.log(articleContent)
+    }
 
     
     return (
-        <>  
-        <DndProvider backend={HTML5Backend}>
-            <div className="w-full h-[650px]" id="text-editor">
+        <>
+        <DndProvider backend={HTML5Backend} >
+            <div className="w-full" id="text-editor">
                 <div className="flex justify-between w-full h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300">
                     <div className="flex w-max h-full">
                         <button  className={`flex justify-center items-center w-[50px] h-full ${selectedComp ? "bg-base-100" : "bg-base-300"}`} onClick={() => toggleSizeDropdown()}>
@@ -1187,9 +1318,13 @@ const TextEditor = () => {
                             <FaUnderline />
                         </button >
                         <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
+                            <FaList />
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
                             <FaLink />
                         </button >
-                        <input id="link-input" placeholder="URL..." onKeyDown={(e) => handleLinkInput(e)} className={`flex flex-row bg-base-100 overflow-hidden h-full ${(linkInput)? "w-[300px]" : "w-0"}  `}>
+
+                        <input id="link-input" placeHolder="URL..." onKeyDown={(e) => handleLinkInput(e)} className={`flex flex-row bg-base-100 overflow-hidden h-full ${(linkInput)? "w-[300px]" : "w-0"}  `}>
 
                         </input>
                     </div>
@@ -1198,71 +1333,131 @@ const TextEditor = () => {
                     </button>
                 </div>
                 
-                <div className="flex w-full h-[600px] border-y-[3px] ">
-                    <div className="flex flex-col items-center w-full h-full overflow-y-scroll pb-[100px]">
-                        <div className="w-[60%] h-full ">
-                            <div className={`flex items-center w-full gap-[30px]`} >
-                                <GrDrag className="text-2.5xl opacity-[0]" />
-                                <Header type={"landerTitle"} classes="p-0 text-center" >
-                                    {title}
-                                </Header>
-                                <TiDelete className="text-3xl opacity-[0]"/>
+                <div className="flex w-full h-[700px] border-y-[3px] ">
+                                        
+                    <div className={`h-full flex items-center border-r-[3px] ${isSideBarOpen ? "w-max" : "w-0"}`}>
+                        <div className={`h-full overflow-hidden ${isSideBarOpen ? "w-max" : "w-0" }`}>
+                            <ControlPanel panelOptions={panelOptions} handleAddComponent={handleAddComponent} handleHeaderInput={handleHeaderInput} setTitle={setTitle} currentTitle={title} setAuthor={setAuthor} currentAuthor={author} setTags={setTags} currentTags={tags} setCategory={setCategory} innerHtml={innerHtmlContent} exportContent={handleExportContent}/>
+                        </div>
+                        <div className='w-0 h-[45px] '>
+                            <div className='w-[25px] relative rounded-r  h-full flex items-center justify-center bg-base-300' onClick={() => toggleSideBar()}>
+                                {
+                                    (isSideBarOpen)
+                                    ?
+                                    <IoIosArrowBack className="text-t-header-dark text-2xl " />
+                                    :
+                                    <IoIosArrowForward className="text-t-header-dark text-2xl"/>
+                                }
                             </div>
-                            <div className={`flex items-center w-full gap-[30px]`} >
-                                <GrDrag className="text-2.5xl opacity-[0]" />
-                                <div className="flex w-full items-center">
-                                    <Header type={"sm"} classes="w-max">
-                                        By: <span className="font-normal">{author}</span>
-                                    </Header>
+                        </div>                     
+                    </div>
+                    <div  className="flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px]">
+                        {/* <div className="w-full h-0 z-10"> 
+                            <div className={`w-full  flex justify-center items-center bg-base-100 `}>
+                                <div className="relative loader-container">
+                                    <div className="block-dark"></div>
+                                    <div className="block-dark"></div>
+                                    <div className="block-dark"></div>
+                                    <div className="block-dark"></div>
                                 </div>
-
-                                <TiDelete className="text-3xl opacity-[0]"/>
                             </div>
-                            {compArray.map((comp, index) => (
-                                <DraggableComponent 
-                                key={comp.id} 
-                                comp={comp} 
-                                index={index} 
-                                moveComponent={moveComponent} 
-                                onClick={handleSelectComponent} 
-                                selected={selectedComp}
-                                removeComp={handleRemoveComponent}
-                                handleInput={handleCompInput}
-                                handleSelection={handleCompSelection}
-                                editContent={editContent}
-                                handleBlur={handleCompBlur}
-                                isEnabled={isPreviewEnabled}
-                                />
-                            ))}
-                            <div className={`flex items-center w-full gap-[30px]`} >
-                                <GrDrag className="text-2.5xl opacity-[0]" />
-                                <div className="flex flex-col h-max w-full gap-[15px]">
-                                    <Header type="sm" classes="border-b-[2px] border-b-black w-full">
-                                        Tags:
-                                    </Header>
-                                    <div className="flex flex-wrap items-center w-full h-max">
-                                        {tags.map((tag, index) => (
-                                            <Tag key={`${index}-${tag[0]}`} backgroundColor={tag[1]} tag={tag[0]} />
-                                        ))}
+                        </div> */}
+                        <div className="h-0 w-full flex">
+                            {/* <div className="relative w-full h-[700px] top-0 left-[0px] bg-base-300 flex flex-col justify-center">
+                                <div className="flex justify-between items-center">
+                                    <div className='w-[25px] relative rounded-r  left-[-30px] h-[45px] flex items-center justify-center bg-base-100 lg:bg-base-300' onClick={() => toggleSideBar()}>
+                                        <IoIosArrowBack className="text-t-header-light lg:text-t-header-dark text-2xl " />
+                                    </div>
+                                    <Header type={"sm"} classes="w-max text-t-dark" styles={{lightColor: "text-t-header-dark"}}>
+                                        Please make your screen bigger.
+                                    </Header >
+                                    <div className='w-[25px] relative rounded-l h-[45px] flex items-center justify-center bg-base-100 lg:bg-base-300' onClick={() => toggleSideBar()}>
+                                        <IoIosArrowForward className="text-t-header-light lg:text-t-header-dark text-2xl"/>
                                     </div>
                                 </div>
-                                <TiDelete className="text-3xl opacity-[0]"/>
-                            </div>
-                            <div className={`flex items-center w-full gap-[30px] mt-[15px]`} >
-                                <GrDrag className="text-2.5xl opacity-[0]" />
-                                <div className="flex w-full items-center gap-[15px]">
-                                    <Tag  backgroundColor={"#29ff80"} tag={category} />
-                                </div>
-                                <TiDelete className="text-3xl opacity-[0]"/>
-                            </div>
-
+                            </div> */}
                         </div>
+                        <div className="flex w-full">
+                            <div className={`w-full h-max md:grow flex ${!isPreviewEnabled && "px-[51px]"} md:px-0 justify-center`}>
+                                <div className="w-full md:w-[800px] h-max flex flex-col items-center">
+                                        <div className={`flexitems-center w-full ${isPreviewEnabled ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                            <Header type={"lg"} classes="p-0 text-center" >
+                                                {title}
+                                            </Header>
+                                        </div>
+                                        <div className={`flex items-center w-full ${isPreviewEnabled ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                            <div className="flex w-full items-center">
+                                                <Header type={"sm"} classes="w-max">
+                                                    By: <span className="font-normal">{author}</span>
+                                                </Header>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            {/* <div className="w-[250px] ml-[25px] mr-[50px] h-full">
+
+                            </div> */}
+                        </div>
+
+
+                        <div className="w-full h-max flex flex-col justify-between">
+                            {/* <div className="flex flex-col h-full w-[250px] ml-[25px] mr-[50px] gap-[15px] pt-[15px]">
+                                {
+                                    bookMarks.map((bookMark) => {
+                                        console.log(bookMark)
+                                        return(
+                                            <a href={bookMark[1]}>{bookMark[0]}</a>
+                                        )
+                                    })
+                                }
+                            </div> */}
+                            <div className="grow flex flex-col items-center h-full z-1 gap-[10px] ">
+                                <div className="flex-col w-full md:w-[800px]" id="text-editor-container" >
+                                    {compArray.map((comp, index) => (
+                                        <DraggableComponent 
+                                        key={comp.id} 
+                                        comp={comp} 
+                                        index={index} 
+                                        length={compArray.length}
+                                        moveComponent={moveComponent} 
+                                        onClick={handleSelectComponent} 
+                                        selected={selectedComp}
+                                        removeComp={handleRemoveComponent}
+                                        handleInput={handleCompInput}
+                                        handleSelection={handleCompSelection}
+                                        editContent={editContent}
+                                        handleBlur={handleCompBlur}
+                                        isEnabled={isPreviewEnabled}
+                                        onLoad={handleLoadCompData}
+                                        isLoaded={isContentLoaded}
+                                        loadBookMarks={handleLoadBookMarks}
+                                        isPreview={isPreviewEnabled}
+                                        />
+                                    ))}
+                                    <div className={`flex items-center w-full gap-[30px] ${!isPreviewEnabled && "px-[51px]"}`} >
+                                        <div className="flex flex-col h-max w-full gap-[15px]">
+                                            <Header type="sm" classes="border-b-[2px] border-b-black w-full">
+                                                Tags:
+                                            </Header>
+                                            <div className="flex flex-wrap items-center w-full h-max">
+                                                {tags.map((tag, index) => (
+                                                    <Tag key={`${index}-${tag[0]}`} backgroundColor={tag[1]} tag={tag[0]} />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={`flex items-center w-full gap-[30px] mt-[15px] ${!isPreviewEnabled && "px-[51px]"}`} >
+                                        <div className="flex w-full items-center gap-[15px]">
+                                            <Tag  backgroundColor={"#29ff80"} tag={category} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    
-                    <div className="w-[350px] h-full border-l-[3px]">
-                        <ControlPanel panelOptions={panelOptions} handleAddComponent={handleAddComponent} handleHeaderInput={handleHeaderInput} setTitle={setTitle} currentTitle={title} setAuthor={setAuthor} currentAuthor={author} setTags={setTags} currentTags={tags} setCategory={setCategory} innerHtml={innerHtmlContent}/>
-                    </div>
-                </div>                
+
+                </div>                 
             </div>
         </DndProvider>
         </>
@@ -1270,3 +1465,4 @@ const TextEditor = () => {
 };
 
 export default TextEditor;
+

@@ -8,7 +8,7 @@ const Footer = () => {
     <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-2 border-t-black lg:border-t-3">
       <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
             <div className="flex flex-col gap-[15px] md:w-[784px] w-full">
-              <Header type={"sm"} classes="flex flex-wrap text-[6.65vw] md:text-4xl tracking-[-3.76px] md:tracking-[-7.2px] font-bold text-t-header-light gap-[10px] text-t-header-light dark:text-t-dark">
+              <Header type={"lg"} classes="flex flex-wrap text-[6.65vw] md:text-4xl tracking-[-3.76px] md:tracking-[-7.2px] font-bold text-t-header-light gap-[10px] text-t-header-light dark:text-t-dark">
                 <span>
                   Subscribe 
                 </span>

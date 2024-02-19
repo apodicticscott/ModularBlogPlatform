@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Paragraph = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id}) => {
+const Resource = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id}) => {
 
 
     
@@ -12,21 +12,23 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
             width: "w-full",
             flex: "",
             gap: "",
-            style: "font-bold",
+            style: "",
             lightColor: "text-t-header-light",
             darkColor: "dark:text-t-dark",
-            tracking: "tracking-[-3px]",
+            tracking: "tracking-[-1.5px]",
             trackingMd: "",
             trackingLg: "",
             tracking2xl: "",
             tracking3xl: "",
-            size: "text-2.2xl",
-            sizeMd: "",
+            paddingTop: "py-[15px]",
+            paddingLeft: "pl-[36px]",
+            size: "text-md",
+            sizeMd: "md:text-lg",
             sizeLg: "",
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: "indent-[50px]"
+            textIndent: "indent-[-36px]"
         },
         md: {
             width: "w-full",
@@ -42,12 +44,13 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
             tracking3xl: "",
             size: "text-lg",
             paddingTop: "py-[15px]",
+            paddingLeft: "pl-[36px]",
             sizeMd: "md:text-xl",
             sizeLg: "",
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: "indent-[50px]"
+            textIndent: "indent-[-36px]"
         }
     }
 
@@ -84,29 +87,29 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
     if(text){
         if(type === "sm"){
             return(
-                <p id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
-    
-                </p>
+                <div id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
+                
+                </div>
             )
         }else if(type === "md"){
             return(
-                <p id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </p>
+                <div id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
+                    
+                </div>
             )
         }
     }else{
         if(type === "sm"){
             return(
-                <p id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children}
-                </p>
+                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                    {children} 
+                </div>
             )
         }else if(type === "md"){
             return(
-                <p id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children}
-                </p>
+                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                    {children} 
+                </div>
             )
         }
     }
@@ -115,4 +118,4 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
 } 
 
 
-export default Paragraph;
+export default Resource;

@@ -7,9 +7,11 @@ const Testing = () => {
 
     return(
         <>
-            <div className="w-full h-[1500px] dark:bg-base-100-dark pt-[100px]">
+            <div className="w-full h-max dark:bg-base-100-dark pt-[67px]">
 
-                <Header type="xl">
+
+                <TextEditor />
+                {/* <Header type="xl">
                     Text Components
                 </Header>
                 <div className="p-[20px]">
@@ -29,8 +31,7 @@ const Testing = () => {
 
                 <Header type="xl">
                     Text Editor
-                </Header>
-                <TextEditor />
+                </Header> */}
             </div>
         </>
     )

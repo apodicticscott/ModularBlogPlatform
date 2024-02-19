@@ -97,7 +97,7 @@ const Navbar = () => {
               <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
             <DropDownItem title="Can Items" background="bg-pale-green" classes="w-full xs-sm:explore-itm-top-size-xs">
-                <div className="flex w-[calc(100%_-_16px)] h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
+                <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                   <div className="w-[644px] h-15 whitespace-nowrap">
                     Example Text
                   </div>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
+
 import Header from "../../components/TextComponents/Header1"
 
 class RandomColorPicker {
@@ -27,13 +28,14 @@ class RandomColorPicker {
     }
 }
 
-const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml }) => {
+const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
     const colors = ["#9723c9", "#ff68b5", "#ff6b6b", "#e2a017", "#7fbc8c", "#69d3e8", "#fd6666", "#f1fd66", "#7fffb3", "#66a2fd"];
     const [errorVisible, setErrorVisible] = useState(false); // New state for error visibility
     const [search, setSearch] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    
 
     const containerRef = useRef(null);
     const dropdownRef = useRef(null);
@@ -195,27 +197,34 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
     };
 
     useEffect(() => {
-        if (isOpen && containerRef.current && dropdownRef.current) {
+        if (isSearchOpen && containerRef.current && dropdownRef.current) {
             const dropdownRect = dropdownRef.current.getBoundingClientRect();
             const containerRect = containerRef.current.getBoundingClientRect();
             const scrollY = dropdownRect.top + containerRef.current.scrollTop - containerRect.top - (containerRect.height / 2) + (dropdownRect.height / 2);
             containerRef.current.scrollTop = scrollY;
         }
-    }, [isOpen]);
+    }, [isSearchOpen]);
     
 
 
     return (
         <>
-            <div className="flex w-full">
-                {panelOptionsArray.map(([key, value]) => (
-                    <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-r-[3px] border-r-black ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
-                        {value}
-                    </button>
+            <div className={`flex w-[300px] items-center`}>
+                {panelOptionsArray.map(([key, value], index) => (
+                    (index === 0) 
+                    ? 
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                            {value}
+                        </button>
+                    :
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                            {value}
+                        </button>
                 ))}
+
             </div>
 
-            <div  ref={containerRef} className={`flex flex-col w-full h-[544px] overflow-hidden overflow-y-auto ${panel !== "Info" ? "hidden" : "visible"}`}>
+            <div  ref={containerRef} className={`flex flex-col w-[300px] h-[544px] overflow-hidden overflow-y-auto ${panel !== "Info" ? "hidden" : "visible"}`}>
                 <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
                     <Header type="sm" >
                         Title
@@ -280,13 +289,13 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                             <input
                                 type="text"
                                 className="border border-gray-300 rounded p-2 w-full"
-                                placeholder="Search categories..."
+                                placeHolder="Search categories..."
                       
                                 onChange={(e) => setSearch(e.target.value)}
-                                onFocus={() => setIsOpen(true)}
-                                onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+                                onFocus={() => setIsSearchOpen(true)}
+                                onBlur={() => setTimeout(() => setIsSearchOpen(false), 100)}
                             />
-                            {isOpen && (
+                            {isSearchOpen && (
                                 <div ref={dropdownRef} className="rounded mt-1 max-h-60 overflow-y-auto bg-[white] w-full rounded-md bg-base-300">
                                     {filteredCategories.map((category, index) => (
                                         <div
@@ -328,9 +337,9 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     </div>
                 </div>
                 <div className="flex flex-col">
-                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("col")}>
+                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("resource")}>
                         <FaPlus />
-                        <span>Column</span>
+                        <span>Resource</span>
                     </div>
                 </div>
                 <div className="flex flex-col">
@@ -345,9 +354,12 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     <Header type="sm" >
                         Inner HTML
                     </Header>
-                    <textarea placeholder="Click on an editable element to see its raw content" value={innerHtml[1]} className="w-full rounded p-[5px] min-h-[200px]">
+                    <textarea placeHolder="Click on an editable element to see its raw content" value={innerHtml[1]} className="w-full rounded p-[5px] min-h-[200px]">
                        
                     </textarea >
+                    <div className='p-[5px] bg-base-100 w-full h-[50px] flex justify-center items-center gap-[5px] rounded bg-base-300 text-t-header-dark' onClick={() => exportContent()}>
+                        Export Content JSON
+                    </div>
                 </div>
             </div>
         </>
