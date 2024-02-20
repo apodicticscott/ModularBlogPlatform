@@ -46,9 +46,10 @@ const SizeDropDown = ({className, onClick}) => {
 
 
 
-const DraggableComponent = ({ comp, index, length, moveComponent, onClick, handleBlur, handleInput, handleSelection, selected, onSelect, removeComp, editContent, isEnabled, isBookMarked, onLoad, isLoaded, loadBookMarks, isPreview}) => {
+const DraggableComponent = ({ compArray, comp, index, moveComponent, onClick, handleBlur, handleInput, handleSelection, selected, onSelect, removeComp, editContent, isEnabled, isBookMarked, onLoad, isLoaded, loadBookMarks, isPreview}) => {
     const ref = useRef(null);
     const editableRef = useRef(null);
+    const textEditorContainerRef = useRef(null)
     const [, drop] = useDrop({
         accept: ItemType.COMPONENT,
         hover(item, monitor) {
@@ -68,7 +69,7 @@ const DraggableComponent = ({ comp, index, length, moveComponent, onClick, handl
     });
 
 
-    if(comp.id.toString() === length.toString()){
+    if(compArray.indexOf(comp) === compArray.length - 1){
         if(!isLoaded){
             onLoad();
         }
@@ -121,7 +122,7 @@ const DraggableComponent = ({ comp, index, length, moveComponent, onClick, handl
                     <>
                         <GrDrag className={`text-[25px] ${isEnabled  && "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>   
                         <Header 
-                        id={isBookMarked ? "bookmarked-header-" + comp.id : "header-" + comp.id}
+                        id={comp.id}
                         type={comp.size} 
                         style={comp.style} 
                         data-key={comp.id}
@@ -195,23 +196,23 @@ const DraggableComponent = ({ comp, index, length, moveComponent, onClick, handl
 
 const TextEditor = () => {
     const [compArray, setCompArray] = useState([    
-        { type: "paragraph", size: "md", style: [], id: "1", isTagged: false, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
-        { type: "image", size: "", style: [], id: "2", content: "" },
-        { type: "paragraph", size: "md", style: [], id: "3", isTagged: false, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
-        { type: "paragraph", size: "md", style: [], id: "4", isTagged: false, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
-        { type: "paragraph", size: "md", style: [], id: "5", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "paragraph", size: "md", style: [], id: "6", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "header", size: "sm", style: [], id: "7", isTagged: true, content: 'Work Cited'},
-        { type: "resource", size: "md", style: [], id: "8", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "9", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "10", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
+        { type: "paragraph", size: "md", style: [], id: "paragraph-1", isTagged: false, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
+        { type: "image", size: "", style: [], id: "image-2", content: "" },
+        { type: "paragraph", size: "md", style: [], id: "paragraph-3", isTagged: false, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
+        { type: "paragraph", size: "md", style: [], id: "paragraph-4", isTagged: false, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
+        { type: "paragraph", size: "md", style: [], id: "paragraph-5", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "paragraph", size: "md", style: [], id: "paragraph-6", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "header", size: "sm", style: [], id: "paragraph-7", isTagged: true, content: 'Work Cited'},
+        { type: "resource", size: "md", style: [], id: "resource-8", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "resource-9", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "resource-10", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
   
     ]);
     const [bookMarks, setBookMarks] = useState([])
 
     const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
     const [title, setTitle] = useState("Kentucky Meat Rain")
-    const [author, setAuthor] = useState("Name or Sudonim")
+    const [author, setAuthor] = useState("Name or Pseudonym")
     const [tags, setTags] = useState([["Text Here", "#f1fd66"]])
     const [category, setCategory] = useState("Example Category")
 
@@ -230,42 +231,14 @@ const TextEditor = () => {
     const [styleClick, setStyleClick] = useState()
     const [numStyles, setNumStyles] = useState(0)
     const [compWithStyleChange, setCompWithStyleChange] = useState(null);
-    const [isPreviewEnabled, setIsPreviewEnabled] = useState(false)
+    const [isPreview, setIsPreview] = useState(false)
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-
     const [lastCompWithStyleChange, setLastCompWithStyleChange] = useState(null);
     const [lastHrefId, setLastHrefId] = useState("")
+    const [isAlreadyLoaded, setIsAlreadyLoaded] = useState(true);
 
-
-    useEffect(() => {
-        // Click handler
-        const handleClick = () => {
-          // Additional logic for click event can be added here
-        };
-    
-        // Selection change handler
-        const handleSelectionChange = () => {
-            let tempSelection = window.getSelection();
-            setSelection(tempSelection)
-
-            if (tempSelection.rangeCount) {
-                setTextIsHighlighted(true)
-            }
-        };
-    
-        // Attach the event listeners
-        window.addEventListener('click', handleClick);
-        document.addEventListener('selectionchange', handleSelectionChange);
-    
-        // Clean up the event listeners
-        return () => {
-          window.removeEventListener('click', handleClick);
-          document.removeEventListener('selectionchange', handleSelectionChange);
-        };
-      }, []); 
-    
-
+    //Handle DnD Movement -----------------------------------------------------------------------------------------------------------
     const moveComponent = useCallback((dragIndex, hoverIndex) => {
         const dragItem = compArray[dragIndex];
         const newCompArray = [...compArray];
@@ -274,86 +247,59 @@ const TextEditor = () => {
         setCompArray(newCompArray);
     }, [compArray]);
 
-    const handleAddComponent = (type) => {
-        const newId = compArray.length + 1;
-        let newComponent;
-        if(type === "header"){
-            newComponent = { type: type, size: "md", style: [], id: `${newId}`, content: "New Text" };
-        }else if(type === "paragraph"){
-            newComponent = { type: type, size: "md", style: [], id: `${newId}`, content: "New Text"}
-        }else if(type === "image"){
-            newComponent = { type: type, size: "", style: [], id: `${newId}`, content: "" };
-        }else if(type === "resource"){
-            newComponent = { type: type, size: "", style: [], id: `${newId}`, content: "Test Resource" };
+    //Change Content Section ---------------------------------------------------------------------------------------------------------
+    const handleItalicClick = () => {
+        if (selection && selection.toString().length > 0) {
+            setStyleClick(true)
+            setTextIsHighlighted(false)
+            toggleStyle('i');
+            
+        }
+    };
+
+    const handleBoldClick = () => {
+        if (selection && selection.toString().length > 0) {
+            setTextIsHighlighted(false)
+            setStyleClick(true)
+            toggleStyle('b');
+        }
+    };
+
+    const handleUnderlineClick = () => {
+        if (selection && selection.toString().length > 0) {
+            setStyleClick(true)
+            setTextIsHighlighted(false)
+            toggleStyle('u');
+        }
+    };
+
+    const handleStrikethroughClick = () => {
+        if (selection && selection.toString().length > 0) {
+            setTextIsHighlighted(false)
+            setStyleClick(true)
+            toggleStyle('s');
+        }
+    };
+
+    const handleLink = () => {
+        if (selection && selection.toString().length > 0) {
+            setStyleClick(true)
+            toggleStyle('a');
+            setTextIsHighlighted(false)
+            setLinkInput(prevState => !prevState);
         }
         
-
-        setCompArray([...compArray, newComponent]);
         
     };
 
-    const handleRemoveComponent = (id) => {
-        setCompArray(compArray.filter((comp) => comp.id !== id));
-    };
-
-    const handleSelectComponent = (id, e) => {
-        e.preventDefault();
-
-            handleGetInnerHtml(e)
-
-        if(e.target.id === "clickable-parent"){
-            if (selectedComp === id) {
-                // Toggle the dropdown only if the same component is clicked again
-                toggleSizeDropdown();
-                setSelectedComp();
-            } else {
-                // Close the dropdown when a different component is selected
-                setSizeDrop(false);
-                setSelectedComp(id);
-            }
-        }
-    }
-
-    const handleGetInnerHtml = (e) => {
-        if(e.target.id === "clickable-parent"){
-            setInnerHtmlContent([e.target.children[1].getAttribute('data-compid'), e.target.children[1].innerHTML]);
-        }else{
-            let nodeName = e.target.nodeName;
-            if(nodeName === "svg"){
-                let parent = e.target.parentElement;
-                if(parent.id === "clickable-parent"){
-                    setInnerHtmlContent([parent.children[0].getAttribute('data-compid'), e.target.innerHTML]);
-                }
-            }
-        }
-    }
-
-    
-
-    useEffect(() => {
-        const getContentById = (compArray, id) => {
-            const element = compArray.find(item => item.id === id);
-            return element ? element.content : null;
-        }
-
-        setInnerHtmlContent([innerHtmlContent[0], getContentById[compArray, innerHtmlContent[0]]])
-    }, [compArray])
-
-   
     const toggleStyle = (newStyle) => {
         const currentTag = new RegExp(`<${newStyle} id="style-\\d+">|</${newStyle}>`, 'g');
         const anyTag = new RegExp(`<. id="style-\\d+">|</.>`, 'g');
-        const startTag = new RegExp(`<. id="style-\\d+">`, 'g');
-        const removePattern = /<u id="style-\d+">.*?<\/u>/s;
         const createArray = /<[^>]*>|[^<]+/g;
         const createArray2 = /<[^>]+>|./g;
-        const endTag = new RegExp(`</.>`, 'g');
         const regex = /<\/?.+?>/;
 
         if (!selection || !selection.rangeCount) return;
-    
-        let mode = "add"
-        let replaceType = "";
 
         let focusOffset;
         let anchorOffset;
@@ -368,8 +314,6 @@ const TextEditor = () => {
         let range = selection.getRangeAt(0);
         let selectedText = range.toString();
 
-        let backupRange = range.cloneRange();  
-
         if (!selectedText.trim()) return;  // Exit if the selection is empty
     
         let commonAncestor = range.commonAncestorContainer;
@@ -381,7 +325,6 @@ const TextEditor = () => {
         let id = parentElement.getAttribute('data-compid');
 
         let isOrignalParent = true 
-
   
         if(!parentElement.getAttribute('data-compid')){
             isOrignalParent = false;
@@ -392,10 +335,8 @@ const TextEditor = () => {
 
         }
 
-
         let oldContent;
         let fullContent = parentElement.innerHTML;
-
 
         const convertRangeText = (r, ignore) => {
             let container = document.createElement("div");
@@ -414,144 +355,9 @@ const TextEditor = () => {
 
         }
 
-
         const hasAnyTag = (r) => {
             const text = convertRangeText(r)
             return anyTag.test(text)
-        }
-
-        const hasCurrentTag = (r) => {
-            const text = convertRangeText(r)
-            return currentTag.test(text)
-        }
-
-        const convertToHtml = (string) => {
-            let container = document.createElement("div");
-            container.innerHTML = string;
-            return container.firstChild;
-        }
-
-        function splitStringAndTags(input) {
-            // Initialize an empty array to hold the result
-            const result = [];
-            
-            // Use a regex to match tags and text outside of tags
-            const regex = /<[^>]+>|[^<]+/g;
-            
-            // Find all matches
-            let match;
-            while ((match = regex.exec(input)) !== null) {
-                // Check if the match is a tag or text
-                if (match[0][0] === '<') {
-                    // If it's a tag, push it directly to the result array
-                    result.push(match[0]);
-                } else {
-                    // If it's text, split it into individual characters and add each to the result
-                    match[0].split('').forEach(char => result.push(char));
-                }
-            }
-            
-            return result;
-        }
-        
-
-        //add style across styles
-        const forumateNewContent = (r) => {
-            let direction = convertRangeText(r)
-            let oldContentArray = []
-            let newContentArray = []
-            let html = '';
-            if(direction === "right"){
-                html = convertRangeText(r, true).replace(endTag, "")
-                let tagArray = html.match(anyTag)
-                oldContentArray = html.match(createArray)
-                newContentArray = []
-
-                let tempNewContent;
-                for(let i = 0; i < oldContentArray.length; i++){
-                    for(let j = 0; j < tagArray.length; j++){
-                        if(oldContentArray[i] !== tagArray[j]){
-                            tempNewContent = toggleIndividualStyle(oldContentArray[i], newStyle);
-                            newContentArray.push(tempNewContent);
-                        }else{
-                            newContentArray.push("");
-                        }
-                    }
-                }
-
-                newContent = '';
-
-                for(let i = 0; i < newContentArray.length; i++){
-                    if(newContentArray[i] !== ''){
-                        newContent = newContent + newContentArray[i];
-                    }else{
-                        newContent = newContent + oldContentArray[i];
-                    }
-                    
-                }
-            }else if(direction === "left"){
-                html = convertRangeText(r, true).replace(startTag, "")
-                let tagArray = html.match(anyTag)
-                oldContentArray = html.match(createArray)
-                newContentArray = []
-
-                let tempNewContent;
-                for(let i = 0; i < oldContentArray.length; i++){
-                    for(let j = 0; j < tagArray.length; j++){
-                        if(oldContentArray[i] !== tagArray[j]){
-                            tempNewContent = toggleIndividualStyle(oldContentArray[i], newStyle);
-                            newContentArray.push(tempNewContent);
-                        }else{
-                            newContentArray.push("");
-                        }
-                    }
-                }
-
-                newContent = '';
-
-                for(let i = 0; i < newContentArray.length; i++){
-                    if(newContentArray[i] !== ''){
-                        newContent = newContent + newContentArray[i];
-                    }else{
-                        newContent = newContent + oldContentArray[i];
-                    }
-                    
-                }
-            }
-
-            if(direction === "right"){
-                const tempParentElement = selection.getRangeAt(0).commonAncestorContainer.parentNode.outerHTML
-                const stringTagArray = splitStringAndTags(tempParentElement)
-                
-                const startIndex = oldContentArray.indexOf(stringTagArray[0])
-
-                const splitLength = oldContentArray.slice(startIndex, (oldContentArray.length)).length
-                const missingString = stringTagArray.slice(splitLength, stringTagArray.length).toString().replace(',', '')
-
-                newContent = newContent + missingString;
-                oldContent = html + missingString;
-
-
-                mode = "add"
-                return true;
-            }else if(direction === "left"){
-                const tempParentElement = selection.getRangeAt(0).commonAncestorContainer.parentNode.outerHTML
-                const stringTagArray = splitStringAndTags(tempParentElement)
-
-                const startIndex = oldContentArray.indexOf(stringTagArray[stringTagArray.length])
-
-                const splitLength = oldContentArray.slice(0, startIndex).length
-                const missingString = stringTagArray.slice(0, splitLength).toString().replace(',', '')
-
-                newContent = missingString + newContent;
-                oldContent = missingString + html;
-
-
-                mode = "add"
-                return true;
-            }
-            return false;
-
         }
 
         //Get position from nearest style element for adding new style
@@ -701,33 +507,9 @@ const TextEditor = () => {
                                     }
                                 }
 
-
                                 const endPosition = startPosition + r.toString().length + offset;
 
                                 return [startPosition, endPosition]
-                                // const containerString = newContainer.parentNode.outerHTML
-                                // const containerArray = containerString.match(createArray2)
-                
-                                // let position = fullContentArray.indexOf(containerArray[0]) + 1
-                                // let startPosition = position + containerArray.length + i - 2;
-    
-                                // let offset = 0;
-                                // for(let j = 0; j < (fullContentArray.length - 1); j++){
-                                //     if(j >= position){
-                                //         if(j <= (position + r.toString().length + offset)){
-                                //             if(anyTag.test(fullContentArray[j])){
-                                //                 offset++;;
-                                //             }
-                                //         }
-                                //     }
-                                // }
-
-    
-  
-                                // let endPosition = startPosition + r.toString().length + offset + 1
-                                // console.log("POSITION SET IN SEVENTH")
-                                // console.log("POSITION: " + startPosition, endPosition)
-                                // return [startPosition, endPosition]
                             }
                         }           
                     }
@@ -814,36 +596,6 @@ const TextEditor = () => {
                 }
             }else{
                 console.log("INPUT IS NOT A TYPE")
-            }
-        }
-
-
-        const getStyleElements = (ancestor, style) => {
-            let newTempContainer = ancestor
-
-
-            const searchCloseTag = (fullContentArray, startIndex, style) => {
-                for(let i = startIndex; i <= fullContentArray.length - 1; i++){
-                    let content = fullContentArray[i]
-
-                    if(content[0] === "<" && content[1] === "/" && content[2] === style){
-                        return [content, i]
-                    }
-                }
-            }
-
-            let toRemove = []
-
-            if(regex.test(newTempContainer.outerHTML)){
-                const fullContentArray = fullContent.match(createArray)
-
-                for(let i = 0; i <= fullContentArray.length - 1; i++){
-                    let content = fullContentArray[i]
-
-                    if(content.includes(newStyle) && content.includes(newTempContainer.id)){
-                        toRemove.push([content, i], searchCloseTag(fullContentArray, i, newStyle))
-                    }
-                }
             }
         }
 
@@ -1064,64 +816,6 @@ const TextEditor = () => {
         setLastCompWithStyleChange(id)
     };
 
-    const handleItalicClick = () => {
-        if (selection && selection.toString().length > 0) {
-            setStyleClick(true)
-            setTextIsHighlighted(false)
-            toggleStyle('i');
-            
-        }
-    };
-
-    const handleBoldClick = () => {
-        if (selection && selection.toString().length > 0) {
-            setTextIsHighlighted(false)
-            setStyleClick(true)
-            toggleStyle('b');
-        }
-    };
-
-    const handleUnderlineClick = () => {
-        if (selection && selection.toString().length > 0) {
-            setStyleClick(true)
-            setTextIsHighlighted(false)
-            toggleStyle('u');
-        }
-    };
-
-    const handleStrikethroughClick = () => {
-        if (selection && selection.toString().length > 0) {
-            setTextIsHighlighted(false)
-            setStyleClick(true)
-            toggleStyle('s');
-        }
-    };
-
-    const handleLink = () => {
-        if (selection && selection.toString().length > 0) {
-            setStyleClick(true)
-            toggleStyle('a');
-            setTextIsHighlighted(false)
-            setLinkInput(prevState => !prevState);
-        }
-        
-        
-    };
-
-    const toggleSizeDropdown = () => {
-        if (selectedComp) {
-            setSizeDrop(prevState => !prevState);
-        }
-    }
-
-    const togglePreviewEnabled = () => {
-        setIsPreviewEnabled(prevState => !prevState);
-    }
-
-    const toggleSideBar = () => {
-        setIsSideBarOpen(prevState => !prevState);
-    }
-
     const handleLinkInput = (e) => {
         let url = e.target.value;
         if(e.key === "Enter"){
@@ -1140,6 +834,20 @@ const TextEditor = () => {
         }
     }
 
+    const handleHeaderInput = (e, id) => {
+        const newContent = e.target.innerHTML;
+        setCompArray(compArray.map(comp => {
+            if (comp.id === id) {
+                return { ...comp, content: newContent };
+            }
+            return comp;
+        }));
+    };
+
+    const handleCompInput = (e, id) => {
+        const newContent = e.target.innerHTML;
+        editContent(id, newContent, "handleCompInput")
+    };
     
 
     const handleChangeSize = (id) => {
@@ -1154,28 +862,39 @@ const TextEditor = () => {
 
     const editContent = (id, newContent, from) => {
         setCompArray(compArray.map(comp => {
-            console.log(comp)
             if (comp.id === id) {
                 return { ...comp, content: newContent };
-            }else if(comp.id === ("header-" + id) || comp.id === ("bookmarked-header-" + id)){
-                return { ...comp, content: newContent }
             }
-            if(from === "toggleStyles"){
-                if(compWithStyleChange !== id){
-                    setCompWithStyleChange(id, comp)
-                }else{
-                    setCompWithStyleChange(null)
-                    setLastCompWithStyleChange(id, comp)
-                }
-            }
+
             return comp;
         }));
+
+        let element = document.getElementById(id)
+
+        console.log(element)
+        if(element){
+            if(from === "toggleStyles"){
+                if(element.firstChild.hasAttribute("data-compid")){
+                    let child = element.firstChild
+                    compArray.map(comp => {
+                        if(comp.id === id){
+                            if(child.innerHTML !== newContent){
+                                if (child.parentNode.id === id) {
+                                    child.innerHTML = newContent
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+
     };
 
     useEffect(() => {
         if(compWithStyleChange !== null){
-            console.log(compWithStyleChange)
             handleCompBlur(null, compWithStyleChange, compWithStyleChange[1])
+            lastCompWithStyleChange(compWithStyleChange, compWithStyleChange[1])
         }else if(lastCompWithStyleChange !== null){
             console.log(compWithStyleChange)
             handleCompBlur(null, lastCompWithStyleChange, lastCompWithStyleChange[1])
@@ -1184,34 +903,45 @@ const TextEditor = () => {
         }
     }, [compWithStyleChange])
 
+    const handleSelectComponent = (id, e) => {
+        e.preventDefault();
 
+        handleGetInnerHtml(e)
+
+        if(e.target.id === "clickable-parent"){
+            if (selectedComp === id) {
+                // Toggle the dropdown only if the same component is clicked again
+                toggleSizeDropdown();
+                setSelectedComp();
+            } else {
+                // Close the dropdown when a different component is selected
+                setSizeDrop(false);
+                setSelectedComp(id);
+            }
+        }
+    }
+
+    const handleCompSelection = (e) => {
+        setSelection(window.getSelection())
+    }
 
     const handleCompBlur = (e, id, comp) => {
-        let element;
-        console.log(comp)
+        let element = document.getElementById(id)
+
         if(comp.type === "header"){
             if(comp.isBookMarked){
                 element = document.getElementById("bookmarked-header-" + id)
             }else{
                 element = document.getElementById("header-" + id)
             }
-        }else{
-            element = document.getElementById(id)
         }
-        
 
-        console.log(element)
         if(element.firstChild.hasAttribute("data-compid")){
             let child = element.firstChild
-            console.log(child)
             compArray.map(comp => {
-                console.log(child)
                 if(comp.id === id){
-                    console.log(child)
                     if(child.innerHTML !== comp.content){
-                        console.log(child)
                         child.innerHTML = comp.content;
-
                     }
                 }
             })
@@ -1219,38 +949,71 @@ const TextEditor = () => {
     }
 
     const handleLoadCompData = () => {
-        const textContainer = document.getElementById("text-editor-container")
-        console.log("HANDLE LOAD COMP DATA")
-        console.log(textContainer)
+
+    }
+
+    useEffect(() => {
+        let textContainer;
+        textContainer = document.getElementById("text-editor-container")
+        
+
         if(textContainer){
             const childrenArray = textContainer.childNodes
             childrenArray.forEach(child => {
                 if(child.id === "clickable-parent"){
                     const grandChildren = child.childNodes
-                    console.log(grandChildren)
                     grandChildren.forEach(child => {
-                        console.log(child)
                         
                         const id = child.id
                         compArray.map(comp => {
-                            console.log("Inside if")
                             if(comp.id === id || comp.id === id[id.length - 1] || comp.id === id[id.length - 1]){
-                                console.log("Inside if")
                                 if(child.innerHTML !== comp.content){
                                     child.firstChild.innerHTML = comp.content;
                                 }
                             }
                         })
-                        console.log("  ")
                     })
                 }
             })
-            setIsContentLoaded(true);
+        }
+    }, [isContentLoaded])
+    
+    const handleGetInnerHtml = (e) => {
+        if(e.target.id === "clickable-parent"){
+            setInnerHtmlContent([e.target.children[1].getAttribute('data-compid'), e.target.children[1].innerHTML]);
+        }else{
+            let nodeName = e.target.nodeName;
+            if(nodeName === "svg"){
+                let parent = e.target.parentElement;
+                if(parent.id === "clickable-parent"){
+                    setInnerHtmlContent([parent.children[0].getAttribute('data-compid'), e.target.innerHTML]);
+                }
+            }
         }
     }
 
-    const handleLoadBookMarks = (comp) => {
+    const handleAddComponent = (type) => {
+        const newId = compArray.length + 1;
+        let newComponent;
+        if(type === "header"){
+            newComponent = { type: type, size: "md", style: [], id: `header-${newId}`, content: "New Text" };
+        }else if(type === "paragraph"){
+            newComponent = { type: type, size: "md", style: [], id: `paragraph-${newId}`, content: "New Text"}
+        }else if(type === "image"){
+            newComponent = { type: type, size: "", style: [], id: `image-${newId}`, content: "" };
+        }else if(type === "resource"){
+            newComponent = { type: type, size: "", style: [], id: `resource-${newId}`, content: "Test Resource" };
+        }
+        
+        setCompArray([...compArray, newComponent]);
+    };
 
+    
+    const handleRemoveComponent = (id) => {
+        setCompArray(compArray.filter((comp) => comp.id !== id));
+    };
+
+    const handleLoadBookMarks = (comp) => {
         let headerBookmark = "#bookmarked-header-" + comp.id
 
         if(comp.type === "header"){
@@ -1268,33 +1031,60 @@ const TextEditor = () => {
         }
     }
 
-    const handleCompSelection = (e) => {
-        setSelection(window.getSelection())
+    useEffect(() => {
+        // Click handler
+        const handleClick = () => {
+          // Additional logic for click event can be added here
+        };
+    
+        // Selection change handler
+        const handleSelectionChange = () => {
+            let tempSelection = window.getSelection();
+            setSelection(tempSelection)
+
+            if (tempSelection.rangeCount) {
+                setTextIsHighlighted(true)
+            }
+        };
+    
+        // Attach the event listeners
+        window.addEventListener('click', handleClick);
+        document.addEventListener('selectionchange', handleSelectionChange);
+        // Clean up the event listeners
+        return () => {
+          window.removeEventListener('click', handleClick);
+          document.removeEventListener('selectionchange', handleSelectionChange);
+        };
+    }, []); 
+
+    useEffect(() => {
+        const getContentById = (compArray, id) => {
+            const element = compArray.find(item => item.id === id);
+            return element ? element.content : null;
+        }
+
+        setInnerHtmlContent([innerHtmlContent[0], getContentById[compArray, innerHtmlContent[0]]])
+    }, [compArray])
+
+    const toggleSizeDropdown = () => {
+        if (selectedComp) {
+            setSizeDrop(prevState => !prevState);
+        }
     }
 
+    const togglePreviewEnabled = () => {
+        setIsPreview(prevState => !prevState);
+    }
 
-
-    const handleCompInput = (e, id) => {
-        const newContent = e.target.innerHTML;
-        editContent(id, newContent, "handleCompInput")
-    };
-
-    const handleHeaderInput = (e, id) => {
-        const newContent = e.target.innerHTML;
-        setCompArray(compArray.map(comp => {
-            if (comp.id === id) {
-                return { ...comp, content: newContent };
-            }
-            return comp;
-        }));
-    };
+    const toggleSideBar = () => {
+        setIsSideBarOpen(prevState => !prevState);
+    }
 
     const handleExportContent = () => {
         const articleContent = {title: title, author: author, components: compArray, tags: tags, category: category}
         console.log(articleContent)
     }
 
-    
     return (
         <>
         <DndProvider backend={HTML5Backend} >
@@ -1328,13 +1118,12 @@ const TextEditor = () => {
 
                         </input>
                     </div>
-                    <button className={`w-max h-full px-[15px] ${isPreviewEnabled ? "bg-primary" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
+                    <button className={`w-max h-full px-[15px] ${isPreview ? "bg-primary" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
                         Preview
                     </button>
                 </div>
                 
-                <div className="flex w-full h-[700px] border-y-[3px] ">
-                                        
+                <div className="flex w-full h-[700px] border-y-[3px] ">           
                     <div className={`h-full flex items-center border-r-[3px] ${isSideBarOpen ? "w-max" : "w-0"}`}>
                         <div className={`h-full overflow-hidden ${isSideBarOpen ? "w-max" : "w-0" }`}>
                             <ControlPanel panelOptions={panelOptions} handleAddComponent={handleAddComponent} handleHeaderInput={handleHeaderInput} setTitle={setTitle} currentTitle={title} setAuthor={setAuthor} currentAuthor={author} setTags={setTags} currentTags={tags} setCategory={setCategory} innerHtml={innerHtmlContent} exportContent={handleExportContent}/>
@@ -1352,8 +1141,8 @@ const TextEditor = () => {
                         </div>                     
                     </div>
                     <div  className="flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px]">
-                        {/* <div className="w-full h-0 z-10"> 
-                            <div className={`w-full  flex justify-center items-center bg-base-100 `}>
+                        <div className={`w-full h-0 z-10  ${isContentLoaded && "hidden"}`}> 
+                            <div className={`w-full h-[700px]  flex justify-center items-center bg-base-100  ${isContentLoaded && "hidden"}`}>
                                 <div className="relative loader-container">
                                     <div className="block-dark"></div>
                                     <div className="block-dark"></div>
@@ -1361,56 +1150,26 @@ const TextEditor = () => {
                                     <div className="block-dark"></div>
                                 </div>
                             </div>
-                        </div> */}
-                        <div className="h-0 w-full flex">
-                            {/* <div className="relative w-full h-[700px] top-0 left-[0px] bg-base-300 flex flex-col justify-center">
-                                <div className="flex justify-between items-center">
-                                    <div className='w-[25px] relative rounded-r  left-[-30px] h-[45px] flex items-center justify-center bg-base-100 lg:bg-base-300' onClick={() => toggleSideBar()}>
-                                        <IoIosArrowBack className="text-t-header-light lg:text-t-header-dark text-2xl " />
-                                    </div>
-                                    <Header type={"sm"} classes="w-max text-t-dark" styles={{lightColor: "text-t-header-dark"}}>
-                                        Please make your screen bigger.
-                                    </Header >
-                                    <div className='w-[25px] relative rounded-l h-[45px] flex items-center justify-center bg-base-100 lg:bg-base-300' onClick={() => toggleSideBar()}>
-                                        <IoIosArrowForward className="text-t-header-light lg:text-t-header-dark text-2xl"/>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                         <div className="flex w-full">
-                            <div className={`w-full h-max md:grow flex ${!isPreviewEnabled && "px-[51px]"} md:px-0 justify-center`}>
+                            <div className={`w-full h-max md:grow flex ${!isPreview && "px-[51px]"} md:px-0 justify-center`}>
                                 <div className="w-full md:w-[800px] h-max flex flex-col items-center">
-                                        <div className={`flexitems-center w-full ${isPreviewEnabled ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
-                                            <Header type={"lg"} classes="p-0 text-center" >
-                                                {title}
+                                    <div className={`flexitems-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                        <Header type={"lg"} classes="p-0 text-center" >
+                                            {title}
+                                        </Header>
+                                    </div>
+                                    <div className={`flex items-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                        <div className="flex w-full items-center">
+                                            <Header type={"sm"} classes="w-max">
+                                                By: <span className="font-normal">{author}</span>
                                             </Header>
                                         </div>
-                                        <div className={`flex items-center w-full ${isPreviewEnabled ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
-                                            <div className="flex w-full items-center">
-                                                <Header type={"sm"} classes="w-max">
-                                                    By: <span className="font-normal">{author}</span>
-                                                </Header>
-                                            </div>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            {/* <div className="w-[250px] ml-[25px] mr-[50px] h-full">
-
-                            </div> */}
                         </div>
-
-
                         <div className="w-full h-max flex flex-col justify-between">
-                            {/* <div className="flex flex-col h-full w-[250px] ml-[25px] mr-[50px] gap-[15px] pt-[15px]">
-                                {
-                                    bookMarks.map((bookMark) => {
-                                        console.log(bookMark)
-                                        return(
-                                            <a href={bookMark[1]}>{bookMark[0]}</a>
-                                        )
-                                    })
-                                }
-                            </div> */}
                             <div className="grow flex flex-col items-center h-full z-1 gap-[10px] ">
                                 <div className="flex-col w-full md:w-[800px]" id="text-editor-container" >
                                     {compArray.map((comp, index) => (
@@ -1418,7 +1177,7 @@ const TextEditor = () => {
                                         key={comp.id} 
                                         comp={comp} 
                                         index={index} 
-                                        length={compArray.length}
+                                        compArray={compArray}
                                         moveComponent={moveComponent} 
                                         onClick={handleSelectComponent} 
                                         selected={selectedComp}
@@ -1427,14 +1186,14 @@ const TextEditor = () => {
                                         handleSelection={handleCompSelection}
                                         editContent={editContent}
                                         handleBlur={handleCompBlur}
-                                        isEnabled={isPreviewEnabled}
-                                        onLoad={handleLoadCompData}
+                                        isEnabled={isPreview}
+                                        onLoad={() => setIsContentLoaded(true)}
                                         isLoaded={isContentLoaded}
                                         loadBookMarks={handleLoadBookMarks}
-                                        isPreview={isPreviewEnabled}
+                                        isPreview={isPreview}
                                         />
                                     ))}
-                                    <div className={`flex items-center w-full gap-[30px] ${!isPreviewEnabled && "px-[51px]"}`} >
+                                    <div className={`flex items-center w-full gap-[30px] ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex flex-col h-max w-full gap-[15px]">
                                             <Header type="sm" classes="border-b-[2px] border-b-black w-full">
                                                 Tags:
@@ -1446,7 +1205,7 @@ const TextEditor = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={`flex items-center w-full gap-[30px] mt-[15px] ${!isPreviewEnabled && "px-[51px]"}`} >
+                                    <div className={`flex items-center w-full gap-[30px] mt-[15px] ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex w-full items-center gap-[15px]">
                                             <Tag  backgroundColor={"#29ff80"} tag={category} />
                                         </div>
@@ -1454,9 +1213,7 @@ const TextEditor = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>                 
             </div>
         </DndProvider>

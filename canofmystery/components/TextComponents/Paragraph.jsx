@@ -77,36 +77,36 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
         md: convertStylesToString(tempStyles.md),
     };
 
-    const createMarkup = () => {
+    const createMarkudiv = () => {
         return {__html: text};
     };
 
     if(text){
         if(type === "sm"){
             return(
-                <p id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
+                <div id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
     
-                </p>
+                </div>
             )
         }else if(type === "md"){
             return(
-                <p id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
+                <div id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
     
-                </p>
+                </div>
             )
         }
     }else{
         if(type === "sm"){
             return(
-                <p id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
                     {children}
-                </p>
+                </div>
             )
         }else if(type === "md"){
             return(
-                <p id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
                     {children}
-                </p>
+                </div>
             )
         }
     }

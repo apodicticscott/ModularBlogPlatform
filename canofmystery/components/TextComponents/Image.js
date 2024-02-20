@@ -108,7 +108,7 @@ const Image = () => {
                     <div className="flex flex-col justify-center items-center w-full w-full h-[300px] leading-[15px] gap-[15px]">
                         Drag and Drop file here
                         <span>or</span>
-                        <FaUpload className="inline-block text-3xl z-20" onClick={onButtonClick}/> 
+                        <FaUpload className="inline-block text-3xl " onClick={onButtonClick}/> 
                         <input
                             style={{ display: "none" }}
                             // accept=".zip,.rar"
