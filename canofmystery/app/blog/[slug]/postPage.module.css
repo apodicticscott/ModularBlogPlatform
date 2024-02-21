@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
+  min-height: 75%; 
+}
+/** min height needs to be fixed!**/
