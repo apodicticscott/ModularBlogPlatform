@@ -209,7 +209,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
 
     return (
         <>
-            <div className={`flex w-[300px] items-center`}>
+            <div className={`flex w-[100vw] xs-sm:w-[300px] items-center`}>
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
@@ -224,7 +224,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
 
             </div>
 
-            <div  ref={containerRef} className={`flex flex-col w-[300px] h-[544px] overflow-hidden overflow-y-auto ${panel !== "Info" ? "hidden" : "visible"}`}>
+            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-[544px] overflow-hidden overflow-y-auto ${panel !== "Info" ? "hidden" : "visible"}`}>
                 <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
                     <Header type="sm" >
                         Title
@@ -251,11 +251,12 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     <div className='flex flex-wrap min-h-[50px] w-full bg-base-300 rounded-md'>
                         {currentTags.map((tag, index) => (
                             <div key={`${index}-${tag[0]}`}
-                                contentEditable={true}
-                                suppressContentEditableWarning={true}
-                                className='p-[5px] m-[5px] bg-base-100 w-min-[50px] flex flex-wrap items-center gap-[5px] rounded'
-                                onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
-                                {tag[0]}
+                                className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex flex-wrap items-center gap-[5px] rounded'
+                                >
+                                
+                                <div className='w-[calc(100%_-_32px)] h-full text-xl max-w-[calc(100%_-_27px)] flex items-center truncate text-ellipsis' suppressContentEditableWarning={true} contentEditable={true} onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
+                                    {tag[0]}
+                                </div>
                                 <button onClick={() => handleRemoveTag(index)}>
                                     <TiDelete className="text-2.7xl" />
                                 </button>
@@ -300,7 +301,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                                     {filteredCategories.map((category, index) => (
                                         <div
                                         key={index}
-                                        className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px]"
+                                        className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark"
                                         onMouseDown={() => {setSearch(category); setCategory(category)}}
                                         >   
                                             {category}

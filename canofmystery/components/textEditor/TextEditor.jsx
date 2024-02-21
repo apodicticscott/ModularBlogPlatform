@@ -3,12 +3,12 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { GrDrag } from "react-icons/gr";
 import { FaPlus, FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList } from "react-icons/fa";
+import { MdOutlinePreview } from "react-icons/md";
 import { TiDelete } from "react-icons/ti";
-import { RiFontSize } from "react-icons/ri";
+import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { DndProvider, useDrag, useDrop,  } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { RiFontFamily } from "react-icons/ri";
 import Paragraph from "../TextComponents/Paragraph"
 import Resource from "../TextComponents/Resource";
 import "../../app/globals.css"
@@ -27,18 +27,18 @@ const SizeDropDown = ({className, onClick}) => {
 
     
     return(
-        <div className={`${className} flex flex-row bg-base-100 overflow-hidden` }>
-            <button id="sm" className="flex flex-row justify-center items-end h-full w-[50px] py-[10px]" onClick={(e) => onClick(e.currentTarget.id)}>
-                <RiFontFamily id="sm" className="text-1xl"/>
+        <div className={`${className} flex flex-row bg-base-100 overflow-hidden  h-[30px] sm:h-full border-r-solid border-r-[3px] border-r-black` }>
+            <button id="sm" className="flex flex-row justify-center items-end h-full pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+                <RiFontFamily id="sm" className="text-[8px] sm:text-xl"/>
             </button>
-            <button id="md" className="flex flex-row justify-center items-end h-full w-[50px] py-[10px]" onClick={(e) => onClick(e.currentTarget.id)}>
-                <RiFontFamily id="md" className="text-2.2xl"/>
+            <button id="md" className="flex flex-row justify-center items-end h-full  pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+                <RiFontFamily id="md" className="text-[10px] sm:text-2.2xl"/>
             </button>
-            <button id="lg" className=" flex flex-row justify-center items-end h-full w-[50px] py-[9px]" onClick={(e) => onClick(e.currentTarget.id)}>
-                <RiFontFamily id="lg" className="flex flex-col justify-end text-2.7xl"/>
+            <button id="lg" className=" flex flex-row justify-center items-end h-full  pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+                <RiFontFamily id="lg" className="flex flex-col justify-end text-[12px] sm:text-2.7xl"/>
             </button>
-            <button id="xl" className="flex flex-row justify-center items-end h-full w-[50px] py-[8px]" onClick={(e) => onClick(e.currentTarget.id)}>
-                <RiFontFamily id="xl" className="text-3xl"/>
+            <button id="xl" className="flex flex-row justify-center items-end h-full pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+                <RiFontFamily id="xl" className="sm:text-3xl"/>
             </button>
         </div>
     )
@@ -116,7 +116,7 @@ const DraggableComponent = ({ compArray, comp, index, moveComponent, onClick, ha
     drag(drop(ref));
 
     return (
-        <div id="clickable-parent" ref={ref} style={{ opacity: isDragging ? 0 : 1, borderColor: "rgba(101, 101, 101, 0.7)" }} className={`${(selected === comp.id) && "border-[3px]"} flex items-center w-full gap-[30px] rounded-md`}  onClick={(e) => onClick(comp.id, e)}>
+        <div id="clickable-parent" ref={ref} style={{ opacity: isDragging ? 0 : 1, borderColor: "rgba(101, 101, 101, 0.7)" }} className={`${(selected === comp.id) && "border-[3px]"} flex items-center w-full gap-[15px] sm:gap-[30px] rounded-md`}  onClick={(e) => onClick(comp.id, e)}>
 
                 {comp.type === "header" && (
                     <>
@@ -182,6 +182,7 @@ const DraggableComponent = ({ compArray, comp, index, moveComponent, onClick, ha
                         onKeyUp={handleKeyUp}
                         onSelect={onSelect}
                         data-compid={comp.id}
+                        classes={"max-w-[83%]"}
                         >
                             <div ref={editableRef}  contentEditable={!isEnabled} data-compid={comp.id}  onInput={(e) => handleInput(e, comp.id)} onMouseUp={(e) => handleSelection(e)} onMouseLeave={(e) => handleBlur(e, comp.id, comp)} id="clickable-child"  />
                         </Resource>
@@ -1089,47 +1090,48 @@ const TextEditor = () => {
         <>
         <DndProvider backend={HTML5Backend} >
             <div className="w-full" id="text-editor">
-                <div className="flex justify-between w-full h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300">
-                    <div className="flex w-max h-full">
-                        <button  className={`flex justify-center items-center w-[50px] h-full ${selectedComp ? "bg-base-100" : "bg-base-300"}`} onClick={() => toggleSizeDropdown()}>
-                            <RiFontSize className={`text-3xl text-t-header-dark ${selectedComp ? "text-t-header-light" : "text-t-header-dark"}`} />
+                <div className="flex flex-wrap w-full h-max sm:h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300 gap-y-[3px]">    
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
+                        <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
+                    </button>     
+                    <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
+                        <FaBold className="text-lg sm:text-xl"/>
+                    </button >
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((textIsHighlighted) === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
+                        <FaItalic className="text-lg sm:text-xl"/>
+                    </button >
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
+                        <FaStrikethrough className="text-lg sm:text-xl"/>
+                    </button >
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
+                        <FaUnderline className="text-lg sm:text-xl"/>
+                    </button >
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
+                        <FaList className="text-lg sm:text-xl"/>
+                    </button >
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
+                        <FaLink className="text-lg sm:text-xl"/>
+                    </button >
+                    <input id="link-input" placeHolder="URL..." onKeyDown={(e) => handleLinkInput(e)} className={`flex flex-row bg-base-100 overflow-hidden h-[30px]  sm:h-full ${(linkInput)? "pl-[15px] w-full sm:w-[300px]" : "w-0"}  `}>
+
+                    </input>
+                    <div className="flex w-max gap-[3px]">
+                        <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${selectedComp ? "bg-base-100" : "bg-base-300"}`} onClick={() => toggleSizeDropdown()}>
+                            <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${selectedComp ? "text-t-header-light" : "text-t-header-dark"}`} />
                         </button >
                         <SizeDropDown className={`${(sizeDrop && selectedComp)? "w-max" : "w-0"}`} onClick={handleChangeSize} />
-                        <button  className={`flex justify-center items-center w-[50px] h-full border-r-[3px] border-r-base-300 ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
-                            <FaBold />
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${((textIsHighlighted) === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
-                            <FaItalic />
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
-                            <FaStrikethrough />
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
-                            <FaUnderline />
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
-                            <FaList />
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-full border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleLink}>
-                            <FaLink />
-                        </button >
-
-                        <input id="link-input" placeHolder="URL..." onKeyDown={(e) => handleLinkInput(e)} className={`flex flex-row bg-base-100 overflow-hidden h-full ${(linkInput)? "w-[300px]" : "w-0"}  `}>
-
-                        </input>
                     </div>
-                    <button className={`w-max h-full px-[15px] ${isPreview ? "bg-primary" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
-                        Preview
-                    </button>
+
+
                 </div>
                 
                 <div className="flex w-full h-[700px] border-y-[3px] ">           
-                    <div className={`h-full flex items-center border-r-[3px] ${isSideBarOpen ? "w-max" : "w-0"}`}>
-                        <div className={`h-full overflow-hidden ${isSideBarOpen ? "w-max" : "w-0" }`}>
+                    <div className={`h-full flex items-end border-r-[3px] ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0"}`}>
+                        <div className={`h-full overflow-hidden ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0" }`}>
                             <ControlPanel panelOptions={panelOptions} handleAddComponent={handleAddComponent} handleHeaderInput={handleHeaderInput} setTitle={setTitle} currentTitle={title} setAuthor={setAuthor} currentAuthor={author} setTags={setTags} currentTags={tags} setCategory={setCategory} innerHtml={innerHtmlContent} exportContent={handleExportContent}/>
                         </div>
-                        <div className='w-0 h-[45px] '>
-                            <div className='w-[25px] relative rounded-r  h-full flex items-center justify-center bg-base-300' onClick={() => toggleSideBar()}>
+                        <div className='w-0 h-[45px] py-[2px] '>
+                            <div className={` relative rounded-r w-[25px] ${isSideBarOpen ? "rounded-l xs-sm:rounded-r left-[-40px] xs-sm:left-0 w-[40px] xs-sm:w-[25px] justify-start xs-sm:justify-center" : "justify-center"}  h-full flex items-center  bg-base-300`} onClick={() => toggleSideBar()}>
                                 {
                                     (isSideBarOpen)
                                     ?
