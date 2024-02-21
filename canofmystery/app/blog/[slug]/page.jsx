@@ -27,7 +27,7 @@ const PostPage = () => {
                 <h2>Name</h2>
                 <a href="">Tag Here </a>
                 <a href="">Category Here</a>
-                <p>For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. 
+                <p>For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the Kentucky Meat Rain. Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. 
                     The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.
                 </p>
                 <a className="p-5" href="">IMAGE REF</a>

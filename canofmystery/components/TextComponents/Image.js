@@ -120,9 +120,6 @@ const Image = () => {
                         <div className="button" onClick={onButtonClick}>
                             Upload your file.
                         </div>
-  
-
-                        
                     </div>
                 }
 
