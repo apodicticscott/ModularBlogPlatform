@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
+import FileUpload from "./FileUpload";
 
 import Header from "../../components/TextComponents/Header1"
 
@@ -28,13 +29,14 @@ class RandomColorPicker {
     }
 }
 
-const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent }) => {
+const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent, enableCrop, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, removeImage }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
     const colors = ["#9723c9", "#ff68b5", "#ff6b6b", "#e2a017", "#7fbc8c", "#69d3e8", "#fd6666", "#f1fd66", "#7fffb3", "#66a2fd"];
     const [errorVisible, setErrorVisible] = useState(false); // New state for error visibility
     const [search, setSearch] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isImageAddOpen, setIsImageAddOpen] = useState(false)
     
 
     const containerRef = useRef(null);
@@ -209,7 +211,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
 
     return (
         <>
-            <div className={`flex w-[100vw] xs-sm:w-[300px] items-center`}>
+            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center`}>
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
@@ -332,21 +334,29 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     </div>
                 </div>
                 <div className="flex flex-col">
-                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("image")}>
+                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("list")}>
+                        <FaPlus />
+                        <span>List</span>
+                    </div>
+                </div>
+                <div className="flex flex-col">
+                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
                         <FaPlus />
                         <span>Image</span>
                     </div>
+                    {
+                    isImageAddOpen
+                    &&
+                    <div className={`w-full overflow-hidden h-max`}>
+                        <FileUpload addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                    </div> 
+                    }
+  
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("resource")}>
                         <FaPlus />
                         <span>Resource</span>
-                    </div>
-                </div>
-                <div className="flex flex-col">
-                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("row")}>
-                        <FaPlus />
-                        <span>Row</span>
                     </div>
                 </div>
             </div>

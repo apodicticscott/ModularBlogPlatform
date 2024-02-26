@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Header = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id}) => {
+const Header = ({children, text, type, classes, style, highlight, onClick, onKeyUp, onKeyDown, id}) => {
 
 
     
@@ -144,44 +144,7 @@ const Header = ({children, text, type, classes, style, editable, highlight, onCl
         landerTitle: convertStylesToString(tempStyles.landerTitle),
     };
 
-    const createMarkup = () => {
-        return {__html: text};
-    };
 
-    if(text){
-        if(type === "sm"){
-            return(
-                <div id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }else if(type === "md"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }else if(type === "lg"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.lg} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }else if(type === "xl"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.xl} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }
-        else if(type === "landerTitle"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.landerTitle} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }
-    }else{
         if(type === "sm"){
             return(
                 <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
@@ -214,7 +177,6 @@ const Header = ({children, text, type, classes, style, editable, highlight, onCl
                 </div>
             )
         }
-    }
 
 
 } 
