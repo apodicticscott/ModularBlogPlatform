@@ -19,7 +19,7 @@ module.exports = {
       'primary-dark' : '#29ff80',
       'secondary-dark' : '#5c578d',
       'base-100-dark' : '#1c1a1a',
-
+      'title-color' : '#c4bfff',
       't-header-light' : '#1c1b1c',
       't-header-dark' : '#ebebeb',
       't-dark' :  '#ebebeb',
@@ -28,11 +28,12 @@ module.exports = {
     borderWidth: {
       '0': "0px",
       '2': "2px",
-      '3': "3px"
+      '3': "3px",
     },
     boxShadow: {
       'md': '0px 5px 0px 0px #000',
       'lg': '0px 10px 0px 0px #000',
+      'sidebig': '10px, 10px, 0px, 0px, #000',
     },
     borderColor: {
       DEFAULT: '#000000',
