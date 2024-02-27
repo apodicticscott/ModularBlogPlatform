@@ -1,6 +1,7 @@
 import React from "react";
 // import {Button, Header, SubHeader, SubText} from "../../components/DisplayComp/Components"
 import { Header, XLHeader, LargeParagraph } from "../TextComponents";
+import NeoButtonLink from "../TextComponents/NeoButtonLink";
 
 const Lander = () => {
     return (
@@ -24,9 +25,7 @@ const Lander = () => {
 
                     </div>
                     <div className="lg:mt-[36px] lg:pl-7 3xl:pl-[2.5vw] mt-[20px] 3xl:w-[45vw]">
-                        <button className="text-xl xs:tracking-[-1.76px] 3xl:w-[11vw]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md bg-primary-dark shadow-md ">
-                            Read Articles
-                        </button>
+                        <NeoButtonLink link="../link/goes/here" children="Read Articles"></NeoButtonLink>
                     </div>
                 </div>
                 <div className="xs:h-[450px] xs-sm:h-[450px] lg:w-[925px]  lg:hidden px-7  lg:pt-28 flex flex-col justify-end dark:bg-base-100-dark text-t-header-light bg-base-100 dark:text-t-dark border-y-2 border-b-black"> 

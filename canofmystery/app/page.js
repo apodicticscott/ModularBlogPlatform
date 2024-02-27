@@ -5,6 +5,7 @@ import Header from "../components/TextComponents/Header1"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent";
 import UseUsAsASource from "../components/UseUsAsASource/useusasasource.jsx";
+import ArticleCardsSection from "../components/ArticleCards/articlecardssection.jsx"
 export default function Home() {
 
 
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
         <Lander/>
+        <ArticleCardsSection/>
         <Recent/>
         <UseUsAsASource/>
         <CategoriesSection/>
