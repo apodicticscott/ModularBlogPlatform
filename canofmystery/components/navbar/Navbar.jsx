@@ -179,8 +179,8 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
-            <RiSearchFill style={{fontSize: "30px"}} />
-            <input type="text" name="search" required minLength="4" className="neo-input w-[180px]"/>
+            <RiSearchFill style={{fontSize: "30px"}} role="link">SearchPage</RiSearchFill>
+            <input type="search" name="search" required minLength="4" className="neo-input w-[180px]"/>
             <MdAccountCircle style={{fontSize: "35px"}} />
           </div>
         </div>

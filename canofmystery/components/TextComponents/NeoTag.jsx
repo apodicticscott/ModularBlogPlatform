@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Tag = ({tag, backgroundColor, extrastyle}) => {
+const Tag = ({tag, backgroundColor, extrastyle=""}) => {
     return(
         <>
             <div
