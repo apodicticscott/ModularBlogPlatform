@@ -3,7 +3,8 @@ import Lander from "../components/lander/Lander"
 import DisplayTextComp from "../components/displayTextComp/DisplayTextComp";
 import Header from "../components/TextComponents/Header1"
 import CategoriesSection from "../components/categories/categories";
-import Recent from "../components/recent/recent"
+import Recent from "../components/recent/recent";
+import UseUsAsASource from "../components/UseUsAsASource/useusasasource.jsx";
 export default function Home() {
 
 
@@ -12,10 +13,9 @@ export default function Home() {
     <div className={styles.container}>
         <Lander/>
         <Recent/>
-        <div className="w-full h-[500px] dark:bg-base-100-dark">
-
-        </div>
-        {/* <CategoriesSection/> */}
+        <UseUsAsASource/>
+        <CategoriesSection/>
+        
         {/* <div className="h-max dark:bg-base-100-dark text-t-header-light bg-base-100">
           <DisplayTextComp />
         
