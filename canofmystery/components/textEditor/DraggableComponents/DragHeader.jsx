@@ -54,7 +54,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 id={comp.id + "-grab"}
                 {...attributes}
                 {...listeners}
-                className={`text-[25px] touch-none ${isEnabled && "hidden"}`}
+                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
             <Header type={comp.size} id={comp.id}>
@@ -67,7 +67,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 />
             </Header>
             <TiDelete
-                className={`text-[30px] ${isEnabled && "hidden"} `}
+                className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 isDragging={false}
                 onClick={() => removeComp(comp.id)}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}

@@ -36,12 +36,12 @@ const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
                 id={comp.id + "-grab"}
                 {...attributes}
                 {...listeners}
-                className={`text-[25px] touch-none ${isEnabled && "hidden"}`}
+                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
             <Image id={comp.id} src={comp.image} key={comp.id}  onClick={onClick} >
             </Image>
-            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
+            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
         </div>
     )
 }

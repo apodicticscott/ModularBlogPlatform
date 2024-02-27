@@ -5,8 +5,7 @@ import { motion } from '../../node_modules/framer-motion';
 import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { MdWbSunny } from "react-icons/md";
-import { FaMoon } from "react-icons/fa";
+
 import { Link } from "next/router";
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
@@ -22,7 +21,7 @@ const Navbar = () => {
 
   const [active, setActive] = useState("Home");
   const [open, setOpen] = useState(false);
-  const [light, setLight] = useState(true);
+
   const [hideTheme, setHideTheme] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const [dropDownHeight, setDropDownHeight,] = useState(0);
@@ -69,10 +68,6 @@ const Navbar = () => {
     setHideTheme(!hideTheme)
   }
   
-  const handleThemeClick = () => {
-    document.documentElement.classList.toggle('dark');
-    setLight(!light)
-  };
 
   const handleDropDownClick = () => {
     setOpen(!open);
@@ -191,12 +186,7 @@ const Navbar = () => {
         </div>
       </div>
       {/* Theme Button */}
-      <div className="pl-[25px] xl:pl-[50px] pb-[20px] xl:pb-[25px] h-[100px]" style={{position: "fixed", left: "0px", top: "calc(100vh - 75px)", width: "100vw"}} >
-          <div className="flex flex-row justify-center" style={{flexDirection: "column", justifyContent: "center", alignItems: "center",  borderRadius: "50px", height: "50px", width: "50px"}}>
-            <MdWbSunny className="text-[40px] lg:text-[50px] dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{ display:`${!light ? "block" : "none"}` }}/>
-            <FaMoon className="text-[30px] lg:text-[40px] dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{display:`${light ? "block" : "none"}`}}/>
-          </div>
-      </div>
+
     </div>
 
     </>

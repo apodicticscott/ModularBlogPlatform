@@ -215,11 +215,11 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
                             {value}
                         </button>
                     :
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
                             {value}
                         </button>
                 ))}
@@ -284,7 +284,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                         <Header type="sm" classes={"w-max"}>
                             Categories
                         </Header>
-                        <span className='text-xl'>
+                        <span className='text-xl text-t-header-light dark:text-t-header-dark'>
                             Pick 1 categorie that best fits your article.
                         </span>
                         
@@ -324,39 +324,39 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     Componets
                 </Header>
                 <div className="flex flex-row p-2  items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("header")}>
-                    < FaPlus />
-                    <span>Header</span>
+                    < FaPlus  className='text-t-header-light dark:text-t-header-dark'  />
+                    <span className='text-t-header-light dark:text-t-header-dark' >Header</span>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("paragraph")}>
-                        <FaPlus />
-                        <span>Body</span>
+                        <FaPlus className='text-t-header-light dark:text-t-header-dark' />
+                        <span className='text-t-header-light dark:text-t-header-dark'>Body</span>
                     </div>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("list")}>
-                        <FaPlus />
-                        <span>List</span>
+                        <FaPlus className='text-t-header-light dark:text-t-header-dark'/>
+                        <span className='text-t-header-light dark:text-t-header-dark'>List</span>
                     </div>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
-                        <FaPlus />
-                        <span>Image</span>
+                        <FaPlus className='text-t-header-light dark:text-t-header-dark' />
+                        <span className='text-t-header-light dark:text-t-header-dark'>Image</span>
                     </div>
                     {
                     isImageAddOpen
                     &&
                     <div className={`w-full overflow-hidden h-max`}>
-                        <FileUpload addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                        <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
                     </div> 
                     }
   
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("resource")}>
-                        <FaPlus />
-                        <span>Resource</span>
+                        <FaPlus className='text-t-header-light dark:text-t-header-dark' />
+                        <span className='text-t-header-light dark:text-t-header-dark'>Resource</span>
                     </div>
                 </div>
             </div>

@@ -79,14 +79,9 @@ const TextEditor = () => {
         { type: "paragraph", size: "md", style: [], id: "component-5", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
         { type: "image", size: "", style: [], id: "component-6", image: placeholderTwo.src, originalImage: placeholderTwo.src},
         { type: "paragraph", size: "md", style: [], id: "component-7", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "header", size: "sm", style: [], id: "component-8", isTagged: true, content: 'Work Cited 0'},
-        { type: "header", size: "sm", style: [], id: "component-9", isTagged: true, content: 'Work Cited 1'},
-        { type: "header", size: "sm", style: [], id: "component-10", isTagged: true, content: 'Work Cited 2'},
-        { type: "resource", size: "md", style: [], id: "component-11", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-12", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-13", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
-        { type: "list", size: "md", style: [], id: "component-14", isTagged: false, content: '', listItems: [{content: "List Item 1", style: "decimal"}]},
-  
+        { type: "resource", size: "md", style: [], id: "component-8", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "component-9", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "component-10", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
     ]);
     const [bookMarks, setBookMarks] = useState([])
 
@@ -379,16 +374,7 @@ const TextEditor = () => {
                     }
 
                     <div  className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px] ${isCropEnabled && "hidden"}`}>
-                        {/* <div className={`w-full h-0 z-10  ${isContentLoaded && "hidden"}`}> 
-                            <div className={`w-full h-[650px]  flex justify-center items-center bg-base-100  ${isContentLoaded && "hidden"}`}>
-                                <div className="relative loader-container">
-                                    <div className="block-dark"></div>
-                                    <div className="block-dark"></div>
-                                    <div className="block-dark"></div>
-                                    <div className="block-dark"></div>
-                                </div>
-                            </div>
-                        </div> */}
+
                         <div className={`flex w-full`}>
                             <div className={`w-full h-max md:grow flex ${!isPreview && "px-[51px]"} md:px-0 justify-center`}>
                                 <div className="w-full md:w-[800px] h-max flex flex-col items-center">

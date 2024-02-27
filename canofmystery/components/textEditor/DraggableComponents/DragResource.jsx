@@ -54,7 +54,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
                 id={comp.id + "-grab"}
                 {...attributes}
                 {...listeners}
-                className={`text-[25px] touch-none ${isEnabled && "hidden"}`}
+                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />   
             <Resource
@@ -68,7 +68,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
                 onChange={(event) => updateContent(comp.id, event.target.value, "text")}
                 />
             </Resource>
-            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
+            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
         </div>
     )
 }

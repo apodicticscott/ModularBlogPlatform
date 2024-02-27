@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 
 import { Link, LargeHeader } from "../TextComponents"
+import { MdWbSunny } from "react-icons/md";
+import { FaMoon } from "react-icons/fa";
 import Header from "../TextComponents/Header1"
 
 const Footer = () => {
+  const [light, setLight] = useState(true);
+
+  const handleThemeClick = () => {
+    document.documentElement.classList.toggle('dark');
+    setLight(!light)
+  };
+
+
   return (
     <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-2 border-t-black lg:border-t-3">
       <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
@@ -27,12 +37,19 @@ const Footer = () => {
         </div>
       </div>
       <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous border-t-2 border-t-black dark:bg-base-100-dark lg:border-t-3 ">
-        <div className="w-[784px] h-max flex md:flex-row flex-col gap-[25px] justify-between">
-          <div className="h-max w-full md:w-[22.22%] flex flex-row md:flex-col justify-between">
-            <div className="w-max md:w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
-              Can Of Mystery
+        <div className="w-[784px] h-max flex md:flex-row md:h-full flex-col gap-[25px] justify-between">
+          <div className="h-full w-full md:w-[22.22%] flex flex-row md:flex-col justify-between">
+            <div>
+              <div className="w-max md:w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
+                Can Of Mystery
+              </div>
+              <img className="w-[35px] md:w-[35px] mt-[10px]" src={"/_next/static/media/uscalogo.f84310d7.png"} alt="Usca Logo"/>
             </div>
-            <img className="w-[35px] md:w-[35px] mt-[10px]" src={"/_next/static/media/uscalogo.f84310d7.png"} alt="Usca Logo"/>
+
+            <div className="flex flex-row justify-center" style={{flexDirection: "column", justifyContent: "center", alignItems: "center",  borderRadius: "50px", height: "50px", width: "50px"}}>
+                <MdWbSunny className="text-[40px] lg:text-[50px] dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{ display:`${!light ? "block" : "none"}` }}/>
+                <FaMoon className="text-[30px] lg:text-[40px] dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{display:`${light ? "block" : "none"}`}}/>
+              </div>
           </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] hidden md:flex">
               <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">

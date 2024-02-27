@@ -82,14 +82,14 @@ const FileUpload = ({addImage, enableCrop, imageToCrop, setImageToCrop, croppedI
                         :
                         <img src={imageToCrop} width="200" height="200" alt="" />               
                     :
-                    <div className="flex flex-col justify-center items-center w-full w-full h-[200px] leading-[15px] gap-[15px] hover:bg-base-200" onClick={() => {fileInputRef.current.click(); console.log("Clicked")}}>
+                    <div className="flex flex-col justify-center items-center w-full w-full h-[200px] leading-[15px] rounded-b-md gap-[15px] text-t-header-light dark:text-t-header-dark  hover:bg-base-200 dark:hover:text-t-header-light" onClick={() => {fileInputRef.current.click(); console.log("Clicked")}}>
                         <input
                         type="file"
                         onChange={handleFileSelect}
                         hidden
                         ref={fileInputRef}
                         />
-                        <button >
+                        <button className=''>
                             Select File
                         </button>
                         

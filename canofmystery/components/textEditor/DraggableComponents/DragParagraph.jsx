@@ -20,7 +20,7 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
   
     const style = {
         transform: CSS.Translate.toString(transform),
-        transition
+        transition,
     };
   
     
@@ -40,6 +40,11 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
             document.removeEventListener("keydown", handleKeyDown);
         };
     });
+
+    console.log(selected.id === comp.id, "p")
+    console.log(comp.id, selected.id)
+    console.log(selected.eventType === "comp-click", "p")
+    console.log(selected.eventType, "comp-Click")
   
 
     return(
@@ -47,9 +52,9 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
             id="clickable-parent"
             ref={setNodeRef}
             style={style}
-            className={`w-full justify-between ${
-            ((selected.id === comp.id) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
-            } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
+            className={`w-full justify-between  
+            ${((selected.id === comp.id) && selected.eventType === "comp-click") && "border-3 border-base-200"} 
+            flex items-center gap-[15px] sm:gap-[30px]  rounded-md text-t-header-light dark:text-t-header-dark`}
             onClick={(e) => onClick(e, comp.id, comp.type)}
         >
             <GrDrag
@@ -72,7 +77,7 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
                 
                 />
             </Paragraph>
-            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"}`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
+            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
         </div>
     )
 }

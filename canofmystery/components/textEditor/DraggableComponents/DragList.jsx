@@ -63,11 +63,11 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
                     id={comp.id + "-grab"}
                     {...attributes}
                     {...listeners}
-                    className={`text-[25px] touch-none ${isEnabled && "hidden"}`}
+                    className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                     onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
                 />
                     <div className="w-full">
-                        <ul className="pl-[50px] w-full">
+                        <ul className="pl-[50px] w-full text-t-header-light dark:text-t-header-dark">
                             {
                                 comp.listItems.map((item) => (
                                     <li key={item.id} style={{listStyle: item.style}} onKeyDown={(e) => handleUpdateList(e, "add", comp.id)}>
@@ -85,7 +85,7 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
                         </ul>
                     </div>
                 <TiDelete
-                    className={`text-[30px] ${isEnabled && "hidden"} `}
+                    className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                     isDragging={false}
                     onClick={() => removeComp(comp.id)}
                     onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
