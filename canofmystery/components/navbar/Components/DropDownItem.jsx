@@ -1,4 +1,4 @@
-import { Link } from "@/components/TextComponents";
+import { Link } from "/components/TextComponents";
 import React from "react";
 
 const DropDownItem = ({ title, background, classes, children }) => {

@@ -1,4 +1,4 @@
-import { LargeHeader, NeoButton, XLHeader } from '@/components/TextComponents';
+import { LargeHeader, NeoButton, XLHeader } from '/components/TextComponents';
 import React from 'react'
 
 const PageNotFound = () => {

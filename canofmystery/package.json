@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/node": "20.11.20",
+    "@types/react": "18.2.60",
     "autoprefixer": "^10.0.1",
     "daisyui": "^4.4.14",
     "eslint": "^8",

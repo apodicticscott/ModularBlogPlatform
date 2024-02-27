@@ -1,6 +1,6 @@
 import styles from "./homepage.module.css";
 import Lander from "../components/lander/Lander"
-import DisplayTextComp from "@/components/displayTextComp/DisplayTextComp";
+import DisplayTextComp from "../components/displayTextComp/DisplayTextComp";
 import Header from "../components/TextComponents/Header1"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent"
