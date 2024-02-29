@@ -4,7 +4,7 @@ import Cropper from 'react-easy-crop';
 import getCroppedImg from './CropImage';
 import { MdOutlineAspectRatio } from "react-icons/md";
 import "./style.css"
-import { NeoButton } from '../TextComponents';
+import { NeoButton } from '../../TextComponents/NeoButton';
 
 const CropUtils = ({ imageToCrop, onImageCropped }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });

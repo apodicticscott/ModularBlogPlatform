@@ -27,23 +27,21 @@ const CategoryCard = (category) => {
 const CategoriesSection = () => {
     return (
         <>
+            <div className="pt-[50px] dark:bg-base-100-dark bg-grid-image bg-base-100 ">
+                <div className={`h-max bg-[50%]`}>
+                    <div className="flex justify-between h-[70px]">
+                        <div className="flex">
+                            <div className="w-[0px] h-full">
+                                <div className="w-[100px] h-[500px] top-[50px] relative lg:hidden bg-gradient-to-l from-transparent to-t-header-dark dark:to-base-100-dark">
 
-
-            <div>
-                <div className="absolute left-[-50px]">
-                    <div className="pt-[100px]">
-                        <div className="w-[350px] p-[20px] bg-title-color rounded-lg shadow-lg">
-                            <p className="text-right text-3xl">Categories.</p>
-                            
+                                </div>
+                            </div>
+                            <div className="flex justify-end items-center text-2xl md:text-2.7xl p-[15px] h-[50px] md:h-[70px] w-[500px] relative left-[-350px] md:left-[-250px] rounded-md bg-light-purple border-3 shadow-lg font-bold">
+                                Categories.
+                            </div>
                         </div>
                     </div>
-
-                </div>
-
-
-
-                <div className={`h-[825px] bg-grid-image bg-[50%]`}>
-                    <div className="p-[200px] place-content-center">
+                    <div className="px-[200px] py-[100px] place-content-center">
                         <div className="flex flex-wrap justify-between gap-[10px]">
                             {
                                 json_catgeories.map((category, index) => 

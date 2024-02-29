@@ -1,15 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck } from "react-icons/fa";
-import { MdOutlinePreview, MdOutlineDownloadDone } from "react-icons/md";
+import { MdOutlinePreview } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Dialog from '@mui/material/Dialog';
 import "../../app/homepage.module.css"
 
-import { DndProvider } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 
 import {
     arrayMove,
@@ -33,7 +31,7 @@ import "../../app/globals.css"
 import ControlPanel from "./ControlPanel"
 import Tag from "../../components/TextComponents/NeoTag"
 import Header from "../../components/TextComponents/Header1";
-import CropUtils from "./CropUtils";
+import CropUtils from "./ImageEditor/CropUtils";
 
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
@@ -43,7 +41,6 @@ import DragParagraph from "./DraggableComponents/DragParagraph"
 import DragResource from "./DraggableComponents/DragResource";
 import DragImage from "./DraggableComponents/DragImage";
 import DragList from "./DraggableComponents/DragList"
-import { NeoButton } from "../TextComponents";
 
 
 

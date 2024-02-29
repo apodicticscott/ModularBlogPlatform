@@ -3,43 +3,6 @@ import  {Link, SubHeader, Header, LargeHeader, XLHeader, NeoButton, NeoInput, La
 
 const DisplayTextComp = () => {
 
-    const colorMap = [
-        { key: 'primary', value: '#fcc800' },
-        { key: 'primary-focus', value: '#fad02d' },
-        { key: 'primary-content', value: '#000000' },
-        { key: 'secondary', value: '#29ff80' },
-        { key: 'secondary-focus', value: '#61fa9f' },
-        { key: 'secondary-content', value: '#ffffff' },
-        { key: 'primary-dark', value: '#29ff80' },
-        { key: 'secondary-dark', value: '#5c578d' },
-        { key: 'base-100-dark', value: '#1c1a1a' },
-        { key: 'accent', value: '#a8c6fe' },
-        { key: 'accent-focus', value: '#b18cfe' },
-        { key: 'accent-content', value: '#ffffff' },
-        { key: 'neutral', value: '#3b424e' },
-        { key: 'neutral-focus', value: '#2a2e37' },
-        { key: 'neutral-content', value: '#ffffff' },
-        { key: 'base-100', value: '#ebebeb' },
-        { key: 'base-200', value: '#c0c0c0' },
-        { key: 'base-300', value: '#000000' },
-        { key: 'base-content', value: '#1e2734' },
-        { key: 'info', value: '#1c92f2' },
-        { key: 'success', value: '#009485' },
-        { key: 'warning', value: '#ff9900' },
-        { key: 'error', value: '#ff5724' },
-        { key: 'bright-orenge', value: '#fcc800' },
-        { key: 'sunset', value: '#f9af7d' },
-        { key: 'pale-green', value: '#74be81' },
-        { key: 'dark-purple', value: '#836589' },
-        { key: 'primary-dark', value: '#29ff80' },
-        { key: 'secondary-dark', value: '#5c578d' },
-        { key: 'base-100-dark', value: '#1c1a1a' },
-        { key: 't-header-light', value: '#1c1b1c' },
-        { key: 't-header-dark', value: '#ebebeb' },
-        { key: 't-dark', value: '#ebebeb' },
-        { key: 't-light', value: '#59595a' }
-      ];
-
     return(
         <div className='flex flex-col'>
             <div className='flex flex-col'>

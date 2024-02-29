@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
-import FileUpload from "./FileUpload";
+import FileUpload from "./ImageEditor/FileUpload";
 
 import Header from "../../components/TextComponents/Header1"
 
