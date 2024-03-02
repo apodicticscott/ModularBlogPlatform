@@ -9,7 +9,7 @@ import CanItemsScroll from "../components/CanItems/CanItemsScroll.jsx"
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} overflow-hidden`}>
         <Lander/>
         <CanItemsScroll/>
         <Recent/>

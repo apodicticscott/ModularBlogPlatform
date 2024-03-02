@@ -56,7 +56,7 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
         className={`w-full justify-between ${
             selected.id === comp.id && "border-[3px] w-[calc(100%_+_3px)]"
         } flex flex-col items-center gap-[15px] rounded-md `}
-        onClick={(e) => onClick(e, comp.id, comp.type)}
+        onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >   
             <div className="flex justify-between w-full ">
                 <GrDrag

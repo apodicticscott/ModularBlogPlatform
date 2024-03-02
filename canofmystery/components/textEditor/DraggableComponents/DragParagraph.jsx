@@ -55,7 +55,7 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
             className={`w-full justify-between  
             ${((selected.id === comp.id) && selected.eventType === "comp-click") && "border-3 border-base-200"} 
             flex items-center gap-[15px] sm:gap-[30px]  rounded-md text-t-header-light dark:text-t-header-dark`}
-            onClick={(e) => onClick(e, comp.id, comp.type)}
+            onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >
             <GrDrag
                 id={comp.id + "-grab"}

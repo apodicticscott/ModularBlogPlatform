@@ -1,14 +1,14 @@
 import React from "react";
 // import {Button, Header, SubHeader, SubText} from "../../components/DisplayComp/Components"
 import { Header, XLHeader, LargeParagraph } from "../TextComponents";
-import NeoButtonLink from "../TextComponents/NeoButtonLink";
+import NeoButton from "../TextComponents/NeoButton";
 
 const Lander = () => {
     return (
-        <div className="h-max  w-screen 3xl:h-[60vw] 3xl:max-h-screen overflow-hidden flex flex-col lg:flex-row bg-base-100 ">
+        <div className="h-max  w-screen overflow-hidden flex flex-col lg:flex-row bg-base-100 ">
             <div className="h-full w-[100%] mt-16 pt-[10px] lg:mt-0 lg:w-full flex flex-col justify-between lg:flex-row lg:items-center bg-primary dark:bg-secondary-dark lg:border-b-3 lg:border-b-0 lg:border-r-black lg:border-r-3"  >
-                <div className="3xl:flex 3xl:flex-col 3xl:w-[60vw] w-full  xs:h-max xs-sm:h-[400px] lg:h-max px-7 xs:pb-[150px] lg:px-0 py-[20px] lg:py-0 3xl:items-start 3xl:pr-[50px]">
-                    <div className="w-full 3xl:w-[45vw] lg:pl-7 3xl:px-[2.5vw] lg:min-h-[230px]">
+                <div className="flex flex-col 3xl:flex 3xl:flex-col 3xl:w-[60vw] w-full  xs:h-max xs-sm:h-[400px] lg:h-max px-7 xs:pb-[150px] lg:px-0 py-[20px] lg:py-0 3xl:items-start 3xl:pr-[50px] gap-[25px]">
+                    <div className="flex flex-col w-full 3xl:w-[45vw] gap-[25px] lg:pl-7 3xl:px-[2.5vw] lg:min-h-[230px]">
                         <Header type="landerTitle" classes="flex flex-col gap-0 md:gap-7 xs-sm:flex-row md:flex-row lg:flex-col xl:flex-row lg:w-[100%] xl:w-[90%]">
                             <div className="min-w-max">
                                 Can Of
@@ -19,13 +19,13 @@ const Lander = () => {
                             </span>
                         </Header>
 
-                        <LargeParagraph >
+                        <LargeParagraph classes="lg:w-[80%] xl:mr-[118px]">
                             The world is a mysterious place. The can of mystery highlights some of those mysteries. Articles are uploaded once a year in the fall and/or spring.
                         </LargeParagraph > 
 
                     </div>
-                    <div className="lg:mt-[36px] lg:pl-7 3xl:pl-[2.5vw] mt-[20px] 3xl:w-[45vw]">
-                        <NeoButtonLink link="../link/goes/here" children="Read Articles"></NeoButtonLink>
+                    <div className=" lg:pl-7 3xl:pl-[2.5vw] 3xl:w-[45vw]">
+                        <NeoButton  classes={"bg-primary-dark"} children="Read Articles"></NeoButton>
                     </div>
                 </div>
                 <div className="xs:h-[450px] xs-sm:h-[450px] lg:w-[925px]  lg:hidden px-7  lg:pt-28 flex flex-col justify-end dark:bg-base-100-dark text-t-header-light bg-base-100 dark:text-t-dark border-y-2 border-b-black"> 

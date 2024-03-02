@@ -27,10 +27,10 @@ const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
             id="clickable-parent"
             ref={setNodeRef}
             style={style}
-            className={`w-full justify-between ${
+            className={`w-full justify-between  ${
                 ((selected.id === comp.id) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
             } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
-            onClick={(e) => onClick(e, comp.id, comp.type)}
+            onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >
             <GrDrag 
                 id={comp.id + "-grab"}

@@ -1,13 +1,20 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck } from "react-icons/fa";
-import { MdOutlinePreview } from "react-icons/md";
+import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck, FaCcJcb } from "react-icons/fa";
+import { MdOutlinePreview, MdOutlineQuestionMark, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Dialog from '@mui/material/Dialog';
-import "../../app/homepage.module.css"
+import { TiDelete } from "react-icons/ti";
 
+import Dialog from '@mui/material/Dialog';
+import { Button } from '@mui/material';
+
+import { AnimatePresence, motion } from "framer-motion";
+import "../../app/homepage.module.css"
+import {  makeStyles  } from '@mui/styles'
+
+import Image from "next/image"
 
 import {
     arrayMove,
@@ -41,8 +48,21 @@ import DragParagraph from "./DraggableComponents/DragParagraph"
 import DragResource from "./DraggableComponents/DragResource";
 import DragImage from "./DraggableComponents/DragImage";
 import DragList from "./DraggableComponents/DragList"
+import DragVideo from "./DraggableComponents/DragVideo"
 
+import addLinkHelp from "./Assets/help_add_link.gif"
 
+const useStyles = makeStyles({
+    button: {
+        backgroundColor: "transparent",
+        border: '3px solid transparent',
+        minWidth: '0px',
+        width: 'max-content',
+        '&:hover': {
+            backgroundColor: 'white',
+            border: '2px solid black'
+    },
+}})
 
 
 const SizeDropDown = ({className, onClick, selected}) => {
@@ -68,6 +88,8 @@ const SizeDropDown = ({className, onClick, selected}) => {
 
 
 const TextEditor = () => {
+    const classes = useStyles()
+
     const [compArray, setCompArray] = useState([    
         { type: "paragraph", size: "md", style: [], id: "component-1", isTagged: false, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
         { type: "image", size: "", style: [], id: "component-2", image: placeholderOne.src, originalImage: placeholderOne.src},
@@ -88,6 +110,10 @@ const TextEditor = () => {
     const [tags, setTags] = useState([["Text Here", "#f1fd66"]])
     const [category, setCategory] = useState("Example Category")
     const [linkValue, setLinkValue] = useState();
+    
+    const [currentLink, setCurrentLink] = useState("");
+    const [linkErrorVisible, setLinkErrorVisible] = useState(false);
+    const [isLinkAddHelpOpen, setIsLinkAddHelpOpen] = useState(false);
 
     const [selectedComp, setSelectedComp] = useState({id: undefined, compType: undefined, eventType: undefined});
     const [sizeDrop, setSizeDrop] = useState(false);
@@ -134,18 +160,20 @@ const TextEditor = () => {
     }
 
     const handleSetLink = (e) => {
-        // if(e.key === "Enter"){
-        //     document.execCommand("CreateLink", false, "http://stackoverflow.com/");
-        // }else{
-        //     console.log("We Tried")
-        //     console.log(url)
-        //     document.execCommand("CreateLink", false, "http://stackoverflow.com/");
-        // }
+        const url = currentLink
 
-        const input = document.getElementById("link-input")
-        const url = input.value;
-        setLinkValue(url)
-        setLinkInput(!linkInput)
+        if(url){
+            setLinkValue(url)
+            setCurrentLink()
+            setLinkErrorVisible(false)
+            setLinkInput(!linkInput)
+            document.getElementById("link-input").value === ""
+        }else{
+            setCurrentLink()
+            setLinkErrorVisible(true)
+            setTimeout(() => setLinkErrorVisible(false), 3000)
+        }
+
 
     };
 
@@ -223,24 +251,26 @@ const TextEditor = () => {
         }
     }
 
-    const handleAddComponent = (type) => {
+    const handleAddComponent = (type, url) => {
         const newId = compArray.length + 1;
         
         let newComponent;
         if(type === "header"){
-            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text" };
+            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text", image: "", originalImage: "", videoEmbededId: "" };
         }else if(type === "paragraph"){
-            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text"}
+            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text", image: "", originalImage: "", videoEmbededId: "" }
         }else if(type === "image"){
             if(imageData[1]){
-                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[1], originalImage: imageData[0] };
+                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[1], originalImage: imageData[0], videoEmbededId: "" };
             }else{
-                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[0], originalImage: imageData[0] };
+                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[0], originalImage: imageData[0], videoEmbededId: "" };
             }
         }else if(type === "resource"){
-            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test Resource" };
+            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "Test Resource", image: "", originalImage: "", videoEmbededId: "" };
         }else if(type === "list"){
-            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test List" };
+            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test List", image: "", originalImage: "", videoEmbededId: ""  };
+        }else if(type === "youtube"){
+            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test List", image: "", originalImage: "", videoEmbededId: url  };
         }
         setCompArray([...compArray, newComponent]);
     };
@@ -320,7 +350,7 @@ const TextEditor = () => {
                     <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
                         <FaList className="text-lg sm:text-xl"/>
                     </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] bg-base-100 text-t-header-light`} onClick={() => setLinkInput(prevState => !prevState)}>
+                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
                         <FaLink className="text-lg sm:text-xl"/>
                     </button >
 
@@ -396,22 +426,64 @@ const TextEditor = () => {
                                 onClose={() => setLinkInput(prevState => !prevState)}
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
-                                
+
                             >   
-                                <div className="flex flex-col p-[15px] max-w-[350px] gap-[15px]">
+                                <div className="flex flex-col p-[15px] max-w-[350px] gap-[15px] bg-base-100">
                                     <Header type="sm" id="alert-dialog-title">
-                                    {"Enter The URL."}
+                                        {"Enter The URL."}
                                     </Header>
-                                    <div className="flex-row">
-                                        <input id="link-input" type="url" placeholder="URL.." className="w-[calc(100%_-_15px)] ">
+                                    <div className="flex gap-[10px]">
+                                        <input id="link-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Enter a URL."} onChange={(e) => setCurrentLink(e.currentTarget.value)}>
                                         </input>
-                                        <button className="w-max" onClick={handleSetLink}>
-                                            <FaCheck className="text-lg sm:text-xl"/>
+                                        <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
+                                            <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleSetLink(); setLinkInput(false)}}></MdOutlineDownloadDone>
+                                        </button>   
+                                    </div>
+                                    <AnimatePresence>
+                                        {linkErrorVisible && (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
+                                            >
+                                                Please Eneter A URL
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                    <div className="flex justify-between">
+                                        <div className="w-[calc(100%_-_25px)] p-[5px] text-[12px]">
+                                            Enter the url, then highlight your text, and click the checkmark next to the link icon.
+                                        </div>
+                                        <button className='flex items-center justify-center w-[45px]'>
+                                            <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsLinkAddHelpOpen(!isLinkAddHelpOpen)}}></MdOutlineQuestionMark>
                                         </button>
+                                        {
+                                            isLinkAddHelpOpen
+                                            &&
+                                            <Dialog
+                                                open={isLinkAddHelpOpen}
+                                                onClose={() => setIsLinkAddHelpOpen(prevState => !prevState)}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                                maxWidth="max-content"
+                                            >   
+                                                <div className='overflow-hidden'>
+                                                    <div className='flex justify-end w-full h-0'>
+                                                        <Button  className={`z-10 m-[10px] h-min rounded-[30px] ${classes.button}`} disableRipple >
+                                                            <TiDelete
+                                                                className={`text-[30px] text-base-300`}
+                                                                onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
+                                                                onClick={() => setIsLinkAddHelpOpen(prevState => !prevState)}
+                                                            />
+                                                        </Button>
+                                                    </div>
+                                                    <Image src={addLinkHelp} className="w-auto h-[30vh] object-cover md:w-[800px] md:h-auto  z-0 overflow-hidden" /> 
+                                                </div>
+                                            </Dialog>
+                                        }
                                     </div>
-                                    <div className="text-[12px]">
-                                        Enter the url, then highlight your text, and click the checkmark next to the link icon.
-                                    </div>
+
                                 </div>
 
 
@@ -449,6 +521,11 @@ const TextEditor = () => {
                                                     {comp.type === "list" && (
                                                         <> 
                                                             <DragList  key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                        </>
+                                                    )}
+                                                   {comp.type === "youtube" && (
+                                                        <> 
+                                                            <DragVideo key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                 </>

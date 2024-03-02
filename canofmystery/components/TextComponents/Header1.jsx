@@ -107,11 +107,11 @@ const Header = ({children, text, type, classes, style, highlight, onClick, onKey
             tracking3xl: "",
             size: "text-4xl",
             sizeSm: "",
-            sizeMd: "md:text-7xl",
+            sizeMd: "md:text-5xl",
             sizeLg: "lg:text-6xl",
             sizeXL: "xl:text-5xl",
-            size2XL: "2xl:text-[4.6vw]",
-            size3XL: "3xl:text-[4.5vw]",
+            size2XL: "2xl:text-6xl",
+            size3XL: "3xl:text-7xl",
         }
     }
 

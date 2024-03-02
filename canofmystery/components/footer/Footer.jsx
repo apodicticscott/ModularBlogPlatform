@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-import { Link, LargeHeader } from "../TextComponents"
+import { Link, LargeHeader, NeoButton } from "../TextComponents"
 import { MdWbSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
 import Header from "../TextComponents/Header1"
@@ -30,9 +30,9 @@ const Footer = () => {
                 <input className=" w-full xs-sm:grow text-xl xs:tracking-[-1.76px]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md">
               
                 </input>
-                <button className="grow-0 text-xl xs:tracking-[-1.76px] 3xl:w-[11vw]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md bg-primary-dark shadow-md">
+                <NeoButton>
                   Submit
-                </button>
+                </NeoButton>
               </div>
         </div>
       </div>

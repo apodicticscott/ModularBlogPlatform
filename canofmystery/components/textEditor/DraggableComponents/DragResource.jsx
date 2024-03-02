@@ -48,7 +48,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
             className={`w-full justify-between ${
             ((selected.id === comp.id) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
             } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
-            onClick={(e) => onClick(e, comp.id, comp.type)}
+            onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >
             <GrDrag 
                 id={comp.id + "-grab"}
@@ -56,7 +56,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
                 {...listeners}
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
-            />   
+            /> 
             <Resource
                 type={comp.size}
                 id={comp.id} 

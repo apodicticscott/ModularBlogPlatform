@@ -3,6 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
 import FileUpload from "./ImageEditor/FileUpload";
+import { MdOutlineDownloadDone } from "react-icons/md"
+import { MdOutlineQuestionMark } from "react-icons/md"
+import { Dialog, Button} from '@mui/material';
+import {  makeStyles  } from '@mui/styles'
+import Image from 'next/image';
+
+import helpAddVideoGif from "./Assets/help_add_vido.gif"
 
 import Header from "../../components/TextComponents/Header1"
 
@@ -29,20 +36,41 @@ class RandomColorPicker {
     }
 }
 
-const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent, enableCrop, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, removeImage }) => {
+const useStyles = makeStyles({
+    button: {
+        backgroundColor: "transparent",
+        border: '3px solid transparent',
+        minWidth: '0px',
+        width: 'max-content',
+        '&:hover': {
+            backgroundColor: 'white',
+            border: '2px solid black'
+    },
+}})
+
+
+const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent, enableCrop, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, removeImage, addYoutubeVideo }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
     const colors = ["#9723c9", "#ff68b5", "#ff6b6b", "#e2a017", "#7fbc8c", "#69d3e8", "#fd6666", "#f1fd66", "#7fffb3", "#66a2fd"];
-    const [errorVisible, setErrorVisible] = useState(false); // New state for error visibility
+    const [tagErrorVisible, setTagErrorVisible] = useState(false); // New state for error visibility
+    const [youtubeErrorVisible, setYoutubeErrorVisible] = useState(false); // New state for error visibility
+    
     const [search, setSearch] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isImageAddOpen, setIsImageAddOpen] = useState(false)
+    const [isVideoAddOpen, setIsVideoAddOpen] = useState(false)
+    const [isVideoAddHelpOpen, setIsVideoAddHelpOpen] = useState(false)
+
+    const [currentVideoLink, setCurrentVideoLink] = useState()
     
 
     const containerRef = useRef(null);
     const dropdownRef = useRef(null);
 
     const colorPicker = new RandomColorPicker(colors);
+    const classes = useStyles()
+
 
     const categories = [
         "Bog Bodies",
@@ -193,10 +221,24 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
         if (currentTags.length < 4) {
             setTags(tags => [...tags, ["Text Here", colorPicker.pickColor()]]);
         } else {
-            setErrorVisible(true); // Show error
-            setTimeout(() => setErrorVisible(false), 3000); // Hide error after 3 seconds
+            setTagErrorVisible(true); // Show error
+            setTimeout(() => setTagErrorVisible(false), 3000); // Hide error after 3 seconds
         }
     };
+
+    const handleAddYoutubeVideo = () => {
+        const embededId = document.getElementById("video-input").value
+
+        if(embededId){
+            handleAddComponent("youtube", embededId)
+            setYoutubeErrorVisible(false)
+            setIsVideoAddOpen(false)
+            document.getElementById("video-input").value === false
+        }else{
+            setYoutubeErrorVisible(true)
+            setTimeout(() => setYoutubeErrorVisible(false), 3000)
+        }
+    }
 
     useEffect(() => {
         if (isSearchOpen && containerRef.current && dropdownRef.current) {
@@ -209,9 +251,10 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
     
 
 
+
     return (
         <>
-            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center`}>
+            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center select-none`}>
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
@@ -225,23 +268,43 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                 ))}
 
             </div>
-
-            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-[544px] overflow-hidden overflow-y-auto ${panel !== "Info" ? "hidden" : "visible"}`}>
-                <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
+            <Dialog
+                open={isVideoAddHelpOpen}
+                onClose={() => setIsVideoAddHelpOpen(prevState => !prevState)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                maxWidth="max-content"
+            >   
+                <div className='overflow-hidden'>
+                    <div className='flex justify-end w-full h-0'>
+                        <Button  className={`z-10 m-[10px] h-min rounded-[30px] ${classes.button}`} disableRipple >
+                            <TiDelete
+                                className={`text-[30px] text-base-300`}
+                                onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
+                                onClick={() => setIsVideoAddHelpOpen(prevState => !prevState)}
+                            />
+                        </Button>
+                    </div>
+                    <Image src={helpAddVideoGif} className="w-auto h-[30vh] object-cover md:w-[800px] md:h-auto  z-0 overflow-hidden" />   
+                </div>
+            </Dialog>
+            
+            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-full overflow-hidden overflow-y-auto select-none ${panel !== "Info" ? "hidden" : "visible"}`}>
+                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Title
                     </Header>
                     <input className="w-full p-[5px] rounded" placeHolder={currentTitle} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
-                <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
+                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
                     <input className="w-full p-[5px] rounded" placeHolder={currentAuthor} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
-                <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
+                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <div className='flex gap-[15px] items-center'>
                         <Header type="sm" classes={"w-max"}>
                             Tags
@@ -265,29 +328,27 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                             </div>
                         ))}
                     </div>
-
                     <AnimatePresence>
-                    {errorVisible && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
-                        >
-                            Error: You cannot add more than 4 tags.
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                        {tagErrorVisible && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
+                            >
+                                Error: You cannot add more than 4 tags.
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
                 <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col gap-[10px]'>
                         <Header type="sm" classes={"w-max"}>
                             Categories
                         </Header>
                         <span className='text-xl text-t-header-light dark:text-t-header-dark'>
                             Pick 1 categorie that best fits your article.
                         </span>
-                        
                         <div className="relative mt-[10px]">
                             <input
                                 type="text"
@@ -314,12 +375,10 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                         </div>
                     </div>
                     <div id="filler-div" className="h-[100px] w-full">
-
                     </div>
                 </div>
-
             </div>
-            <div className={`flex flex-col w-full h-full ${panel !== "Add" ? "hidden" : "visible"}`}>
+            <div className={`flex flex-col w-full xs-sm:w-[300px] h-full select-none ${panel !== "Add" ? "hidden" : "visible"}`}>
                 <Header type="sm" classes={"mt-[15px] p-[10px] pt-[0px]"} >
                     Componets
                 </Header>
@@ -333,12 +392,12 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                         <span className='text-t-header-light dark:text-t-header-dark'>Body</span>
                     </div>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("list")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark'/>
                         <span className='text-t-header-light dark:text-t-header-dark'>List</span>
                     </div>
-                </div>
+                </div> */}
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
@@ -347,10 +406,56 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     {
                     isImageAddOpen
                     &&
-                    <div className={`w-full overflow-hidden h-max`}>
-                        <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
-                    </div> 
+
+                        <div className={`w-full overflow-hidden h-max`}>
+                            <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                        </div> 
                     }
+  
+                </div>
+                <div className="flex flex-col p-[10px] gap-[15px] pt-[0px]">
+                    <div className="flex justify-between items-center gap-[15px] mt-[15px]  " onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsVideoAddOpen(!isVideoAddOpen)}>
+                        <div className="flex w-max gap-[15px] items-center">
+                            <FaPlus className='text-t-header-light dark:text-t-header-dark' />
+                            <span className='text-t-header-light dark:text-t-header-dark'>Youtube Video</span>
+                        </div>
+
+                        {
+                            isVideoAddOpen
+                            &&
+                                <button className='flex items-center justify-center w-[45px]'>
+                                    <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsVideoAddHelpOpen(!isVideoAddHelpOpen)}}></MdOutlineQuestionMark>
+                                </button> 
+                            }
+                        
+                    </div>
+                    {
+                    isVideoAddOpen
+                    &&
+                        <div className='flex w-full gap-[10px]'>
+                            <input id="video-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Youtube Embed ID"} onChange={(e) => setCurrentVideoLink(e.currentTarget.value)}>
+                            </input>
+                            <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
+                                <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleAddYoutubeVideo()}}></MdOutlineDownloadDone>
+                            </button>   
+                            
+                        </div>
+                    }
+                    {
+                        <AnimatePresence>
+                        {youtubeErrorVisible && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
+                            >
+                                Error: Please enter an embeded id.
+                            </motion.div>
+                            )}
+                        </AnimatePresence>
+                    }
+                    
   
                 </div>
                 <div className="flex flex-col">
@@ -360,7 +465,7 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                     </div>
                 </div>
             </div>
-            <div className={`flex w-full h-full ${panel !== "HTML" ? "hidden" : "visible"}`}>
+            <div className={`flex w-full h-full ${panel !== "HTML" ? "hidden" : "visible"} select-none`}>
                 <div className="w-full  h-max mt-[15px] p-[10px] pt-[0px] ">
                     <Header type="sm" >
                         Inner HTML

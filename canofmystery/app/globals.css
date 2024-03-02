@@ -151,3 +151,12 @@ html {
 .letter-fold{
   clip-path: polygon(0% 0%, 0% 100% , 55% 50%);
 }
+
+.letter-horizontal{
+  clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 50%);
+}
+
+.letter-fold-horizontal{
+  clip-path: polygon(100% 100%, 0% 100% , 49% 45%);
+}
+
