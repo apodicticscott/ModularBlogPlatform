@@ -50,7 +50,28 @@ import DragImage from "./DraggableComponents/DragImage";
 import DragList from "./DraggableComponents/DragList"
 import DragVideo from "./DraggableComponents/DragVideo"
 
+import { NeoButton } from "../TextComponents";
+
 import addLinkHelp from "./Assets/help_add_link.gif"
+
+import {initializeApp} from "firebase/app"
+import {getFirestore, collection, getDocs, addDoc} from "firebase/firestore"
+
+const firebaseConfig = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+}
+
+//initilize app
+initializeApp(firebaseConfig)
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore();
 
 const useStyles = makeStyles({
     button: {
@@ -91,17 +112,18 @@ const TextEditor = () => {
     const classes = useStyles()
 
     const [compArray, setCompArray] = useState([    
-        { type: "paragraph", size: "md", style: [], id: "component-1", isTagged: false, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
-        { type: "image", size: "", style: [], id: "component-2", image: placeholderOne.src, originalImage: placeholderOne.src},
-        { type: "paragraph", size: "md", style: [], id: "component-3", isTagged: false, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
-        { type: "paragraph", size: "md", style: [], id: "component-4", isTagged: false, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
-        { type: "paragraph", size: "md", style: [], id: "component-5", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "image", size: "", style: [], id: "component-6", image: placeholderTwo.src, originalImage: placeholderTwo.src},
-        { type: "paragraph", size: "md", style: [], id: "component-7", isTagged: false, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "resource", size: "md", style: [], id: "component-8", isTagged: false, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-9", isTagged: false, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-10", isTagged: false, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
+        { type: "paragraph", size: "md", style: [], id: "component-1",  image: null, originalImage: null, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
+        { type: "image", size: "", style: [], id: "component-2",  image: placeholderOne.src, originalImage: placeholderOne.src, content: ""},
+        { type: "paragraph", size: "md", style: [], id: "component-3",  image: null, originalImage: null, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
+        { type: "paragraph", size: "md", style: [], id: "component-4",  image: null, originalImage: null, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
+        { type: "paragraph", size: "md", style: [], id: "component-5",  image: null, originalImage: null, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "image", size: "", style: [], id: "component-6",  image: placeholderTwo.src, originalImage: placeholderTwo.src, content: ''},
+        { type: "paragraph", size: "md", style: [], id: "component-7",  image: null, originalImage: null, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
+        { type: "resource", size: "md", style: [], id: "component-8",  image: null, originalImage: null, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "component-9",  image: null, originalImage: null, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
+        { type: "resource", size: "md", style: [], id: "component-10",  image: null, originalImage: null, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
     ]);
+    
     const [bookMarks, setBookMarks] = useState([])
 
     const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
@@ -114,6 +136,7 @@ const TextEditor = () => {
     const [currentLink, setCurrentLink] = useState("");
     const [linkErrorVisible, setLinkErrorVisible] = useState(false);
     const [isLinkAddHelpOpen, setIsLinkAddHelpOpen] = useState(false);
+    const [isDoneNotificationOpen, setIsDoneNotificationOpen] = useState(false);
 
     const [selectedComp, setSelectedComp] = useState({id: undefined, compType: undefined, eventType: undefined});
     const [sizeDrop, setSizeDrop] = useState(false);
@@ -235,6 +258,26 @@ const TextEditor = () => {
         
     }
 
+    const [articles, setArticles] = useState()
+
+    useEffect(() => {
+        // Reference to your collection
+        const articleColRef = collection(db, 'Articles');
+
+        // Fetch articles from Firestore
+        getDocs(articleColRef)
+            .then((snapshot) => {
+                const fetchedArticles = [];
+                snapshot.docs.forEach((doc) => {
+                    fetchedArticles.push({ ...doc.data(), id: doc.id });
+                });
+                // Update state with fetched articles
+                console.log(fetchedArticles)
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    }, []); // Empty dependency array means this effect runs once on mount
 
     
     const handleGetInnerHtml = (e) => {
@@ -280,23 +323,6 @@ const TextEditor = () => {
         setCompArray(compArray.filter((comp) => comp.id !== id));
     };
 
-    const handleLoadBookMarks = (comp) => {
-        let headerBookmark = "#bookmarked-header-" + comp.id
-
-        if(comp.type === "header"){
-            if(bookMarks.length === 0){
-                setBookMarks([...bookMarks, [comp.content, headerBookmark]])
-            }else{
-                for(let i = 0; i <= bookMarks.length - 1; i++){
-                    if(bookMarks[i][1].includes(headerBookmark)){
-                        break;
-                    }else if(i === bookMarks.length - 1){
-                        setBookMarks([...bookMarks, [comp.content, headerBookmark]])
-                    }
-                }
-            }
-        }
-    }
 
 
     useEffect(() => {
@@ -323,61 +349,157 @@ const TextEditor = () => {
     }
 
     const handleExportContent = () => {
-        const articleContent = {title: title, author: author, components: compArray, tags: tags, category: category}
+        const articleContent = {Author: author, Publisher: "Undefined", Time: "Undefined", Title: title, Content: compArray, Tags: tags}
         console.log(articleContent)
     }
+
+    const handleUploadArticle = async () => {
+        try {
+            // Construct the article object
+            const article = {
+                Title: title,
+                Tags: tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
+                Contenot: compArray.map(comp => ({
+                    ID: comp.id,
+                    Content: comp.content,
+                    Style: comp.style || '', // Assuming style is an optional field
+                    Type: comp.type,
+                    ImageOriginal: comp.originalImage || '',
+                    Image: comp.image || '',
+                    Size: comp.size || ''
+                })),
+                Publisher: null, // Set as null as per requirement
+                Time: null, // Set as null as per requirement
+                Author: author
+            };
+    
+            // Reference to the 'Articles' collection
+            const articleColRef = collection(db, 'Articles');
+            
+            // Add the article to the collection
+            const docRef = await addDoc(articleColRef, article);
+            console.log("Article uploaded with ID: ", docRef.id);
+        } catch (error) {
+            console.error("Error adding article: ", error);
+        }
+    };
+
+    const handleClearContent = () => {
+        setAuthor()
+        setTitle()
+        setTags([])
+        setCompArray([])
+        setCategory()
+    }
+
+
 
     return (
         <>
 
             <div className="w-full" id="text-editor">
-                <div className="flex flex-wrap w-full h-max sm:h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300 gap-y-[3px]">    
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
-                        <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
-                    </button>     
-                    <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
-                        <FaBold className="text-lg sm:text-xl"/>
-                    </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
-                        <FaItalic className="text-lg sm:text-xl"/>
-                    </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
-                        <FaStrikethrough className="text-lg sm:text-xl"/>
-                    </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
-                        <FaUnderline className="text-lg sm:text-xl"/>
-                    </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
-                        <FaList className="text-lg sm:text-xl"/>
-                    </button >
-                    <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
-                        <FaLink className="text-lg sm:text-xl"/>
-                    </button >
-
-                    {
-                        linkValue
-                        &&
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
-                            <FaCheck className="text-lg sm:text-xl"/>
+                <div className="flex w-full"> 
+                    <div className="flex flex-wrap w-full h-max sm:h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300 gap-y-[3px]">
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
+                            <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
+                        </button>     
+                        <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
+                            <FaBold className="text-lg sm:text-xl"/>
                         </button >
-                    }
-
-
-                    <div className="flex w-max gap-[3px]">
-                        <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => {((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
-                            <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`} />
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
+                            <FaItalic className="text-lg sm:text-xl"/>
                         </button >
-                        <SizeDropDown selected={selectedComp} className={`${(sizeDrop && (selectedComp.compType === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource"))? "w-max" : "w-0"}`} onClick={handleChangeSize} />
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
+                            <FaStrikethrough className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
+                            <FaUnderline className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
+                            <FaList className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
+                            <FaLink className="text-lg sm:text-xl"/>
+                        </button >
+
+                        {
+                            linkValue
+                            &&
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
+                                <FaCheck className="text-lg sm:text-xl"/>
+                            </button >
+                        }
+
+
+                        <div className="flex w-max gap-[3px]">
+                            <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => {((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
+                                <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`} />
+                            </button >
+                            <SizeDropDown selected={selectedComp} className={`${(sizeDrop && (selectedComp.compType === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource"))? "w-max" : "w-0"}`} onClick={handleChangeSize} />
+                        </div>
+
                     </div>
+                    <button className="bg-base-100 text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => handleClearContent()}>
+                                Clear
+                    </button>
+                    {
+                        !isCropEnabled
+                        &&
+                        <>
+                            <button className="bg-primary-dark text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => setIsDoneNotificationOpen(true)}>
+                                Done
+                            </button>
 
-
+                            <Dialog
+                                open={isDoneNotificationOpen}
+                                onClose={() => setIsDoneNotificationOpen(prevState => !prevState)}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                maxWidth="max-content"
+                            
+                            >   
+                                <div className="flex flex-col p-[15px] gap-[15px] bg-base-100">
+                                    <Header type="sm" id="alert-dialog-title">
+                                        {"Are you sure?"}
+                                    </Header>
+                                    <div className="flex flex-col gap-[10px]">
+                                        <div>
+                                            Please make sure this is how you want to submit the article.
+                                        </div>
+                                        <NeoButton className='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2' onClick={handleUploadArticle}>
+                                            Yes Im Sure!
+                                        </NeoButton>   
+                                    </div>
+                                </div>
+                            </Dialog>
+                                
+                            
+                        </>
+                    }
                 </div>
 
                 <div className="flex w-full h-[calc(100vh_-_117px)] border-y-[3px] overflow-x-hidden ">
                                
                     <div className={`h-full flex items-end border-r-[3px] ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0"}`}>
                         <div className={`h-full overflow-hidden z-10 ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0" }`}>
-                            <ControlPanel enableCrop={setIsCropEnabled} setImageToCrop={imageToCrop => setImageData([imageToCrop, imageData[1]])} imageToCrop={imageData[0]} setCroppedImage={croppedImage => setImageData([imageData[0], croppedImage])} croppedImage={imageData[1]} panelOptions={panelOptions} handleAddComponent={handleAddComponent} setTitle={setTitle} currentTitle={title} setAuthor={setAuthor} currentAuthor={author} setTags={setTags} currentTags={tags} setCategory={setCategory} innerHtml={innerHtmlContent} exportContent={handleExportContent} removeImage={() => setImageData([undefined, undefined])}/>
+                            <ControlPanel 
+                            enableCrop={setIsCropEnabled} 
+                            setImageToCrop={imageToCrop => setImageData([imageToCrop, imageData[1]])} 
+                            imageToCrop={imageData[0]} 
+                            setCroppedImage={croppedImage => setImageData([imageData[0], croppedImage])} 
+                            croppedImage={imageData[1]} 
+                            panelOptions={panelOptions} 
+                            handleAddComponent={handleAddComponent} 
+                            setTitle={setTitle} 
+                            setAuthor={setAuthor} 
+                            currentAuthor={author} 
+                            setTags={setTags} 
+                            currentTags={tags} 
+                            setCategory={setCategory} 
+                            innerHtml={innerHtmlContent} 
+                            exportContent={handleExportContent} 
+                            removeImage={() => setImageData([undefined, undefined])}
+                            />
                         </div>
                         <div className='w-0 h-[45px] py-[2px] z-10'>
                             <div className={` relative rounded-r w-[30px] justify-center ${isSideBarOpen ? "rounded-l rounded-r-none xs-sm:rounded-r left-[-30px] xs-sm:left-0 w-[30px] xs-sm:w-[25px] " : ""}  h-full flex items-center  bg-base-300`} onClick={() => toggleSideBar()}>
@@ -529,22 +651,6 @@ const TextEditor = () => {
                                                         </>
                                                     )}
                                                 </>
-                                            //     <DraggableComponent 
-                                            //     key={comp.id} 
-                                            //     comp={comp} 
-                                            //     index={index} 
-                                            //     compArray={compArray}
-                                            //     selected={selectedComp}
-                                            //     onClick={handleSelectComponent} 
-                                            //     onLoad={() => setIsContentLoaded(true)}
-                                            //     moveComp={moveComponent} 
-                                            //     removeComp={handleRemoveComponent}
-                                            //     updateContent={updateContent}
-                                            //     isEnabled={isPreview}
-                                            //     isLoaded={isContentLoaded}
-                                            //     isPreview={isPreview}
-                                            //     loadBookMarks={handleLoadBookMarks}
-                                            // />
                                             ))}
                                         </SortableContext>
                                     </DndContext>

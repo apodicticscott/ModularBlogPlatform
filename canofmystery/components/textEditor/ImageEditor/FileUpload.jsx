@@ -48,7 +48,7 @@ const FileUpload = ({addImage, enableCrop, imageToCrop, setImageToCrop, croppedI
 
     return(
         <>  
-        <div className="w-full h-min flex flex-col items-center p-[10px] pt-[0px] " style={{ textAlign: 'center', lineHeight: '180px' }}>
+        <div className="w-full h-min flex flex-col items-center  " style={{ textAlign: 'center', lineHeight: '180px' }}>
             <div className="flex items-center justify-between w-full h-[50px] bg-base-300 rounded-t-md">
                 <div className="w-max h-max flex px-[15px] gap-[15px]">
                     <div className="h-max w-max" onClick={() => {handleRemoveImage()}}>

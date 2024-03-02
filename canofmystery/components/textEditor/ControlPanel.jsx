@@ -49,7 +49,29 @@ const useStyles = makeStyles({
 }})
 
 
-const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle, setAuthor, currentAuthor, setTags, currentTags, setCategory, innerHtml, exportContent, enableCrop, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, removeImage, addYoutubeVideo }) => {
+const ControlPanel = ({ 
+    panelOptions, 
+    handleAddComponent, 
+    setTitle, 
+    setAuthor, 
+    setTags, 
+    currentTags, 
+    setCategory, 
+    innerHtml, 
+    exportContent,
+
+    enableCrop, 
+    cropType,
+
+    imageToCrop, 
+    setImageToCrop, 
+    croppedImage, 
+    setCroppedImage,
+
+    
+
+    removeImage, 
+    }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
     const colors = ["#9723c9", "#ff68b5", "#ff6b6b", "#e2a017", "#7fbc8c", "#69d3e8", "#fd6666", "#f1fd66", "#7fffb3", "#66a2fd"];
@@ -292,16 +314,24 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
             <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-full overflow-hidden overflow-y-auto select-none ${panel !== "Info" ? "hidden" : "visible"}`}>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
+                        Cover Image:
+                    </Header>
+                    <div className={`w-full overflow-hidden h-max`}>
+                        <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                    </div> 
+                </div>
+                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                    <Header type="sm" >
                         Title
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeHolder={currentTitle} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeHolder={"Article Title"} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeHolder={currentAuthor} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeHolder={"Author Name"} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -398,13 +428,13 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                         <span className='text-t-header-light dark:text-t-header-dark'>List</span>
                     </div>
                 </div> */}
-                <div className="flex flex-col">
-                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
+                <div className="flex flex-col px-[10px]">
+                    <div className="flex flex-row  items-center gap-[15px] mt-[15px] p-[10px] pl-[0px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
                         <span className='text-t-header-light dark:text-t-header-dark'>Image</span>
                     </div>
                     {
-                    isImageAddOpen
+                    isImageAddOpen 
                     &&
 
                         <div className={`w-full overflow-hidden h-max`}>
@@ -430,17 +460,17 @@ const ControlPanel = ({ panelOptions, handleAddComponent, setTitle, currentTitle
                         
                     </div>
                     {
-                    isVideoAddOpen
-                    &&
-                        <div className='flex w-full gap-[10px]'>
-                            <input id="video-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Youtube Embed ID"} onChange={(e) => setCurrentVideoLink(e.currentTarget.value)}>
-                            </input>
-                            <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
-                                <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleAddYoutubeVideo()}}></MdOutlineDownloadDone>
-                            </button>   
-                            
-                        </div>
-                    }
+                        isVideoAddOpen
+                        &&
+                            <div className='flex w-full gap-[10px]'>
+                                <input id="video-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Youtube Embed ID"} onChange={(e) => setCurrentVideoLink(e.currentTarget.value)}>
+                                </input>
+                                <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
+                                    <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleAddYoutubeVideo()}}></MdOutlineDownloadDone>
+                                </button>   
+                                
+                            </div>
+                        }
                     {
                         <AnimatePresence>
                         {youtubeErrorVisible && (

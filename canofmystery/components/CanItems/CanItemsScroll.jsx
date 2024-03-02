@@ -32,7 +32,7 @@ const CanItemsScroll = () => {
     return (
         <>
             <div className={`h-[75px] lg:h-[100px] bg-primary-dark border-b-3 border-base-300 loop-slider overflow-hidden`} style={{
-        '--duration': `${random(DURATION - 5000, DURATION + 5000)}ms`,
+        '--duration': `${random(DURATION - 7000, DURATION + 7000)}ms`,
         '--direction': 'reverse'
       }}>
                 <div className="snap-proximity snap-x flex gap-[40px] flex-nowrap  h-full items-center inner">
