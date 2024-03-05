@@ -11,6 +11,7 @@ import Image from 'next/image';
 
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
 
+
 import Header from "../../components/TextComponents/Header1"
 
 class RandomColorPicker {
@@ -67,10 +68,16 @@ const ControlPanel = ({
     setImageToCrop, 
     croppedImage, 
     setCroppedImage,
-
-    
-
     removeImage, 
+
+    coverImageToCrop,
+    setCoverImageToCrop,
+    croppedCoverImage, 
+    setCroppedCoverImage,
+    removeCoverImage,
+
+    isCropEnabled,
+    setIsHelpOpen,
     }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
@@ -317,7 +324,17 @@ const ControlPanel = ({
                         Cover Image:
                     </Header>
                     <div className={`w-full overflow-hidden h-max`}>
-                        <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                        <FileUpload 
+                        className='text-t-header-light dark:text-t-header-dark' 
+                        enableCrop={enableCrop}
+                        imageToCrop={coverImageToCrop} 
+                        setImageToCrop={setCoverImageToCrop} 
+                        croppedImage={croppedCoverImage} 
+                        setCroppedImage={setCroppedCoverImage}  
+                        removeImage={removeCoverImage} 
+                        isCropEnabled={isCropEnabled}
+                        type="cover"
+                        />
                     </div> 
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -438,7 +455,7 @@ const ControlPanel = ({
                     &&
 
                         <div className={`w-full overflow-hidden h-max`}>
-                            <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage}/>
+                            <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage} type="comp" isCropEnabled={isCropEnabled}/>
                         </div> 
                     }
   
@@ -453,10 +470,10 @@ const ControlPanel = ({
                         {
                             isVideoAddOpen
                             &&
-                                <button className='flex items-center justify-center w-[45px]'>
-                                    <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsVideoAddHelpOpen(!isVideoAddHelpOpen)}}></MdOutlineQuestionMark>
-                                </button> 
-                            }
+                            <button className='flex items-center justify-center w-[45px]'>
+                                <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen(true, "video_help")}}></MdOutlineQuestionMark>
+                            </button> 
+                        }
                         
                     </div>
                     {

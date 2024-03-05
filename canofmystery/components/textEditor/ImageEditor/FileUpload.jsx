@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 
-const FileUpload = ({addImage, enableCrop, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, isImageAddOpen, removeImage}) => {
+const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, isImageAddOpen, removeImage, type}) => {
     const fileInputRef = useRef(null);
 
 
@@ -22,24 +22,31 @@ const FileUpload = ({addImage, enableCrop, imageToCrop, setImageToCrop, croppedI
     
           reader.readAsDataURL(event.target.files[0]);
         }
-      };
+        if(type === "cover"){
+            enableCrop(true, type)
+        }
+        
+    };
 
 
     const handleRemoveImage = () => {
         removeImage()
-        enableCrop(false)
+        enableCrop(false, type)
     };
 
     const handleAddImage = () => {
-        if(croppedImage){
-            addImage("image", croppedImage)
-        }else{
-            addImage("image", imageToCrop)
+        if(type !== "cover"){
+            if(croppedImage){
+                addImage("image", croppedImage)
+                isImageAddOpen(false)
+            }else{
+                addImage("image", imageToCrop)
+                isImageAddOpen(false)
+            }
         }
 
+        enableCrop(false, '')
 
-        enableCrop(false)
-        isImageAddOpen(false)
     }
 
 
@@ -54,15 +61,33 @@ const FileUpload = ({addImage, enableCrop, imageToCrop, setImageToCrop, croppedI
                     <div className="h-max w-max" onClick={() => {handleRemoveImage()}}>
                         <MdImageNotSupported className={`text-2.5xl text-base-100 ${imageToCrop ? "relative" : "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} />
                     </div>
-                    <div  className="h-max w-max " onClick={() => {enableCrop(true); setImageToCrop(imageToCrop)}}>
-                        <MdCrop className={`text-2.5xl text-base-100 ${imageToCrop ? "relative" : "hidden"}`}  onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} /> 
-                    </div>
+                    {
+                        (type === "comp")
+                        &&
+                        <div  className="h-max w-max " onClick={() => {enableCrop(true, type); setImageToCrop(imageToCrop)}}>
+                            <MdCrop className={`text-2.5xl text-base-100 ${imageToCrop ? "relative" : "hidden"}`}  onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} /> 
+                        </div>     
+                    }
+
                 </div>
-                <div  className="h-max w-max px-[15px]" onClick={() => {handleAddImage()}}>
-                    <MdOutlineDownloadDone className={`text-2.7xl  text-base-100 ${imageToCrop ? "relative" : "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} /> 
+                <div  className="h-max w-max px-[15px]" onClick={() => {(type !== "cover") && handleAddImage()}}>
+                    {
+                        (type === "cover")
+                        ?
+                        <div  className="h-max w-max " onClick={() => {enableCrop(true, type); console.log(true, type); setImageToCrop(imageToCrop)}}>
+                            {
+                                !isCropEnabled
+                                &&
+                                <MdCrop className={`text-2.5xl text-base-100 ${imageToCrop ? "relative" : "hidden"}`}  onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} /> 
+                            }
+                        </div>
+                        :
+                        <MdOutlineDownloadDone className={`text-2.7xl  text-base-100 ${imageToCrop ? "relative" : "hidden"}`} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} /> 
+                    }
+                    
                 </div>
 
-                      
+                
             </div>
             <div
                 className={`h-full w-full sm:w-full h-[200px] rounded-b-md flex justify-center items-center ${imageToCrop ? "border-[3px] border-base-300 py-[15px]" : "border-dashed border-3 border-base-300"}`}

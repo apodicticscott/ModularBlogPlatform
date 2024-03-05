@@ -3,30 +3,33 @@
 import styles from "./signupPage.module.css"
 import { NeoButton } from "../../components/TextComponents"; 
 import React from "react";
-import {  signUpWithEmailAndPassword   } from 'firebase/auth';
+import {  createUserWithEmailAndPassword   } from 'firebase/auth';
 import { useRouter } from 'next/navigation'
+import {auth} from "../firebase"
 
 const SignUpPage = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const router = useRouter()
+  const [isSignedUp, setIsSignedUp] = React.useState('false')
+  const router = useRouter() 
 
   const handleForm = async (event) => {
       event.preventDefault()
 
-      const { result, error } = await signUpWithEmailAndPassword (email, password);
-
-      if (error) {
-          return console.log(error)
+      if (password) {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            
+        } catch(error) {
+            console.log("Sorry, something went wrong. Please try again.");
+            console.log(error)
+        }     
       }
-
-      // else successful
-      console.log(result)
-      return router.push("/admin")
   }
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
+      
       <div class="flex flex-col justify-center self-center align-center p-7 w-[calc(100vw_-_29px)] sm:max-w-[450px] border-2 md:border-3 rounded-md shadow-lg m-7 sm:m-0">
         <div class="mb-4">
           <h3 class="font-bold text-3xl text-gray-200">Sign Up</h3>

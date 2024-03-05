@@ -52,6 +52,8 @@ import DragVideo from "./DraggableComponents/DragVideo"
 
 import { NeoButton } from "../TextComponents";
 
+import Help from "./Help/Help"
+
 import addLinkHelp from "./Assets/help_add_link.gif"
 
 import {initializeApp} from "firebase/app"
@@ -97,10 +99,10 @@ const SizeDropDown = ({className, onClick, selected}) => {
             <button id="md" className="flex flex-row justify-center items-end h-full  pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
                 <RiFontFamily id="md" className="text-[10px] sm:text-2.2xl"/>
             </button>
-            <button id="lg" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.type === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark"}`} onClick={(e) => {selected.type === "header" && onClick(e.currentTarget.id)}}>
+            <button id="lg" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.compType === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark"}`} onClick={(e) => {selected.compType === "header" && onClick(e.currentTarget.id)}}>
                 <RiFontFamily id="lg" className="flex flex-col justify-end text-[12px] sm:text-2.7xl"/>
             </button>
-            <button id="xl" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.type === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark"}`} onClick={(e) => { selected.type === "header" && onClick(e.currentTarget.id)}}>
+            <button id="xl" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.compType === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark"}`} onClick={(e) => { selected.compType === "header" && onClick(e.currentTarget.id)}}>
                 <RiFontFamily id="xl" className="sm:text-3xl"/>
             </button>
         </div>
@@ -111,28 +113,17 @@ const SizeDropDown = ({className, onClick, selected}) => {
 const TextEditor = () => {
     const classes = useStyles()
 
-    const [compArray, setCompArray] = useState([    
-        { type: "paragraph", size: "md", style: [], id: "component-1",  image: null, originalImage: null, content: 'For years, people in Kentucky have been talking about the peculiar and eccentric weather phenomenon known as the "Kentucky Meat Rain." Locals are left scratching their heads in astonishment and awe at this strange phenomenon where chunks of raw flesh fall from the sky. The Kentucky Meat Rain is still a mysterious and intriguing natural phenomenon, despite a plethora of theories and ideas regarding its cause.'},
-        { type: "image", size: "", style: [], id: "component-2",  image: placeholderOne.src, originalImage: placeholderOne.src, content: ""},
-        { type: "paragraph", size: "md", style: [], id: "component-3",  image: null, originalImage: null, content: 'The first Kentucky Meat Rain was observed by the nice people of Olympia Springs, Kentucky, in 1876. This is where our voyage into the world of meaty precipitation began. People were in complete disbelief as various types of meat, including venison and steak, appeared to fall from the sky. The tale quickly became viral, igniting a flurry of interest and ideas about the meaty downpour.'},
-        { type: "paragraph", size: "md", style: [], id: "component-4",  image: null, originalImage: null, content: 'Meat showers persisted in appearing in different locations around Kentucky in the late 19th and early 20th centuries. Even more, a report from the 1876 incident said that the meat parts were "large irregularly shaped flakes, one of which was 6 by 8 inches in size.'},
-        { type: "paragraph", size: "md", style: [], id: "component-5",  image: null, originalImage: null, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "image", size: "", style: [], id: "component-6",  image: placeholderTwo.src, originalImage: placeholderTwo.src, content: ''},
-        { type: "paragraph", size: "md", style: [], id: "component-7",  image: null, originalImage: null, content: 'Numerous theories, ranging from the serious to the absurd, have been proposed on the Kentucky Meat Rain:'},
-        { type: "resource", size: "md", style: [], id: "component-8",  image: null, originalImage: null, content: 'Duckworth, Matthew, “‘Kentucky Shower of Flesh’: The ‘Great Kentucky Meat Shower’ fell 147 years ago” Fox56News. Mar. 2023 https://fox56news.com/news/kentucky/the-great-kentucky-meat-shower-147-years-passed-since-the-kentucky-shower-of-flesh/ Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-9",  image: null, originalImage: null, content: 'McManus, Melanie, “10 Times It Has Rained Something Other Than Water” HowStuffWorks. https://science.howstuffworks.com/nature/climate-weather/storms/10-times-it-rained-something-other-than-water.htm. Accessed Oct. 2023.'},
-        { type: "resource", size: "md", style: [], id: "component-10",  image: null, originalImage: null, content: '“Kentucky meat shower”, https://en.wikipedia.org/wiki/Kentucky_meat_shower, Wikipedia. Nov. 2023.'},
-    ]);
-    
-    const [bookMarks, setBookMarks] = useState([])
+    const [compArray, setCompArray] = useState([]);
 
     const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
-    const [title, setTitle] = useState("Kentucky Meat Rain")
-    const [author, setAuthor] = useState("Name or Pseudonym")
-    const [tags, setTags] = useState([["Text Here", "#f1fd66"]])
-    const [category, setCategory] = useState("Example Category")
-    const [linkValue, setLinkValue] = useState();
+    const [title, setTitle] = useState("")
+    const [author, setAuthor] = useState("")
+    const [tags, setTags] = useState([])
+    const [category, setCategory] = useState()
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(new Date());
     
+    const [linkValue, setLinkValue] = useState();
     const [currentLink, setCurrentLink] = useState("");
     const [linkErrorVisible, setLinkErrorVisible] = useState(false);
     const [isLinkAddHelpOpen, setIsLinkAddHelpOpen] = useState(false);
@@ -145,8 +136,9 @@ const TextEditor = () => {
     const [innerHtmlContent, setInnerHtmlContent] = useState([]);
     const [isPreview, setIsPreview] = useState(false)
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-    const [isContentLoaded, setIsContentLoaded] = useState(false);
-    const [isCropEnabled, setIsCropEnabled] = useState(false);
+    const [isCropEnabled, setIsCropEnabled] = useState({value: false, type: ""});
+    const [isHelpOpen, setIsHelpOpen] = useState({value: false, type: null});
+    
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -158,7 +150,7 @@ const TextEditor = () => {
 
 
     const [imageData, setImageData] = useState([undefined, undefined])
-
+    const [coverImageData, setCoverImageData] = useState([undefined, undefined])
 
     //Change Content Section ---------------------------------------------------------------------------------------------------------
     const handleItalicClick = () => {
@@ -239,11 +231,9 @@ const TextEditor = () => {
             eventType = "comp-click"
         }
 
-        console.log(eventType)
 
         handleGetInnerHtml(e)
 
-            console.log("id")
             if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
                 setSelectedComp({id: id, compType: compType, eventType: eventType});
             }else if (selectedComp.id === id) {
@@ -258,7 +248,7 @@ const TextEditor = () => {
         
     }
 
-    const [articles, setArticles] = useState()
+
 
     useEffect(() => {
         // Reference to your collection
@@ -294,8 +284,30 @@ const TextEditor = () => {
         }
     }
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+          const now = new Date();
+          setCurrentDate(now);
+          setCurrentTime(now);
+        }, 1000); // Update the date and time every second
+    
+        return () => clearInterval(timer); // Clean up the interval on component unmount
+      }, []);
+    
+      // Format date as "Year-Month-Day"
+    const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+    };
+
+    // Format time as "Hours:Minutes:Seconds"
+    const formatTime = (time) => {
+    return time.toTimeString().split(' ')[0];
+    };
+
     const handleAddComponent = (type, url) => {
         const newId = compArray.length + 1;
+
+
         
         let newComponent;
         if(type === "header"){
@@ -320,7 +332,16 @@ const TextEditor = () => {
 
     
     const handleRemoveComponent = (id) => {
-        setCompArray(compArray.filter((comp) => comp.id !== id));
+        // Remove the component from the array
+        const newCompArray = compArray.filter((comp) => comp.id !== id);
+
+        // Renumber the component IDs based on their new order
+        const renumberedCompArray = newCompArray.map((comp, index) => {
+            return { ...comp, id: `component-${index + 1}` };
+        });
+
+        // Update the state with the renumbered components array
+        setCompArray(renumberedCompArray);
     };
 
 
@@ -359,7 +380,8 @@ const TextEditor = () => {
             const article = {
                 Title: title,
                 Tags: tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
-                Contenot: compArray.map(comp => ({
+                CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                Content: compArray.map(comp => ({
                     ID: comp.id,
                     Content: comp.content,
                     Style: comp.style || '', // Assuming style is an optional field
@@ -368,8 +390,9 @@ const TextEditor = () => {
                     Image: comp.image || '',
                     Size: comp.size || ''
                 })),
-                Publisher: null, // Set as null as per requirement
-                Time: null, // Set as null as per requirement
+                Publisher: "ADMIN", 
+                Time: formatTime(currentTime), 
+                Date: formatDate(currentDate),
                 Author: author
             };
     
@@ -430,20 +453,22 @@ const TextEditor = () => {
                             </button >
                         }
 
-
                         <div className="flex w-max gap-[3px]">
-                            <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => {((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
-                                <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`} />
+                            <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => {((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
+                                <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`} />
                             </button >
                             <SizeDropDown selected={selectedComp} className={`${(sizeDrop && (selectedComp.compType === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource"))? "w-max" : "w-0"}`} onClick={handleChangeSize} />
                         </div>
 
                     </div>
+                    <button className='flex items-center justify-center w-[45px]'>
+                        <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen({value: !isHelpOpen.value, type: "menue"})}}></MdOutlineQuestionMark>
+                    </button> 
                     <button className="bg-base-100 text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => handleClearContent()}>
-                                Clear
+                        Clear
                     </button>
                     {
-                        !isCropEnabled
+                        !isCropEnabled.value
                         &&
                         <>
                             <button className="bg-primary-dark text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => setIsDoneNotificationOpen(true)}>
@@ -466,7 +491,7 @@ const TextEditor = () => {
                                         <div>
                                             Please make sure this is how you want to submit the article.
                                         </div>
-                                        <NeoButton className='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2' onClick={handleUploadArticle}>
+                                        <NeoButton className='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2 bg-primary-dark' onClick={() => {handleUploadArticle(); setIsDoneNotificationOpen(false)}}>
                                             Yes Im Sure!
                                         </NeoButton>   
                                     </div>
@@ -476,6 +501,7 @@ const TextEditor = () => {
                             
                         </>
                     }
+                <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
 
                 <div className="flex w-full h-[calc(100vh_-_117px)] border-y-[3px] overflow-x-hidden ">
@@ -483,11 +509,20 @@ const TextEditor = () => {
                     <div className={`h-full flex items-end border-r-[3px] ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0"}`}>
                         <div className={`h-full overflow-hidden z-10 ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0" }`}>
                             <ControlPanel 
-                            enableCrop={setIsCropEnabled} 
+                            enableCrop={(value, type) => setIsCropEnabled({value: value, type: type})} 
+
                             setImageToCrop={imageToCrop => setImageData([imageToCrop, imageData[1]])} 
                             imageToCrop={imageData[0]} 
                             setCroppedImage={croppedImage => setImageData([imageData[0], croppedImage])} 
                             croppedImage={imageData[1]} 
+                            removeImage={() => setImageData([undefined, undefined])}
+
+                            setCoverImageToCrop={coverImageToCrop => setCoverImageData([coverImageToCrop, coverImageData[1]])}
+                            coverImageToCrop={coverImageData[0]}
+                            setCroppedCoverImage={croppedCoverImage => setCoverImageData[coverImageData[0], croppedCoverImage]}
+                            croppedCoverImage={coverImageData[1]}
+                            removeCoverImage={() => setCoverImageData([undefined, undefined])}
+
                             panelOptions={panelOptions} 
                             handleAddComponent={handleAddComponent} 
                             setTitle={setTitle} 
@@ -498,7 +533,9 @@ const TextEditor = () => {
                             setCategory={setCategory} 
                             innerHtml={innerHtmlContent} 
                             exportContent={handleExportContent} 
-                            removeImage={() => setImageData([undefined, undefined])}
+                            
+                            isCropEnabled={isCropEnabled.value}
+                            setIsHelpOpen={(value, type) => setIsHelpOpen({value: value, type: type})}
                             />
                         </div>
                         <div className='w-0 h-[45px] py-[2px] z-10'>
@@ -515,14 +552,29 @@ const TextEditor = () => {
                  
                     </div>
                     {
-                        isCropEnabled
+                        isCropEnabled.value
                         &&
                         <div className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full z-0`}>
-                            <CropUtils imageToCrop={imageData[0]} onImageCropped={croppedImage => setImageData([imageData[0], croppedImage])} />
+                            <CropUtils 
+                            imageToCrop={(isCropEnabled.type === "comp") 
+                            ? 
+                            imageData[0] 
+                            : 
+                            coverImageData[0]
+                            } 
+
+                            onImageCropped={(isCropEnabled.type  === "comp") 
+                            ? 
+                            croppedImage => {setImageData([imageData[0], croppedImage]); setIsCropEnabled({value: false, type: ''})}
+                            : 
+                            croppedCoverImage => {setCoverImageData([coverImageData[0], croppedCoverImage]); setIsCropEnabled({value: false, type: ''})}} 
+
+                            ratios={(isCropEnabled.type  === "comp") ? [1,4] : [2,2]}
+                            />
                         </div>
                     }
 
-                    <div  className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px] ${isCropEnabled && "hidden"}`}>
+                    <div  className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px] ${isCropEnabled.value && "hidden"}`}>
 
                         <div className={`flex w-full`}>
                             <div className={`w-full h-max md:grow flex ${!isPreview && "px-[51px]"} md:px-0 justify-center`}>
@@ -578,7 +630,7 @@ const TextEditor = () => {
                                             Enter the url, then highlight your text, and click the checkmark next to the link icon.
                                         </div>
                                         <button className='flex items-center justify-center w-[45px]'>
-                                            <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsLinkAddHelpOpen(!isLinkAddHelpOpen)}}></MdOutlineQuestionMark>
+                                            <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen({value: true, type: "link_help"})}}></MdOutlineQuestionMark>
                                         </button>
                                         {
                                             isLinkAddHelpOpen
@@ -605,10 +657,7 @@ const TextEditor = () => {
                                             </Dialog>
                                         }
                                     </div>
-
                                 </div>
-
-
                             </Dialog>
                             <div className="grow flex flex-col items-center h-full z-1 gap-[10px] ">
                                 <div className="flex-col w-full md:w-[800px]" id="text-editor-container" >
@@ -684,20 +733,20 @@ const TextEditor = () => {
         const { active, over } = event;
     
         if (active.id !== over.id) {
-          setCompArray((compArray) => {
-            let oldIndex;
-            let newIndex;
-            for(let i = 0; i <= compArray.length - 1; i++){
-                console.log(compArray[i].id, active.id)
-                console.log(compArray[i].id === active.id)
-                if(compArray[i].id === active.id){
-                    oldIndex = i;
-                }else if(compArray[i].id === over.id){
-                    newIndex = i;
-                }
-            }
-            return arrayMove(compArray, oldIndex, newIndex);
-        });}
+            setCompArray((compArray) => {
+                const oldIndex = compArray.findIndex(comp => comp.id === active.id);
+                const newIndex = compArray.findIndex(comp => comp.id === over.id);
+                const newArray = arrayMove(compArray, oldIndex, newIndex);
+    
+                // Reassign IDs based on the new order
+                const renumberedArray = newArray.map((comp, index) => ({
+                    ...comp,
+                    id: `component-${index + 1}`
+                }));
+    
+                return renumberedArray;
+            });
+        }
     }
     
 };
