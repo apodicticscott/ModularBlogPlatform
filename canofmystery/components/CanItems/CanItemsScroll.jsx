@@ -38,12 +38,12 @@ const CanItemsScroll = () => {
                 <div className="snap-proximity snap-x flex gap-[40px] flex-nowrap  h-full items-center inner">
                     {
                         json_article_cards_array.map((tag, index) => (
-                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" children={tag.title} link={tag.link} style={"snap-center bg-base-100"}/> //Supposed to use  but bg color takes a hex code...
+                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" link={tag.link} style={"snap-center bg-base-100"}> {tag.title}</NeoButtonLink> //Supposed to use  but bg color takes a hex code...
                         ))
                     }
                                         {
                         json_article_cards_array.map((tag, index) => (
-                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" children={tag.title} link={tag.link} style={"snap-center bg-base-100"}/> //Supposed to use  but bg color takes a hex code...
+                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" link={tag.link} style={"snap-center bg-base-100"}>{tag.title}</NeoButtonLink>  //Supposed to use  but bg color takes a hex code...
                         ))
                     }
                 </div>

@@ -10,8 +10,8 @@ const json_cur_search_tags = [
     {tag:"Local Legends", link:"../path/to/link/here", color:"#FCC800"}
 ];
 
-const SearchPage = ({searchquery="Example Search"}) => {
-
+const SearchPage = () => {
+    const searchquery = "Example Search";
     return(
         
         <div class="flex flex-col justify-center self-center align-center p-20">
