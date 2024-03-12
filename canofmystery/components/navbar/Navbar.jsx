@@ -6,10 +6,9 @@ import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import { Link } from "next/router";
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
-import DropDownItem from "../components/DropDownItem";
+import DropDownItem from "./components/dropDownItem.jsx";
 
 console.log(uscaLogo)
 

@@ -1,6 +1,5 @@
 import React from "react";
 // Assuming the import paths are correct and the components exist
-import { Header, XLHeader, LargeParagraph } from "../../textComponents";
 
 // Changed function signature to accept props as an object
 // Destructured left, right, and bottom from props

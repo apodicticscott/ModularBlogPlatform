@@ -1,10 +1,6 @@
 'use client'
 import React from "react";
-import Tag from "../textComponents/neoTag";
-import LanderLayout from "../layout/landerLayout"
-import NeoButton from "../textComponents/neoButton"
 import Header from "../textComponents/header1"
-import Paragraph from "../textComponents/paragraph";
 import { LargeParagraph } from "../textComponents";
 import { MdArrowForwardIos } from "react-icons/md";
 
