@@ -4,7 +4,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import YoutubeEmbed from "../../textComponents/YoutubeEmbed";
+import Image from "../../TextComponents/image"
 
 const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
     const {
@@ -27,7 +27,7 @@ const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
             id="clickable-parent"
             ref={setNodeRef}
             style={style}
-            className={`w-full justify-between ${
+            className={`w-full justify-between  ${
                 ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
             } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
             onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
@@ -39,8 +39,8 @@ const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
-            <YoutubeEmbed id={comp.ID} embededId={comp.VideoEmbededId} key={comp.ID} >
-            </YoutubeEmbed>
+            <Image id={comp.ID} src={comp.Image} key={comp.ID}  onClick={onClick} >
+            </Image>
             <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.ID)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/>
         </div>
     )

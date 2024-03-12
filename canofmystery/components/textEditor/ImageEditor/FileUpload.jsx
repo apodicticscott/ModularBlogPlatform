@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import CropUtils from "./CropUtils"
+import CropUtils from "./cropUtils"
 import { FaImage, FaUpload } from "react-icons/fa";
 import { MdOutlineDownloadDone, MdCrop, MdImageNotSupported } from "react-icons/md";
 import axios from 'axios';

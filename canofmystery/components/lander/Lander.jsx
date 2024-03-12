@@ -1,7 +1,7 @@
 import React from "react";
 // import {Button, Header, SubHeader, SubText} from "../../components/DisplayComp/Components"
-import { Header, XLHeader, LargeParagraph } from "../TextComponents";
-import NeoButton from "../TextComponents/NeoButton";
+import { Header, XLHeader, LargeParagraph } from "../textComponents";
+import NeoButton from "../textComponents/neoButton";
 
 const Lander = () => {
     return (

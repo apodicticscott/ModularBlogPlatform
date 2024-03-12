@@ -35,24 +35,24 @@ import {
 
 import "../../app/globals.css"
 
-import ControlPanel from "./ControlPanel"
-import Tag from "../../components/TextComponents/NeoTag"
-import Header from "../../components/TextComponents/Header1";
-import CropUtils from "./ImageEditor/CropUtils";
+import ControlPanel from "./controlPanel"
+import Tag from "../textComponents/NeoTag"
+import Header from "../textComponents/header1";
+import CropUtils from "./ImageEditor/cropUtils";
 
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
 
-import DragHeader from "./DraggableComponents/DragHeader";
-import DragParagraph from "./DraggableComponents/DragParagraph"
-import DragResource from "./DraggableComponents/DragResource";
-import DragImage from "./DraggableComponents/DragImage";
-import DragList from "./DraggableComponents/DragList"
-import DragVideo from "./DraggableComponents/DragVideo"
+import DragHeader from "./draggableComponents/dragHeader";
+import DragParagraph from "./draggableComponents/dragParagraph"
+import DragResource from "./draggableComponents/dragResource";
+import DragImage from "./draggableComponents/dragImage";
+import DragList from "./draggableComponents/dragList"
+import DragVideo from "./draggableComponents/dragVideo"
 
-import { NeoButton } from "../TextComponents";
+import { NeoButton } from "../textComponents";
 
-import Help from "./Help/Help"
+import Help from "./Help/help"
 
 import addLinkHelp from "./Assets/help_add_link.gif"
 

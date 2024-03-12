@@ -1,13 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect} from "react";
 import ContentEditable from "react-contenteditable";
 import { GrDrag } from "react-icons/gr";
 import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import Resource from "../../textComponents/Resource";
+import Header from "../../TextComponents/header1";
 
-const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
+const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();
     const {
         attributes,
@@ -19,7 +19,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
 
     const style = {
         transform: CSS.Translate.toString(transform),
-        transition
+        transition,
     };
 
   
@@ -40,37 +40,40 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
         };
     });
 
-    return(
+    return (
         <div
-            id="clickable-parent"
-            ref={setNodeRef}
-            style={style}
-            className={`w-full justify-between ${
+        id="clickable-parent"
+        ref={setNodeRef}
+        style={style}
+        className={`w-full justify-between ${
             ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
-            } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
-            onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
+        } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
+        onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >
-            <GrDrag 
+            <GrDrag
                 id={comp.ID + "-grab"}
                 {...attributes}
                 {...listeners}
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
-            /> 
-            <Resource
-                type={comp.Size}
-                id={comp.ID} 
-            >
-                <ContentEditable 
-                id="resource"
+            />
+            <Header type={comp.Size} id={comp.ID}>
+                <ContentEditable
                 html={comp.Content}
                 innerRef={contentRef}
+                id="header"
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
+                onClick={(e) => onClick(e, comp.ID, comp.Type)}
                 />
-            </Resource>
-            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.ID)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
+            </Header>
+            <TiDelete
+                className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
+                isDragging={false}
+                onClick={() => removeComp(comp.ID)}
+                onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
+            />
         </div>
-    )
-}
+    );
+};
 
-export default DragResource;
+export default DragHeader;

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from "react";
 import { useLayoutEffect } from "react";
-import { motion } from '../../node_modules/framer-motion';
+import { motion } from 'framer-motion';
 import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -9,7 +9,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "next/router";
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
-import DropDownItem from "./Components/DropDownItem";
+import DropDownItem from "./components/DropDownItem";
 
 console.log(uscaLogo)
 

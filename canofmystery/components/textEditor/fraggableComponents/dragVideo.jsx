@@ -4,7 +4,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import YoutubeEmbed from "../../textComponents/YoutubeEmbed";
+import YoutubeEmbed from "../../TextComponents/youtubeEmbed";
 
 const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
     const {

@@ -1,5 +1,5 @@
 'use client'
-import NeoButtonLink from "../TextComponents/NeoButtonLink";
+import NeoButtonLink from "../textComponents/neoButtonLink";
 
 
 const json_article_cards_array = [

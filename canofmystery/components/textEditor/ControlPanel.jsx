@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
-import FileUpload from "./ImageEditor/FileUpload";
+import FileUpload from "./ImageEditor/fileUpload";
 import { MdOutlineDownloadDone } from "react-icons/md"
 import { MdOutlineQuestionMark } from "react-icons/md"
 import { Dialog, Button} from '@mui/material';
@@ -12,7 +12,7 @@ import Image from 'next/image';
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
 
 
-import Header from "../../components/TextComponents/Header1"
+import Header from "../textComponents/header1"
 
 class RandomColorPicker {
     constructor(colors) {

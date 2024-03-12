@@ -1,7 +1,7 @@
 'use client'
 import styles from "./../homepage.module.css";
 import React from "react";
-import Tag from "../../components/TextComponents/NeoTag";
+import Tag from "../../components/textComponents/neoTag";
 
 
 const json_cur_search_tags = [

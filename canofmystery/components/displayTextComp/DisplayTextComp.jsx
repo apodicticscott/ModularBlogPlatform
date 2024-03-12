@@ -1,5 +1,5 @@
 import React from 'react'
-import  {Link, SubHeader, Header, LargeHeader, XLHeader, NeoButton, NeoInput, LargeParagraph} from "../TextComponents"
+import  {Link, SubHeader, Header, LargeHeader, XLHeader, NeoButton, NeoInput, LargeParagraph} from "../textComponents"
 
 const DisplayTextComp = () => {
 

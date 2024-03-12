@@ -5,10 +5,9 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
+import Resource from "../../TextComponents/resource";
 
-import Paragraph from "../../textComponents/Paragraph";
-
-const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick }) => {
+const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();
     const {
         attributes,
@@ -17,64 +16,61 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
         transform,
         transition
     } = useSortable({ id: comp.ID });
-  
+
     const style = {
         transform: CSS.Translate.toString(transform),
-        transition,
+        transition
     };
+
   
-    
     const handleKeyDown = (event) => {
-            if (event.metaKey) {
-                if (Object.values(FONTS).includes(event.key)) {
-                event.preventDefault();
-                transformText(event.key);
-                }
+        if (event.metaKey) {
+            if (Object.values(FONTS).includes(event.key)) {
+            event.preventDefault();
+            transformText(event.key);
             }
-        };
-  
+        }
+    };
+
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
-    
+
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
     });
-  
 
     return(
         <div
             id="clickable-parent"
             ref={setNodeRef}
             style={style}
-            className={`w-full justify-between  
-            ${((selected.ID === comp.ID) && selected.eventType === "comp-click") && "border-3 border-base-200"} 
-            flex items-center gap-[15px] sm:gap-[30px]  rounded-md text-t-header-light dark:text-t-header-dark`}
+            className={`w-full justify-between ${
+            ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
+            } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
             onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
         >
-            <GrDrag
-                id={comp.id + "-grab"}
+            <GrDrag 
+                id={comp.ID + "-grab"}
                 {...attributes}
                 {...listeners}
-                className={`text-[25px] touch-none ${isEnabled && "hidden"}`}
+                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
-                
-            />   
-            <Paragraph
+            /> 
+            <Resource
                 type={comp.Size}
-                id={comp.Id}
+                id={comp.ID} 
             >
                 <ContentEditable 
-                id="paragraph"
+                id="resource"
                 html={comp.Content}
                 innerRef={contentRef}
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
-                
                 />
-            </Paragraph>
+            </Resource>
             <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.ID)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
         </div>
     )
 }
 
-export default  DragParagraph;
+export default DragResource;

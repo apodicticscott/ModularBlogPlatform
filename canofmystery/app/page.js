@@ -1,11 +1,11 @@
 import styles from "./homepage.module.css";
-import Lander from "../components/lander/Lander"
-import DisplayTextComp from "../components/displayTextComp/DisplayTextComp";
-import Header from "../components/TextComponents/Header1"
+import Lander from "../components/lander/lander"
+import DisplayTextComp from "../components/displayTextComp/displayTextComp";
+import Header from "../components/textComponents/header1"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent";
-import UseUsAsASource from "../components/UseUsAsASource/useusasasource.jsx";
-import CanItemsScroll from "../components/CanItems/CanItemsScroll.jsx"
+import UseUsAsASource from "../components/useUsAsASource/useUsAsASource.jsx";
+import CanItemsScroll from "../components/canItems/canItemsScroll.jsx"
 
 export default function Home() {
   return (
