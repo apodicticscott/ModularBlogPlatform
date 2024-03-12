@@ -37,7 +37,7 @@ module.exports = {
     boxShadow: {
       'md': '0px 5px 0px 0px #000',
       'lg': '0px 10px 0px 0px #000',
-      'sidebig': '10px, 10px, 0px, 0px, #000',
+      'sidelg': '-10px 10px 0px 0px #000',
     },
     borderColor: {
       DEFAULT: '#000000',

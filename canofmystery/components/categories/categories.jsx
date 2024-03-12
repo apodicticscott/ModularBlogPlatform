@@ -10,9 +10,8 @@ const CategoryCard = (category) => {
     return (
         <>
             
-            <div className="grid h-[234px] w-[23%] place-items-center bg-cover shadow-sidebig" style={{backgroundImage: `url(${category.image})`}}>
-                <div className="text-3xl text-t-header-light">{category.title}</div>
-                
+            <div className="grid h-[234px] w-[450px] place-items-center object-contain bg-t-header-light border-3 object-none shadow-sidelg rounded-md">
+                <div className="text-3xl text-base-100">{category.title}</div>
             </div>
         </>
 
@@ -42,7 +41,7 @@ const CategoriesSection = () => {
                         </div>
                     </div>
                     <div className="px-[200px] py-[100px] place-content-center">
-                        <div className="flex flex-wrap justify-between gap-[10px]">
+                        <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max ">
                             {
                                 json_catgeories.map((category, index) => 
                                     CategoryCard(category)

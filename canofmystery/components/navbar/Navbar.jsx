@@ -8,8 +8,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
-import DropDownItem from "./components/dropDownItem.jsx";
-
+import DropDownItem from "./components/dropDownItem";
 console.log(uscaLogo)
 
 const Navbar = () => {
