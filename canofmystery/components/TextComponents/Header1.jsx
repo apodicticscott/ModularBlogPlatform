@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Header = ({children, text, type, classes, style, highlight, onClick, onKeyUp, onKeyDown, id}) => {
+const Header = ({children, text, type, classes, style, highlight, onClick, onKeyUp, onKeyDown, id, innerHTML}) => {
 
 
     
@@ -147,32 +147,32 @@ const Header = ({children, text, type, classes, style, highlight, onClick, onKey
 
         if(type === "sm"){
             return(
-                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                     {children}
                 </div>
             )
         }else if(type === "md"){
             return(
-                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                     {children}
                 </div>
             )
         }else if(type === "lg"){
             return(
-                <div id={id} className={`${styles.lg} ${classes}`} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.lg} ${classes}`} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                     {children}
                 </div>
             )
         }else if(type === "xl"){
             return(
-                <div id={id} className={`${styles.xl} ${classes}`} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.xl} ${classes}`} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                     {children}
                 </div>
             )
         }
         else if(type === "landerTitle"){
             return(
-                <div id={id} className={`${styles.landerTitle} ${classes}`} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
+                <div id={id} className={`${styles.landerTitle} ${classes}`} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                     {children}
                 </div>
             )

@@ -5,7 +5,8 @@ import { NeoButton } from "../../components/TextComponents";
 import React from "react";
 import {  createUserWithEmailAndPassword   } from 'firebase/auth';
 import { useRouter } from 'next/navigation'
-import {auth} from "../firebase"
+
+import signUp from "../../firebase/auth/signup"
 
 const SignUpPage = () => {
   const [email, setEmail] = React.useState('')
@@ -18,14 +19,15 @@ const SignUpPage = () => {
 
       if (password) {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            
+            await signUp( email, password);
         } catch(error) {
             console.log("Sorry, something went wrong. Please try again.");
             console.log(error)
         }     
       }
   }
+
+
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">

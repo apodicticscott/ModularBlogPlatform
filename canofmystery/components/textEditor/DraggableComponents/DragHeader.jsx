@@ -15,7 +15,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         setNodeRef,
         transform,
         transition
-    } = useSortable({ id: comp.id });
+    } = useSortable({ id: comp.ID });
 
     const style = {
         transform: CSS.Translate.toString(transform),
@@ -46,30 +46,30 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         ref={setNodeRef}
         style={style}
         className={`w-full justify-between ${
-            ((selected.id === comp.id) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
+            ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
         } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
         onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >
             <GrDrag
-                id={comp.id + "-grab"}
+                id={comp.ID + "-grab"}
                 {...attributes}
                 {...listeners}
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
-            <Header type={comp.size} id={comp.id}>
+            <Header type={comp.Size} id={comp.ID}>
                 <ContentEditable
-                html={comp.content}
+                html={comp.Content}
                 innerRef={contentRef}
                 id="header"
-                onChange={(event) => updateContent(comp.id, event.target.value, "text")}
-                onClick={(e) => onClick(e, comp.id, comp.type)}
+                onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
+                onClick={(e) => onClick(e, comp.ID, comp.Type)}
                 />
             </Header>
             <TiDelete
                 className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 isDragging={false}
-                onClick={() => removeComp(comp.id)}
+                onClick={() => removeComp(comp.ID)}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
             />
         </div>

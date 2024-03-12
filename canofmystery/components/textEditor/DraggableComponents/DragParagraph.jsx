@@ -16,7 +16,7 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
         setNodeRef,
         transform,
         transition
-    } = useSortable({ id: comp.id });
+    } = useSortable({ id: comp.ID });
   
     const style = {
         transform: CSS.Translate.toString(transform),
@@ -40,11 +40,6 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
             document.removeEventListener("keydown", handleKeyDown);
         };
     });
-
-    console.log(selected.id === comp.id, "p")
-    console.log(comp.id, selected.id)
-    console.log(selected.eventType === "comp-click", "p")
-    console.log(selected.eventType, "comp-Click")
   
 
     return(
@@ -53,9 +48,9 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
             ref={setNodeRef}
             style={style}
             className={`w-full justify-between  
-            ${((selected.id === comp.id) && selected.eventType === "comp-click") && "border-3 border-base-200"} 
+            ${((selected.ID === comp.ID) && selected.eventType === "comp-click") && "border-3 border-base-200"} 
             flex items-center gap-[15px] sm:gap-[30px]  rounded-md text-t-header-light dark:text-t-header-dark`}
-            onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
+            onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
         >
             <GrDrag
                 id={comp.id + "-grab"}
@@ -66,18 +61,18 @@ const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, 
                 
             />   
             <Paragraph
-                type={comp.size}
-                id={comp.id}
+                type={comp.Size}
+                id={comp.Id}
             >
                 <ContentEditable 
                 id="paragraph"
-                html={comp.content}
+                html={comp.Content}
                 innerRef={contentRef}
-                onChange={(event) => updateContent(comp.id, event.target.value, "text")}
+                onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
                 
                 />
             </Paragraph>
-            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.id)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
+            <TiDelete className={`text-[30px] ${isEnabled  && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.ID)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'}/> 
         </div>
     )
 }

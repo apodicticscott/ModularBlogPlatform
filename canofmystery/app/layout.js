@@ -1,4 +1,5 @@
 'use client'
+import useLogPageView from "../hooks/useLogPageView"
 import { Lexend_Mega } from 'next/font/google'
 import './globals.css'
 import Navbar from "/components/navbar/Navbar"
@@ -17,9 +18,9 @@ const LexM = Lexend_Mega(
 // }
 
 
-export default function RootLayout({ children }) {
-
-
+export default function RootLayout({ children  }) {
+  useLogPageView(); 
+  
   return (
     <html data-theme="mytheme" className="" lang="en">
       <body className={`${LexM.className} tracking-tighter`}>

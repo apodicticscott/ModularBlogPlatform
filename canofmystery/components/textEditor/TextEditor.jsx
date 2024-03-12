@@ -56,24 +56,8 @@ import Help from "./Help/Help"
 
 import addLinkHelp from "./Assets/help_add_link.gif"
 
-import {initializeApp} from "firebase/app"
-import {getFirestore, collection, getDocs, addDoc} from "firebase/firestore"
-
-const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
-}
-
-//initilize app
-initializeApp(firebaseConfig)
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore();
+import {getFirestore, collection, getDoc, doc, addDoc} from "firebase/firestore"
+import { app } from "../../app/firebase"
 
 const useStyles = makeStyles({
     button: {
@@ -110,16 +94,18 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = () => {
+const TextEditor = ({articleId}) => {
+
     const classes = useStyles()
 
+    const [article, setArticle] = useState(null);
     const [compArray, setCompArray] = useState([]);
 
     const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
-    const [title, setTitle] = useState("")
-    const [author, setAuthor] = useState("")
-    const [tags, setTags] = useState([])
-    const [category, setCategory] = useState()
+    const [Title, setTitle] = useState("")
+    const [Author, setAuthor] = useState("")
+    const [Tags, setTags] = useState([])
+    const [Category, setCategory] = useState()
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentTime, setCurrentTime] = useState(new Date());
     
@@ -138,6 +124,40 @@ const TextEditor = () => {
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [isCropEnabled, setIsCropEnabled] = useState({value: false, type: ""});
     const [isHelpOpen, setIsHelpOpen] = useState({value: false, type: null});
+
+    
+
+    const db = getFirestore(app)
+
+    useEffect(() => {
+        if(articleId){
+            const fetchArticle = async () => {
+                const docRef = doc(db, "Articles", articleId);
+                const docSnap = await getDoc(docRef);
+          
+                if (docSnap.exists()) {
+                  console.log("Document data:", docSnap.data());
+                  console.log(docSnap.data())
+                  setArticle(docSnap.data());
+                } else {
+                  console.log("No such document!");
+                }
+            };
+          
+            fetchArticle();
+        }
+    }, []);
+
+    useEffect(() => {
+        if(articleId && article){
+            console.log(article.Content)
+            setCompArray(article.Content);
+            setTitle(article.Title)
+            setAuthor(article.Author)
+            console.log(article.Tags)
+            setTags(article.Tags)
+        }
+    }, [article])
     
 
     const sensors = useSensors(
@@ -200,8 +220,8 @@ const TextEditor = () => {
 
     const handleChangeSize = (id) => {
         setCompArray(compArray.map(comp => {
-            if (comp.id === selectedComp.id) {
-                return { ...comp, size: id};
+            if (comp.ID === selectedComp.id) {
+                return { ...comp, Size: id};
             }
             return comp;
         }));
@@ -210,12 +230,12 @@ const TextEditor = () => {
     const updateContent = (id, content, type) => {
         setCompArray(compArray.map(comp => {
             if(type === "text"){
-                if(comp.id === id){
-                    return { ...comp, content: content};
+                if(comp.ID === id){
+                    return { ...comp, Content: content};
                 }
             }else if(type === "list"){
-                if(comp.id === id ){
-                    return {...comp, listItems: content}
+                if(comp.ID === id ){
+                    return {...comp, ListItems: content}
                 }
             }
 
@@ -234,40 +254,22 @@ const TextEditor = () => {
 
         handleGetInnerHtml(e)
 
-            if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
-                setSelectedComp({id: id, compType: compType, eventType: eventType});
-            }else if (selectedComp.id === id) {
-                // Toggle the dropdown only if the same component is clicked again
-                toggleSizeDropdown();
-                setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
-            }else {
-                // Close the dropdown when a different component is selected
-                setSizeDrop(false);
-                setSelectedComp({id: id, compType: compType, eventType: eventType});
-            }
+        if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
+            setSelectedComp({id: id, compType: compType, eventType: eventType});
+        }else if (selectedComp.id === id) {
+            // Toggle the dropdown only if the same component is clicked again
+            toggleSizeDropdown();
+            setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
+        }else {
+            // Close the dropdown when a different component is selected
+            setSizeDrop(false);
+            setSelectedComp({id: id, compType: compType, eventType: eventType});
+        }
         
     }
 
 
 
-    useEffect(() => {
-        // Reference to your collection
-        const articleColRef = collection(db, 'Articles');
-
-        // Fetch articles from Firestore
-        getDocs(articleColRef)
-            .then((snapshot) => {
-                const fetchedArticles = [];
-                snapshot.docs.forEach((doc) => {
-                    fetchedArticles.push({ ...doc.data(), id: doc.id });
-                });
-                // Update state with fetched articles
-                console.log(fetchedArticles)
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    }, []); // Empty dependency array means this effect runs once on mount
 
     
     const handleGetInnerHtml = (e) => {
@@ -304,28 +306,30 @@ const TextEditor = () => {
     return time.toTimeString().split(' ')[0];
     };
 
-    const handleAddComponent = (type, url) => {
+    const handleAddComponent = (Type, url) => {
         const newId = compArray.length + 1;
 
 
         
         let newComponent;
-        if(type === "header"){
-            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text", image: "", originalImage: "", videoEmbededId: "" };
-        }else if(type === "paragraph"){
-            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "New Text", image: "", originalImage: "", videoEmbededId: "" }
-        }else if(type === "image"){
+        if(Type === "header"){
+            newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
+        }else if(Type === "paragraph"){
+            newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
+        }else if(Type === "in-paragraph"){
+            newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
+        }else if(Type === "image"){
             if(imageData[1]){
-                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[1], originalImage: imageData[0], videoEmbededId: "" };
+                newComponent = { Type: Type, Size: "", Style: [], ID: `component-${newId}`, Content: "", Image: imageData[1], OriginalImage: imageData[0], VideoEmbededId: "" };
             }else{
-                newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "", image: imageData[0], originalImage: imageData[0], videoEmbededId: "" };
+                newComponent = { Type: Type, Size: "", Style: [], ID: `component-${newId}`, Content: "", Image: imageData[0], OriginalImage: imageData[0], VideoEmbededId: "" };
             }
-        }else if(type === "resource"){
-            newComponent = { type: type, size: "md", style: [], id: `component-${newId}`, content: "Test Resource", image: "", originalImage: "", videoEmbededId: "" };
-        }else if(type === "list"){
-            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test List", image: "", originalImage: "", videoEmbededId: ""  };
-        }else if(type === "youtube"){
-            newComponent = { type: type, size: "", style: [], id: `component-${newId}`, content: "Test List", image: "", originalImage: "", videoEmbededId: url  };
+        }else if(Type === "resource"){
+            newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "Test Resource", Image: "", originalImage: "", videoEmbededId: "" };
+        }else if(Type === "list"){
+            newComponent = { Type: Type, Size: "", Style: [], ID: `component-${newId}`, Content: "Test List", Image: "", OriginalImage: "", VideoEmbededId: ""  };
+        }else if(Type === "youtube"){
+            newComponent = { Type: Type, Size: "", Style: [], ID: `component-${newId}`, Content: "Test List", Image: "", OriginalImage: "", VideoEmbededId: url  };
         }
         setCompArray([...compArray, newComponent]);
     };
@@ -333,7 +337,7 @@ const TextEditor = () => {
     
     const handleRemoveComponent = (id) => {
         // Remove the component from the array
-        const newCompArray = compArray.filter((comp) => comp.id !== id);
+        const newCompArray = compArray.filter((comp) => comp.ID !== id);
 
         // Renumber the component IDs based on their new order
         const renumberedCompArray = newCompArray.map((comp, index) => {
@@ -370,7 +374,7 @@ const TextEditor = () => {
     }
 
     const handleExportContent = () => {
-        const articleContent = {Author: author, Publisher: "Undefined", Time: "Undefined", Title: title, Content: compArray, Tags: tags}
+        const articleContent = {Author: Author, Publisher: "Undefined", Time: "Undefined", Title: Title, Content: compArray, Tags: Tags}
         console.log(articleContent)
     }
 
@@ -378,22 +382,22 @@ const TextEditor = () => {
         try {
             // Construct the article object
             const article = {
-                Title: title,
-                Tags: tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
-                CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                Title: Title,
+                Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
+                // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
                 Content: compArray.map(comp => ({
-                    ID: comp.id,
-                    Content: comp.content,
-                    Style: comp.style || '', // Assuming style is an optional field
-                    Type: comp.type,
-                    ImageOriginal: comp.originalImage || '',
-                    Image: comp.image || '',
-                    Size: comp.size || ''
+                    ID: comp.ID,
+                    Content: comp.Content,
+                    Style: comp.Style || '', // Assuming style is an optional field
+                    Type: comp.Type,
+                    ImageOriginal: comp.OriginalImage || '',
+                    Image: comp.Image || '',
+                    Size: comp.Size || ''
                 })),
                 Publisher: "ADMIN", 
-                Time: formatTime(currentTime), 
+                Time: formatTime(currentTime),
                 Date: formatDate(currentDate),
-                Author: author
+                // Author: author
             };
     
             // Reference to the 'Articles' collection
@@ -527,9 +531,9 @@ const TextEditor = () => {
                             handleAddComponent={handleAddComponent} 
                             setTitle={setTitle} 
                             setAuthor={setAuthor} 
-                            currentAuthor={author} 
+                            currentAuthor={Author} 
                             setTags={setTags} 
-                            currentTags={tags} 
+                            currentTags={Tags} 
                             setCategory={setCategory} 
                             innerHtml={innerHtmlContent} 
                             exportContent={handleExportContent} 
@@ -581,13 +585,13 @@ const TextEditor = () => {
                                 <div className="w-full md:w-[800px] h-max flex flex-col items-center">
                                     <div className={`flexitems-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
                                         <Header type={"lg"} classes="p-0 text-center" >
-                                            {title}
+                                            {Title}
                                         </Header>
                                     </div>
                                     <div className={`flex items-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
                                         <div className="flex w-full items-center">
                                             <Header type={"sm"} classes="w-max">
-                                                By: <span className="font-normal">{author}</span>
+                                                By: <span className="font-normal">{Author}</span>
                                             </Header>
                                         </div>
                                     </div>
@@ -666,37 +670,42 @@ const TextEditor = () => {
                                         collisionDetection={closestCenter}
                                         onDragEnd={handleDragEnd}
                                     >
-                                        <SortableContext items={compArray.map(comp => comp.id)} strategy={verticalListSortingStrategy}>
+                                        <SortableContext items={compArray.map(comp => comp.ID)} strategy={verticalListSortingStrategy}>
                                             {compArray.map((comp, index) => (
                                                 <>
-                                                    {comp.type === "header" && (
+                                                    {comp.Type === "header" && (
                                                         <>
-                                                            <DragHeader key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
-                                                    {comp.type === "image" && (
+                                                    {comp.Type === "image" && (
                                                         <>
-                                                            <DragImage key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragImage key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
-                                                    {(comp.type === "paragraph")&& (
+                                                    {(comp.Type === "in-paragraph")&& (
                                                         <>
-                                                            <DragParagraph  key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
+                                                            <DragParagraph  key={comp.ID} indent={true} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
                                                         </>
                                                     )}
-                                                    {comp.type === "resource" && (
-                                                        <> 
-                                                            <DragResource  key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                    {(comp.Type === "paragraph")&& (
+                                                        <>
+                                                            <DragParagraph  key={comp.ID} indent={false} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
                                                         </>
                                                     )}
-                                                    {comp.type === "list" && (
+                                                    {comp.Type === "resource" && (
                                                         <> 
-                                                            <DragList  key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
-                                                   {comp.type === "youtube" && (
+                                                    {comp.Type === "list" && (
                                                         <> 
-                                                            <DragVideo key={comp.id} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragList  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                        </>
+                                                    )}
+                                                   {comp.Type === "youtube" && (
+                                                        <> 
+                                                            <DragVideo key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                 </>
@@ -709,15 +718,15 @@ const TextEditor = () => {
                                                 Tags:
                                             </Header>
                                             <div className="flex flex-wrap items-center w-full h-max">
-                                                {tags.map((tag, index) => (
-                                                    <Tag key={`${index}-${tag[0]}`} backgroundColor={tag[1]} tag={tag[0]} />
+                                                {Tags.map((tag, index) => (
+                                                    <Tag key={`${index}-${tag.Text}`} backgroundColor={tag.Color} tag={tag.Text} />
                                                 ))}
                                             </div>
                                         </div>
                                     </div>
                                     <div className={`flex items-center w-full gap-[30px] mt-[15px] ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex w-full items-center gap-[15px]">
-                                            <Tag  backgroundColor={"#29ff80"} tag={category} />
+                                            <Tag  backgroundColor={"#29ff80"} tag={Category} />
                                         </div>
                                     </div>
                                 </div>
@@ -734,8 +743,8 @@ const TextEditor = () => {
     
         if (active.id !== over.id) {
             setCompArray((compArray) => {
-                const oldIndex = compArray.findIndex(comp => comp.id === active.id);
-                const newIndex = compArray.findIndex(comp => comp.id === over.id);
+                const oldIndex = compArray.findIndex(comp => comp.ID === active.id);
+                const newIndex = compArray.findIndex(comp => comp.ID === over.id);
                 const newArray = arrayMove(compArray, oldIndex, newIndex);
     
                 // Reassign IDs based on the new order

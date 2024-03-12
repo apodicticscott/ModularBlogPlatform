@@ -2,11 +2,12 @@
 
 import styles from "./loginPage.module.css" 
 import React, {useState} from "react";
-import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { getAuth } from "@firebase/auth";
 import { useRouter } from 'next/navigation'
 import { NeoButton } from "../../components/TextComponents";
 import { AnimatePresence, motion } from "framer-motion";
-import { auth} from "../firebase"
+// import { auth} from "../firebase"
+import signIn from "../../firebase/auth/signin"
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
@@ -17,8 +18,22 @@ const LoginPage = () => {
   const handleForm = async (event) => {
       event.preventDefault()
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        return router.push("/")
+        await signIn(email, password);
+
+        firebase.auth().onAuthStateChanged((user) => {
+          let uid = user.uid 
+
+          getAuth()
+            .getUser(uid)
+              .then((userRecord) => {
+              // See the UserRecord reference doc for the contents of userRecord.
+                console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+              })
+            .catch((error) => {
+              console.log('Error fetching user data:', error);
+          })
+        })
+        // return router.push("/")
       }catch(error){
         console.log(error)
           setLoginErrorVisible(true); // Show error
@@ -72,13 +87,13 @@ const LoginPage = () => {
             <div className="flex w-full flex-col sm:flex-row justify-between">
               <NeoButton
                 onSubmit={handleForm}
-                type="submit" classes="w-full mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer"
+                type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer"
               >
                 Login
               </NeoButton>
               <NeoButton
                 onClick={() => router.push("/forgotPassword")}
-                classes="w-full mt-4 flex justify-center 2xl:text-2xl   hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer bg-primary"
+                classes="w-max mt-4 flex justify-center 2xl:text-2xl   hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer bg-primary"
               >
                 Forgot Password?
               </NeoButton>

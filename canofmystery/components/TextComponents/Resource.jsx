@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Resource = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id}) => {
+const Resource = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, innerHTML}) => {
 
 
     
@@ -84,35 +84,22 @@ const Resource = ({children, text, type, classes, style, editable, highlight, on
         return {__html: text};
     };
 
-    if(text){
-        if(type === "sm"){
-            return(
-                <div id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
-                
-                </div>
-            )
-        }else if(type === "md"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-                    
-                </div>
-            )
-        }
-    }else{
-        if(type === "sm"){
-            return(
-                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children} 
-                </div>
-            )
-        }else if(type === "md"){
-            return(
-                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children} 
-                </div>
-            )
-        }
+
+    if(type === "sm"){
+        return(
+            <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+                {children} 
+            </div>
+        )
+    }else if(type === "md"){
+        return(
+            <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+                {children} 
+            </div>
+        )
+        
     }
+    
 
 
 } 

@@ -1,10 +1,14 @@
 'use client'
 import React from "react";
 
-const Paragraph = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id}) => {
+const Paragraph = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, indent, innerHTML}) => {
+    let indentVal;
 
-
-    
+    if(indent){
+        indentVal === "indent-[50px]"
+    }else{
+        indentVal === ""
+    }
 
 
     let styles = {
@@ -26,7 +30,7 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: "indent-[50px]"
+            textIndent: indentVal
         },
         md: {
             width: "w-full",
@@ -47,7 +51,7 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: "indent-[50px]"
+            textIndent: indentVal
         }
     }
 
@@ -77,38 +81,23 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
         md: convertStylesToString(tempStyles.md),
     };
 
-    const createMarkudiv = () => {
+    const createMarkup = () => {
         return {__html: text};
     };
 
-    if(text){
-        if(type === "sm"){
-            return(
-                <div id={id} data-compid={id} className={`${styles.sm} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown}  dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }else if(type === "md"){
-            return(
-                <div id={id} data-compid={id}  className={`${styles.md} ${classes}`} contentEditable={editable} suppressContentEditableWarning={true} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={createMarkup()}>
-    
-                </div>
-            )
-        }
-    }else{
-        if(type === "sm"){
-            return(
-                <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children}
-                </div>
-            )
-        }else if(type === "md"){
-            return(
-                <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} >
-                    {children}
-                </div>
-            )
-        }
+
+    if(type === "sm"){
+        return(
+            <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+                {children}
+            </div>
+        )
+    }else if(type === "md"){
+        return(
+            <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+                {children}
+            </div>
+        )
     }
 
 

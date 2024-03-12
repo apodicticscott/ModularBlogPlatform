@@ -6,7 +6,7 @@ import FileUpload from "./ImageEditor/FileUpload";
 import { MdOutlineDownloadDone } from "react-icons/md"
 import { MdOutlineQuestionMark } from "react-icons/md"
 import { Dialog, Button} from '@mui/material';
-import {  makeStyles  } from '@mui/styles'
+import { makeStyles } from '@mui/styles'
 import Image from 'next/image';
 
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
@@ -235,7 +235,8 @@ const ControlPanel = ({
     const handleChangeTag = (index, newValue) => {
         setTags(tags => {
             const newTags = [...tags];
-            newTags[index] = [newValue, newTags[index][1]];
+            newTags[index] = {Text: newValue, Color: newTags[index].Color};
+            console.log(newTags)
             return newTags;
         });
     };
@@ -248,7 +249,7 @@ const ControlPanel = ({
 
     const handleAddTags = () => {
         if (currentTags.length < 4) {
-            setTags(tags => [...tags, ["Text Here", colorPicker.pickColor()]]);
+            setTags(tags => [...tags, {Text: "Text Here", Color: colorPicker.pickColor()}]);
         } else {
             setTagErrorVisible(true); // Show error
             setTimeout(() => setTagErrorVisible(false), 3000); // Hide error after 3 seconds
@@ -362,12 +363,12 @@ const ControlPanel = ({
                     </div>
                     <div className='flex flex-wrap min-h-[50px] w-full bg-base-300 rounded-md'>
                         {currentTags.map((tag, index) => (
-                            <div key={`${index}-${tag[0]}`}
+                            <div key={`${index}-${tag.Text}`}
                                 className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex flex-wrap items-center gap-[5px] rounded'
                                 >
                                 
                                 <div className='w-[calc(100%_-_32px)] h-full text-xl max-w-[calc(100%_-_27px)] flex items-center truncate text-ellipsis' suppressContentEditableWarning={true} contentEditable={true} onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
-                                    {tag[0]}
+                                    {tag.Text}
                                 </div>
                                 <button onClick={() => handleRemoveTag(index)}>
                                     <TiDelete className="text-2.7xl" />
@@ -434,9 +435,15 @@ const ControlPanel = ({
                     <span className='text-t-header-light dark:text-t-header-dark' >Header</span>
                 </div>
                 <div className="flex flex-col">
+                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("in-paragraph")}>
+                        <FaPlus className='text-t-header-light dark:text-t-header-dark' />
+                        <span className='text-t-header-light dark:text-t-header-dark'>Indented Paragraph</span>
+                    </div>
+                </div>
+                <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("paragraph")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Body</span>
+                        <span className='text-t-header-light dark:text-t-header-dark'>Unindented Paragraph</span>
                     </div>
                 </div>
                 {/* <div className="flex flex-col">
