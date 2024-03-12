@@ -9,7 +9,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "next/router";
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
-import DropDownItem from "./components/DropDownItem";
+import DropDownItem from "../components/DropDownItem";
 
 console.log(uscaLogo)
 

@@ -1,7 +1,6 @@
 import React from "react";
 // Assuming the import paths are correct and the components exist
 import { Header, XLHeader, LargeParagraph } from "../textComponents";
-import NeoButton from "../textComponents/neoButton";
 
 // Changed function signature to accept props as an object
 // Destructured left, right, and bottom from props
