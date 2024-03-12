@@ -33,7 +33,7 @@ const LoginPage = () => {
               console.log('Error fetching user data:', error);
           })
         })
-        // return router.push("/")
+       return router.push("/")
       }catch(error){
         console.log(error)
           setLoginErrorVisible(true); // Show error

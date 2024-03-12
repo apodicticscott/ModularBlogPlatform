@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const useChartData = (reportData) => {
     return useMemo(() => {
         if (!reportData) return [];
+        if (!reportData.report) return[];
 
         let eventData = reportData.report.rows
             .map(row => ({

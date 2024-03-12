@@ -1,4 +1,5 @@
 // pages/api/setAdminRole.js
+// needs to be written to check now if admin role is true in the firestore, if it is then setcustom claims to true. --scott
 import admin from '../../utils/firebaseAdmin';
 
 export default async function handler(req, res) {
