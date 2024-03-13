@@ -25,7 +25,7 @@ const Navbar = () => {
   const [dropDownHeight, setDropDownHeight,] = useState(0);
   const [isPageReady, setIsPageReady] = useState(false);
 
-  const dropDownLinks = [{text: "Create Project"}, {text: "Our Project"}, {text: "Instructions"}, {text: "Old Can Of Mystery"}]
+  const dropDownLinks = [{text: "Create Project", link:""}, {text: "Our Project", link:""}, {text: "Instructions", link:""}, {text: "Old Can Of Mystery", link:""}]
 
   
 
@@ -112,7 +112,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     <li key={index}>
-                      <a className="hover:text-t-header-light dark:hover:text-t-header-dark"> {link.text} </a>
+                      <a className="hover:text-t-header-light dark:hover:text-t-header-dark" href={link.link}> {link.text} </a>
                     </li>
                   )
                 }
@@ -125,10 +125,10 @@ const Navbar = () => {
                   <a> About </a>
                 </li>
                 {
-                  dropDownLinks.map(({text}, index) => 
+                  dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
                     <li key={index}>
-                      <a> {text} </a>
+                      <a href={link.link}> {link.text} </a>
                     </li>
                     :
                     null
@@ -137,10 +137,10 @@ const Navbar = () => {
               </ul>
               <ul className="w-max md:flex-wrap lg:hidden h-max whitespace-nowrap ">
                 {
-                  dropDownLinks.map(({text}, index) => 
+                  dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
                     <li key={text} className="text-right">
-                      <a className="hover:text-"> {text} </a>
+                      <a className="hover:text-" href={link.link}> {link.text} </a>
                     </li>
                     :
                     null
