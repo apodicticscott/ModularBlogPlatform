@@ -5,6 +5,10 @@ import { motion } from 'framer-motion';
 import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { getAuth } from "@firebase/auth";
+import firebase_app from '/firebase/config';
+
+const auth = getAuth(firebase_app);
 
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
@@ -64,7 +68,18 @@ const Navbar = () => {
 
   const handleDownThemeClick = () => {
     setHideTheme(!hideTheme)
-  }
+  };
+
+  const handleLogOut = () => {
+    auth.signOut() 
+      .then(() => {
+        console.log("User signed out successfully");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+
   
 
   const handleDropDownClick = () => {
@@ -179,7 +194,20 @@ const Navbar = () => {
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} role="link">SearchPage</RiSearchFill>
             <input type="search" name="search" required minLength="4" className="neo-input w-[180px]"/>
-            <MdAccountCircle style={{fontSize: "35px"}} />
+            <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                <MdAccountCircle style={{fontSize: "35px"}} />
+              </div>
+              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-transparent backdrop-blur-sm	border-3 rounded-box w-52">
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li><a onClick={handleLogOut}>Logout</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

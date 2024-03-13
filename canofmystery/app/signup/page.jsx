@@ -1,6 +1,5 @@
 'use client'
 
-import styles from "./signupPage.module.css"
 import { NeoButton } from "../../components/TextComponents"; 
 import React from "react";
 import {  createUserWithEmailAndPassword   } from 'firebase/auth';
@@ -20,9 +19,10 @@ const SignUpPage = () => {
       if (password) {
         try {
             await signUp( email, password);
+            router.push("/");
         } catch(error) {
             console.log("Sorry, something went wrong. Please try again.");
-            console.log(error)
+            console.log(error);
         }     
       }
   }

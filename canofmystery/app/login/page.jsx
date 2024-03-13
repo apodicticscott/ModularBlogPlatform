@@ -1,45 +1,32 @@
 'use client'
 
-import styles from "./loginPage.module.css" 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { getAuth } from "@firebase/auth";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'; // Corrected import
 import { NeoButton } from "../../components/TextComponents";
 import { AnimatePresence, motion } from "framer-motion";
-// import { auth} from "../firebase"
-import signIn from "../../firebase/auth/signin"
+import signIn from "../../firebase/auth/signin";
+import firebase_app from "../../firebase/config";
+const auth = getAuth(firebase_app);
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loginErrorVisible, setLoginErrorVisible] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const handleForm = async (event) => {
-      event.preventDefault()
-      try {
-        await signIn(email, password);
-
-        firebase.auth().onAuthStateChanged((user) => {
-          let uid = user.uid 
-
-          getAuth()
-            .getUser(uid)
-              .then((userRecord) => {
-              // See the UserRecord reference doc for the contents of userRecord.
-                console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-              })
-            .catch((error) => {
-              console.log('Error fetching user data:', error);
-          })
-        })
-       return router.push("/")
-      }catch(error){
-        console.log(error)
-          setLoginErrorVisible(true); // Show error
-          setTimeout(() => setLoginErrorVisible(false), 3000); // Hide error after 3 seconds
-      }
-  }
+    event.preventDefault();
+    try {
+      console.log(email, password);
+      await signIn(email, password);
+      router.push("/"); // Navigate to home page after successful login
+    } catch (error) {
+      console.log(error);
+      setLoginErrorVisible(true); // Show error
+      setTimeout(() => setLoginErrorVisible(false), 3000); // Hide error after 3 seconds
+    }
+  };
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
