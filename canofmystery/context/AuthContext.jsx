@@ -1,4 +1,4 @@
-/*'use client'
+'use client'
 
 
 import React from 'react';
@@ -38,4 +38,4 @@ export const AuthContextProvider = ({
             {loading ? <div>Loading...</div> : children}
         </AuthContext.Provider>
     );
-};*/
+};
