@@ -130,7 +130,7 @@ const Footer = () => {
                 <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </a>
-                <Link href="NEED_LINK">
+                <Link href="instructions">
                   Instructions
                 </Link>
               </div>
