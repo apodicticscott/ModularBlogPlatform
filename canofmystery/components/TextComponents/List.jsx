@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const List = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, listType}) => {
+const list = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, listType}) => {
 
 
     
@@ -115,4 +115,4 @@ const List = ({children, text, type, classes, style, editable, highlight, onClic
 } 
 
 
-export default List;
+export default list;

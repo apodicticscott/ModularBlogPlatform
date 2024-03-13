@@ -1,18 +1,39 @@
 import React, {useState} from "react";
+import { getFirestore, collection, addDoc} from "firebase/firestore"
+import { firebase_app } from "../../firebase/config"
+import { AnimatePresence, motion } from "framer-motion";
 
-import Link from "../TextComponents/Link"
-import Header from "../TextComponents/Header1"
-import NeoButton from "../TextComponents/NeoButton";
+import { Link, NeoButton } from "../TextComponents"
 import { MdWbSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
+import Header from "../TextComponents/header1"
+
 
 const Footer = () => {
   const [light, setLight] = useState(true);
+  const [subscriberEmail, setSubcriberEmail] = useState('');
+  const [errorSubscribeVisible, setErrorSubscribeVisible] = useState(false);
 
   const handleThemeClick = () => {
     document.documentElement.classList.toggle('dark');
     setLight(!light)
   };
+  const db = getFirestore(firebase_app)
+
+  const subscribeToTheCan = async (event) => {
+      event.preventDefault();
+      try{
+        console.log("subscribing to newsletter.");
+        await addDoc(collection(db, "SubscriberEmails"), {Email:subscriberEmail});
+        console.log("subscribed to newsletter.");
+      }
+      catch (err){
+        errorSubscribeVisible(true);
+        console.log(err);
+      }
+        
+  }
+
 
 
   return (
@@ -27,14 +48,26 @@ const Footer = () => {
                   To The Can
                 </span>
               </Header>
-              <div className="flex flex-row gap-[15px] ">
-                <input className=" w-full xs-sm:grow text-xl xs:tracking-[-1.76px]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md">
+              <form onSubmit={subscribeToTheCan} className="flex flex-row gap-[15px] h-full">
               
-                </input>
-                <NeoButton classes={"bg-primary-dark"}>
+                <input onChange={(e) => setSubcriberEmail(e.target.value)} required type="email" name="email" id="email" className=" w-full xs-sm:grow text-xl xs:tracking-[-1.76px]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md"/>
+                <NeoButton classes={"bg-primary-dark "} type="submit" onSubmit={subscribeToTheCan}>
                   Submit
                 </NeoButton>
-              </div>
+                <AnimatePresence>
+                    {errorSubscribeVisible && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="rounded-md"
+                            style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
+                        >
+                            Whoa! You may have entered a wrong username or password. Please try again.
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+              </form>
         </div>
       </div>
       <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous border-t-2 border-t-black dark:bg-base-100-dark lg:border-t-3 ">
@@ -57,24 +90,24 @@ const Footer = () => {
                 Explore
               </div>
               <div className="flex flex-col justify-between gap-[10px]">
-                <Link href="www.usca.edu">
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
-                </Link>
-                <Link href="www.usca.edu">
+                </a>
+                <Link href="citations">
                   MLA Citations
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="blog">
                   Articles
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="canitems">
                   Can Items
                 </Link>
-                <Link href="www.usca.edu">
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </Link>
-                <Link href="www.usca.edu">
+                </a>
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="" rel="noopener noreferrer">
                   Old Can Of Mystery
-                </Link>
+                </a>
               </div>
             </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] text-right md:text-left hidden md:flex">
@@ -94,10 +127,10 @@ const Footer = () => {
                 <Link href="/admin">
                   Admin Dashboard
                 </Link>
-                <Link href="www.usca.edu">
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </Link>
-                <Link href="www.usca.edu">
+                </a>
+                <Link href="NEED_LINK">
                   Instructions
                 </Link>
               </div>
@@ -108,24 +141,24 @@ const Footer = () => {
                 Explore
               </div>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link href="www.usca.edu">
+              <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
-                </Link>
-                <Link href="www.usca.edu">
+                </a>
+                <Link href="citations">
                   MLA Citations
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="blog">
                   Articles
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="canitems">
                   Can Items
                 </Link>
-                <Link href="www.usca.edu">
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </Link>
-                <Link href="www.usca.edu">
+                </a>
+                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="" rel="noopener noreferrer">
                   Old Can Of Mystery
-                </Link>
+                </a>
               </div>
             </div>
             <div className="h-max w-[50%] flex flex-col justify-items-right gap-[10px] text-right">

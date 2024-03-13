@@ -1,6 +1,6 @@
 import React from "react";
 
-const NeoButtonLink = ({children, link, style}) => {
+const neoButtonLink = ({children, link, style}) => {
 
     return(
         <a href={link}>
@@ -12,4 +12,4 @@ const NeoButtonLink = ({children, link, style}) => {
     )
 }
 
-export default NeoButtonLink;
+export default neoButtonLink;

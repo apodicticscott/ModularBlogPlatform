@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = ({children}) => {
+const header = ({children}) => {
     return(
 
         <div className={`flex flex-wrap text-3xl 3xl:text-[1.5vw] font-bold tracking-[-5.76px] `}>
@@ -9,4 +9,4 @@ const Header = ({children}) => {
     )
 }
 
-export default Header
+export default header
