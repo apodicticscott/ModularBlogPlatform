@@ -154,7 +154,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                    <li key={text} className="text-right">
+                    <li key={link.text} className="text-right">
                       <a className="hover:text-" href={link.link}> {link.text} </a>
                     </li>
                     :
