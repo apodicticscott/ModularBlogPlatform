@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLayoutEffect } from "react";
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -17,7 +18,7 @@ console.log(uscaLogo)
 
 const Navbar = () => {
 
-
+  const router = useRouter();
   const navRef = useRef(null);
   const dropDownRef = useRef(null);
 
@@ -31,9 +32,6 @@ const Navbar = () => {
 
   const dropDownLinks = [{text: "Create Project", link:""}, {text: "Our Project", link:""}, {text: "Instructions", link:""}, {text: "Old Can Of Mystery", link:""}]
 
-  
-
-  
   useEffect(() => {
 
     if (navRef.current) {
@@ -70,16 +68,33 @@ const Navbar = () => {
     setHideTheme(!hideTheme)
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const handleLogOut = () => {
     auth.signOut() 
       .then(() => {
         console.log("User signed out successfully");
+        router.push("/")
       })
       .catch((error) => {
         console.error("Error signing out:", error);
       });
   };
-
+  const handleLogin = () => {
+   router.push("/login")
+  };
   
 
   const handleDropDownClick = () => {
@@ -205,7 +220,7 @@ const Navbar = () => {
                     <span className="badge">New</span>
                   </a>
                 </li>
-                <li><a onClick={handleLogOut}>Logout</a></li>
+                {isLoggedIn ? <li><a onClick={handleLogOut}>Logout</a></li> : <li><a onClick={handleLogin}>Login</a></li>}
               </ul>
             </div>
           </div>
