@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import tt, { Marker } from '@tomtom-international/web-sdk-maps';
 
-const apiKey = 'fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU';
+const apiKey = process.env.MAPS_API_KEY;
 
 const MapComponent = ({ locationData }) => {
     const [mapLongitude, setMapLongitude] = useState(0);
