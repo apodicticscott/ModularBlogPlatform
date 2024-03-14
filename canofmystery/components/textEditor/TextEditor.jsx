@@ -50,7 +50,7 @@ import DragImage from "./draggableComponents/dragImage";
 import DragList from "./draggableComponents/dragList"
 import DragVideo from "./draggableComponents/dragVideo"
 
-import { NeoButton } from "../textComponents";
+import NeoButton from "../TextComponents/NeoButton";
 
 import Help from "./Help/help"
 
@@ -58,7 +58,6 @@ import addLinkHelp from "./Assets/help_add_link.gif"
 
 import {getFirestore, collection, getDoc, doc, addDoc} from "firebase/firestore"
 import { app } from "../../app/firebase"
-import { title } from "process";
 
 const useStyles = makeStyles({
     button: {
