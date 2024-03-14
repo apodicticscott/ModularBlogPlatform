@@ -32,7 +32,7 @@ const Recent = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`w-full h-max flex 2xl:justify-center justify-start gap-[25px] 3xl:px-[100px]  xl:px-[50px] xs:px-[calc((100vw_-_280px)_/_2)] sm:px-[25px] overflow-scroll no-scrollbar`}>
+                <div className={`w-full h-max flex 2xl:justify-center justify-start gap-[25px] 3xl:px-[100px]  xl:px-[50px] px-7 overflow-scroll no-scrollbar`}>
                     {
                         tempArticleArray.map((article, index) => {
 

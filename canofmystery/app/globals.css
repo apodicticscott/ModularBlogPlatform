@@ -276,3 +276,7 @@ html {
     border: 2px solid black;
   }
 }
+
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib{
+  visibility: hidden;
+}

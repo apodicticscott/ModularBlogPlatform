@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc } from "firebase/firestore"
+import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc } from "firebase/firestore"
 import { firebase_app } from "../config"
 
 const db = getFirestore(firebase_app)
@@ -50,3 +50,27 @@ export const setArticlesApproval = async (articleIds, boolean) => {
         await updateDoc(docRef, { Approved: boolean});
     }));
 }
+
+export const fetchCitationGuide = async () => {
+    const docRef = doc(db, "CitationGuide", "V9LQ0H3UixafSHZ3eJwK");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      return docSnap.data();
+    } else {
+      console.log("No such document!");
+    }
+};
+
+export const fetchOurProject = async () => {
+    const docRef = doc(db, "OurProject", "P3R6qkjBjHnyg2CPOo2Z");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      return docSnap.data();
+    } else {
+      console.log("No such document!");
+    }
+};

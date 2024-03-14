@@ -1,4 +1,4 @@
-import {NeoButton } from '/components/TextComponents';
+import NeoButton from "../components/TextComponents/NeoButton";
 import Header from "../components/TextComponents/Header1";
 import React from 'react'
 

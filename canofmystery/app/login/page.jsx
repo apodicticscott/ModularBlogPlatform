@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { getAuth } from "@firebase/auth";
 import { useRouter } from 'next/navigation'; // Corrected import
-import { NeoButton } from "../../components/TextComponents";
+import NeoButton from "../../components/TextComponents/NeoButton";
 import { AnimatePresence, motion } from "framer-motion";
 import signIn from "../../firebase/auth/signin";
 import firebase_app from "../../firebase/config";

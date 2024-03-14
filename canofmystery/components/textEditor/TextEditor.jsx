@@ -36,8 +36,8 @@ import {
 import "../../app/globals.css"
 
 import ControlPanel from "./controlPanel"
-import Tag from "../textComponents/NeoTag"
-import Header from "../textComponents/header1";
+import Tag from "../TextComponents/NeoTag"
+import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/cropUtils";
 
 import placeholderOne from "../../public/Assets/1.png"
@@ -58,6 +58,7 @@ import addLinkHelp from "./Assets/help_add_link.gif"
 
 import {getFirestore, collection, getDoc, doc, addDoc} from "firebase/firestore"
 import { app } from "../../app/firebase"
+import { title } from "process";
 
 const useStyles = makeStyles({
     button: {
@@ -397,11 +398,13 @@ const TextEditor = ({articleId}) => {
                 Publisher: "ADMIN", 
                 Time: formatTime(currentTime),
                 Date: formatDate(currentDate),
-                // Author: author
+                CoverImage: coverImageData,
+                Approved: false,
+                Author: Author
             };
     
             // Reference to the 'Articles' collection
-            const articleColRef = collection(db, 'Articles');
+            const articleColRef = collection(db, 'OurProject');
             
             // Add the article to the collection
             const docRef = await addDoc(articleColRef, article);
@@ -485,20 +488,57 @@ const TextEditor = ({articleId}) => {
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
                                 maxWidth="max-content"
-                            
+                                classes={{ paper: { borderRadius: '10px'}}}
                             >   
-                                <div className="flex flex-col p-[15px] gap-[15px] bg-base-100">
+                                <div className="flex flex-col p-7 gap-[15px] bg-base-100">
                                     <Header type="sm" id="alert-dialog-title">
                                         {"Are you sure?"}
                                     </Header>
-                                    <div className="flex flex-col gap-[10px]">
-                                        <div>
-                                            Please make sure this is how you want to submit the article.
-                                        </div>
-                                        <NeoButton className='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2 bg-primary-dark' onClick={() => {handleUploadArticle(); setIsDoneNotificationOpen(false)}}>
-                                            Yes Im Sure!
-                                        </NeoButton>   
+                                    <div>
+                                        Please make sure this is how you want to submit the article.
                                     </div>
+                                    <div>
+                                        {
+                                            (Title.length === 0 || Author.length === 0 || Tags.length === 0 || compArray.length === 0)
+                                            &&
+                                            "You have left the following items blank:"
+                                        }
+                                    </div>
+                                    <div className="flex flex-col gap-[10px] bg-[#fd6666] rounded-md p-3 w-max">
+                                        {
+                                            (coverImageData.length[0] === undefined && coverImageData.length[1]) === undefined
+                                            &&
+                                            "Cover Image"
+                                        }
+                                        {(Title.length === 0 && (coverImageData.length[0] === undefined && coverImageData.length[1] === undefined)) && "," } &nbsp;
+                                        {
+                                            Title.length === 0
+                                            &&
+                                            "Title"
+                                        }
+                                        {(Title.length === 0 && Author.length === 0) && "," }  &nbsp;
+                                        {
+                                            Author.length === 0
+                                            &&
+                                            "Author"
+                                        }
+                                        {(Tags.length === 0  && Author.length === 0) && "," }  &nbsp;
+                                        {
+                                            Tags.length === 0 
+                                            &&
+                                            "Tags"
+                                        }
+                                        {(Tags.length === 0  && compArray.length === 0) && "," } &nbsp;
+                                        {
+                                            compArray.length === 0
+                                            &&
+                                            "Article Content"
+                                        }
+  
+                                    </div>
+                                    <NeoButton classes='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2 bg-primary-dark' onClick={() => {handleUploadArticle(); setIsDoneNotificationOpen(false)}}>
+                                        Yes Im Sure!
+                                    </NeoButton> 
                                 </div>
                             </Dialog>
                                 
@@ -590,9 +630,14 @@ const TextEditor = ({articleId}) => {
                                     </div>
                                     <div className={`flex items-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
                                         <div className="flex w-full items-center">
-                                            <Header type={"sm"} classes="w-max">
-                                                By: <span className="font-normal">{Author}</span>
-                                            </Header>
+                                            {
+                                                Author
+                                                &&
+                                                <Header type={"sm"} classes="w-max">
+                                                    By: <span className="font-normal">{Author}</span>
+                                                </Header>
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

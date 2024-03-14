@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
-import Header from "../textComponents/header1"
-import { LargeParagraph } from "../textComponents";
+import Header from "../TextComponents/Header1"
+import LargeParagraph from "../TextComponents/LargeParagraph"
 import { MdArrowForwardIos } from "react-icons/md";
 
 

@@ -1,9 +1,10 @@
 'use client'
-import React, {useState, useEffect, useMemo} from "react"
+import React, {useState, useEffect} from "react"
 import { searchArticles, fetchArticles, deleteArticles, getTotalUnapprovedArticles, setArticlesApproval } from "../../firebase/articleUtils/articleUtils"
 import { fetchGoogleAnalyticsReport, ApiSignIn } from "../../firebase/analitics/analyticsUtils"
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../../components/TextComponents/Header1"
+import NeoButton from "../../components/TextComponents/NeoButton"
 import { app } from "../firebase"
 import { FaPen } from "react-icons/fa";
 import { useRouter } from 'next/navigation'
@@ -13,8 +14,10 @@ import { RiSearchFill } from "react-icons/ri"
 import { MdOutlineDownloadDone, MdOutlinePreview,  MdClose, MdDone  } from "react-icons/md";
 import { Checkbox, Badge, Tooltip, Divider, Pagination} from "@mui/material"
 import { BarChart } from '@mui/x-charts';
-import { NeoButton } from "../../components/TextComponents"
 import { MdArticle, MdAccountCircle,  MdAnalytics } from "react-icons/md";
+import LinearProgress from '@mui/material/LinearProgress';
+import WorldMap from "../../Maps/mapUtils"
+import { placeById} from "@tomtom-international/web-sdk-maps"
 
 import Loader from "../../components/loader/loader"
 
@@ -25,49 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const useChartData = (reportData) => {
-    return useMemo(() => {
-        if (!reportData) return [];
-        if (!reportData.report) return[];
-
-        let eventData = reportData.report.rows
-            .map(row => ({
-                rawTime: row.dimensionValues[0].value,
-                time: row.dimensionValues[0].value,
-                numUsers: +row.metricValues[0].value,
-            }))
-            .sort((a, b) => a.rawTime.localeCompare(b.rawTime));
-
-        const minTime = parseInt(eventData[0]?.rawTime, 10);
-        const maxTime = parseInt(eventData[eventData.length - 1]?.rawTime, 10);
-
-        const filledEventData = [];
-        for (let time = minTime; time <= maxTime; time++) {
-            const timeStr = time.toString().padStart(2, '0');
-            const existingData = eventData.find(event => event.rawTime === timeStr);
-            if (existingData) {
-                filledEventData.push(existingData);
-            } else {
-                filledEventData.push({ rawTime: timeStr, time: timeStr, numUsers: 0 });
-            }
-        }
-
-        return filledEventData.map(data => ({
-            ...data,
-            time: timeValueFormatter(data.time),
-        }));
-    }, [reportData]);
-};
-
-const timeValueFormatter = (value) => {
-    if(value[0] === "0"){
-        return `${value[1]} Mins Ago`
-    }else{
-        return `${value} Mins Ago`
-    }
-};
-
-
 const Admin = () => {
     const [articles, setArticles] = useState([]);
     const [numUnapproved, setNumUnapproved] = useState();
@@ -77,7 +37,14 @@ const Admin = () => {
     const [isSignedIn, setIsSignedIn] = useState(false)
     const [loading, setLoading] = useState(true);
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
-    const [currentEvent, setCurrentEvent] = useState();
+    const [chartData, setChartData] = useState([])
+    const [locationData, setLocationData] = useState([])
+    const [usersPerCountry, setUsersPerCountry] = useState([])
+    const [error, setError] = useState(null);
+    const [locNumber, setLocNumber] = useState([]);
+
+    const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
+    
     const router = useRouter()
 
     const classes = useStyles();
@@ -96,6 +63,7 @@ const Admin = () => {
     useEffect(() => {
         if (search.trim() === "") {
             handleFetchArticles();
+            console.log(articles)
         } else {
             handleSearchArticles(search);
         }
@@ -117,7 +85,9 @@ const Admin = () => {
     const handleDeleteArticles = async () => {
         deleteArticles(selectedArticles)
         setSelectedArticles([]);
-        setArticles(await fetchArticles()); // Refresh articles list after deletion
+        const tempArticles = await fetchArticles();
+        console.log(tempArticles)
+        setArticles(tempArticles); // Refresh articles list after deletion
     };
 
     const handleSetArticlesApproved = async () => {
@@ -135,74 +105,50 @@ const Admin = () => {
         setSelectedArticles([])
     }
 
-
-    const reportRequest = {
-        minuteRanges: [
-            {
-              startMinutesAgo: 29,
-              endMinutesAgo: 0
-            }
-        ],
-        metrics: [
-            {
-              name: "activeUsers"
-            }
-        ],
-        dimensions: [
-            {
-              name: "minutesAgo"
-            }
-        ],
-    };
-
-    const [reportData, setReportData] = useState(null);
-    const [error, setError] = useState(null);
-
-    const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
-    
-    const chartData = useChartData(reportData);
-
-    const handleFetchReport = async () => {
-        setError(null); // Clear any previous errors
-        try {
-            const report = await fetchGoogleAnalyticsReport(propertyId, reportRequest);
-            setReportData(report); // Update the state with the fetched report data
-        } catch (err) {
-            console.error(err); // Log any errors that occurred during the fetch
-            setError(err); // Update the error state with the caught error
-        } 
-    };
-
-    const timeValueFormatter = (value) => {
-        if(value[0] === "0"){
-            return `${value[1]} Mins Ago`
-        }else{
-            return `${value} Mins Ago`
-        }
-    }
-
     const handleSignIn = async () => {
         await ApiSignIn();
         setIsSignedIn(true); // Update the state based on actual sign-in status
     };
 
-    useEffect(() => {
-        // Check if the user is signed in before setting the interval
-        if (isSignedIn) {
-            // Call the function immediately if needed, then set the interval
-            handleFetchReport(); // Optional: Remove if you don't want to execute immediately
-    
-            const intervalId = setInterval(() => {
-                handleFetchReport();
-            }, 1000); // 5000 milliseconds = 5 seconds
-    
-            // Cleanup function to clear the interval when the component unmounts
-            return () => clearInterval(intervalId);
-        }
-        // If the isSignedIn status changes, the effect will rerun.
-    }, [isSignedIn]);
 
-    if(isSignedIn === false){
+    function calculateCountryUserPercentage(data) {
+        // Initialize a map to hold country totals
+        const countryTotals = new Map();
+        console.log(data)
+        // Calculate total users and accumulate totals by country
+        let totalUsers = 0;
+        data.forEach(item => {
+          const users = parseInt(item.number, 10);
+          totalUsers += users;
+          if (countryTotals.has(item.country)) {
+            countryTotals.set(item.country, countryTotals.get(item.country) + users);
+          } else {
+            countryTotals.set(item.country, users);
+          }
+        });
+      
+        // Convert to desired output format with percentage calculation
+        const result = Array.from(countryTotals).map(([country, numUsers]) => ({
+          country,
+          percentage: (numUsers / totalUsers * 100).toFixed(2),
+          numUsers
+        }));
+      
+        return result;
+      }
+
+    const handleFetch = async () => {
+        const {pivotReport, realTimeReport} = await fetchGoogleAnalyticsReport(propertyId)
+        setLocNumber(calculateCountryUserPercentage(pivotReport.result))
+        setLocationData(pivotReport)
+        setChartData(realTimeReport)
+    }
+
+    useEffect(() => {
+        handleFetch()
+    }, [])
+
+    if(!isSignedIn){
         return(
             <div className="w-full h-screen pt-[69px] flex items-center justify-center gap-[50px]">
                 <Header type="sm" classes={"w-max"}>
@@ -214,6 +160,8 @@ const Admin = () => {
             </div>
         )
     }
+
+
 
 
     const ArticlePanel = () => {
@@ -232,7 +180,7 @@ const Admin = () => {
         };
 
         return(
-            <div className="flex flex-col h-full w-full justify-between ">
+            <div className="flex flex-col h-full w-full justify-between p-7">
                 <div className="flex flex-col gap-[25px] w-full">
                     <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
                         <div className="w-full sm:w-max h-full flex gap-[15px]">
@@ -412,14 +360,24 @@ const Admin = () => {
                     <Header type="lg" classes="w-full">
                         {
                         (currentPanel === "articles")
-                        &&
+                        ?
                         <>
                             Article Console.
+                        </>
+                        :
+                        <>
+                            {
+                                (currentPanel === "analytics")
+                                &&
+                                <>
+                                    Analytics.
+                                </>
+                            }
                         </>
                         }
                     </Header>
                 </div>
-                <div className="h-full w-full p-7 flex flex-col items-center gap-[15px]">
+                <div className="h-full w-full flex flex-col items-center gap-[15px]">
                     {
                         (currentPanel === "articles")
                         &&
@@ -428,20 +386,70 @@ const Admin = () => {
                     {
                         (currentPanel === "analytics")
                         &&
-                        <div className="flex w-full">
-                            {chartData &&
-                                <BarChart
-                                    width={500}
-                                    height={200}
-                                    dataset={chartData}
-                                    yAxis={[{label: "Number of Users"}]}
-                                    xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
-                                    series={[{ dataKey: 'numUsers', label: 'User Trafic', valueFormatter}]}
-                                    margin={{
-                                        top: 5, right: 30, left: 20, bottom: 5,
-                                    }}
-                                />
-                            }
+                        <div className="flex w-full h-max ">
+                            <div className="w-0 h-full flex items-center py-7">
+                                {
+                                    chartData !== undefined
+                                    &&
+                                    <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
+                                        <span className="text-lg underline decoration-dashed">
+                                            USERS IN LAST 30 MINUTES.
+                                        </span>
+                                        <span className="text-3xl">
+                                            1
+                                        </span>
+                                        <span className="text-lg underline decoration-dashed">
+                                            USERS PER MINUTE
+                                        </span>
+                                        <BarChart
+                                            width={350}
+
+                                            height={100}
+                                            dataset={chartData.result}
+
+                                            yAxis={[{label: "Number of Users"}]}
+                                            xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
+                                            series={[{ dataKey: 'numUsers', valueFormatter}]}
+                                            margin={{
+                                                top: 5, right: 30, left: 20, bottom: 5,
+                                            }}
+                                        />
+                                        <div className="w-full flex justify-between">
+                                            <span className="text-lg underline decoration-dashed">
+                                                TOP 3 COUNTRIES.
+                                            </span>
+                                            <span className="text-lg underline decoration-dashed">
+                                                USERS
+                                            </span>
+                                        </div>
+                                        {
+                                            locNumber.map((data) => (
+                                                <>
+                                                    <div className="w-full flex justify-between">
+                                                        <span className="text-lg decoration-dashed">
+                                                            {data.country}
+                                                        </span>
+                                                        <span className="text-lg decoration-dashed">
+                                                            {data.numUsers}
+                                                        </span>
+                                                    </div>
+                                                    <LinearProgress  variant="determinate" value={data.percentage}/>
+                                                </>
+                                            ))
+                                        }
+
+                                    </div>
+                                }
+                            </div>
+                            <WorldMap className="w-full" locationData={locationData.result}/>
+                            {/* {
+                                reportData.map(row => (
+                                    <>
+                                        {row.city}
+                                        {row.number}
+                                    </>
+                                ))
+                            } */}
                         </div>
                     }
                 </div>

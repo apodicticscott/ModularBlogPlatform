@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 
-import { Link, LargeHeader, NeoButton } from "../TextComponents"
+import Link from "../TextComponents/Link"
+import Header from "../TextComponents/Header1"
+import NeoButton from "../TextComponents/NeoButton";
 import { MdWbSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
-import Header from "../TextComponents/Header1"
 
 const Footer = () => {
   const [light, setLight] = useState(true);
