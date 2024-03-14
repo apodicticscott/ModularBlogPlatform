@@ -28,6 +28,35 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+  const checkAdminPermissions = async (userId) => {
+    try {
+      const userDoc = await firebase.firestore().collection('users').doc(userId).get(); // Assuming Firestore
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        if (userData.adminPerm === true) {
+          return true; // User has admin permissions
+        }
+      }
+      return false; // User doesn't have admin permissions or doesn't exist
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return false; // Error occurred while fetching user data
+    }
+  }
+
+//   checkAdminPermissions(userId)
+//   .then(hasAdminPermissions => {
+//     if (hasAdminPermissions) {
+//       console.log("User has admin permissions.");
+//       {return admin page normally}
+//     } else {
+//       console.log("User does not have admin permissions.");
+//       {send a toast notification and send back to home page}
+//     }
+//   })
+//   .catch(error => {
+//     console.error("Error checking admin permissions:", error);
+
 const Admin = () => {
     const [articles, setArticles] = useState([]);
     const [numUnapproved, setNumUnapproved] = useState();

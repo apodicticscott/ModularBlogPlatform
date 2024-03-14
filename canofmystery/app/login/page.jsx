@@ -13,13 +13,43 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginErrorVisible, setLoginErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const router = useRouter();
 
   const handleForm = async (event) => {
     event.preventDefault();
+  
+    const MIN_PASSWORD_LENGTH = 8; // Minimum password length requirement
+  
+    // Extract email and password from form
+    const { email, password } = event.target.elements;
+  
+    // Trim whitespace from email and password
+    const trimmedEmail = email.value.trim();
+    const trimmedPassword = password.value.trim();
+  
+    // Check if email and password fields are not empty
+    if (!trimmedEmail || !trimmedPassword) {
+      // Show error for empty fields
+      setLoginErrorVisible(true);
+      setErrorMessage("Please fill in both email and password fields.");
+      setTimeout(() => setLoginErrorVisible(false), 3000);
+      return;
+    }
+  
+    // Check if password meets minimum length requirement
+    if (trimmedPassword.length < MIN_PASSWORD_LENGTH) {
+      // Show error for short password
+      setLoginErrorVisible(true);
+      setErrorMessage(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long.`);
+      setTimeout(() => setLoginErrorVisible(false), 3000);
+      return;
+    }
+  
     try {
-      console.log(email, password);
-      await signIn(email, password);
+      console.log(trimmedEmail, trimmedPassword);
+      await signIn(trimmedEmail, trimmedPassword);
       router.push("/"); // Navigate to home page after successful login
     } catch (error) {
       console.log(error);
@@ -27,7 +57,7 @@ const LoginPage = () => {
       setTimeout(() => setLoginErrorVisible(false), 3000); // Hide error after 3 seconds
     }
   };
-
+  
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
       <div class="flex flex-col justify-center self-center align-center p-7 w-[calc(100vw_-_29px)] sm:max-w-[450px] border-3 rounded-md shadow-lg m-7 sm:m-0">  
@@ -62,7 +92,7 @@ const LoginPage = () => {
                           className="rounded-md"
                           style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
                       >
-                          Whoa! You may have entered a wrong username or password. Please try again.
+                          {errorMessage}
                       </motion.div>
                   )}
                 </AnimatePresence>
