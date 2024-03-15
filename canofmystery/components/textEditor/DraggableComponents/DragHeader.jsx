@@ -5,7 +5,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import Header from "../../textComponents/header1";
+import Header from "../../TextComponents/Header1";
 
 const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();

@@ -6,7 +6,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 
-import Paragraph from "../../textComponents/Paragraph";
+import Paragraph from "../../TextComponents/Paragraph";
 
 const  DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick }) => {
     const contentRef = useRef();

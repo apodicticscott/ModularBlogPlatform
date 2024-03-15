@@ -1,23 +1,26 @@
 'use client'
 import React, {useState, useEffect} from "react"
+import { useRouter } from 'next/navigation'
 import { searchArticles, fetchArticles, deleteArticles, getTotalUnapprovedArticles, setArticlesApproval } from "../../firebase/articleUtils/articleUtils"
 import { fetchGoogleAnalyticsReport, ApiSignIn } from "../../firebase/analitics/analyticsUtils"
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../../components/TextComponents/Header1"
 import NeoButton from "../../components/TextComponents/NeoButton"
-import { app } from "../firebase"
 import { FaPen } from "react-icons/fa";
-import { useRouter } from 'next/navigation'
-import { MdDelete } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 import { RiSearchFill } from "react-icons/ri"
-import { MdOutlineDownloadDone, MdOutlinePreview,  MdClose, MdDone  } from "react-icons/md";
-import { Checkbox, Badge, Tooltip, Divider, Pagination} from "@mui/material"
+import { MdOutlineDownloadDone, MdOutlinePreview,  MdClose, MdDone, MdArticle, MdAccountCircle,  MdAnalytics, MdDelete, MdHome  } from "react-icons/md";
+import { Checkbox, Badge, Tooltip, Divider, Pagination, Box} from "@mui/material"
+import dayjs, { Dayjs } from 'dayjs';
+import { addSession, fetchSessions } from "../../firebase/sessionUtils/sessionUtils"
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { BarChart } from '@mui/x-charts';
-import { MdArticle, MdAccountCircle,  MdAnalytics } from "react-icons/md";
 import LinearProgress from '@mui/material/LinearProgress';
 import WorldMap from "../../Maps/mapUtils"
 import { placeById} from "@tomtom-international/web-sdk-maps"
+import { AnimatePresence, motion } from "framer-motion";
 
 import Loader from "../../components/loader/loader"
 
@@ -28,21 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  const checkAdminPermissions = async (userId) => {
-    try {
-      const userDoc = await firebase.firestore().collection('users').doc(userId).get(); // Assuming Firestore
-      if (userDoc.exists) {
-        const userData = userDoc.data();
-        if (userData.adminPerm === true) {
-          return true; // User has admin permissions
-        }
-      }
-      return false; // User doesn't have admin permissions or doesn't exist
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      return false; // Error occurred while fetching user data
-    }
-  }
+
 
 //   checkAdminPermissions(userId)
 //   .then(hasAdminPermissions => {
@@ -58,25 +47,61 @@ const useStyles = makeStyles((theme) => ({
 //     console.error("Error checking admin permissions:", error);
 
 const Admin = () => {
+
     const [articles, setArticles] = useState([]);
     const [numUnapproved, setNumUnapproved] = useState();
     const [selectedArticles, setSelectedArticles] = useState([]);
     const [search, setSearch] = useState("");
-    const [currentPanel, setCurrentPanel] = useState("articles");
+    const [currentPanel, setCurrentPanel] = useState("home");
     const [isSignedIn, setIsSignedIn] = useState(false)
     const [loading, setLoading] = useState(true);
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
     const [chartData, setChartData] = useState([])
     const [locationData, setLocationData] = useState([])
-    const [usersPerCountry, setUsersPerCountry] = useState([])
-    const [error, setError] = useState(null);
+
     const [locNumber, setLocNumber] = useState([]);
+    const [sessionInfo, setSessionInfo] = useState({ID: null, Experation: null});
+    const [sessionError, setSessionError] = useState("");
+    const [sessionErrorIsVisible, setSessionErrorIsVisible] = useState(false);
+    const [sessions, setSessions] = useState([])
 
     const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
     
     const router = useRouter()
 
     const classes = useStyles();
+
+
+    // const checkAdminPermissions = async (userId) => {
+    //     try {
+    //       const userDoc = await firebase.firestore().collection('users').doc(userId).get(); // Assuming Firestore
+    //       if (userDoc.exists) {
+    //         const userData = userDoc.data();
+    //         if (userData.adminPerm === true) {
+    //           return true; // User has admin permissions
+    //         }
+    //       }
+    //       return false; // User doesn't have admin permissions or doesn't exist
+    //     } catch (error) {
+    //       console.error("Error fetching user data:", error);
+    //       return false; // Error occurred while fetching user data
+    //     }
+    // }
+
+    // const [isAdmin, setIsAdmin] = useState(false)
+
+    // useEffect(() => {
+    //     setIsAdmin(checkAdminPermissions(userId))
+    // }, [])
+
+    // if(isAdmin){
+    //     return(
+    //         <>
+    //             Loading...
+    //         </>
+    //     )
+    // }
+
     
 
     const handleFetchArticles = async () => {
@@ -139,6 +164,42 @@ const Admin = () => {
         setIsSignedIn(true); // Update the state based on actual sign-in status
     };
 
+    const handleGenerateSession = () => {
+        setSessionInfo({ID: Math.random().toString(36).substr(2, 6), Experation: sessionInfo.Experation})
+    }
+
+    const handleSetSessionDate = (Date) => {
+        setSessionInfo({ID: sessionInfo.ID, Experation: Date})
+    }
+
+    const handleAddSession = () => {
+
+        if(sessionInfo.Experation !== null && sessionInfo.ID !== null){
+            
+            addSession(sessionInfo.ID, sessionInfo.Experation, false)
+        }else{
+            if(sessionInfo.Experation === null && sessionInfo.ID === null){
+                setSessionErrorIsVisible(true);
+                setSessionError("The ID and experation cannot be blank");
+                setTimeout(() => setSessionErrorIsVisible(false), 3000);
+            }else if(sessionInfo.Experation === null){
+                setSessionErrorIsVisible(true);
+                setSessionError("The experation cannot be blank.");
+                setTimeout(() => setSessionErrorIsVisible(false), 3000);
+            }else{
+                setSessionErrorIsVisible(true);
+                setSessionError("The ID cannot be blank.");
+                setTimeout(() => setSessionErrorIsVisible(false), 3000);
+            }
+        }
+    }
+
+    const handleFetchSessions = async () => {
+        const tempSessions = await fetchSessions()
+        console.log(tempSessions)
+        setSessions(tempSessions)
+    }
+
 
     function calculateCountryUserPercentage(data) {
         // Initialize a map to hold country totals
@@ -168,27 +229,30 @@ const Admin = () => {
 
     const handleFetch = async () => {
         const {pivotReport, realTimeReport} = await fetchGoogleAnalyticsReport(propertyId)
-        setLocNumber(calculateCountryUserPercentage(pivotReport.result))
+        // setLocNumber(calculateCountryUserPercentage(pivotReport.result))
         setLocationData(pivotReport)
         setChartData(realTimeReport)
+        
     }
 
     useEffect(() => {
+        handleFetchSessions();
         handleFetch()
     }, [])
 
-    if(!isSignedIn){
-        return(
-            <div className="w-full h-screen pt-[69px] flex items-center justify-center gap-[50px]">
-                <Header type="sm" classes={"w-max"}>
-                    Are you an admin?
-                </Header>
-                <NeoButton classes={"bg-primary-dark"} onClick={() => handleSignIn()}>
-                    Sign In
-                </NeoButton>
-            </div>
-        )
-    }
+
+    // if(!isSignedIn){
+    //     return(
+    //         <div className="w-full h-screen pt-[69px] flex items-center justify-center gap-[50px]">
+    //             <Header type="sm" classes={"w-max"}>
+    //                 Are you an admin?
+    //             </Header>
+    //             <NeoButton classes={"bg-primary-dark"} onClick={() => handleSignIn()}>
+    //                 Sign In
+    //             </NeoButton>
+    //         </div>
+    //     )
+    // }
 
 
 
@@ -213,7 +277,7 @@ const Admin = () => {
                 <div className="flex flex-col gap-[25px] w-full">
                     <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
                         <div className="w-full sm:w-max h-full flex gap-[15px]">
-                            <RiSearchFill style={{fontSize: "30px"}} role="link">SearchPage</RiSearchFill>  
+                            <RiSearchFill style={{fontSize: "30px"}} role="link"/> 
                             <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px]" value={search} onChange={(e) => handleSearchChange(e)}/>
                         </div>
                         <Divider   className="flex sm:hidden" flexItem />
@@ -333,10 +397,402 @@ const Admin = () => {
 
         return(
             <>
+                <div className="flex w-full h-max ">
+                    <div className="w-0 h-full flex items-center py-7">
+                        {
+                            chartData !== undefined
+                            &&
+                            <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
+                                <span className="text-lg underline decoration-dashed">
+                                    USERS IN LAST 30 MINUTES.
+                                </span>
+                                <span className="text-3xl">
+                                    1
+                                </span>
+                                <span className="text-lg underline decoration-dashed">
+                                    USERS PER MINUTE
+                                </span>
+                                <BarChart
+                                    width={350}
 
+                                    height={100}
+                                    dataset={chartData.result}
+
+                                    yAxis={[{label: "Number of Users"}]}
+                                    xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
+                                    series={[{ dataKey: 'numUsers', valueFormatter}]}
+                                    margin={{
+                                        top: 5, right: 30, left: 20, bottom: 5,
+                                    }}
+                                />
+                                <div className="w-full flex justify-between">
+                                    <span className="text-lg underline decoration-dashed">
+                                        TOP 3 COUNTRIES.
+                                    </span>
+                                    <span className="text-lg underline decoration-dashed">
+                                        USERS
+                                    </span>
+                                </div>
+                                {
+                                    locNumber.map((data) => (
+                                        <>
+                                            <div className="w-full flex justify-between">
+                                                <span className="text-lg decoration-dashed">
+                                                    {data.country}
+                                                </span>
+                                                <span className="text-lg decoration-dashed">
+                                                    {data.numUsers}
+                                                </span>
+                                            </div>
+                                            <LinearProgress  variant="determinate" value={data.percentage}/>
+                                        </>
+                                    ))
+                                }
+
+                            </div>
+                        }
+                    </div>
+                    <WorldMap className="w-full" locationData={locationData.result}/>
+                </div>
             </>
         )
     };
+
+    const [selectedSession, setSelectedSession] = useState();
+
+    const HomePanel = () => {
+
+        return(
+            <>
+                <div className="h-full w-full grid grid-cols-4 grid-rows-4 gap-7 p-7">
+                    <div className="col-span-4  2xl:col-span-1 2xl:row-span-4 rounded-md border-3 flex justify-between 2xl:flex-col p-[15px]  pb-0 gap-7">
+                        <div className="flex flex-col gap-[15px] w-[40%] pb-[20px] 2xl:w-full 2xl:pb-0 h-max">
+                            <div className="w-full h-max ">
+                                <Header type="sm" >
+                                    Class Session
+                                </Header>
+                            </div>
+                            <span className="text-lg underline decoration-dashed">
+                                Session ID
+                            </span>
+                            <span className="text-xl">
+                                {
+                                    sessionInfo.ID
+                                    ?
+                                    <>
+                                        {sessionInfo.ID}
+                                    </>
+                                    :
+                                    <>
+                                        No ID generated.
+                                    </>
+                                }
+                            </span>
+                            <span className="text-lg underline decoration-dashed">
+                                Experation
+                            </span>
+                            <div className="h-max">
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                    label="Basic date picker"
+                                    defaultValue={sessionInfo.Experation}
+                                    onChange={(newValue) => handleSetSessionDate(newValue)}
+                                    slotProps={{ textField: { size: 'small' } }}
+                                    renderInput={(params) => <TextField size="small" {...params} />}
+                                    />
+                                </ LocalizationProvider>
+                            </div>
+                            <div className="flex justify-between">
+                                <NeoButton classes="bg-primary" onClick={() => handleGenerateSession()}>
+                                    New Session
+                                </NeoButton>
+                                <NeoButton classes="bg-primary-dark" onClick={() => handleAddSession()}>
+                                    Save
+                                </NeoButton>
+                            </div>
+                            <AnimatePresence>
+                                {sessionErrorIsVisible && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="rounded-md p-[15px]"
+                                        style={{ background: '#fd6666', color: "black", marginTop: "15px"}}
+                                    >
+                                        {sessionError}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                        </div>
+                        <div className="grow flex flex-col w-[30%] 2xl:w-full">
+                            <div className={`flex justify-between w-full h-max px-[15px] py-[5px] items-center text-lg `}>
+                                <div className="flex-1 underline decoration-dashed">
+                                    Session ID
+                                </div>
+                                <div className="flex-1 px-[15px] underline decoration-dashed">
+                                    Experation
+                                </div>
+                                <div className="flex-1 text-right underline decoration-dashed">
+                                    Is Expired
+                                </div>
+                            </div>
+                            <div className="flex w-full grow flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0">
+                                {
+                                    sessions
+                                    ?
+                                    <>
+                                        {
+                                            sessions.map((data, index) => (
+                                                <div className={`flex justify-between w-full h-max px-[15px] py-[5px] border-b-3 bg-base-100 items-center ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
+                                                    <div className="flex-1">
+                                                        {data.id}
+                                                    </div>
+                                                    <Divider orientation="vertical" />
+                                                    <div className="flex-1 px-[15px]">
+                                                        {data.Experation}
+                                                    </div>
+                                                    <Divider orientation="vertical" />
+                                                    <div className="flex-1 text-right">
+                                                        {data.IsExpired ? "Yes" : "No"}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        NO DATA!
+                                    </>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-4 2xl:col-span-3 2xl:row-span-2 rounded-md border-3 flex p-[15px] pb-0 gap-[25px] text-lg">
+                        <div className="flex flex-col grow gap-[15px]">
+                            <Header type="sm" >
+                                Class Session
+                            </Header>
+                            <span className="text-lg underline decoration-dashed">
+                                Selected Session ID
+                            </span>
+                            <span className="text-lg">
+                                {
+                                    selectedSession
+                                    ?
+                                    selectedSession
+                                    :
+                                    "No Session has been selected"
+                                }
+                            </span>
+                            <div className="w-full grow flex ">
+                                <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                                    <span className="text-lg underline decoration-dashed">
+                                        Users This Session
+                                    </span>
+                                    <div className="w-full h-max text-7xl">
+                                        10
+                                    </div>
+                                </div>
+                                <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                                    <span className="text-lg underline decoration-dashed">
+                                        User Submittions
+                                    </span>
+                                    <div className="w-full h-max text-7xl">
+                                        5
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-full flex flex-col w-[60%] gap-[25px]">
+                            <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-end">
+                                <div className="w-full flex sm:w-max ">
+                                    <div className="flex w-full justify-between gap-[15px]">
+                                        <div className="flex justify-between">  
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Approve">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesApproved()}>
+                                                    <MdDone className="text-2.5xl items-center"/>
+                                                </button >
+                                            </Tooltip>
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Unapprove">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesUnapproved()}>
+                                                    <MdClose className="text-2.5xl" />
+                                                </button>  
+                                            </Tooltip>
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Delete">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleDeleteArticles()}>
+                                                    <MdDelete className="text-2.5xl" />
+                                                </button> 
+                                            </Tooltip>                    
+                                        </div>
+                                        <NeoButton classes="bg-primary-dark" onClick={handleSelectAll}>
+                                            Select All
+                                        </NeoButton>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full flex flex-col grow gap-[15px]">
+                                <div className="w-full flex h-min">
+                                    <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        First Name
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Last Name
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Session ID
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Has Submitted
+                                    </div>
+                                </div>
+                                <div className="flex w-full grow flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0">
+                                    <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center rounded-t-md`}>
+                                        <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                            First Name
+                                        </div>
+                                        <Divider orientation="vertical"/>
+                                        <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                            Last Name
+                                        </div>
+                                        <Divider orientation="vertical"/>
+                                        <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
+                                            Session ID
+                                        </div>
+                                        <Divider orientation="vertical"/>
+                                        <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
+                                            No Article
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-4 2xl:col-span-3 2xl:row-span-2 rounded-md border-3 flex p-[15px] pb-0 gap-[25px] text-lg">
+                        <div className="flex flex-col grow gap-[15px]">
+                            <Header type="sm" >
+                                Class Session
+                            </Header>
+                            <span className="text-lg underline decoration-dashed">
+                                Selected Session ID
+                            </span>
+                            <span className="text-lg">
+                                {
+                                    selectedSession
+                                    ?
+                                    selectedSession
+                                    :
+                                    "No Session has been selected"
+                                }
+                            </span>
+                            <div className="w-full grow flex ">
+                                <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                                    <span className="text-lg underline decoration-dashed">
+                                        Articles This Session
+                                    </span>
+                                    <div className="w-full h-max text-7xl">
+                                        10
+                                    </div>
+                                </div>
+                                <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                                    <span className="text-lg underline decoration-dashed">
+                                        Articles Pending Approval
+                                    </span>
+                                    <div className="w-full h-max text-7xl">
+                                        5
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-full flex flex-col w-[60%] gap-[25px]">
+                            <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-end">
+                                <div className="w-full flex sm:w-max ">
+                                    <div className="flex w-full justify-between gap-[15px]">
+                                        <div className="flex justify-between">  
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Approve">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesApproved()}>
+                                                    <MdDone className="text-2.5xl items-center"/>
+                                                </button >
+                                            </Tooltip>
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Unapprove">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesUnapproved()}>
+                                                    <MdClose className="text-2.5xl" />
+                                                </button>  
+                                            </Tooltip>
+                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Delete">
+                                                <button className="w-[35px]  flex justify-center items-center" onClick={() => handleDeleteArticles()}>
+                                                    <MdDelete className="text-2.5xl" />
+                                                </button> 
+                                            </Tooltip>                    
+                                        </div>
+                                        <NeoButton classes="bg-primary-dark" onClick={handleSelectAll}>
+                                            Select All
+                                        </NeoButton>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full flex flex-col grow gap-[15px]">
+                                <div className="w-full flex h-min">
+                                    <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Publisher
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Title
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Date
+                                    </div>
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Approval
+                                    </div>
+                                    <div className="flex h-full min-w-[90px] p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
+
+                                    </div>
+                                </div>
+                                <div className="flex w-full grow flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0">
+                                    {
+                                    articles
+                                    &&
+                                    articles.map((article, index) => (
+                                        <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center ${index === 0 ? "rounded-t-md" : ""}`}>
+                                            <div className="flex grow md:basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
+                                                {article.Publisher}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className="hidden md:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
+                                                {article.Title}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className="hidden md:flex basis-[200px]  py-0 pl-[10px] items-center min-h-[50px]">
+                                                Date here
+                                            </div>
+                                            <div className={`hidden md:flex basis-[200px] grow border-y-3 border-x-3 border-y-0 h-full pl-[10px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `}>
+                                                {article.Approved ? "Approved" : "Unapproved"}
+                                            </div>
+                                            <div className="flex h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
+                                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
+                                                    <button onClick={() => router.push(`/editor/${article.id}`)} >
+                                                        <FaPen className="text-xl w-[25px]"/>
+                                                    </button>
+                                                </Tooltip>
+                                                <Divider orientation="vertical"/>
+                                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
+                                                    <button>
+                                                        <MdOutlinePreview className="text-2xl w-[25px]" />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
+                                        </div>
+                                    ))
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
 
     const valueFormatter = (value) => `${value} Users`;
 
@@ -346,6 +802,14 @@ const Admin = () => {
             <div className={`flex  ${isSideBarOpen ? 'w-max border-r-3' : 'w-0'}`}>
                 <div className={`flex flex items-end h-[calc(100vh_-_80px)] ${isSideBarOpen ? 'w-max' : 'w-0'}`}>
                     <div className={`h-full dark:bg-base-dark  lg:w-[250px]  flex flex-col  gap-[25px] items-start 2xl:items-center 3xl:items-start overflow-hidden ${isSideBarOpen ? "w-max 2xl:min-w-max px-[25px] lg:pl-[50px]  2xl:pl-[25px] py-[152px]" : "w-0" }`}>
+                        <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("home")}>
+                            <Badge badgeContent={0} color="primary">
+                                <MdHome className="text-2.7xl" /> 
+                            </Badge>
+                            <span className="hidden lg:inline">
+                                Home
+                            </span>
+                        </button>
                         <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("analytics")}>
                             <Badge badgeContent={0} color="primary">
                                 <MdAnalytics  className="text-2.7xl" /> 
@@ -397,9 +861,19 @@ const Admin = () => {
                         <>
                             {
                                 (currentPanel === "analytics")
-                                &&
+                                ?
                                 <>
                                     Analytics.
+                                </>
+                                :
+                                <>
+                                    {
+                                        (currentPanel === "home")
+                                        &&
+                                        <>
+                                            Home.
+                                        </>
+                                    }
                                 </>
                             }
                         </>
@@ -415,71 +889,12 @@ const Admin = () => {
                     {
                         (currentPanel === "analytics")
                         &&
-                        <div className="flex w-full h-max ">
-                            <div className="w-0 h-full flex items-center py-7">
-                                {
-                                    chartData !== undefined
-                                    &&
-                                    <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
-                                        <span className="text-lg underline decoration-dashed">
-                                            USERS IN LAST 30 MINUTES.
-                                        </span>
-                                        <span className="text-3xl">
-                                            1
-                                        </span>
-                                        <span className="text-lg underline decoration-dashed">
-                                            USERS PER MINUTE
-                                        </span>
-                                        <BarChart
-                                            width={350}
-
-                                            height={100}
-                                            dataset={chartData.result}
-
-                                            yAxis={[{label: "Number of Users"}]}
-                                            xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
-                                            series={[{ dataKey: 'numUsers', valueFormatter}]}
-                                            margin={{
-                                                top: 5, right: 30, left: 20, bottom: 5,
-                                            }}
-                                        />
-                                        <div className="w-full flex justify-between">
-                                            <span className="text-lg underline decoration-dashed">
-                                                TOP 3 COUNTRIES.
-                                            </span>
-                                            <span className="text-lg underline decoration-dashed">
-                                                USERS
-                                            </span>
-                                        </div>
-                                        {
-                                            locNumber.map((data) => (
-                                                <>
-                                                    <div className="w-full flex justify-between">
-                                                        <span className="text-lg decoration-dashed">
-                                                            {data.country}
-                                                        </span>
-                                                        <span className="text-lg decoration-dashed">
-                                                            {data.numUsers}
-                                                        </span>
-                                                    </div>
-                                                    <LinearProgress  variant="determinate" value={data.percentage}/>
-                                                </>
-                                            ))
-                                        }
-
-                                    </div>
-                                }
-                            </div>
-                            <WorldMap className="w-full" locationData={locationData.result}/>
-                            {/* {
-                                reportData.map(row => (
-                                    <>
-                                        {row.city}
-                                        {row.number}
-                                    </>
-                                ))
-                            } */}
-                        </div>
+                        <AnalyticsPanel />
+                    }
+                    {
+                        (currentPanel === "home")
+                        &&
+                        <HomePanel />
                     }
                 </div>
             </div>

@@ -403,7 +403,7 @@ const TextEditor = ({articleId}) => {
             };
     
             // Reference to the 'Articles' collection
-            const articleColRef = collection(db, 'OurProject');
+            const articleColRef = collection(db, 'Articles');
             
             // Add the article to the collection
             const docRef = await addDoc(articleColRef, article);

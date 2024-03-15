@@ -5,7 +5,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import Resource from "../../textComponents/Resource";
+import Resource from "../../TextComponents/Resource";
 
 const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();

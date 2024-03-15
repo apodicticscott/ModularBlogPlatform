@@ -138,7 +138,13 @@ export const ApiSignIn = async () => {
 
 
 const fetchCoordinates = async (location) => {
-  const url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}&countrySubdivision=${location.region}&municipalitySubdivision=${location.city}`
+  let url;
+  if(location.region === "(Not Set)"){
+    url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}`
+  }else{
+    url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}&countrySubdivision=${location.region.split(' ').join('_')}&municipalitySubdivision=${location.city}`
+  }
+  
   const response = await fetch(url);
   const data = await response.json();
   const latLon = data.results[0].position;

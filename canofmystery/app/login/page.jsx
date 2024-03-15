@@ -49,10 +49,17 @@ const LoginPage = () => {
   
     try {
       console.log(trimmedEmail, trimmedPassword);
-      await signIn(trimmedEmail, trimmedPassword);
-      router.push("/"); // Navigate to home page after successful login
+      const {result, error} = await signIn(trimmedEmail, trimmedPassword);
+      console.log(result, error)
+      if(result !== null){
+        router.push("/");
+      }else{
+        setErrorMessage(`Oh no! You email or password were incorrect. Please try again!`)
+        setLoginErrorVisible(true); // Show error
+        setTimeout(() => setLoginErrorVisible(false), 3000); // Hide error after 3 seconds
+      }
+       // Navigate to home page after successful login
     } catch (error) {
-      console.log(error);
       setLoginErrorVisible(true); // Show error
       setTimeout(() => setLoginErrorVisible(false), 3000); // Hide error after 3 seconds
     }

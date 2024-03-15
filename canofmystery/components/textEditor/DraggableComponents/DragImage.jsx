@@ -4,7 +4,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import Image from "../../textComponents/image"
+import Image from "../../TextComponents/Image"
 
 const DragImage = ({comp, isEnabled, removeComp, selected, onClick}) => {
     const {
