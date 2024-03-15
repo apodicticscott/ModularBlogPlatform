@@ -22,7 +22,15 @@ import WorldMap from "../../Maps/mapUtils"
 import { placeById} from "@tomtom-international/web-sdk-maps"
 import { AnimatePresence, motion } from "framer-motion";
 
-import Loader from "../../components/loader/loader"
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import firebase_app from '/firebase/config';
+import { app } from "../../app/firebase";
+
+const auth = getAuth(firebase_app);
+const firestore = getFirestore(app);
+
+import Loader from "../../components/loader/loader";
 
 const useStyles = makeStyles((theme) => ({
     customTooltip: {
@@ -31,21 +39,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-
-
-//   checkAdminPermissions(userId)
-//   .then(hasAdminPermissions => {
-//     if (hasAdminPermissions) {
-//       console.log("User has admin permissions.");
-//       {return admin page normally}
-//     } else {
-//       console.log("User does not have admin permissions.");
-//       {send a toast notification and send back to home page}
-//     }
-//   })
-//   .catch(error => {
-//     console.error("Error checking admin permissions:", error);
-
 const Admin = () => {
 
     const [articles, setArticles] = useState([]);
@@ -53,7 +46,7 @@ const Admin = () => {
     const [selectedArticles, setSelectedArticles] = useState([]);
     const [search, setSearch] = useState("");
     const [currentPanel, setCurrentPanel] = useState("home");
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    //const [isSignedIn, setIsSignedIn] = useState(false)
     const [loading, setLoading] = useState(true);
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
     const [chartData, setChartData] = useState([])
@@ -64,6 +57,8 @@ const Admin = () => {
     const [sessionError, setSessionError] = useState("");
     const [sessionErrorIsVisible, setSessionErrorIsVisible] = useState(false);
     const [sessions, setSessions] = useState([])
+    const [userId, setUserId] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
     
@@ -71,38 +66,39 @@ const Admin = () => {
 
     const classes = useStyles();
 
-
-    // const checkAdminPermissions = async (userId) => {
-    //     try {
-    //       const userDoc = await firebase.firestore().collection('users').doc(userId).get(); // Assuming Firestore
-    //       if (userDoc.exists) {
-    //         const userData = userDoc.data();
-    //         if (userData.adminPerm === true) {
-    //           return true; // User has admin permissions
-    //         }
-    //       }
-    //       return false; // User doesn't have admin permissions or doesn't exist
-    //     } catch (error) {
-    //       console.error("Error fetching user data:", error);
-    //       return false; // Error occurred while fetching user data
-    //     }
-    // }
-
-    // const [isAdmin, setIsAdmin] = useState(false)
+    // this code works just throws an error with Rendered more hooks than during the previous render. 
+    // const [isAdmin, setIsAdmin] = useState(false);
+    // const [isLoading, setIsLoading] = useState(true);
 
     // useEffect(() => {
-    //     setIsAdmin(checkAdminPermissions(userId))
-    // }, [])
+    //     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    //     if (user) {
+    //         const docRef = doc(firestore, 'users', user.uid);
+    //         const docSnap = await getDoc(docRef);
+    //         if (docSnap.exists()) {
+    //         const userData = docSnap.data();
+    //         setIsAdmin(userData.adminPerm === true);
+    //         setIsLoading(false);
+    //         } else {
+    //         setIsLoading(false);
+    //         console.log("No such document!");
+    //         }
+    //     } else {
+    //         setIsLoading(false);
+    //         router.push('/login');
+    //     }
+    //     });
 
-    // if(isAdmin){
-    //     return(
-    //         <>
-    //             Loading...
-    //         </>
-    //     )
+    //     return () => unsubscribe();
+    // }, []);
+
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
     // }
 
-    
+    // if (!isAdmin) {
+    //     return <div>Unauthorized Access</div>;
+    // }
 
     const handleFetchArticles = async () => {
         setArticles(await fetchArticles());
@@ -159,10 +155,10 @@ const Admin = () => {
         setSelectedArticles([])
     }
 
-    const handleSignIn = async () => {
-        await ApiSignIn();
-        setIsSignedIn(true); // Update the state based on actual sign-in status
-    };
+    // const handleSignIn = async () => {
+    //     await ApiSignIn();
+    //     setIsSignedIn(true); // Update the state based on actual sign-in status
+    // };
 
     const handleGenerateSession = () => {
         setSessionInfo({ID: Math.random().toString(36).substr(2, 6), Experation: sessionInfo.Experation})
@@ -239,21 +235,6 @@ const Admin = () => {
         handleFetchSessions();
         handleFetch()
     }, [])
-
-
-    // if(!isSignedIn){
-    //     return(
-    //         <div className="w-full h-screen pt-[69px] flex items-center justify-center gap-[50px]">
-    //             <Header type="sm" classes={"w-max"}>
-    //                 Are you an admin?
-    //             </Header>
-    //             <NeoButton classes={"bg-primary-dark"} onClick={() => handleSignIn()}>
-    //                 Sign In
-    //             </NeoButton>
-    //         </div>
-    //     )
-    // }
-
 
 
 
@@ -489,7 +470,7 @@ const Admin = () => {
                                 }
                             </span>
                             <span className="text-lg underline decoration-dashed">
-                                Experation
+                                Expiration
                             </span>
                             <div className="h-max">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>

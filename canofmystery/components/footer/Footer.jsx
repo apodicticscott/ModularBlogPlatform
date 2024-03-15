@@ -82,17 +82,17 @@ const Footer = () => {
                 Quick Links
               </div>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link href="www.usca.edu">
+                <Link href="/">
                   Home
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/about">
                   About
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/login">
                   Login
                 </Link>
-                <Link href="www.usca.edu">
-                  Account
+                <Link href="/admin">
+                  Admin Dashboard
                 </Link>
                 <Link href="www.usca.edu">
                   Our Project
@@ -133,22 +133,22 @@ const Footer = () => {
                 Quick Links
               </div>
               <div className="flex flex-wrap justify-between gap-[10px] text-t-header-light dark:text-t-dark">
-                <Link href="www.usca.edu">
+                <Link href="/">
                   Home
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/about">
                   About
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/login">
                   Login
                 </Link>
-                <Link href="www.usca.edu">
-                  Account
+                <Link href="/admin">
+                  Admin Dashboard
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/">
                   Our Project
                 </Link>
-                <Link href="www.usca.edu">
+                <Link href="/">
                   Instructions
                 </Link>
               </div>

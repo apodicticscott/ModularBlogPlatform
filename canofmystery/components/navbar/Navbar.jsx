@@ -8,7 +8,8 @@ import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { getAuth } from "@firebase/auth";
 import firebase_app from '/firebase/config';
-
+import {getFirestore, collection, getDoc, doc, updateDoc} from "firebase/firestore"
+import { app } from "../../app/firebase"
 const auth = getAuth(firebase_app);
 
 import uscaLogo from "../../components/Assets/uscalogo.png"
@@ -29,8 +30,41 @@ const Navbar = () => {
   const [navHeight, setNavHeight] = useState(0);
   const [dropDownHeight, setDropDownHeight,] = useState(0);
   const [isPageReady, setIsPageReady] = useState(false);
+  const [userId, setUserId] = useState(null);
+
 
   const dropDownLinks = [{text: "Create Project", link:""}, {text: "Our Project", link:""}, {text: "Instructions", link:""}, {text: "Old Can Of Mystery", link:""}]
+
+  const [textInput, setTextInput] = useState('');
+  const [result, setResult] = useState(null);
+
+  const handleChange = (event) => {
+    setTextInput(event.target.value);
+  };
+
+  const handleCheck = async () => {
+    const firestore = getFirestore();
+    const sessionDoc = doc(firestore, 'Sessions', textInput);
+    
+    try {
+      const docSnap = await getDoc(sessionDoc);
+      if (docSnap.exists()) {
+        setResult(`Document with ID ${textInput} exists.`);
+        if (isLoggedIn && userId) {
+          // Update the boolean field for the logged-in user
+          const userDoc = doc(firestore, 'users', userId);
+          await updateDoc(userDoc, {
+            studentWriter: true 
+          });
+          setResult(`Boolean field updated successfully.`);
+        }
+      } else {
+        setResult(`Document with ID ${textInput} does not exist.`);
+      }
+    } catch (error) {
+      setResult(`Error checking document: ${error.message}`);
+    }
+  }
 
   useEffect(() => {
 
@@ -59,7 +93,6 @@ const Navbar = () => {
     };
   
 
-
   const handleLinkClick = (name) => {
     setActive(name);
   };
@@ -74,8 +107,10 @@ const Navbar = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
+        setUserId(user.uid);
       } else {
         setIsLoggedIn(false);
+        setUserId(null);
       }
     });
 
@@ -220,6 +255,7 @@ const Navbar = () => {
                     <span className="badge">New</span>
                   </a>
                 </li>
+                {isLoggedIn ? <li><input type="text" className="w-full" value={textInput} onChange={handleChange}></input><button onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
                 {isLoggedIn ? <li><a onClick={handleLogOut}>Logout</a></li> : <li><a onClick={handleLogin}>Login</a></li>}
               </ul>
             </div>

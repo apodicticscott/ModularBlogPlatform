@@ -9,6 +9,7 @@ export const onUserCreate = functions.auth.user().onCreate(async (user) => {
         userInfo: JSON.parse(JSON.stringify(user)),
         studentWriter: false,
         adminPerm: false,
+        hasPublished: false,
     })
 
 })
