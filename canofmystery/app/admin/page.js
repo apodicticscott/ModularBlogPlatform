@@ -67,38 +67,31 @@ const Admin = () => {
     const classes = useStyles();
 
     // this code works just throws an error with Rendered more hooks than during the previous render. 
-    // const [isAdmin, setIsAdmin] = useState(false);
-    // const [isLoading, setIsLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    //     if (user) {
-    //         const docRef = doc(firestore, 'users', user.uid);
-    //         const docSnap = await getDoc(docRef);
-    //         if (docSnap.exists()) {
-    //         const userData = docSnap.data();
-    //         setIsAdmin(userData.adminPerm === true);
-    //         setIsLoading(false);
-    //         } else {
-    //         setIsLoading(false);
-    //         console.log("No such document!");
-    //         }
-    //     } else {
-    //         setIsLoading(false);
-    //         router.push('/login');
-    //     }
-    //     });
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const docRef = doc(firestore, 'users', user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setIsAdmin(userData.adminPerm === true);
+            setIsLoading(false);
+            } else {
+            setIsLoading(false);
+            console.log("No such document!");
+            }
+        } else {
+            setIsLoading(true);
+            router.push('/login'); 
+        }
+        });
 
-    //     return () => unsubscribe();
-    // }, []);
+        return () => unsubscribe();
+    }, []);
 
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    // }
-
-    // if (!isAdmin) {
-    //     return <div>Unauthorized Access</div>;
-    // }
 
     const handleFetchArticles = async () => {
         setArticles(await fetchArticles());
@@ -252,7 +245,13 @@ const Admin = () => {
         const handleChangePage = (event, newPage) => {
             setCurrentPage(newPage);
         };
+        if (isLoading) {
+            return <div>Loading...</div>;
+        }
 
+        if (!isAdmin) {
+            return <div>Unauthorized Access</div>;
+        }
         return(
             <div className="flex flex-col h-full w-full justify-between p-7">
                 <div className="flex flex-col gap-[25px] w-full">
@@ -375,6 +374,13 @@ const Admin = () => {
 
 
     const AnalyticsPanel = () => {
+        if (isLoading) {
+            return <div>Loading...</div>;
+        }
+
+        if (!isAdmin) {
+            return <div>Unauthorized Access</div>;
+        }
 
         return(
             <>
@@ -442,6 +448,13 @@ const Admin = () => {
     const [selectedSession, setSelectedSession] = useState();
 
     const HomePanel = () => {
+        if (isLoading) {
+            return <div>Loading...</div>;
+        }
+
+        if (!isAdmin) {
+            return <div>Unauthorized Access</div>;
+        }
 
         return(
             <>
@@ -776,6 +789,13 @@ const Admin = () => {
     }
 
     const valueFormatter = (value) => `${value} Users`;
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!isAdmin) {
+        return <div>Unauthorized Access</div>;
+    }
 
 
     return(
