@@ -138,17 +138,28 @@ export const ApiSignIn = async () => {
 
 
 const fetchCoordinates = async (location) => {
-  let url;
-  if(location.region === "(Not Set)"){
-    url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}`
-  }else{
-    url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}&countrySubdivision=${location.region.split(' ').join('_')}&municipalitySubdivision=${location.city}`
+  try {
+    let url;
+    if (location.region === "(Not Set)") {
+      url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}`;
+    } else {
+      url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=fQCd1AsSZ1AKorCTCIUw2DybAiCiBGKU&countryCode=${location.countryId}&countrySubdivision=${location.region.split(' ').join('_')}&municipalitySubdivision=${location.city}`;
+    }
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API call failed with HTTP status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const latLon = data.results[0].position;
+    return latLon;
+  } catch (error) {
+    // Handle or log the error
+    console.error('Failed to fetch coordinates:', error.message);
+    // Optionally return a default value or rethrow the error
+    return null; // or throw error;
   }
-  
-  const response = await fetch(url);
-  const data = await response.json();
-  const latLon = data.results[0].position;
-  return latLon;
 }
 
 // Function to run the Google Analytics report

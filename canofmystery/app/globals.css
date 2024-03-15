@@ -280,3 +280,9 @@ html {
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib{
   visibility: hidden;
 }
+
+.diagonal{
+  background-color: #ebebeb;
+  
+  background: repeating-linear-gradient( 45deg, #000000, #000000 5px, #ebebeb 5px, #ebebeb 25px );
+}

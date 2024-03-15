@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import tt, { Marker } from '@tomtom-international/web-sdk-maps';
+import tt from '@tomtom-international/web-sdk-maps';
 
-const apiKey = process.env.MAPS_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY;
 
 const MapComponent = ({ locationData }) => {
     const [mapLongitude, setMapLongitude] = useState(0);
@@ -10,6 +10,7 @@ const MapComponent = ({ locationData }) => {
     const [map, setMap] = useState({});
 
     const mapElement = useRef();
+    console.log(apiKey)
 
     useEffect(() => {
         const map = tt.map({
@@ -26,7 +27,11 @@ const MapComponent = ({ locationData }) => {
         if (Array.isArray(locationData)) {
             locationData.forEach(location => {
                 console.log(location.lonLat)
-                new tt.Marker().setLngLat(location.lonLat).addTo(map);
+                if(location.lonLat !== null){
+                    const popup = new tt.Popup({ offset: 35 }).setText('Location information');
+                    new tt.Marker().setLngLat(location.lonLat).setPopup(popup).addTo(map);
+                }
+                
             });
         }
 

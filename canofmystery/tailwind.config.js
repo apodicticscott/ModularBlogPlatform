@@ -145,6 +145,9 @@ module.exports = {
           'border': '2px solid black',
           'border-radius': '10px'
         },
+        '.shadow': {
+          'box-shadow': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+        },
         '.neo-bottom-lg': {
           'box-shadow': '0px 4px 0px 0px rgba(0,0,0,1)',
           'border': '2px solid black',
