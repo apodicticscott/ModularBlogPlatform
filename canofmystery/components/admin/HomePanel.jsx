@@ -184,7 +184,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 Is Expired
                             </div>
                         </div>
-                        <div className="flex w-full grow flex flex-col text-lg Unapproved200 rounded-t-md  border-3 border-b-0 bg-base-200 min-h-[400px] md:min-h-0">
+                        <div className="flex w-full grow flex flex-col text-lg Unapproved200 rounded-t-md  border-3 border-b-0 bg-base-200 min-h-[400px] md:min-h-0 overflow-y-scroll scrollbar-hide">
                             {
                                 sessions
                                 ?
@@ -274,7 +274,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     Has Submitted
                                 </div>
                             </div>
-                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200">
+                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
                                 <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center rounded-t-md shadow`}>
                                     <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                         First Name
@@ -387,7 +387,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
 
                                 </div>
                             </div>
-                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow  flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0">
+                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow  flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide">
                                 {
                                 articles
                                 &&

@@ -3,6 +3,8 @@ import React, {useState, useEffect} from "react";
 import { BarChart } from '@mui/x-charts';
 import LinearProgress from '@mui/material/LinearProgress';
 import WorldMap from "../../Maps/mapUtils"
+import { Divider } from "@material-ui/core";
+import Header from "../TextComponents/Header1";
 
 import { fetchGoogleAnalyticsReport} from "../../firebase/analitics/analyticsUtils"
 
@@ -61,7 +63,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
     return(
         <>
             <div className="flex flex-col w-full">
-                <div className="flex w-full h-max">
+                <div className="flex w-full h-max shadow">
                     <div className="w-0 h-full flex items-center py-7">
                         {
                             chartData !== undefined
@@ -125,26 +127,36 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                     </div>
                     <WorldMap className="w-full" locationData={locationData.result}/>
                 </div>
-                <div className="flex w-full h-max bg-base-200 p-7 grid grid-cols-2 grid-rows-1 gap-7">
-                        <div className="row-span-1 bg-base-100 h-[295px] rounded-md border-3 flex flex-col">
-                            <div className="text-lg underline">
-                                Page Visits
+                <div className="flex w-full max-h-[600px] bg-base-100 p-7 grid grid-cols-4 grid-rows-2 gap-7 bg-base-100">
+                        <div className="col-span-2 row-span-2 rounded-md border-3 bg-base-100 flex flex-col shadow">
+                            <div className="flex flex-col p-3 p-[15px] pb-0 gap-[15px]">
+                                <Header type="sm" className="text-lg underline">
+                                    Page Visits
+                                </Header>
+
                             </div>
-                            <div className="w-full h-max">
+                            <div className={`flex justify-between w-full h-max items-center rounded-t-md text-lg p-[15px] pb-0`}>
+                                <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed">
+                                    Page Path
+                                </div>
+                                
+                                <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed">
+                                    Number Of Visits
+                                </div>
+                            </div>
+                            <div className="w-full h-max border-t-3 bg-base-200 text-lg overflow-y-scroll scrollbar-hide rounded-b-md">
                                 {
                                     pageVisitData
                                     &&
                                     <>
                                         {
-                                            pageVisitData.map((visit) => (
-                                                <div className="flex w-full ">
-                                                    test
-                                                    <div className="flex grow">
+                                            pageVisitData.map((visit, index) => (
+                                                <div className={`flex justify-between w-full h-max px-[15px] py-[5px]  bg-base-100 shadow items-center ${index !== (pageVisitData.length - 1) ? "border-b-3" : "rounded-bl-md border-b-0"}`} onClick={() => setSelectedSession(data.id)}>
+                                                    <div className="flex-1">
                                                         {visit.path}
                                                     </div>
-                                                    {/* <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
-                                                    <Divider   className="flex 2xl:hidden" flexItem /> */}
-                                                    <div className="flex ">
+                                                    <Divider orientation="vertical"/>
+                                                    <div className="flex-2 basis-[200px]">
                                                         {visit.number}
                                                     </div>
                                                 </div>
@@ -155,7 +167,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                                 }
                             </div>
                         </div>
-                        <div className="row-span-2 bg-base-100 h-[295px] rounded-md border-3">
+                        <div className="col-span-2 bg-base-100 h-[295px] rounded-md border-3">
 
                         </div>
                 </div>
