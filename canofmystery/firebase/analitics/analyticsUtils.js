@@ -58,7 +58,39 @@ const pivotReportRequest = {
   ]
 }
 
-
+const pageVisitRequest = {
+  pivots: [
+    {
+      fieldNames: [
+        "pagePath"
+      ],
+      limit: 500
+    },
+    {
+      fieldNames: [
+        "customEvent:page_view"
+      ],
+      limit: 500
+    },
+  ],
+  dateRanges: {
+    startDate: "40daysAgo",
+    endDate: "today" 
+  },
+  dimensions: [
+    {
+      name: "pagePath"
+    },
+    {
+      name: "customEvent:page_view"
+    }
+  ],
+  metrics: [
+    {
+      name: "eventCount"
+    }
+  ]
+}
 
 const reportRequest = {
 dateRanges: [
@@ -240,7 +272,7 @@ const timeValueFormatter = (value) => {
   }
 };
 
-const runPivotReport = async (propertyId, reportRequest) => {
+const runPivotReport = async (propertyId, reportRequest, type) => {
   try {
     const response = await gapi.client.request({
       path: `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runPivotReport`,
@@ -248,24 +280,49 @@ const runPivotReport = async (propertyId, reportRequest) => {
       body: reportRequest,
     });
 
-    const tempReport = await Promise.all(response.result.rows.map(async row => {
-        const country = row.dimensionValues[0].value;
-        const region = row.dimensionValues[1].value;
-        const city = row.dimensionValues[2].value;
-        const countryId = row.dimensionValues[3].value;
-        const number = row.metricValues[0].value;
-        const location = { countryId, country, region, city };
-        const latLon = await fetchCoordinates(location);
-        console.log({country: country, region: region, city: city, countryId: countryId, number: number, lonLat: latLon})
-        return { country: country, region: region, city: city, countryId: countryId, number: number, lonLat: latLon};
-    }));
 
-    console.log(tempReport)
-    return { result: tempReport, error: null };
+
+    if(type === 1){
+      const tempReport = await Promise.all(response.result.rows.map(async row => {
+          const country = row.dimensionValues[0].value;
+          const region = row.dimensionValues[1].value;
+          const city = row.dimensionValues[2].value;
+          const countryId = row.dimensionValues[3].value;
+          const number = row.metricValues[0].value;
+          const location = { countryId, country, region, city };
+          const latLon = await fetchCoordinates(location);
+          console.log({country: country, region: region, city: city, countryId: countryId, number: number, lonLat: latLon})
+          return { country: country, region: region, city: city, countryId: countryId, number: number, lonLat: latLon};
+      }));
+
+      return { result: tempReport, error: null };
+    }else if(type === 2){
+      const tempReport = await Promise.all(response.result.rows.map(async row => {
+            const path = row.dimensionValues[0].value;
+            const number = row.metricValues[0].value;
+            return {path: path, number: number}
+      }))
+
+      return { result: tempReport, error: null };
+    }
+
+    
   } catch (err) {
     console.log(err)
     return { result: null, error: err };
   }
+}
+
+export const formatLocationReport  = async (report) => {
+
+
+  console.log(tempReport)
+
+  return tempReport
+};
+
+export const formatPageVisitReport = async (report) => {
+
 }
 
 // Function to fetch Google Analytics report
@@ -275,10 +332,12 @@ export const fetchGoogleAnalyticsReport = async (propertyId) => {
     await initGapiClient();
 
     // const report = await runReport(propertyId, reportRequest);
-    const pivotReport = await runPivotReport(propertyId, pivotReportRequest )
+    const pivotReport = await runPivotReport(propertyId, pivotReportRequest, 1)
     const realTimeReport = await runRealtimeReport(propertyId, realTimeReportRequest)
-    
-    return {pivotReport, realTimeReport};
+    const pageVisitReport = await runPivotReport(propertyId, pageVisitRequest, 2)
+
+    console.log(pageVisitReport)
+    return {pivotReport, realTimeReport, pageVisitReport};
   } catch (error) {
     console.error("Error fetching the report:", error);
     return { report: null, error };

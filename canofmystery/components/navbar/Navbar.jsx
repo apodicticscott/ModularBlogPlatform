@@ -248,14 +248,14 @@ const Navbar = () => {
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <MdAccountCircle style={{fontSize: "35px"}} />
               </div>
-              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-transparent backdrop-blur-sm	border-3 rounded-box w-52">
+              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-transparent backdrop-blur-sm	border-3 rounded-md w-52">
                 <li>
                   <a className="justify-between">
                     Profile
                     <span className="badge">New</span>
                   </a>
                 </li>
-                {isLoggedIn ? <li><input type="text" className="w-full" value={textInput} onChange={handleChange}></input><button onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
+                {isLoggedIn ? <li><input type="text" className="w-full drop-nav-input" value={textInput} onChange={handleChange}></input><button onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
                 {isLoggedIn ? <li><a onClick={handleLogOut}>Logout</a></li> : <li><a onClick={handleLogin}>Login</a></li>}
               </ul>
             </div>

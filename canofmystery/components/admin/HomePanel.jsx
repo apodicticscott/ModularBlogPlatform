@@ -82,11 +82,11 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
         }else{
             if(sessionInfo.Experation === null && sessionInfo.ID === null){
                 setSessionErrorIsVisible(true);
-                setSessionError("The ID and experation cannot be blank");
+                setSessionError("The ID and expiration cannot be blank");
                 setTimeout(() => setSessionErrorIsVisible(false), 3000);
             }else if(sessionInfo.Experation === null){
                 setSessionErrorIsVisible(true);
-                setSessionError("The experation cannot be blank.");
+                setSessionError("The expiration cannot be blank.");
                 setTimeout(() => setSessionErrorIsVisible(false), 3000);
             }else{
                 setSessionErrorIsVisible(true);
@@ -103,6 +103,8 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     const handleSetSessionDate = (Date) => {
         setSessionInfo({ID: sessionInfo.ID, Experation: Date})
     }
+
+  
 
 
     return(
@@ -132,7 +134,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             }
                         </span>
                         <span className="text-lg underline decoration-dashed">
-                            Experation
+                            Expiration
                         </span>
                         <div className="h-max">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -176,7 +178,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 Session ID
                             </div>
                             <div className="flex-1 px-[15px] underline decoration-dashed">
-                                Experation
+                                Expiration
                             </div>
                             <div className="flex-1 text-right underline decoration-dashed">
                                 Is Expired

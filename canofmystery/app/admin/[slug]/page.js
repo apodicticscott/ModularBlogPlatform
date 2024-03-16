@@ -6,6 +6,7 @@ import Header from "../../../components/TextComponents/Header1"
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 import { MdArticle, MdAccountCircle,  MdAnalytics, MdHome  } from "react-icons/md";
 import { Badge,  ThemeProvider, createTheme } from "@mui/material"
+import { useRouter } from "next/navigation";
 
 import useWindowSize from '../../../hooks/useWindowSize'; // Assuming you have a hook for window size
 
@@ -39,11 +40,11 @@ export default function Page({params}){
         slug = "home"
     }
 
-
+    
     //Admin Layout
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
     const [currentPanel, setCurrentPanel] = useState(slug);
-
+    const router = useRouter();
     //All Penels
     const [articles, setArticles] = useState([]);
 
@@ -54,6 +55,7 @@ export default function Page({params}){
     const [chartData, setChartData] = useState([])
     const [locationData, setLocationData] = useState([])
     const [locNumber, setLocNumber] = useState(undefined);
+    const [pageVisitData, setPageVisitData] = useState(undefined)
 
     //Home Panel
     const [sessions, setSessions] = useState(undefined)
@@ -94,6 +96,11 @@ export default function Page({params}){
     //     )
     // }
 
+    const handlePanelChange = (panelName) => {
+        setCurrentPanel(panelName)
+        router.push(`/admin/${panelName}`, { shallow: true })
+
+    }
     
 
     const handleFetchArticles = async () => {
@@ -158,7 +165,7 @@ export default function Page({params}){
                 <div className={`flex transition-all duration-200 ${isSideBarOpen ? 'md:w-[79px] lg:w-[252px]' : 'w-0'} md:border-r-3 ${isSideBarOpen ? '' : 'md:w-0'}`} ref={sidebarRef}>
                     <div className={`flex flex items-end h-max md:h-full justify-center w-full p-3 border-b-2 md:border-b-0 md:p-0 overflow-hidden ${isSideBarOpen ? 'md:w-max' : 'md:w-0'} transition-all duration-200`}>
                         <div className={`h-full dark:bg-base-dark  lg:w-[250px]  flex md:flex-col  gap-[25px] items-start 2xl:items-center 3xl:items-start md:overflow-hidden ${isSideBarOpen ? "w-max 2xl:min-w-max md:px-[25px] lg:pl-[50px]  2xl:pl-[25px] md:py-[152px]" : "w-0 overflow-hidden" } transition-all duration-200`}>
-                                <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("home")}>
+                                <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("home")}>
                                     <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                         <MdHome className="text-2.7xl" /> 
                                     </Badge>
@@ -166,7 +173,7 @@ export default function Page({params}){
                                         Home
                                     </span>
                                 </button>
-                                <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("analytics")}>
+                                <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("analytics")}>
                                     <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                         <MdAnalytics  className="text-2.7xl" /> 
                                     </Badge>
@@ -174,7 +181,7 @@ export default function Page({params}){
                                         Analytics
                                     </span>
                                 </button>
-                                <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("users")}>
+                                <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("users")}>
                                     <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                         <MdAccountCircle className="text-2.7xl" /> 
                                     </Badge>
@@ -183,7 +190,7 @@ export default function Page({params}){
                                     </span>
                                 </button>
                             
-                            <button className="flex items-center gap-[15px] w-full" onClick={() => setCurrentPanel("articles")}>
+                            <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("articles")}>
                                 <Badge badgeContent={numUnapproved} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                     <MdArticle className="text-2.7xl"/> 
                                 </Badge>
@@ -246,7 +253,7 @@ export default function Page({params}){
                         {
                             (currentPanel === "analytics")
                             &&
-                            <AnalyticPanel chartData={chartData} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber}/>
+                            <AnalyticPanel chartData={chartData} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
                         }
                         {
                             (currentPanel === "home")

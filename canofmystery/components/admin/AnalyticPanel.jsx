@@ -9,7 +9,7 @@ import { fetchGoogleAnalyticsReport} from "../../firebase/analitics/analyticsUti
 const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
 
 
-const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData, setLocNumber, locNumber}) => {
+const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData, setLocNumber, locNumber, pageVisitData, setPageVisitData}) => {
 
 
     function calculateCountryUserPercentage(data) {
@@ -39,7 +39,9 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
       }
 
     const handleFetch = async () => {
-        const {pivotReport, realTimeReport} = await fetchGoogleAnalyticsReport(propertyId)
+        const {pivotReport, realTimeReport, pageVisitReport} = await fetchGoogleAnalyticsReport(propertyId)
+        console.log(pageVisitReport.result)
+        setPageVisitData(pageVisitReport.result)
         setLocNumber(calculateCountryUserPercentage(pivotReport.result))
         setLocationData(pivotReport)
         setChartData(realTimeReport)
@@ -58,69 +60,105 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
 
     return(
         <>
-            <div className="flex w-full h-max ">
-                <div className="w-0 h-full flex items-center py-7">
-                    {
-                        chartData !== undefined
-                        &&
-                        <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
-                            <span className="text-lg underline decoration-dashed">
-                                USERS IN LAST 30 MINUTES.
-                            </span>
-                            <span className="text-3xl">
-                                1
-                            </span>
-                            <span className="text-lg underline decoration-dashed">
-                                USERS PER MINUTE
-                            </span>
-                            {
-                                chartData.result
-                                &&
-                                <BarChart
-                                    width={350}
-                                    color="secondary"
-                                    height={100}
-                                    dataset={chartData.result}
-                                    
-                                    yAxis={[{label: "Number of Users"}]}
-                                    xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
-                                    series={[{ dataKey: 'numUsers', valueFormatter, color: "#000000"}]}
-                                    margin={{
-                                        top: 5, right: 30, left: 20, bottom: 5,
-                                    }}
-                                />
-                            }
+            <div className="flex flex-col w-full">
+                <div className="flex w-full h-max">
+                    <div className="w-0 h-full flex items-center py-7">
+                        {
+                            chartData !== undefined
+                            &&
+                            <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
+                                <span className="text-lg underline decoration-dashed">
+                                    USERS IN LAST 30 MINUTES.
+                                </span>
+                                <span className="text-3xl">
+                                    1
+                                </span>
+                                <span className="text-lg underline decoration-dashed">
+                                    USERS PER MINUTE
+                                </span>
+                                {
+                                    chartData.result
+                                    &&
+                                    <BarChart
+                                        width={350}
+                                        color="secondary"
+                                        height={100}
+                                        dataset={chartData.result}
+                                        
+                                        yAxis={[{label: "Number of Users"}]}
+                                        xAxis={[{scaleType: 'band', dataKey: "time", valueFormatter}]}
+                                        series={[{ dataKey: 'numUsers', valueFormatter, color: "#000000"}]}
+                                        margin={{
+                                            top: 5, right: 30, left: 20, bottom: 5,
+                                        }}
+                                    />
+                                }
 
-                            <div className="w-full flex justify-between">
-                                <span className="text-lg underline decoration-dashed">
-                                    TOP 3 COUNTRIES.
-                                </span>
-                                <span className="text-lg underline decoration-dashed">
-                                    USERS
-                                </span>
+                                <div className="w-full flex justify-between">
+                                    <span className="text-lg underline decoration-dashed">
+                                        TOP 3 COUNTRIES.
+                                    </span>
+                                    <span className="text-lg underline decoration-dashed">
+                                        USERS
+                                    </span>
+                                </div>
+                                {
+                                    locNumber
+                                    &&
+                                    locNumber.map((data) => (
+                                        <>
+                                            <div className="w-full flex justify-between">
+                                                <span className="text-lg decoration-dashed">
+                                                    {data.country}
+                                                </span>
+                                                <span className="text-lg decoration-dashed">
+                                                    {data.numUsers}
+                                                </span>
+                                            </div>
+                                            <LinearProgress color="secondary" variant="determinate" value={data.percentage}/>
+                                        </>
+                                    ))
+                                }
+
                             </div>
-                            {
-                                locNumber
-                                &&
-                                locNumber.map((data) => (
+                        }
+                    </div>
+                    <WorldMap className="w-full" locationData={locationData.result}/>
+                </div>
+                <div className="flex w-full h-max bg-base-200 p-7 grid grid-cols-2 grid-rows-1 gap-7">
+                        <div className="row-span-1 bg-base-100 h-[295px] rounded-md border-3 flex flex-col">
+                            <div className="text-lg underline">
+                                Page Visits
+                            </div>
+                            <div className="w-full h-max">
+                                {
+                                    pageVisitData
+                                    &&
                                     <>
-                                        <div className="w-full flex justify-between">
-                                            <span className="text-lg decoration-dashed">
-                                                {data.country}
-                                            </span>
-                                            <span className="text-lg decoration-dashed">
-                                                {data.numUsers}
-                                            </span>
-                                        </div>
-                                        <LinearProgress color="secondary" variant="determinate" value={data.percentage}/>
+                                        {
+                                            pageVisitData.map((visit) => (
+                                                <div className="flex w-full ">
+                                                    test
+                                                    <div className="flex grow">
+                                                        {visit.path}
+                                                    </div>
+                                                    {/* <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
+                                                    <Divider   className="flex 2xl:hidden" flexItem /> */}
+                                                    <div className="flex ">
+                                                        {visit.number}
+                                                    </div>
+                                                </div>
+                                                
+                                            ))
+                                        }
                                     </>
-                                ))
-                            }
+                                }
+                            </div>
+                        </div>
+                        <div className="row-span-2 bg-base-100 h-[295px] rounded-md border-3">
 
                         </div>
-                    }
                 </div>
-                <WorldMap className="w-full" locationData={locationData.result}/>
             </div>
         </>
     )
