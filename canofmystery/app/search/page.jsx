@@ -1,9 +1,9 @@
 'use client'
 import styles from "./../homepage.module.css";
-import React, { useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Tag from "../../components/textComponents/neoTag";
-import { searchArticles, searchByTag, articles } from "../../firebase/articleUtils/articleUtils";
-import { NeoButton } from "../../components/textComponents"
+import {searchArticles, searchByTag, fetchArticles} from "../../firebase/articleUtils/articleUtils";
+import  NeoButton  from "../../components/textComponents/NeoButton"
 import Image from "../../components/textComponents/Image"
 
 
@@ -39,6 +39,7 @@ const SearchPage = () => {
     const [json_search_results, setJson] = useState([]);
     const [searchterm, setSearchTerm] = useState('');
     const [tags, setTags] = useState('');
+    const [articles, setArticles] = useState([]);
 
 
     const SearchSubmit = async (event) => {
@@ -53,11 +54,11 @@ const SearchPage = () => {
             setJson(array);
         }
         else if(terms.length > 0 ){
-            array = await searchArticles(terms)
+            array = await searchArticles(terms, articles, true)
             setJson(array);
         }
         else if(tags_arr.length > 0){
-            array = await searchByTag(tags_arr)
+            array = await searchByTag(tags_arr, articles, true)
             setJson(array);
         }
         else{
@@ -65,6 +66,11 @@ const SearchPage = () => {
         }
         console.log(array);
     }
+
+    useEffect(() => {
+        fetchArticles().then((value) => {setArticles(value)}, (value) => {setArticles(value)});
+    }, []);
+
     return(
         
         <div class="justify-center self-center align-center p-20">
