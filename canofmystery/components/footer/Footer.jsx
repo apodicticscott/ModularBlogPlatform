@@ -28,7 +28,7 @@ const Footer = () => {
         console.log("subscribed to newsletter.");
       }
       catch (err){
-        errorSubscribeVisible(true);
+        setErrorSubscribeVisible(true);
         console.log(err);
       }
         
