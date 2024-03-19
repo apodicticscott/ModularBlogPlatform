@@ -44,7 +44,7 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
             trackingLg: "",
             tracking2xl: "",
             tracking3xl: "",
-            size: "text-lg",
+            size: "text-xl",
             paddingTop: "py-[15px]",
             sizeMd: "md:text-xl",
             sizeLg: "",

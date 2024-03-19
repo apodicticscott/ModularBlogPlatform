@@ -219,7 +219,7 @@ export default function Page({params}){
                             (currentPanel === "articles")
                             ?
                             <>
-                                Article Console.
+                                Articles.
                             </>
                             :
                             <>

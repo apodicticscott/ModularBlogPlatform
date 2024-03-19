@@ -313,28 +313,21 @@ const runPivotReport = async (propertyId, reportRequest, type) => {
   }
 }
 
-export const formatLocationReport  = async (report) => {
-
-
-  console.log(tempReport)
-
-  return tempReport
-};
-
-export const formatPageVisitReport = async (report) => {
-
-}
-
 // Function to fetch Google Analytics report
 export const fetchGoogleAnalyticsReport = async (propertyId) => {
   try {
     await loadGapiAndAuth2();
+    document.cookie = "G_AUTHUSER_H=1"
     await initGapiClient();
 
     // const report = await runReport(propertyId, reportRequest);
     const pivotReport = await runPivotReport(propertyId, pivotReportRequest, 1)
+    console.log(pivotReport)
     const realTimeReport = await runRealtimeReport(propertyId, realTimeReportRequest)
+    console.log(realTimeReport)
     const pageVisitReport = await runPivotReport(propertyId, pageVisitRequest, 2)
+    console.log(pageVisitReport)
+    console.log(document.cookie)
 
     console.log(pageVisitReport)
     return {pivotReport, realTimeReport, pageVisitReport};

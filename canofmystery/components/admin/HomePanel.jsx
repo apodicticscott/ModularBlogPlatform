@@ -243,7 +243,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    10
+                                    1
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
@@ -253,7 +253,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    5
+                                    1
                                 </div>
                             </div>
                         </div>
@@ -321,22 +321,22 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have signed up using the selected session ID.">
                                     <span className="text-lg underline decoration-dashed">
-                                        Users This Session
+                                        Articles This Session
                                     </span>
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    10
+                                    1
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have submitted an article with the selected session ID.">
                                     <span className="text-lg underline decoration-dashed">
-                                        User Submittions
+                                        Approved
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    5
+                                    0
                                 </div>
                             </div>
                         </div>
