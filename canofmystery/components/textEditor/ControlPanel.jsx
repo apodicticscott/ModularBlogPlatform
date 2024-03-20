@@ -12,7 +12,7 @@ import Image from 'next/image';
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
 
 
-import Header from "../textComponents/header1"
+import Header from "../TextComponents/Header1"
 
 class RandomColorPicker {
     constructor(colors) {
@@ -75,6 +75,10 @@ const ControlPanel = ({
     croppedCoverImage, 
     setCroppedCoverImage,
     removeCoverImage,
+
+    pageType,
+    pageName,
+    setPageName,
 
     isCropEnabled,
     setIsHelpOpen,
@@ -223,6 +227,14 @@ const ControlPanel = ({
         
     }
 
+    const handleSetPageName = (value) => {
+        if(value !== ""){
+            setPageName(value)
+        }else{
+            setPageName("Example Page Name")
+        }
+    }
+
     const handleSetAuthor = (value) => {
         if(value !== ""){
             setAuthor(value)
@@ -338,18 +350,30 @@ const ControlPanel = ({
                         />
                     </div> 
                 </div>
+                {
+                    pageType === "page"
+                    &&
+                    <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                        <Header type="sm" >
+                            Page Name
+                        </Header>
+                        <input className="w-full p-[5px] rounded" placeholder={"Page Name"} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
+                        </input>
+                    </div>
+                    
+                }
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Title
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeHolder={"Article Title"} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeholder={pageType === "page" ? "Page Title" : "Article Title" } onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeHolder={"Author Name"} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeholder={"Author Name"} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -401,7 +425,7 @@ const ControlPanel = ({
                             <input
                                 type="text"
                                 className="border border-gray-300 rounded p-2 w-full"
-                                placeHolder="Search categories..."
+                                placeholder="Search categories..."
                       
                                 onChange={(e) => setSearch(e.target.value)}
                                 onFocus={() => setIsSearchOpen(true)}
@@ -487,7 +511,7 @@ const ControlPanel = ({
                         isVideoAddOpen
                         &&
                             <div className='flex w-full gap-[10px]'>
-                                <input id="video-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Youtube Embed ID"} onChange={(e) => setCurrentVideoLink(e.currentTarget.value)}>
+                                <input id="video-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeholder={"Youtube Embed ID"} onChange={(e) => setCurrentVideoLink(e.currentTarget.value)}>
                                 </input>
                                 <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
                                     <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleAddYoutubeVideo()}}></MdOutlineDownloadDone>
@@ -524,7 +548,7 @@ const ControlPanel = ({
                     <Header type="sm" >
                         Inner HTML
                     </Header>
-                    <textarea placeHolder="Click on an editable element to see its raw content" value={innerHtml[1]} className="w-full rounded p-[5px] min-h-[200px]">
+                    <textarea placeholder="Click on an editable element to see its raw content" value={innerHtml[1]} className="w-full rounded p-[5px] min-h-[200px]">
                        
                     </textarea >
                     <div className='p-[5px] bg-base-100 w-full h-[50px] flex justify-center items-center gap-[5px] rounded bg-base-300 text-t-header-dark' onClick={() => exportContent()}>

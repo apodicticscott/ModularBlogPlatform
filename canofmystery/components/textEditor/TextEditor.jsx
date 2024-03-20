@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck, FaCcJcb } from "react-icons/fa";
+import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent } from "react-icons/fa";
 import { MdOutlinePreview, MdOutlineQuestionMark, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -39,6 +39,7 @@ import ControlPanel from "./controlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/cropUtils";
+import {addDoc} from "../../firebase/articleUtils/articleUtils"
 
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
@@ -56,7 +57,7 @@ import Help from "./Help/help"
 
 import addLinkHelp from "./Assets/help_add_link.gif"
 
-import {getFirestore, collection, getDoc, doc, addDoc} from "firebase/firestore"
+import {getFirestore, collection, getDoc, doc} from "firebase/firestore"
 import { app } from "../../app/firebase"
 
 const useStyles = makeStyles({
@@ -94,7 +95,7 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = ({articleId}) => {
+const TextEditor = ({pageType, editorType, articleId}) => {
 
     const classes = useStyles()
 
@@ -124,6 +125,8 @@ const TextEditor = ({articleId}) => {
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [isCropEnabled, setIsCropEnabled] = useState({value: false, type: ""});
     const [isHelpOpen, setIsHelpOpen] = useState({value: false, type: null});
+
+    const [pageName, setPageName] = useState("");
 
     
 
@@ -193,6 +196,21 @@ const TextEditor = ({articleId}) => {
         document.execCommand('formatblock', false, 'p')
         
     }
+
+    function applyTailwindStyles(compId, styleClass) {
+        console.log(compId)
+        setCompArray(compArray.map(comp => {
+            if (comp.ID === compId) {
+                const updatedStyle = comp.Style.includes(styleClass) ? comp.Style : [...comp.Style, styleClass];
+                console.log(updatedStyle)
+                console.log({...comp, Style: updatedStyle})
+                return { ...comp, Style: updatedStyle };
+            }
+            
+            return comp;
+        }));
+    }
+
 
     const handleSetLink = (e) => {
         const url = currentLink
@@ -381,33 +399,59 @@ const TextEditor = ({articleId}) => {
     const handleUploadArticle = async () => {
         try {
             // Construct the article object
-            const article = {
-                Title: Title,
-                Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
-                // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
-                Content: compArray.map(comp => ({
-                    ID: comp.ID,
-                    Content: comp.Content,
-                    Style: comp.Style || '', // Assuming style is an optional field
-                    Type: comp.Type,
-                    ImageOriginal: comp.OriginalImage || '',
-                    Image: comp.Image || '',
-                    Size: comp.Size || ''
-                })),
-                Publisher: "ADMIN", 
-                Time: formatTime(currentTime),
-                Date: formatDate(currentDate),
-                CoverImage: coverImageData,
-                Approved: false,
-                Author: Author
-            };
+
     
+            let response;
             // Reference to the 'Articles' collection
-            const articleColRef = collection(db, 'Articles');
+            if(pageType === "blog"){
+                const article = {
+                    Title: Title,
+                    Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
+                    // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                    Content: compArray.map(comp => ({
+                        ID: comp.ID,
+                        Content: comp.Content,
+                        Style: comp.Style || '', // Assuming style is an optional field
+                        Type: comp.Type,
+                        ImageOriginal: comp.OriginalImage || '',
+                        Image: comp.Image || '',
+                        Size: comp.Size || ''
+                    })),
+                    Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
+                    Time: formatTime(currentTime),
+                    Date: formatDate(currentDate),
+                    CoverImage: coverImageData,
+                    Approved: false,
+                    Author: Author
+                };
+
+                response = await addDoc("Articles", article);
+            }else if(pageType === "page"){
+                const page = {
+                    Title: Title,
+                    PageName: pageName,
+                    Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
+                    // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                    Content: compArray.map(comp => ({
+                        ID: comp.ID,
+                        Content: comp.Content,
+                        Style: comp.Style || '', // Assuming style is an optional field
+                        Type: comp.Type,
+                        ImageOriginal: comp.OriginalImage || '',
+                        Image: comp.Image || '',
+                        Size: comp.Size || ''
+                    })),
+                    Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
+                    Time: formatTime(currentTime),
+                    Date: formatDate(currentDate),
+                    CoverImage: coverImageData,
+                    Approved: false,
+                    Author: Author
+                };
+
+                response = await addDoc("Pages", page);
+            }
             
-            // Add the article to the collection
-            const docRef = await addDoc(articleColRef, article);
-            console.log("Article uploaded with ID: ", docRef.id);
         } catch (error) {
             console.error("Error adding article: ", error);
         }
@@ -447,7 +491,19 @@ const TextEditor = ({articleId}) => {
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
                             <FaList className="text-lg sm:text-xl"/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
+                        {/* <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
+                            <FaIndent className="text-lg sm:text-xl"/>
+                        </button > */}
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
+                            <FaAlignRight className="text-lg sm:text-xl"/>
+                        </button >
+                        {/* <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
+                            <FaAlignCenter className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
+                            <FaAlignLeft className="text-lg sm:text-xl"/>
+                        </button > */}
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(pevState => !prevState)}>
                             <FaLink className="text-lg sm:text-xl"/>
                         </button >
 
@@ -576,6 +632,10 @@ const TextEditor = ({articleId}) => {
                             setCategory={setCategory} 
                             innerHtml={innerHtmlContent} 
                             exportContent={handleExportContent} 
+
+                            pageName={pageName}
+                            setPageName={setPageName}
+                            pageType={pageType}
                             
                             isCropEnabled={isCropEnabled.value}
                             setIsHelpOpen={(value, type) => setIsHelpOpen({value: value, type: type})}
@@ -655,7 +715,7 @@ const TextEditor = ({articleId}) => {
                                         {"Enter The URL."}
                                     </Header>
                                     <div className="flex gap-[10px]">
-                                        <input id="link-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeHolder={"Enter a URL."} onChange={(e) => setCurrentLink(e.currentTarget.value)}>
+                                        <input id="link-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeholder={"Enter a URL."} onChange={(e) => setCurrentLink(e.currentTarget.value)}>
                                         </input>
                                         <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
                                             <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleSetLink(); setLinkInput(false)}}></MdOutlineDownloadDone>
@@ -729,7 +789,7 @@ const TextEditor = ({articleId}) => {
                                                     )}
                                                     {(comp.Type === "in-paragraph")&& (
                                                         <>
-                                                            <DragParagraph  key={comp.ID} indent={true} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
+                                                            <DragParagraph  key={comp.ID} indent={true} comp={comp} compArray={compArray}  isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent} Style={comp.Style}/>          
                                                         </>
                                                     )}
                                                     {(comp.Type === "paragraph")&& (

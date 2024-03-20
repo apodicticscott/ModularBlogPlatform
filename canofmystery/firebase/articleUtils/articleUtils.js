@@ -18,6 +18,22 @@ export const searchArticles = async (searchText) => {
     return articlesArray;
 }
 
+export const addDoc = async (collection, doc) => {
+    // Reference to the 'Articles' collection
+    const articleColRef = collection(db, collection);
+    const response = await addDoc(articleColRef, doc)
+
+    return response;
+}
+
+export const addPage = async (page) => {
+    // Reference to the 'Articles' collection
+    const pageColRef = collection(db, 'Pages');
+    const response = await addDoc(pageColRef, page)
+
+    return response;
+}
+
 export const fetchArticles = async () => {
     const collectionRef = collection(db, "Articles");
     const querySnapshot = await getDocs(collectionRef);
@@ -60,6 +76,17 @@ export const fetchCitationGuide = async () => {
       return docSnap.data();
     } else {
       console.log("No such document!");
+    }
+};
+
+export const fetchArticle = async (articleId) => {
+    const docRef = doc(db, "Articles", articleId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return null
     }
 };
 
