@@ -10,6 +10,7 @@ export const onUserCreate = functions.auth.user().onCreate(async (user) => {
         studentWriter: false,
         adminPerm: false,
         hasPublished: false,
+        sessionCode: "",
     })
 
 })

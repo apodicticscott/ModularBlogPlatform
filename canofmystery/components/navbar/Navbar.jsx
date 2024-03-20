@@ -54,7 +54,8 @@ const Navbar = () => {
           // Update the boolean field for the logged-in user
           const userDoc = doc(firestore, 'users', userId);
           await updateDoc(userDoc, {
-            studentWriter: true 
+            studentWriter: true,
+            sessionCode: textInput,
           });
           setResult(`Boolean field updated successfully.`);
         }
