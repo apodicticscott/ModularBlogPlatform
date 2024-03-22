@@ -32,6 +32,7 @@ export default function Page({ params }) {
 
     const [isWriter, setIsWriter] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
+    const [user, setUser] = useState('');
 
     useEffect(() => {
         if (hasId) {
@@ -67,7 +68,7 @@ export default function Page({ params }) {
                     setTimeout(() => setHideLoader(true), 2500);
                     setIsWriter(userData.studentWriter);
                     setIsAdmin(userData.adminPerm)
-                    console.log(userData.adminPerm)
+                    setUser(userData)
                 } else {
                     console.log("No such User");
                 }
@@ -121,7 +122,7 @@ export default function Page({ params }) {
                     }
                     {
                         loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId}/>
+                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId} user={user}/>
                         )
                     }
                 </>

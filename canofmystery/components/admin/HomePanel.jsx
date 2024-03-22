@@ -17,7 +17,7 @@ import NeoButton from '../TextComponents/NeoButton';
 import { deleteArticles, fetchArticles,  getTotalUnapprovedArticles} from '../../firebase/articleUtils/articleUtils';
 import { fetchSessions, addSession } from '../../firebase/sessionUtils/sessionUtils';
 
-const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, setSessions}) => {
+const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, setSessions, users, setUsers}) => {
     const [sessionInfo, setSessionInfo] = useState({ID: null, Experation: null});
     const [sessionError, setSessionError] = useState("");
     const [sessionErrorIsVisible, setSessionErrorIsVisible] = useState(false);
@@ -230,7 +230,12 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     ?
                                     selectedSession
                                     :
-                                    "No Session has been selected"
+                                    <>
+                                    No Session has been selected. 
+                                    <br />
+                                    Showing All users.
+                                    </>
+                                    
                                 }
                             </span>
                         </div>
@@ -243,7 +248,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    1
+                                    {users.filter(user => !selectedSession || user.sessionCode === selectedSession).length}
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
@@ -274,8 +279,8 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     Has Submitted
                                 </div>
                             </div>
-                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
-                                <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center rounded-t-md shadow`}>
+                            <div className="flex w-full h-[300px] max-h-[300px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
+                                {/* <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center rounded-t-md shadow`}>
                                     <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                         First Name
                                     </div>
@@ -291,7 +296,39 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
                                         No Article
                                     </div>
-                                </div>
+                                </div> */}
+                                {
+                                    users
+                                    ?
+                                    users.filter(user => !selectedSession || user.sessionCode === selectedSession).map((user, index) => (
+                                        <div className={`flex justify-between w-full h-max bg-base-100 items-center shadow ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
+                                            <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                                {user.firstName}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                                {user.lastName}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
+                                                {user.sessionCode}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
+                                                {
+                                                user.hasPublished
+                                                ?
+                                                "Has Submmited"
+                                                :
+                                                "Has Not Submmited"
+                                                }
+                                            </div>
+                                        </div>
+                                    ))
+                                    :
+                                    <>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

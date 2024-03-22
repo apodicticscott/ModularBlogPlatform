@@ -1,6 +1,7 @@
 'use client'
 import React, {useState, useEffect, useRef} from "react"
 import { searchArticles, fetchArticles, fetchPages, getTotalUnapprovedArticles, getTotalUnapprovedPages} from "../../firebase/articleUtils/articleUtils"
+import { fetchUsers } from "../../firebase/userUtils/userUtils"
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../../components/TextComponents/Header1"
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
@@ -12,6 +13,7 @@ import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import firebase_app from "../../firebase/config";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "../../app/firebase"
+import { ApiSignIn } from "../../firebase/analitics/analyticsUtils"
 
 const auth = getAuth(firebase_app);
 const firestore = getFirestore(app)
@@ -42,6 +44,26 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function Page({params}){
+    const [signedIn, setSignedIn] = useState(false)
+
+    useEffect(() => {
+
+        const handleSignIn = async () => {
+            if(!signedIn){
+                const response = ApiSignIn();
+    
+                if(response.error){
+                    setSignedIn(false)
+                }else{
+                    setSignedIn(true)
+                }
+            }
+        }
+
+        handleSignIn();
+    }, [])
+
+
     let slug = params.slug;
 
     if(slug !== "home" && slug !== "analytics" && slug !== "users" && slug !== "articles" && slug !== "pages"){
@@ -53,9 +75,11 @@ export default function Page({params}){
     const [isSideBarOpen, setIsSideBarOpen] = useState(true)
     const [currentPanel, setCurrentPanel] = useState(slug);
     const router = useRouter();
+
     //All Penels
     const [articles, setArticles] = useState([]);
     const [pages, setPages] = useState([]);
+    const [users, setUsers] = useState([])
 
     //Mui Styles for all panels
     const classes = useStyles();
@@ -121,6 +145,11 @@ export default function Page({params}){
         setLoading(false)
     }
 
+    const handleFetchUsers = async () => {
+        setUsers(await fetchUsers())
+        setLoading (false)
+    }
+
     const handleSearchArticles = async (search) => {
         setArticles(await searchArticles(search))
     }
@@ -128,7 +157,8 @@ export default function Page({params}){
     useEffect(() => {
         if (search.trim() === "") {
             handleFetchArticles();
-            handleFetchPages()
+            handleFetchPages();
+            handleFetchUsers();
             console.log(articles)
         } else {
             handleSearchArticles(search);
@@ -294,7 +324,7 @@ export default function Page({params}){
                         {
                             (currentPanel === "home")
                             &&
-                            <HomePanel articles={articles} setArticles={setArticles} classes={classes} setNumUnapproved={setNumUnapproved} setSessions={setSessions} sessions={sessions}/>
+                            <HomePanel articles={articles} setArticles={setArticles} classes={classes} setNumUnapproved={setNumUnapproved} setSessions={setSessions} sessions={sessions} users={users} setUsers={setUsers}/>
                         }
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "/components/TextComponents";
+import { Link } from "../TextComponents/Link";
 
 
 const json_categories = [

@@ -161,10 +161,11 @@ const initAuthInstance = async () => {
 export const ApiSignIn = async () => {
   try {
     await initAuthInstance(); // Ensure auth2 instance is initialized
-    await gapi.auth2.getAuthInstance().signIn();
-    console.log("Signed in successfully");
+    const response = await gapi.auth2.getAuthInstance().signIn();
+    return {result: response, error: null}
   } catch (error) {
     console.error("Error signing in:", error);
+    return {result: null, error: error}
   }
 };
 

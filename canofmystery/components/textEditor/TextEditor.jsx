@@ -95,7 +95,7 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = ({pageType, editorType, articleId}) => {
+const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     const classes = useStyles()
 
@@ -417,7 +417,9 @@ const TextEditor = ({pageType, editorType, articleId}) => {
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
+                    // Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
                     CoverImage: coverImageData,
@@ -441,7 +443,8 @@ const TextEditor = ({pageType, editorType, articleId}) => {
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    Publisher: "ADMIN", 
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
                     CoverImage: coverImageData[0] ? coverImageData : null,

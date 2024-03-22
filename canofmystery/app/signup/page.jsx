@@ -10,6 +10,8 @@ import NeoButton from "../../components/TextComponents/NeoButton";
 import { AnimatePresence, motion } from "framer-motion";
 import firebase_app from "../../firebase/config";
 
+import Header from "../../components/TextComponents/Header1"
+
 const auth = getAuth(firebase_app);
 const firestore = getFirestore(app);
 
@@ -61,9 +63,15 @@ const SignUpPage = () => {
 
     try {
         const response = await signUp(emailInput, passwordInput);
-        // router.push("/");
-        console.log(response)
-        setPanel("name")
+
+        if(response.error.code = "auth/email-already-in-use"){
+          setSignUpErrorVisible(true);
+          setErrorMessage("The email you have chosen is already in use.");
+          return;
+        }else{
+          setPanel("name")
+        }
+        
     } catch (error) {
         console.log("Sorry, something went wrong. Please try again.");
         console.log(error);
@@ -101,6 +109,7 @@ const handleInfo = async (event) => {
       }
     });
 
+    setPanel("done")
     console.log(response)
     // router.push("/");
   } catch (error) {
@@ -115,15 +124,21 @@ const handleInfo = async (event) => {
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
 
-      <div class="flex flex-col justify-center self-center align-center p-7 w-[calc(100vw_-_29px)] sm:max-w-[450px] border-2 md:border-3 rounded-md shadow-lg m-7 sm:m-0">
-        <div class="mb-4">
-          {panel === "cradentials"
+      <div class={`flex flex-col justify-center self-center align-center sm:max-w-[450px] border-2 md:border-3    shadow-lg m-7 sm:m-0 h-max min-h-[480px] w-[calc(100vw_-_29px)] p-7 rounded-md transition-all duration-500`}>
+        
+          {panel === "cradentials" 
           ?
-            <h3 class="font-bold text-3xl text-gray-200">Sign Up</h3>
+            <div class="mb-4">
+              <h3 class="font-bold text-3xl text-gray-200">Sign Up</h3>
+            </div>
           :
-            <h3 class="font-bold text-3xl text-gray-200">User Info</h3>
+            panel === "name"
+            &&
+            <div class="mb-4">
+              <h3 class="font-bold text-3xl text-gray-200">User Info</h3>
+            </div>
           }
-        </div>
+        
         <div >
           {
           panel === "cradentials"
@@ -152,8 +167,8 @@ const handleInfo = async (event) => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="rounded-md"
-                          style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
+                          className="rounded-md p-[10px]"
+                          style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
                       >
                         {errorMessage}
                       </motion.div>
@@ -171,6 +186,9 @@ const handleInfo = async (event) => {
             </NeoButton>
           </form>
           :
+
+          panel === "name"
+          ?
           <form onSubmit={handleInfo} className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[20px]">
             <div className="flex w-full h-max items-center gap-[10px]">
@@ -197,8 +215,8 @@ const handleInfo = async (event) => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="rounded-md"
-                          style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
+                          className="rounded-md p-[10px]"
+                          style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
                       >
                         {infoErrorMessage}
                       </motion.div>
@@ -231,6 +249,19 @@ const handleInfo = async (event) => {
             Sign up
           </NeoButton>
         </form>
+        :
+        <>
+          <div class="wrapper"> 
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"> <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/> <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+          <div>
+                  <Header type="sm" classes="text-center">
+                      Your all signed up
+                  </Header>
+          </div>
+        </>
+
         }
         </div>
       </div>

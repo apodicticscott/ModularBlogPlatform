@@ -61,6 +61,7 @@ module.exports = {
       DEFAULT: '4px',
       'md': '10px',
       'lg': '20px',
+      'full': '100%',
     },
     screens: {
       'xs': '0px',

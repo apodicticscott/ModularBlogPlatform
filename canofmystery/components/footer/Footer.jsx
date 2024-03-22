@@ -3,10 +3,11 @@ import { getFirestore, collection, addDoc} from "firebase/firestore"
 import { firebase_app } from "../../firebase/config"
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Link, NeoButton } from "../TextComponents"
+import Link from "../TextComponents/Link"
+import NeoButton from "../TextComponents/NeoButton";
 import { MdWbSunny } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
-import Header from "../TextComponents/header1"
+import Header from "../TextComponents/Header1"
 
 
 const Footer = () => {
