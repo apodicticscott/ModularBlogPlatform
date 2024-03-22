@@ -125,7 +125,7 @@ const Recent = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-xl">
-                                            {article.Author}
+                                            {article.author}
                                         </div>
                                         <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2.5xl">
                                             <div className="flex max-w-[170px] h-[35px] gap-[5px] overflow-hidden">
