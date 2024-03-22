@@ -1,18 +1,19 @@
 import React from "react";
+import { Link } from "/components/TextComponents";
 
-const json_catgeories = [
-    {title:"Spooky",link:"../link/to/page",image:"/testimage.png"},{title:"Folklore",link:"../link/to/page",image:"/testimage.png"},{title:"Unsolved",link:"../link/to/page",image:"/testimage.png"},{title:"Creature",link:"../link/to/page",image:"/testimage.png"},
-    {title:"Spooky",link:"../link/to/page",image:"/testimage.png"},{title:"Folklore",link:"../link/to/page",image:"/testimage.png"},{title:"Unsolved",link:"../link/to/page",image:"/testimage.png"},{title:"Creature",link:"../link/to/page",image:"/testimage.png"}
+
+const json_categories = [
+    {title:"Spooky",link:"../link/to/page"},{title:"Folklore",link:"../link/to/page"},{title:"Unsolved",link:"../link/to/page"},{title:"Creature",link:"../link/to/page"},
+    {title:"Spooky",link:"../link/to/page"},{title:"Folklore",link:"../link/to/page"},{title:"Unsolved",link:"../link/to/page"},{title:"Creature",link:"../link/to/page"}
 ];
 
 
-const CategoryCard = (category) => {
+const CategoryCard = (category, index) => {
     return (
         <>
-            
-            <div className="grid h-[234px] lg:w-[calc(10%_-_20px)] xl:w-[calc(27.5%_-_60px)] place-items-center object-contain bg-t-header-light border-3 object-none shadow-sidelg rounded-md">
-                <div className="text-3xl text-base-100">{category.title}</div>
-            </div>
+            <a href={category.link} key={index} className="grid h-[234px] w-[450px] place-items-center object-contain bg-t-header-light border-3 object-none shadow-sidelg rounded-md">
+                <div  className="text-3xl text-base-100">{category.title}</div>
+            </a>
         </>
 
     );
@@ -43,8 +44,8 @@ const CategoriesSection = () => {
                     <div className="px-14 py-[100px] flex w-full place-content-center">
                         <div className="resize-none flex flex-wrap maw-full max-w-[1500px] gap-[20px] grid-flow-row auto-rows-max justify-center ">
                             {
-                                json_catgeories.map((category, index) => 
-                                    CategoryCard(category)
+                                json_categories.map((category, index) => 
+                                    CategoryCard(category, index)
                                 )
                             }
                         </div>

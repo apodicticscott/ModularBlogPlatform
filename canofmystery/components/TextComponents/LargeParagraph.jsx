@@ -1,6 +1,6 @@
 import React from "react"
 
-const LargeParagraph = ({children, classes}) => {
+const largeParagraph = ({children, classes}) => {
     
     return(
         <>
@@ -11,4 +11,4 @@ const LargeParagraph = ({children, classes}) => {
     )
 }
 
-export default LargeParagraph;
+export default largeParagraph;

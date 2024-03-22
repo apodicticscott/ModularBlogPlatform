@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Resource = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, innerHTML}) => {
+const resource = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, innerHTML}) => {
 
 
     
@@ -105,4 +105,4 @@ const Resource = ({children, text, type, classes, style, editable, highlight, on
 } 
 
 
-export default Resource;
+export default resource;

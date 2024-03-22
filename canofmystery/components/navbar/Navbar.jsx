@@ -33,7 +33,7 @@ const Navbar = () => {
   const [userId, setUserId] = useState(null);
 
 
-  const dropDownLinks = [{text: "Create Project", link:""}, {text: "Our Project", link:""}, {text: "Instructions", link:""}, {text: "Old Can Of Mystery", link:""}]
+  const dropDownLinks = [{text: "Create Project", link:"newproject"}, {text: "Our Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Instructions", link:"instructions"}, {text: "Old Can Of Mystery", link:"NEED_LINK"}]
 
   const [textInput, setTextInput] = useState('');
   const [result, setResult] = useState(null);
@@ -148,7 +148,10 @@ const Navbar = () => {
         <div className="flex flex-row justify-center w-full lg:py-2 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className="navbar-end lg:hidden w-full md:w-[750px]  md:flex flex justify-center gap-1 text-t-header-light dark:text-t-header-dark ">
             <RiSearchFill style={{fontSize: "30px"}}/>
-            <input type="text" name="search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
+            <form>
+              <input type="text" name="search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
+            </form>
+            
             <MdAccountCircle style={{fontSize: "35px"}}/>
           </div>
           <div className=" flex flex-row flex-wrap justify-between sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
@@ -243,7 +246,7 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
-            <RiSearchFill style={{fontSize: "30px"}} role="link">SearchPage</RiSearchFill>
+            <RiSearchFill style={{fontSize: "30px"}} role="link">search</RiSearchFill>
             <input type="search" name="search" required minLength="4" className="neo-input w-[180px]"/>
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

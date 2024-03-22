@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 
-const Paragraph = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, indent, innerHTML}) => {
+const paragraph = ({children, text, type, classes, style, editable, highlight, onClick, onInput, onKeyUp, onKeyDown, id, indent, innerHTML}) => {
     let indentVal;
 
     if(indent){
@@ -104,4 +104,4 @@ const Paragraph = ({children, text, type, classes, style, editable, highlight, o
 } 
 
 
-export default Paragraph;
+export default paragraph;

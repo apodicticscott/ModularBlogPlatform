@@ -26,7 +26,7 @@ const Lander = () => {
 
                     </div>
                     <div className=" lg:pl-7 3xl:pl-[2.5vw] 3xl:w-[45vw]">
-                        <NeoButton  classes={"bg-primary-dark"}>Read Articles</NeoButton>
+                        <NeoButton  classes={"bg-primary-dark"} href="Articles">Read Articles</NeoButton>
                     </div>
                 </div>
                 <div className="xs:h-[450px] xs-sm:h-[450px] lg:w-[925px]  lg:hidden px-7  lg:pt-28 flex flex-col justify-end dark:bg-base-100-dark text-t-header-light bg-base-100 dark:text-t-dark border-y-2 border-b-black"> 
