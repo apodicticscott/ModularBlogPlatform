@@ -37,7 +37,7 @@ const Recent = () => {
                     }
                 }
                 //see average words per minute for why counter is divided by such number.
-                articlesNewData.push({time: Math.round((counter/238)*100)/100, author: word.Author, tags: word.Tags, title: word.Title, image: image});
+                articlesNewData.push({time: Math.ceil((counter/238)), author: word.Author, tags: word.Tags, title: word.Title, image: image});
             }
         );
         setArticles(articlesNewData);
