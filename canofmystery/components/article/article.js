@@ -9,7 +9,7 @@ import Tag from "../TextComponents/NeoTag"
  
 const Article = ({article}) => {
     return (
-        <div className="w-full flex justify-center px-7 md:px-0 bg-base-100 dark:bg-base-100-dark">
+        <div className="w-full flex justify-center px-7 md:px-0 bg-base-100 dark:bg-base-100-dark min-h-screen">
             <div className="w-full flex flex-col items-center max-w-[800px] h-max ">
             {article ? (
                 <>

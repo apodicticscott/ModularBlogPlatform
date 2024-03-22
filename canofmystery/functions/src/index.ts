@@ -11,6 +11,8 @@ export const onUserCreate = functions.auth.user().onCreate(async (user) => {
         adminPerm: false,
         hasPublished: false,
         sessionCode: "",
+        firstName: "",
+        lastName: "",
     })
 
 })

@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc } from "firebase/firestore"
+import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc, addDoc} from "firebase/firestore"
 import { firebase_app } from "../config"
 
 const db = getFirestore(firebase_app)
@@ -18,21 +18,19 @@ export const searchArticles = async (searchText) => {
     return articlesArray;
 }
 
-export const addDoc = async (collection, doc) => {
-    // Reference to the 'Articles' collection
-    const articleColRef = collection(db, collection);
-    const response = await addDoc(articleColRef, doc)
-
+export const addDocument = async (collectionName, docData) => {
+    const colRef = collection(db, collectionName);
+    const response = await addDoc(colRef, docData);
     return response;
 }
 
-export const addPage = async (page) => {
-    // Reference to the 'Articles' collection
-    const pageColRef = collection(db, 'Pages');
-    const response = await addDoc(pageColRef, page)
-
-    return response;
-}
+export const getPageByName = async (pageName) => {
+    const collectionRef = collection(db, "Pages");
+    const q = query(collectionRef, where("PageName", "==", pageName));
+    const querySnapshot = await getDocs(q);
+    const result = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))[0];
+    return result;
+};
 
 export const fetchArticles = async () => {
     const collectionRef = collection(db, "Articles");
@@ -46,6 +44,18 @@ export const fetchArticles = async () => {
     return articlesArray;
 };
 
+export const fetchPages = async () => {
+    const collectionRef = collection(db, "Pages");
+    const querySnapshot = await getDocs(collectionRef);
+
+    const pagesArray = [];
+    querySnapshot.forEach((doc) => {
+        pagesArray.push({ id: doc.id, ...doc.data() });
+    });
+
+    return pagesArray;
+};
+
 export const deleteArticles = async (selectedArticles) => {
     await Promise.all(selectedArticles.map(async (id) => {
         const docRef = doc(db, "Articles", id);
@@ -53,11 +63,35 @@ export const deleteArticles = async (selectedArticles) => {
     }));
 }
 
+
+export const deletePages = async (selectedPages) => {
+    await Promise.all(selectedPages.map(async (id) => {
+        const docRef = doc(db, "Pages", id);
+        await deleteDoc(docRef);
+    }));
+}
+
+
 export const getTotalUnapprovedArticles = async () => {
     const collectionRef = collection(db, "Articles");
     const q = query(collectionRef, where("Approved", "==", false));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.length;
+}
+
+export const getTotalUnapprovedPages = async () => {
+    const collectionRef = collection(db, "Pages");
+    const q = query(collectionRef, where("Approved", "==", false));
+    const querySnapshot = await getDocs(q);
+    console.log("here!!! lol")
+    return querySnapshot.docs.length;
+}
+
+export const setPagesApproval = async (pageIds, boolean) => {
+    await Promise.all(pageIds.map(async (id) => {
+        const docRef = doc(db, "Pages", id);
+        await updateDoc(docRef, { Approved: boolean});
+    }));
 }
 
 export const setArticlesApproval = async (articleIds, boolean) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiSearchFill } from "react-icons/ri";
 import { MdDone, MdClose, MdDelete, MdOutlinePreview } from "react-icons/md";
@@ -8,65 +8,63 @@ import Pagination from '@mui/material/Pagination';
 import { FaPen } from "react-icons/fa";
 
 import { 
-    fetchArticles, 
-    deleteArticles, 
-    setArticlesApproval,
-    getTotalUnapprovedArticles,
+    fetchPages, 
+    deletePages, 
+    setPagesApproval,
+    getTotalUnapprovedPages,
     } from "../../firebase/articleUtils/articleUtils";
 
 import NeoButton from "../TextComponents/NeoButton"
 
-const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, classes}) => {
+const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedArticles, setSelectedArticles] = useState([])
-    const articlesPerPage = 25; // Now displaying 2 articles per page
+    const [selectedPages, setSelectedPages] = useState([])
+    const [currentPages, setCurrentPages] = useState([])
+    const pagesPerPage = 25; // Now displaying pages per page
 
-    // Calculate the indices of the articles to display
-    const indexOfLastArticle = currentPage * articlesPerPage;
-    const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-    const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
+    // Calculate the indices of the pages to display
+    const indexOfLastPage = currentPage * pagesPerPage;
+    const indexOfFirstPage = indexOfLastPage - pagesPerPage;
+
+
+    useEffect(() => {
+        setCurrentPages(pages.slice(indexOfFirstPage, indexOfLastPage))
+    }, [pages])
 
     const router = useRouter();
-
 
     // Handle page change
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
 
-    // const handleSearchChange = (e) => {
-    //     e.preventDefault()
-    //     setSearch(e.target.value);
-    // }
-
     const handleSelection = (id) => {
-        setSelectedArticles(prevSelected => prevSelected.includes(id) ? prevSelected.filter(articleId => articleId !== id) : [...prevSelected, id]);
+        setSelectedPages(prevSelected => prevSelected.includes(id) ? prevSelected.filter(pageId => pageId !== id) : [...prevSelected, id]);
     }
 
     const handleSelectAll = () => {
-        setSelectedArticles(selectedArticles.length < articles.length ? articles.map(article => article.id) : []);
+        setSelectedPages(selectedPages.length < pages.length ? pages.map(page => page.id) : []);
     }
 
-    const handleDeleteArticles = async () => {
-        deleteArticles(selectedArticles)
-        setSelectedArticles([]);
-        const tempArticles = await fetchArticles();
-        setArticles(tempArticles); // Refresh articles list after deletion
+    const handleDeletePages = async () => {
+        deletePages(selectedPages)
+        setSelectedPages([]);
+        const tempPages = await fetchPages();
+        setPages(tempPages); // Refresh pages list after deletion
     };
 
-    const handleSetArticlesApproved = async () => {
-        await setArticlesApproval(selectedArticles, true);
-        setArticles(await fetchArticles());
-        setNumUnapproved(await getTotalUnapprovedArticles());
-        setSelectedArticles([])
+    const handleSetPagesApproved = async () => {
+        await setPagesApproval(selectedPages, true);
+        setPages(await fetchPages());
+        setNumUnapproved(await getTotalUnapprovedPages());
+        setSelectedPages([])
     }
 
-    
-    const handleSetArticlesUnapproved = async () => {
-        await setArticlesApproval(selectedArticles, false);
-        setArticles(await fetchArticles());
-        setNumUnapproved(await getTotalUnapprovedArticles());
-        setSelectedArticles([])
+    const handleSetPagesUnapproved = async () => {
+        await setPagesApproval(selectedPages, false);
+        setPages(await fetchPages());
+        setNumUnapproved(await getTotalUnapprovedPages());
+        setSelectedPages([])
     }
 
     return(
@@ -82,17 +80,17 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                         <div className="flex w-full justify-between gap-[15px]">
                             <div className="flex justify-between">  
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Approve">
-                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesApproved()}>
+                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetPagesApproved()}>
                                         <MdDone className="text-2.5xl items-center"/>
                                     </button >
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Unapprove">
-                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetArticlesUnapproved()}>
+                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleSetPagesUnapproved()}>
                                         <MdClose className="text-2.5xl" />
                                     </button>  
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Delete">
-                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleDeleteArticles()}>
+                                    <button className="w-[35px]  flex justify-center items-center" onClick={() => handleDeletePages()}>
                                         <MdDelete className="text-2.5xl" />
                                     </button> 
                                 </Tooltip>                    
@@ -107,36 +105,35 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                     {
                         numUnapproved > 0
                         ?
-                        `You have ${numUnapproved} unapproved ${numUnapproved > 1 ? 'articles' : 'article'}.`
+                        `You have ${numUnapproved} unapproved ${numUnapproved > 1 ? 'pages' : 'page'}.`
                         :
                         'You are all up to date!'
                     }
-                    
-                </div>
-                <div className="w-full h-max flex flex-wrap 2xl:flex-col gap-[15px]">
-                    {
-                        currentArticles
-                        &&
-                        currentArticles.map((article) => (
-                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg ${selectedArticles.includes(article.id) && 'bg-[#c8c8c8]'}`} key={article.id} onClick={() => handleSelection(article.id)}>
+                    </div>
+                    <div className="w-full h-max flex flex-wrap 2xl:flex-col gap-[15px]">
+                        {
+                            currentPages
+                            &&
+                            currentPages.map((page) => (
+                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg ${selectedPages.includes(page.id) && 'bg-[#c8c8c8]'}`} key={page.id} onClick={() => handleSelection(page.id)}>
                                     <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
                                         <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Publisher}
+                                            {page.Publisher}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Author}
+                                            {page.Author}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Title}
+                                            {page.Title}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {article.Time} 
+                                            {page.Time} 
                                         </div>
                                         <Divider orientation="vertical" className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
@@ -148,9 +145,9 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                         <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
                                             No Cover Image Available
                                         </div>
-                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {
-                                                article.Approved
+                                                page.Approved
                                                 ?
                                                 "Approved"
                                                 :
@@ -160,33 +157,32 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                     </div>
                                     <div className="flex h-full w-full 2xl:w-max p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                            <button onClick={() => router.push(`/editor/${article.id}`)} >
+                                            <button onClick={() => router.push(`/editor/page/${page.id}`)} >
                                                 <FaPen className="text-xl w-[25px]"/>
                                             </button>
                                         </Tooltip>
                                         <Divider orientation="vertical" flexItem />
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
-                                            <button onClick={() => router.push(`/blogs/${page.PageName}`)}>
+                                            <button onClick={() => router.push(`/pages/${page.PageName}`)}>
                                                 <MdOutlinePreview className="text-2xl w-[25px]" />
                                             </button>
                                         </Tooltip>
                                     </div>
                                 </div>
-                        ))
-                    }            
+                            ))
+                        }            
+                    </div>
                 </div>
-
+                {
+                    (Math.ceil(pages.length / pagesPerPage) > 1)
+                    &&
+                    <div className="w-full flex justify-center h-max">
+                        <Pagination count={Math.ceil(pages.length / pagesPerPage)} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded"   sx={{'& .MuiButtonBase-root': { borderWidth: '2px', borderRadius: '5px', borderColor: 'black' }}}  />
+                    </div>
+                }
             </div>
-            {
-                (Math.ceil(articles.length / articlesPerPage) > 1)
-                &&
-                <div className="w-full flex justify-center h-max">
-                    <Pagination count={Math.ceil(articles.length / articlesPerPage)} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded"   sx={{'& .MuiButtonBase-root': { borderWidth: '2px', borderRadius: '5px', borderColor: 'black' }}}  />
-                </div>
-            }
-
-        </div>
-    )
-}
-
-export default ArticlePanel;
+        )
+    }
+    
+    export default PagePanel;
+    

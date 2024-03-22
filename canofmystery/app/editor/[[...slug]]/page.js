@@ -13,6 +13,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 const auth = getAuth(firebase_app);
 const firestore = getFirestore(app);
 
+
 export default function Page({ params }) {
     const router = useRouter();
 
@@ -30,6 +31,7 @@ export default function Page({ params }) {
     const [loaderOpacity, setLoaderOpacity] = useState(1);
 
     const [isWriter, setIsWriter] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
         if (hasId) {
@@ -41,6 +43,7 @@ export default function Page({ params }) {
                     setTimeout(() => setLoading(false), 2000);
                     setTimeout(() => setHideLoader(true), 2500);
                     setExists(false);
+                    
                 } else {
                     
                     // Ensure loader stays for 2 more seconds after loading is done
@@ -55,11 +58,16 @@ export default function Page({ params }) {
 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
+                console.log("here5")
                 const docRef = doc(firestore, 'users', user.uid);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
-                    setIsWriter(userData.studentWriter === true || userData.adminPerm === true);
+                    setTimeout(() => setLoading(false), 2000);
+                    setTimeout(() => setHideLoader(true), 2500);
+                    setIsWriter(userData.studentWriter);
+                    setIsAdmin(userData.adminPerm)
+                    console.log(userData.adminPerm)
                 } else {
                     console.log("No such User");
                 }
@@ -74,12 +82,19 @@ export default function Page({ params }) {
     // Adjustments to handle editorType and articleId states
     useEffect(() => {
         if (editorType !== "new" && editorType !== undefined && articleId === undefined) {
+            console.log("here")
             setArticleId(editorType);
             setHasId(true);
         }
     }, [editorType, articleId]);
 
     if (pageType !== "page" && pageType !== "blog") {
+        console.log("here1")
+        return <PageNotFound />;
+    }
+
+    if(pageType === "page" && !isAdmin && !loading){
+        console.log("here2")
         return <PageNotFound />;
     }
 

@@ -39,7 +39,7 @@ import ControlPanel from "./controlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/cropUtils";
-import {addDoc} from "../../firebase/articleUtils/articleUtils"
+import {addDocument} from "../../firebase/articleUtils/articleUtils"
 
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
@@ -425,7 +425,7 @@ const TextEditor = ({pageType, editorType, articleId}) => {
                     Author: Author
                 };
 
-                response = await addDoc("Articles", article);
+                response = await addDocument("Articles", article);
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,
@@ -441,15 +441,17 @@ const TextEditor = ({pageType, editorType, articleId}) => {
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
+                    Publisher: "ADMIN", 
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
-                    CoverImage: coverImageData,
-                    Approved: false,
+                    CoverImage: coverImageData[0] ? coverImageData : null,
+                    Approved: true,
                     Author: Author
                 };
 
-                response = await addDoc("Pages", page);
+                console.log(page)
+
+                response = await addDocument("Pages", page);
             }
             
         } catch (error) {
