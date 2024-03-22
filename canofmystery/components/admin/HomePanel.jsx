@@ -276,27 +276,10 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     Session ID
                                 </div>
                                 <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Has Submitted
+                                    Has Published
                                 </div>
                             </div>
                             <div className="flex w-full h-[300px] max-h-[300px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
-                                {/* <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 items-center rounded-t-md shadow`}>
-                                    <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                        First Name
-                                    </div>
-                                    <Divider orientation="vertical"/>
-                                    <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                        Last Name
-                                    </div>
-                                    <Divider orientation="vertical"/>
-                                    <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                        Session ID
-                                    </div>
-                                    <Divider orientation="vertical"/>
-                                    <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
-                                        No Article
-                                    </div>
-                                </div> */}
                                 {
                                     users
                                     ?
@@ -318,9 +301,9 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                                 {
                                                 user.hasPublished
                                                 ?
-                                                "Has Submmited"
+                                                "Has Published"
                                                 :
-                                                "Has Not Submmited"
+                                                "Has Not Published"
                                                 }
                                             </div>
                                         </div>

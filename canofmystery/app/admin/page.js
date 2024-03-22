@@ -20,7 +20,7 @@ const firestore = getFirestore(app)
 
 import useWindowSize from '../../hooks/useWindowSize'; // Assuming you have a hook for window size
 
-import { AnalyticPanel, HomePanel, ArticlePanel, PagePanel} from "../../components/admin/adminPanels"
+import { AnalyticPanel, HomePanel, ArticlePanel, PagePanel, UserPanel} from "../../components/admin/adminPanels"
 
 const theme = createTheme({
     palette: {
@@ -292,9 +292,19 @@ export default function Page({params}){
                                             <>
                                                 {
                                                     (currentPanel === "pages")
-                                                    &&
+                                                    ?
                                                     <>
                                                         Pages.
+                                                    </>
+                                                    :
+                                                    <>
+                                                    {
+                                                        (currentPanel === "users")
+                                                        &&
+                                                        <>
+                                                            Users.
+                                                        </>
+                                                    }
                                                     </>
                                                 }
                                             </>
@@ -320,6 +330,11 @@ export default function Page({params}){
                             (currentPanel === "analytics")
                             &&
                             <AnalyticPanel chartData={chartData} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
+                        }
+                        {
+                            (currentPanel === "users")
+                            &&
+                            <UserPanel users={users} setUsers={setUsers}/>
                         }
                         {
                             (currentPanel === "home")
