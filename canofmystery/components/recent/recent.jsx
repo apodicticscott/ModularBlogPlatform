@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { GoClockFill } from "react-icons/go";
 import { BiSolidBookOpen } from "react-icons/bi";
+import { getRecent } from "../../firebase/articleUtils/articleUtils";
 import useWindowSize from '../../hooks/useWindowSize';
 import { motion } from "framer-motion"
 import Image from "next/image";
@@ -9,9 +10,43 @@ import hand from "./22becce14efa74bc6c83bec78f9d9b1e-pixel-hand-cursor-icon.png"
 
 const Recent = () => {
     const ref = useRef(null);
+    const [articles, setArticles] = useState([]);
 
-    const tempArticleArray = [{title: "Men In Black", author: "CBow", time: 5, tags: [{tag: "Men In Black", color: "#c4bfff"}, {tag: "Conspiracy", color: "#7fffb3"}], image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgFHdMKDKWK6pG0KHyLPRDPLVUt1vX_cE7AOEARBbCt8Pji64Vvk-5lFJ0zIh8P9m3RLHB6jIOPG-rSLr-BzglIQAkXuF0Z0CW1DgiLOGxZ3sko2H4ZPoFs-QDcn5JVKeH8E1Gp3vQPtsN0g4nAA_8K6DIuOKhFyAA_NRsfRnYHGYyQ8j96DthUyNOG/w400-h301/MIB.JPG"}, {title: "The Drop Bear- Why it it Scares Tourists", author: "Rachael Gilmore", time: 5, tags: [{tag: "Bear", color: "#fdde66"}], image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Z-0jKa7b2ihNvWAzyaL6Cf_rHaL_8PKC7lFhy-SAaKeZidOVJpAGuzuNMbIBQ6Z6FGwDku6of6Z6430zuhluiw4wLJaxjyEqVim8h-DnwadccNAIDbKuBZbMyetPtCrb6L5uM2vH3vi3Fouq9MhG6ij82fbUjN0AskCplSpuoCcJfdQFaH8vZq8l/w482-h271/201209133725-20201209-australia-drop-bear.jpg"}, {title: "Doppelgangers: Is There a Replica Of You?", author: "Marv Carter", time: 5, tags: [{tag: "Doppelgangers", color: "#fd6666"},{tag: "Evil Twin", color: "#29ff80"}], image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhApngJVPTcr3I3IaQyk7ef6tnU1Q-KYBqrXBZufATcCK0MSxDiP4_dskm_SMi2dr4W3UinkHgLZU3wVzPk_DBpO1NL4pYo-tiEwG1aTXx5T3bEWuBbYdLRJbvzBIVGBDXA7r2ICb7jlAT30ooMQpWZu_JcR58UwWaM7NJZVU2Mi5CjpvUPE-PBw6k/s320/20220825-04-dna-study-michael-malone-charles-hall-chasen-1.jpg"}, {title: "The Most Haunted Forest", author: "L.K. Leaphart", time: 5, tags: [{tag: "Haunted Forest", color: "#f1fd66"}, {tag: "Hoia-Baciu", color: "#fd66f7"}], image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHeSX4cYAsAoNhMTzFn4et9rbMDMgITc7Ow8ofCbkk4TpF-fTlbgR4WbcXdYjapaF-FkNfrgTqP2cJMfXov4QeDuQ8Q79QyoVKTLkmsLS_12_KJQETWbDR5DyVUTnCq5L6ehanDqv8Jt1EH8ww-ZeMgAMG_qpXtQ4wL2DTKZBRD2xqg9XmICl9e3N1/s320/018937842b5056423c6db83296b3c018937-800x800.jpg"}, {title: "The Spooky Scary Stanley ", author: "GrimDank", time: 5, tags: [{tag: "Estes Park", color: "#66a2fd"}, {tag: "D.O. Stanley", color: "#fd66af"}], image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcduoQLra30U4mqb0H2xt5uIivFeAE9ZfOeTqZNW6jlOU8GZnbLUyKmDQjbFN_P1Capff-jig78YX06-S9l7g_393nn8guleu4k3cJdF49Bs0_TWrn00pcAqrJKohFB5cfCMuAEIrTsZ82jrHWBvfieAFkYKXbF5Nb0FrDIXUrjBB1YVrkpFPhX1vx/w566-h274/lossy-page1-640px-The_Stanley_Hotel_in_Estes_Park,_a_town_on_the_eastern_edge_of_Rocky_Mountain_National_Park_in_north-central_Colorado_LCCN2015633407.tif.jpg"}]
+    const fixArticles = (value) =>{
+        var articlesNewData = []
+        value.forEach(
+            (word,index) => {
+                var found_image = false
+                var image = ""
+                var counter = 0;
+                for(var key in word.Content){
+                    var section = word.Content[key]
+                    if(section.Type == "paragraph"){
+                        var words = section.Content.split(" ")
+                        for(var indexg in words){
+                            counter++;
+                        }
+                    }
+                }
+                for(var key in word.Content){
+                    var section = word.Content[key]
+                    if(section.Type == "image" && !found_image){
+                        image = section.Image
+                        found_image = true
+                        break;
+                    }
+                }
+                //see average words per minute for why counter is divided by such number.
+                articlesNewData.push({time: Math.round((counter/238)*100)/100, author: word.Author, tags: word.Tags, title: word.Title, image: image});
+            }
+        );
+        setArticles(articlesNewData);
+    }
 
+    
+    useEffect(() => {
+        getRecent(4).then((value) => {fixArticles(value)}, (value) => {fixArticles(value)});
+    }, []);
     return(
         <>
             <div id="recent-container" className="flex flex-col w-full h-max gap-[15px] pt-[50px] pb-[100px] bg-[length:500px_450px] bg-t-header-dark dark:bg-base-100-dark bg-grid-image bg-secondary-content border-b-3 overflow-hidden">
@@ -33,8 +68,9 @@ const Recent = () => {
                     </div>
                 </div>
                 <div className={`w-full h-max flex 2xl:justify-center justify-start gap-[25px] 3xl:px-[100px]  xl:px-[50px] px-7 overflow-scroll no-scrollbar`}>
-                    {
-                        tempArticleArray.map((article, index) => {
+                    
+                    {articles ? (
+                        articles.map((article, index) => {
 
                             return(
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}  id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
@@ -89,7 +125,7 @@ const Recent = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-xl">
-                                            {article.author}
+                                            {article.Author}
                                         </div>
                                         <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2.5xl">
                                             <div className="flex max-w-[170px] h-[35px] gap-[5px] overflow-hidden">
@@ -103,7 +139,7 @@ const Recent = () => {
                                                         return(
                                                             
                                                             <div key={"recent-article-card-tag-" + index} className={`rounded-md  px-[10px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max`} style={{backgroundColor: tag.color}}>
-                                                                {tag.tag}
+                                                                {tag.Text}
                                                             </div>
                                                             
                                                         )
@@ -111,9 +147,6 @@ const Recent = () => {
                                                 }
 
                                             </ div>
-                                            <div className="flex text-xl gap-[5px]">
-                                                + 3 more
-                                            </div>
                                         </div>
                                     </div>
 
@@ -125,8 +158,15 @@ const Recent = () => {
                             </motion.div>
                             )
                         })
-
-                    }
+                        ) : (
+                            <div className="h-screen w-screen flex items-center ">
+                                <div class="loader">
+                                    <div class="dot"></div>
+                                    <div class="dot"></div>
+                                    <div class="dot"></div>
+                                </div>
+                            </div>
+                        )}
                 </div>
             </div>
         </>

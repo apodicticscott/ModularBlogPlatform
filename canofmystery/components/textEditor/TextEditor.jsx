@@ -316,7 +316,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     
       // Format date as "Year-Month-Day"
     const formatDate = (date) => {
-    return date.toISOString().split('T')[0];
+    return date.getUTCMilliseconds();
     };
 
     // Format time as "Hours:Minutes:Seconds"

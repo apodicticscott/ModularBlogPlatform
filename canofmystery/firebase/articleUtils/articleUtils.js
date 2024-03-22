@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc, addDoc} from "firebase/firestore"
+import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc, addDoc, toDate} from "firebase/firestore"
 import { firebase_app } from "../config"
 
 const db = getFirestore(firebase_app)
@@ -79,6 +79,30 @@ export const deletePages = async (selectedPages) => {
     }));
 }
 
+
+export const getRecent = async (num) => {
+    const articles = await getApprovedArticles();
+
+    const sortedarticles = articles.toSorted((a,b) => a.Date.toMillis()-b.Date.toMillis());
+    if(num == -1){
+        return sortedarticles;
+    }
+    else{
+        return sortedarticles.slice(0, num);
+    }
+}
+
+export const getApprovedArticles = async () => {
+    const collectionRef = collection(db, "Articles");
+    const q = query(collectionRef, where("Approved", "==", true));
+    const querySnapshot = await getDocs(q);
+    const pagesArray = [];
+    querySnapshot.forEach((doc) => {
+        pagesArray.push({ id: doc.id, ...doc.data() });
+    });
+
+    return pagesArray;
+}
 
 export const getTotalUnapprovedArticles = async () => {
     const collectionRef = collection(db, "Articles");
@@ -194,7 +218,7 @@ export const searchArticles = async (searchText = [], articles_list = [], search
                         }
                     }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
                     }
                 }
             );
@@ -254,7 +278,7 @@ export const searchByTag = async (searchtags = [], articles_list = [], search_pr
                         }
                     }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
                     }
                     
                 }
