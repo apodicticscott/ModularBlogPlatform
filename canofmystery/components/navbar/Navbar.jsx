@@ -33,7 +33,7 @@ const Navbar = () => {
   const [userId, setUserId] = useState(null);
 
 
-  const dropDownLinks = [{text: "Create Project", link:"newproject"}, {text: "Our Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Instructions", link:"instructions"}, {text: "Old Can Of Mystery", link:"NEED_LINK"}]
+  const dropDownLinks = [{text: "Write Article", link:"/editor"}, {text: "Our Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
 
   const [textInput, setTextInput] = useState('');
   const [result, setResult] = useState(null);
@@ -49,7 +49,7 @@ const Navbar = () => {
     try {
       const docSnap = await getDoc(sessionDoc);
       if (docSnap.exists()) {
-        setResult(`Document with ID ${textInput} exists.`);
+        setResult(`Session Code ${textInput} exists.`);
         if (isLoggedIn && userId) {
           // Update the boolean field for the logged-in user
           const userDoc = doc(firestore, 'users', userId);
@@ -57,13 +57,13 @@ const Navbar = () => {
             studentWriter: true,
             sessionCode: textInput,
           });
-          setResult(`Boolean field updated successfully.`);
+          setResult(`You have successfully joined the school session.`);
         }
       } else {
-        setResult(`Document with ID ${textInput} does not exist.`);
+        setResult(`Session with ID ${textInput} does not exist.`);
       }
     } catch (error) {
-      setResult(`Error checking document: ${error.message}`);
+      setResult(`Error checking for session: ${error.message}`);
     }
   }
 
@@ -188,10 +188,10 @@ const Navbar = () => {
               </ul>
               <ul className="w-max md:flex-wrap lg:hidden h-max whitespace-nowrap">
                 <li>
-                  <a > Home </a>
+                  <a href="/" > Home </a>
                 </li>
                 <li>
-                  <a> About </a>
+                  <a href="/about"> About </a>
                 </li>
                 {
                   dropDownLinks.map((link, index) => 
@@ -241,7 +241,7 @@ const Navbar = () => {
                 </details>
               </li>
               <li className="flex items-center">
-                <a onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
+                <a href="/about" onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
               </li>
             </ul>
           </div>
@@ -252,15 +252,9 @@ const Navbar = () => {
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <MdAccountCircle style={{fontSize: "35px"}} />
               </div>
-              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-transparent backdrop-blur-sm	border-3 rounded-md w-52">
-                <li>
-                  <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
-                </li>
-                {isLoggedIn ? <li><input type="text" className="w-full drop-nav-input" value={textInput} onChange={handleChange}></input><button onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
-                {isLoggedIn ? <li><a onClick={handleLogOut}>Logout</a></li> : <li><a onClick={handleLogin}>Login</a></li>}
+              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-base-100-dark	border-3 rounded-md w-52">
+                {isLoggedIn ? <li><input type="text" className="my-1 w-full border-2 dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark focus:bg-base-100 focus:text-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-2" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
+                {isLoggedIn ? <li><button className="border-2 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-2 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
               </ul>
             </div>
           </div>

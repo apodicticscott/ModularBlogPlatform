@@ -63,20 +63,23 @@ const SignUpPage = () => {
 
     try {
         const response = await signUp(emailInput, passwordInput);
-
-        if(response.error.code = "auth/email-already-in-use"){
+        console.log(response)
+        if(response.error && response.error.code === "auth/email-already-in-use"){
           setSignUpErrorVisible(true);
           setErrorMessage("The email you have chosen is already in use.");
           return;
-        }else{
-          setPanel("name")
         }
+
+        console.log("here 8")
+        setPanel("name")
+        return;
         
     } catch (error) {
         console.log("Sorry, something went wrong. Please try again.");
         console.log(error);
     }
 };
+
 
 const handleInfo = async (event) => {
   event.preventDefault();
@@ -96,7 +99,7 @@ const handleInfo = async (event) => {
   }
 
   try {
-
+    console.log("here 1")
     const response = onAuthStateChanged(auth, async (user) => {
       if (user) {
           const userRef = doc(firestore, "users", user.uid);
@@ -109,12 +112,15 @@ const handleInfo = async (event) => {
       }
     });
 
-    setPanel("done")
-    console.log(response)
-    // router.push("/");
+    setPanel("done");
+    console.log(response);
+    router.push("/");
+    return;
+    
   } catch (error) {
       console.log("Sorry, something went wrong. Please try again.");
       console.log(error);
+      return;
   }
 };
 
