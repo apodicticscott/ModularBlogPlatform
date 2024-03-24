@@ -149,7 +149,7 @@ const Navbar = () => {
           <div className="navbar-end lg:hidden w-full md:w-[750px]  md:flex flex justify-center gap-1 text-t-header-light dark:text-t-header-dark ">
             <RiSearchFill style={{fontSize: "30px"}}/>
             <form>
-              <input type="text" name="search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
+              <input type="text" name="search" placeholder="Search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
             </form>
             
             <MdAccountCircle style={{fontSize: "35px"}}/>
@@ -192,6 +192,12 @@ const Navbar = () => {
                 </li>
                 <li>
                   <a href="/about"> About </a>
+                </li>
+                <li>
+                  <a href="/login"> Login </a>
+                </li>
+                <li>
+                  <a href="/signup"> Signup </a>
                 </li>
                 {
                   dropDownLinks.map((link, index) => 
@@ -247,13 +253,13 @@ const Navbar = () => {
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} role="link">search</RiSearchFill>
-            <input type="search" name="search" required minLength="4" className="neo-input w-[180px]"/>
+            <input type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px]"/>
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <MdAccountCircle style={{fontSize: "35px"}} />
               </div>
               <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-base-100-dark	border-3 rounded-md w-52">
-                {isLoggedIn ? <li><input type="text" className="my-1 w-full border-2 dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark focus:bg-base-100 focus:text-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-2" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
+                {isLoggedIn ? <li><input type="text" className="my-1 w-full border-2 neo-input dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-2" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
                 {isLoggedIn ? <li><button className="border-2 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-2 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
               </ul>
             </div>
