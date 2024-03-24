@@ -20,8 +20,8 @@ export default function Page() {
 
 
   return (
-    <div className="w-full h-[calc(100vh_-_67px)] flex items-center justify-center">
-      <Article article={ourProject} />
+    <div className="w-full flex items-center justify-center">
+        <Article article={ourProject} />
     </div>
   );
 };

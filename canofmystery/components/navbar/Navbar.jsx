@@ -33,7 +33,7 @@ const Navbar = () => {
   const [userId, setUserId] = useState(null);
 
 
-  const dropDownLinks = [{text: "Write Article", link:"/editor"}, {text: "Our Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
+  const dropDownLinks = [{text: "Write An Article", link:"/editor"}, {text: "Our Capstone Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Website Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
 
   const [textInput, setTextInput] = useState('');
   const [result, setResult] = useState(null);
@@ -191,7 +191,7 @@ const Navbar = () => {
                   <a href="/" > Home </a>
                 </li>
                 <li>
-                  <a href="/about"> About </a>
+                  <a href="/our-project"> About </a>
                 </li>
                 <li>
                   <a href="/login"> Login </a>
@@ -247,7 +247,7 @@ const Navbar = () => {
                 </details>
               </li>
               <li className="flex items-center">
-                <a href="/about" onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
+                <a href="/our-project" onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
               </li>
             </ul>
           </div>
@@ -259,6 +259,7 @@ const Navbar = () => {
                 <MdAccountCircle style={{fontSize: "35px"}} />
               </div>
               <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-base-100-dark	border-3 rounded-md w-52">
+                {isLoggedIn ? <strong>Welcome!</strong> : <a href=""></a>}
                 {isLoggedIn ? <li><input type="text" className="my-1 w-full border-2 neo-input dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-2" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
                 {isLoggedIn ? <li><button className="border-2 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-2 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
               </ul>
