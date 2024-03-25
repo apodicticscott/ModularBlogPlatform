@@ -39,7 +39,10 @@ import ControlPanel from "./controlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/cropUtils";
-import {addDocument} from "../../firebase/articleUtils/articleUtils"
+import {addDocument, setHasPublished} from "../../firebase/articleUtils/articleUtils"
+import firebase_app from '/firebase/config';
+const auth = getAuth(firebase_app);
+import { getAuth } from "@firebase/auth";
 
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
@@ -150,6 +153,22 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
             fetchArticle();
         }
     }, []);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+            setIsLoggedIn(true);
+            setUserId(user.uid);
+        } else {
+            setIsLoggedIn(false);
+            setUserId(null);
+        }
+        });
+        return () => unsubscribe();
+  }, []);
 
     useEffect(() => {
         if(articleId && article){
@@ -406,8 +425,8 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
             if(pageType === "blog"){
                 const article = {
                     Title: Title,
-                    Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
-                    // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                    Tags: Tags,
+                    //CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
                     Content: compArray.map(comp => ({
                         ID: comp.ID,
                         Content: comp.Content,
@@ -422,18 +441,19 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     lastName: user.lastName,
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
-                    CoverImage: coverImageData,
+                    CoverImage: coverImageData[0] ? coverImageData : null,
                     Approved: false,
-                    Author: Author
+                    Author: Author,
+                    UserId: userId
                 };
-
-                response = await addDocument("Articles", article);
+                console.log(article)
+                response = await addDocument("Articles", article) && await setHasPublished("users", userId);
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,
                     PageName: pageName,
-                    Tags: Tags.map(tag => ({ Color: tag[1], Text: tag[0] })),
-                    // CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                    Tags: Tags,
+                    //CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
                     Content: compArray.map(comp => ({
                         ID: comp.ID,
                         Content: comp.Content,
@@ -449,12 +469,13 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     Date: formatDate(currentDate),
                     CoverImage: coverImageData[0] ? coverImageData : null,
                     Approved: true,
-                    Author: Author
+                    Author: Author,
+                    UserId: userId
                 };
 
                 console.log(page)
 
-                response = await addDocument("Pages", page);
+                response = await addDocument("Pages", page) && await setHasPublished("users", userId);
             }
             
         } catch (error) {
@@ -566,11 +587,11 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                     </div>
                                     <div className="flex flex-col gap-[10px] bg-[#fd6666] rounded-md p-3 w-max">
                                         {
-                                            (coverImageData.length[0] === undefined && coverImageData.length[1]) === undefined
+                                            (coverImageData.exists === false && coverImageData[0].exists === false)
                                             &&
                                             "Cover Image"
                                         }
-                                        {(Title.length === 0 && (coverImageData.length[0] === undefined && coverImageData.length[1] === undefined)) && "," } &nbsp;
+                                        {(Title.length === 0 && (coverImageData.length[0] === undefined)) && "," } &nbsp;
                                         {
                                             Title.length === 0
                                             &&
@@ -870,4 +891,3 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 };
 
 export default TextEditor;
-

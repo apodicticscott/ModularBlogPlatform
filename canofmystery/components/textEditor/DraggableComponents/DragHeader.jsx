@@ -57,7 +57,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
-            <Header type={comp.Size} id={comp.ID} classes={comp.styles.map((style) => (style))}>
+            <Header type={comp.Size} id={comp.ID} classes={comp.Style.map((style) => (style))}>
                 <ContentEditable
                 html={comp.Content}
                 innerRef={contentRef}

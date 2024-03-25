@@ -31,6 +31,13 @@ export const addDocument = async (collectionName, docData) => {
     return response;
 }
 
+export const setHasPublished = async(collectionName, userId) => {
+    const userDoc = doc(db, 'users', userId);
+          await updateDoc(userDoc, {
+            hasPublished: true,
+          });
+}
+
 export const getPageByName = async (pageName) => {
     const collectionRef = collection(db, "Pages");
     const q = query(collectionRef, where("PageName", "==", pageName));
@@ -151,6 +158,18 @@ export const fetchArticle = async (articleId) => {
 
     if (docSnap.exists()) {
       return docSnap.data();
+    } else {
+      return null
+    }
+};
+export const fetchArticleUser = async (articleId) => {
+    const docRef = doc(db, "Articles", articleId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const articleData = docSnap.data();
+      const articleId = articleData.UserId;
+      return articleId;
     } else {
       return null
     }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TextEditor from "../../../components/textEditor/TextEditor";
 import PageNotFound from "../../not-found";
-import { fetchArticle } from "../../../firebase/articleUtils/articleUtils";
+import { fetchArticle, fetchArticleUser } from "../../../firebase/articleUtils/articleUtils";
 import Loader from "../../../components/loader/loader";
 import firebase_app from '../../../firebase/config';
 import { app } from "../../../app/firebase"
@@ -31,8 +31,10 @@ export default function Page({ params }) {
     const [loaderOpacity, setLoaderOpacity] = useState(1);
 
     const [isWriter, setIsWriter] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false)
+    const [hasPublished, setHasPublished] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState('');
+    const [articleUser, setArticleUser] = useState('');
 
     useEffect(() => {
         if (hasId) {
@@ -56,7 +58,6 @@ export default function Page({ params }) {
                 console.log(exists);
             });
         }
-
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 console.log("here5")
@@ -67,8 +68,9 @@ export default function Page({ params }) {
                     setTimeout(() => setLoading(false), 2000);
                     setTimeout(() => setHideLoader(true), 2500);
                     setIsWriter(userData.studentWriter);
-                    setIsAdmin(userData.adminPerm)
-                    setUser(userData)
+                    setIsAdmin(userData.adminPerm);
+                    setHasPublished(userData.hasPublished);
+                    setUser(userData);
                 } else {
                     console.log("No such User");
                 }
@@ -80,6 +82,20 @@ export default function Page({ params }) {
         return () => unsubscribe();
     }, [hasId]);
 
+
+    useEffect(() => {
+        const fetchUser = async () => {
+        try {
+            const userId = await fetchArticleUser(articleId);
+            setArticleUser(userId); // Set articleUser state with the returned userId
+        } catch (error) {
+            console.error('Error fetching article user:', error);
+        }
+        };
+
+        fetchUser(); // Call fetchUser function when component mounts or articleId changes
+    }, [articleId]);
+
     // Adjustments to handle editorType and articleId states
     useEffect(() => {
         if (editorType !== "new" && editorType !== undefined && articleId === undefined) {
@@ -89,13 +105,28 @@ export default function Page({ params }) {
         }
     }, [editorType, articleId]);
 
+    if (articleUser == user.uid && !isAdmin){
+        //console.log("here7");
+        return <PageNotFound />;
+    }
+
     if (pageType !== "page" && pageType !== "blog") {
-        console.log("here1")
+        //console.log("here1")
         return <PageNotFound />;
     }
 
     if(pageType === "page" && !isAdmin && !loading){
-        console.log("here2")
+        //console.log("here2")
+        return <PageNotFound />;
+    }
+
+    if(hasPublished && !isAdmin && !loading){
+        //console.log("here3")
+        return <PageNotFound />;
+    }
+
+    if(!isWriter && !isAdmin && !loading){
+        //console.log("here6")
         return <PageNotFound />;
     }
 
@@ -117,7 +148,7 @@ export default function Page({ params }) {
 
                     {
                         !loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType} />
+                            <TextEditor pageType={pageType} editorType={editorType} user={user}/>
                         )
                     }
                     {
