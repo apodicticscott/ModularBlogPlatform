@@ -1,6 +1,6 @@
 import React from "react";
 
-const link = ({href, children}) => {
+const Link = ({href, children}) => {
     
     return(
       <a href={href} className="w-full text-t-header-light dark:text-t-header-dark opacity-75">
@@ -9,4 +9,4 @@ const link = ({href, children}) => {
     )
 }
 
-export default link;
+export default Link;
