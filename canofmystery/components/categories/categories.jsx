@@ -4,7 +4,6 @@ import { Link } from "../TextComponents/Link";
 
 const json_categories = [
     {title:"Spooky",link:"../link/to/page"},{title:"Folklore",link:"../link/to/page"},{title:"Unsolved",link:"../link/to/page"},{title:"Creature",link:"../link/to/page"},
-    {title:"Spooky",link:"../link/to/page"},{title:"Folklore",link:"../link/to/page"},{title:"Unsolved",link:"../link/to/page"},{title:"Creature",link:"../link/to/page"}
 ];
 
 

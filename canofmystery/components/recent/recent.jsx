@@ -111,8 +111,8 @@ const Recent = () => {
                                         <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg">
                                             <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                 <div className="w-full p-[10px] pb-0 h-max">
-                                                    <div className=" w-full h-[160px] bg-primary rounded-md overflow-hidden">
-                                                        <img src={article.image} alt="Article Image" className="w-full " />
+                                                    <div className=" w-full h-[160px] bg-primary items-center rounded-md overflow-hidden">
+                                                        <img src={article.image} alt="Article Image" className=" h-full w-full object-fill" />
                                                     </div>
                                                 </div>
 

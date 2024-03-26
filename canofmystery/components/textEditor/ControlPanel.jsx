@@ -207,6 +207,12 @@ const ControlPanel = ({
         "The Mary Celeste",
         "Dyatlov Pass incident",
         "D.B. Cooper",
+        "Spooky",
+        "Folklore",
+        "Unsolved",
+        "Creature",
+        "Historical Fears",
+        "Pop Culture",
         "Elisa Lam"
     ];
     

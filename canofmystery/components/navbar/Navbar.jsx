@@ -23,7 +23,7 @@ const Navbar = () => {
   const navRef = useRef(null);
   const dropDownRef = useRef(null);
 
-  const [active, setActive] = useState("Home");
+  const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
 
   const [hideTheme, setHideTheme] = useState(false);

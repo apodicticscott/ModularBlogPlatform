@@ -62,7 +62,7 @@ import addLinkHelp from "./Assets/help_add_link.gif"
 
 import {getFirestore, collection, getDoc, doc} from "firebase/firestore"
 import { app } from "../../app/firebase"
-import { Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase/firestore";
 
 const useStyles = makeStyles({
     button: {
