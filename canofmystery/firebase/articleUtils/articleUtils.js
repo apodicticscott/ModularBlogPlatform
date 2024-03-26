@@ -90,7 +90,7 @@ export const deletePages = async (selectedPages) => {
 export const getRecent = async (num) => {
     const articles = await getApprovedArticles();
 
-    const sortedarticles = articles.toSorted((a,b) => a.Date.toMillis()-b.Date.toMillis());
+    const sortedarticles = articles.toSorted((a,b) => a.Time.toMillis()-b.Time.toMillis());
     if(num == -1){
         console.log(sortedarticles)
         return sortedarticles;

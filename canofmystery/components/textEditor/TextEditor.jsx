@@ -62,6 +62,7 @@ import addLinkHelp from "./Assets/help_add_link.gif"
 
 import {getFirestore, collection, getDoc, doc} from "firebase/firestore"
 import { app } from "../../app/firebase"
+import { Timestamp } from "firebase-admin/firestore";
 
 const useStyles = makeStyles({
     button: {
@@ -110,8 +111,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     const [Author, setAuthor] = useState("")
     const [Tags, setTags] = useState([])
     const [Category, setCategory] = useState()
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const [currentTime, setCurrentTime] = useState(new Date());
     
     const [linkValue, setLinkValue] = useState();
     const [currentLink, setCurrentLink] = useState("");
@@ -323,24 +322,9 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
         }
     }
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-          const now = new Date();
-          setCurrentDate(now);
-          setCurrentTime(now);
-        }, 1000); // Update the date and time every second
-    
-        return () => clearInterval(timer); // Clean up the interval on component unmount
-      }, []);
-    
-      // Format date as "Year-Month-Day"
+      // Format date as a timestamp firebase.
     const formatDate = (date) => {
-    return date.getUTCMilliseconds();
-    };
-
-    // Format time as "Hours:Minutes:Seconds"
-    const formatTime = (time) => {
-    return time.toTimeString().split(' ')[0];
+        return Timestamp.fromDate(date);
     };
 
     const handleAddComponent = (Type, url) => {
@@ -437,8 +421,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     })),
                     firstName: user.firstName,
                     lastName: user.lastName,
-                    Time: formatTime(currentTime),
-                    Date: formatDate(currentDate),
+                    Time: formatDate(new Date()),
                     CoverImage: coverImageData[0] ? coverImageData[0] : null,
                     Approved: false,
                     Author: Author,
@@ -463,8 +446,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     })),
                     firstName: user.firstName,
                     lastName: user.lastName,
-                    Time: formatTime(currentTime),
-                    Date: formatDate(currentDate),
+                    Time: formatDate(new Date()),
                     Approved: true,
                     Author: Author,
                     UserId: userId
