@@ -33,7 +33,7 @@ const Navbar = () => {
   const [userId, setUserId] = useState(null);
 
 
-  const dropDownLinks = [{text: "Write An Article", link:"/editor"}, {text: "Our Capstone Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Website Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
+  const dropDownLinks = [{text: "Write An Article", link:"/editor/blog/new"}, {text: "Our Capstone Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Website Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
 
   const [textInput, setTextInput] = useState('');
   const [result, setResult] = useState(null);

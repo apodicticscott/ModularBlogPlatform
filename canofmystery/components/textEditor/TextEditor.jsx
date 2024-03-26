@@ -426,22 +426,20 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                 const article = {
                     Title: Title,
                     Tags: Tags,
-                    //CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
                     Content: compArray.map(comp => ({
                         ID: comp.ID,
                         Content: comp.Content,
                         Style: comp.Style || '', // Assuming style is an optional field
                         Type: comp.Type,
-                        ImageOriginal: comp.OriginalImage || '',
+                        //ImageOriginal: comp.OriginalImage || '',
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    // Publisher: pageType === "page" ? "ADMIN" : "TEMP USER", 
                     firstName: user.firstName,
                     lastName: user.lastName,
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
-                    CoverImage: coverImageData[0] ? coverImageData : null,
+                    CoverImage: coverImageData[0] ? coverImageData[0] : null,
                     Approved: false,
                     Author: Author,
                     UserId: userId
@@ -467,7 +465,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     lastName: user.lastName,
                     Time: formatTime(currentTime),
                     Date: formatDate(currentDate),
-                    CoverImage: coverImageData[0] ? coverImageData : null,
                     Approved: true,
                     Author: Author,
                     UserId: userId

@@ -26,6 +26,7 @@ const Lander = () => {
 
     
     useEffect(() => {
+        console.log(getRecent(1));
         getRecent(1).then((value) => {fixArticles(value[0])}, (value) => {fixArticles(value[0])});
     }, []);
     return (
@@ -64,9 +65,6 @@ const Lander = () => {
                             </div>
                             <div className="relative top-[-15px] md:top-[-25px] w-full h-max flex flex-col items-end p-[10px] ">
                                 <h2 className="w-content text-xl tracking-[-1.76px]">
-                                    Author Name
-                                </h2>
-                                <h2 className="w-content text-xl tracking-[-1.76px]">
                                     @{article.author}
                                 </h2>
                             </div>
@@ -80,10 +78,7 @@ const Lander = () => {
                             </div>
                             <div className="w-full 3xl:w-full h-max flex flex-col items-end p-[10px] ">
                                 <h2 className="w-content text-xl tracking-[-1.76px] xl:text-2xl xl:tracking-[-3.32px] 2xl:text-2.5xl 3xl:text-[1.25vw] tracking-[-5.76px]">
-                                    Author Name
-                                </h2>
-                                <h2 className="w-content text-xl tracking-[-1.76px] xl:text-2xl xl:tracking-[-3.32px] 2xl:text-2.5xl 3xl:text-[1.25vw] tracking-[-5.76px]">
-                                    @{article.author}
+                                @{article.author}
                                 </h2>
                             </div>
                         </div>

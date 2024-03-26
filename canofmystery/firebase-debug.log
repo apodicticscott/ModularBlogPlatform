@@ -1,0 +1,118 @@
+[debug] [2024-03-25T22:53:51.752Z] ----------------------------------------------------------------------
+[debug] [2024-03-25T22:53:51.754Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2024-03-25T22:53:51.754Z] CLI Version:   13.4.1
+[debug] [2024-03-25T22:53:51.755Z] Platform:      darwin
+[debug] [2024-03-25T22:53:51.755Z] Node Version:  v21.2.0
+[debug] [2024-03-25T22:53:51.755Z] Time:          Mon Mar 25 2024 18:53:51 GMT-0400 (Eastern Daylight Time)
+[debug] [2024-03-25T22:53:51.755Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-25T22:53:51.818Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-25T22:53:51.819Z] > authorizing via signed-in user (canofmystery1@gmail.com)
+[debug] [2024-03-25T22:53:51.819Z] [iam] checking project can-of-mystery for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-03-25T22:53:51.821Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/can-of-mystery:testIamPermissions [none]
+[debug] [2024-03-25T22:53:51.821Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/can-of-mystery:testIamPermissions x-goog-quota-user=projects/can-of-mystery
+[debug] [2024-03-25T22:53:51.821Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/can-of-mystery:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-03-25T22:53:52.382Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/can-of-mystery:testIamPermissions 200
+[debug] [2024-03-25T22:53:52.382Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/can-of-mystery:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-03-25T22:53:52.382Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/can-of-mystery/serviceAccounts/can-of-mystery@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-03-25T22:53:52.382Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/can-of-mystery/serviceAccounts/can-of-mystery@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-03-25T22:53:52.892Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/can-of-mystery/serviceAccounts/can-of-mystery@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-03-25T22:53:52.893Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/can-of-mystery/serviceAccounts/can-of-mystery@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'can-of-mystery'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2024-03-25T22:53:59.464Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery [none]
+[debug] [2024-03-25T22:54:00.224Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery 200
+[debug] [2024-03-25T22:54:00.225Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery {"projectId":"can-of-mystery","projectNumber":"243243244928","displayName":"Can Of Mystery","name":"projects/can-of-mystery","resources":{"hostingSite":"can-of-mystery","realtimeDatabaseInstance":"can-of-mystery-default-rtdb","storageBucket":"can-of-mystery.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_11f191d2-26ba-43f2-bfbd-ba59ba525aa4"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-03-25T22:54:00.227Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-03-25T22:54:00.227Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/can-of-mystery
+[debug] [2024-03-25T22:54:00.229Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-03-25T22:54:00.229Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/can-of-mystery
+[debug] [2024-03-25T22:54:00.230Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudbuild.googleapis.com [none]
+[debug] [2024-03-25T22:54:00.230Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudbuild.googleapis.com x-goog-quota-user=projects/can-of-mystery
+[debug] [2024-03-25T22:54:00.231Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/artifactregistry.googleapis.com [none]
+[debug] [2024-03-25T22:54:00.231Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/artifactregistry.googleapis.com x-goog-quota-user=projects/can-of-mystery
+[debug] [2024-03-25T22:54:00.933Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/runtimeconfig.googleapis.com 200
+[debug] [2024-03-25T22:54:00.933Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-03-25T22:54:00.938Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/artifactregistry.googleapis.com 200
+[debug] [2024-03-25T22:54:00.938Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-03-25T22:54:00.939Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudfunctions.googleapis.com 200
+[debug] [2024-03-25T22:54:00.940Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-03-25T22:54:00.940Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudbuild.googleapis.com 200
+[debug] [2024-03-25T22:54:00.940Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/can-of-mystery/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-03-25T22:54:00.941Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery/adminSdkConfig [none]
+[debug] [2024-03-25T22:54:01.404Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery/adminSdkConfig 200
+[debug] [2024-03-25T22:54:01.404Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery/adminSdkConfig {"projectId":"can-of-mystery","databaseURL":"https://can-of-mystery-default-rtdb.firebaseio.com","storageBucket":"can-of-mystery.appspot.com","locationId":"us-central"}
+[debug] [2024-03-25T22:54:01.405Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/can-of-mystery/configs [none]
+[debug] [2024-03-25T22:54:01.985Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/can-of-mystery/configs 200
+[debug] [2024-03-25T22:54:01.985Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/can-of-mystery/configs {}
+[debug] [2024-03-25T22:54:01.987Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2024-03-25T22:54:02.815Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-03-25T22:54:02.815Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2024-03-25T22:54:02.817Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-03-25T22:54:02.825Z] Found firebase-functions binary at '/Users/srostron/Code/ModularBlogPlatform/canofmystery/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8657
+
+[debug] [2024-03-25T22:54:03.292Z] Got response from /__/functions.yaml {"endpoints":{"onUserCreate":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/can-of-mystery"},"retry":false},"labels":{},"entryPoint":"onUserCreate"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged /Users/srostron/Code/ModularBlogPlatform/canofmystery/functions (68.21 KB) for uploading 
+[debug] [2024-03-25T22:54:08.341Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/-/functions [none]
+[debug] [2024-03-25T22:54:09.232Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/-/functions 200
+[debug] [2024-03-25T22:54:09.233Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/-/functions {"functions":[{"name":"projects/can-of-mystery/locations/us-central1/functions/onUserCreate","eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","resource":"projects/can-of-mystery","service":"firebaseauth.googleapis.com","failurePolicy":{}},"status":"ACTIVE","entryPoint":"onUserCreate","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"can-of-mystery@appspot.gserviceaccount.com","updateTime":"2024-03-25T22:24:51.454Z","versionId":"6","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"6773949b635e679554dc2d26f28f8d70c7b8185e"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/04288ec4-bf19-4e56-9e4d-17268a98daad.zip","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"can-of-mystery\",\"databaseURL\":\"https://can-of-mystery-default-rtdb.firebaseio.com\",\"storageBucket\":\"can-of-mystery.appspot.com\"}","GCLOUD_PROJECT":"can-of-mystery","EVENTARC_CLOUD_EVENT_SOURCE":"projects/can-of-mystery/locations/us-central1/functions/onUserCreate"},"runtime":"nodejs18","maxInstances":3000,"ingressSettings":"ALLOW_ALL","buildId":"18ef1e8d-020d-4765-a62a-a459efba6333","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/243243244928/locations/us-central1/builds/18ef1e8d-020d-4765-a62a-a459efba6333","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{}},{"name":"projects/can-of-mystery/locations/us-central1/functions/uploadImageAndSaveArticle","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/can-of-mystery/databases/(default)/documents/Articles/{articleId}","service":"firestore.googleapis.com","failurePolicy":{}},"status":"ACTIVE","entryPoint":"uploadImageAndSaveArticle","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"can-of-mystery@appspot.gserviceaccount.com","updateTime":"2024-03-25T22:25:00.836Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"6773949b635e679554dc2d26f28f8d70c7b8185e"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/04288ec4-bf19-4e56-9e4d-17268a98daad.zip","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"can-of-mystery\",\"databaseURL\":\"https://can-of-mystery-default-rtdb.firebaseio.com\",\"storageBucket\":\"can-of-mystery.appspot.com\"}","GCLOUD_PROJECT":"can-of-mystery","EVENTARC_CLOUD_EVENT_SOURCE":"projects/can-of-mystery/locations/us-central1/functions/uploadImageAndSaveArticle"},"runtime":"nodejs18","maxInstances":3000,"ingressSettings":"ALLOW_ALL","buildId":"18ef1e8d-020d-4765-a62a-a459efba6333","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/243243244928/locations/us-central1/builds/18ef1e8d-020d-4765-a62a-a459efba6333","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{}}]}
+[debug] [2024-03-25T22:54:09.234Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/can-of-mystery/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2024-03-25T22:54:09.745Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/can-of-mystery/locations/-/functions 200
+[debug] [2024-03-25T22:54:09.745Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/can-of-mystery/locations/-/functions {}
+[debug] [2024-03-25T22:54:09.749Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery [none]
+[debug] [2024-03-25T22:54:10.117Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery 200
+[debug] [2024-03-25T22:54:10.117Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/can-of-mystery {"projectId":"can-of-mystery","projectNumber":"243243244928","displayName":"Can Of Mystery","name":"projects/can-of-mystery","resources":{"hostingSite":"can-of-mystery","realtimeDatabaseInstance":"can-of-mystery-default-rtdb","storageBucket":"can-of-mystery.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_11f191d2-26ba-43f2-bfbd-ba59ba525aa4"}
+[debug] [2024-03-25T22:54:10.119Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2024-03-25T22:54:10.119Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/us-central1/functions:generateUploadUrl {}
+[debug] [2024-03-25T22:54:10.872Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2024-03-25T22:54:10.872Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/can-of-mystery/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/4e35bb82-adf2-49c9-adc3-26d648c0fbb4.zip?GoogleAccessId=service-243243244928@gcf-admin-robot.iam.gserviceaccount.com&Expires=1711409050&Signature=O4vNQMxclfQceQExoQLFvW9EYIR%2FNtk1WIFwgUAGXhR5eUwcu0mZqh5Fn85NOGFjJyu39Fae68O0jAI%2FvsIPgrT3tOR3yqO%2BY15HxQ1SkDLTQmRUsBgaPPZA2bOEwHTz1OqBabmWTqFf3uYJaeQkSBZKDhhzU62Sqq1snmP02rcK1tia%2BffR5Zqm%2BDQv4Pi6AapcdpmhcByq74D4fV8CpOuhlxEUO4L8s8NWdT5dscrAsdBx6dFWXZqKE6dNP%2FPs7BxgB9PZpPfFzahgGtopt0bF%2B3jMfHgHk60i0e9lcSFzPCYfPm3Q2WB59T7n7UJNiHpyJjIYvvXouYNakr%2BipQ%3D%3D"}
+[debug] [2024-03-25T22:54:10.873Z] >>> [apiv2][query] PUT https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/4e35bb82-adf2-49c9-adc3-26d648c0fbb4.zip GoogleAccessId=service-243243244928%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1711409050&Signature=O4vNQMxclfQceQExoQLFvW9EYIR%2FNtk1WIFwgUAGXhR5eUwcu0mZqh5Fn85NOGFjJyu39Fae68O0jAI%2FvsIPgrT3tOR3yqO%2BY15HxQ1SkDLTQmRUsBgaPPZA2bOEwHTz1OqBabmWTqFf3uYJaeQkSBZKDhhzU62Sqq1snmP02rcK1tia%2BffR5Zqm%2BDQv4Pi6AapcdpmhcByq74D4fV8CpOuhlxEUO4L8s8NWdT5dscrAsdBx6dFWXZqKE6dNP%2FPs7BxgB9PZpPfFzahgGtopt0bF%2B3jMfHgHk60i0e9lcSFzPCYfPm3Q2WB59T7n7UJNiHpyJjIYvvXouYNakr%2BipQ%3D%3D
+[debug] [2024-03-25T22:54:10.873Z] >>> [apiv2][body] PUT https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/4e35bb82-adf2-49c9-adc3-26d648c0fbb4.zip [stream]
+[debug] [2024-03-25T22:54:11.474Z] <<< [apiv2][status] PUT https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/4e35bb82-adf2-49c9-adc3-26d648c0fbb4.zip 200
+[debug] [2024-03-25T22:54:11.475Z] <<< [apiv2][body] PUT https://storage.googleapis.com/uploads-820261419026.us-central1.cloudfunctions.appspot.com/4e35bb82-adf2-49c9-adc3-26d648c0fbb4.zip [omitted]
+[info] ✔  functions: functions folder uploaded successfully 
+[info] 
+The following functions are found in your project but do not exist in your local source code:
+	uploadImageAndSaveArticle(us-central1)
+
+If you are renaming a function or changing its region, it is recommended that you create the new function first before deleting the old one to prevent event loss. For more info, visit https://firebase.google.com/docs/functions/manage-functions#modify
+

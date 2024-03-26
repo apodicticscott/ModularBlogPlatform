@@ -14,5 +14,4 @@ export const onUserCreate = functions.auth.user().onCreate(async (user) => {
         firstName: "",
         lastName: "",
     })
-
 })

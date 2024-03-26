@@ -92,9 +92,11 @@ export const getRecent = async (num) => {
 
     const sortedarticles = articles.toSorted((a,b) => a.Date.toMillis()-b.Date.toMillis());
     if(num == -1){
+        console.log(sortedarticles)
         return sortedarticles;
     }
     else{
+        console.log(sortedarticles)
         return sortedarticles.slice(0, num);
     }
 }
