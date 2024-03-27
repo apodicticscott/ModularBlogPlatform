@@ -7,7 +7,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import Header from "../../TextComponents/Header1";
 
-const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, styles}) => {
+const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();
     const {
         attributes,
@@ -40,7 +40,9 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         };
     });
 
-    console.log(styles, comp.Style, comp.ID);
+    console.log(comp.Style, comp.ID);
+
+
 
     return (
         <div
@@ -60,13 +62,14 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
-            <Header type={comp.Size} id={comp.ID} classes={comp.styles.map((style) => (style))}>
+            <Header type={comp.Size} id={comp.ID} classes={comp.Style.join(" ")}>
                 <ContentEditable
                 html={comp.Content}
                 innerRef={contentRef}
                 id="header"
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
                 onClick={(e) => onClick(e, comp.ID, comp.Type)}
+                
                 />
             </Header>
             <TiDelete

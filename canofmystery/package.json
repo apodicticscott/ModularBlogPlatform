@@ -53,6 +53,7 @@
     "react-images-uploading": "^3.1.7",
     "react-leaflet": "^4.2.1",
     "react-material-ui-carousel": "^3.4.2",
+    "react-text-selection-popover": "^2.0.2",
     "react-use": "^17.5.0",
     "sharp": "^0.33.2"
   },

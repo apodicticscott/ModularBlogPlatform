@@ -7,7 +7,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import Resource from "../../TextComponents/Resource";
 
-const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, styles}) => {
+const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
     const contentRef = useRef();
     const {
         attributes,
@@ -40,7 +40,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
         };
     });
 
-    console.log(styles, comp.Style, comp.ID);
+
 
     return(
         <div
@@ -62,7 +62,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
             <Resource
                 type={comp.Size}
                 id={comp.ID} 
-                classes={styles}
+                classes={comp.Style.join(" ")}
             >
                 <ContentEditable 
                 id="resource"

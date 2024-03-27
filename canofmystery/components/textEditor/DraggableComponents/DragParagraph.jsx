@@ -7,7 +7,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Paragraph from "../../TextComponents/Paragraph";
 
-const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, styles }) => {
+const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
 
     const contentRef = useRef();
     const {
@@ -41,8 +41,6 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
         };
     }, []);
 
-    console.log(styles, comp.Style, comp.ID);
-
 
     return (
         <div
@@ -64,7 +62,7 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
             <Paragraph
                 type={comp.Size}
                 id={comp.Id}
-                classes={styles}
+                classes={comp.Style.join(" ")}
             >
                 <ContentEditable
                     id="paragraph"

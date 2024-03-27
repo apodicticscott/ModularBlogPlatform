@@ -141,8 +141,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                 const docSnap = await getDoc(docRef);
           
                 if (docSnap.exists()) {
-                  console.log("Document data:", docSnap.data());
-                  console.log(docSnap.data())
                   setArticle(docSnap.data());
                 } else {
                   console.log("No such document!");
@@ -171,11 +169,9 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     useEffect(() => {
         if(articleId && article){
-            console.log(article.Content)
             setCompArray(article.Content);
             setTitle(article.Title)
             setAuthor(article.Author)
-            console.log(article.Tags)
             setTags(article.Tags)
         }
     }, [article])
@@ -216,8 +212,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     }
 
     function applyTailwindStyles(compId, styleClass) {
-
-        console.log(compId)
         setCompArray(compArray.map(comp => {
             if (comp.ID === compId) {
                 let stylesToRemove = ["text-left", "text-center", "text-right"];
@@ -244,7 +238,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
         }));
     }
 
-    const handleSetLink = (e) => {
+    const handleSetLink = () => {
         const url = currentLink
 
         if(url){
@@ -295,9 +289,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     const handleSelectComponent = (e, id, compType) => {
         let eventType;
-        console.log(compType)
-        console.log(id)
-        console.log(e.target.id)
         if(e.target.id === "header" || e.target.id === "paragraph" || e.target.id === "resource"){
             eventType = "in-text-click"
         }else{
@@ -411,7 +402,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     const handleExportContent = () => {
         const articleContent = {Author: Author, Publisher: "Undefined", Time: "Undefined", Title: Title, Content: compArray, Tags: Tags}
-        console.log(articleContent)
     }
 
     const handleUploadArticle = async () => {
@@ -442,7 +432,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     Author: Author,
                     UserId: userId
                 };
-                console.log(article)
+
                 response = await addDocument("Articles", article) && await setHasPublished("users", userId);
             }else if(pageType === "page"){
                 const page = {
