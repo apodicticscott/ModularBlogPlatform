@@ -70,13 +70,13 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                             chartData !== undefined
                             &&
                             <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 z-10">
-                                <span className="text-lg underline decoration-dashed">
+                                <span className="text-lg underline decoration-dashed" title="how many unique users have visited in the last 30 minutes.">
                                     USERS IN LAST 30 MINUTES.
                                 </span>
                                 <span className="text-3xl">
                                     1
                                 </span>
-                                <span className="text-lg underline decoration-dashed">
+                                <span className="text-lg underline decoration-dashed" title="Average users per minute.">
                                     USERS PER MINUTE
                                 </span>
                                 {
@@ -98,7 +98,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                                 }
 
                                 <div className="w-full flex justify-between">
-                                    <span className="text-lg underline decoration-dashed">
+                                    <span className="text-lg underline decoration-dashed" title="Top 3 countries of vising users.">
                                         TOP 3 COUNTRIES.
                                     </span>
                                     <span className="text-lg underline decoration-dashed">
@@ -131,17 +131,17 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                 <div className="flex w-full max-h-[600px] bg-base-100 p-7 grid grid-cols-4 grid-rows-2 gap-7 bg-base-100">
                         <div className="col-span-2 row-span-2 rounded-md border-3 bg-base-100 flex flex-col shadow">
                             <div className="flex flex-col p-3 p-[15px] pb-0 gap-[15px]">
-                                <Header type="sm" className="text-lg underline">
+                                <Header type="sm" className="text-lg underline" title="how many page visits there have been.">
                                     Page Visits
                                 </Header>
 
                             </div>
                             <div className={`flex justify-between w-full h-max items-center rounded-t-md text-lg p-[15px] pb-0`}>
-                                <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed">
+                                <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed" title="The page and it's url that has been visited.">
                                     Page Path
                                 </div>
                                 
-                                <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed">
+                                <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 min-h-[50px] items-center underline decoration-dashed" title="how many users have visited this page.">
                                     Number Of Visits
                                 </div>
                             </div>

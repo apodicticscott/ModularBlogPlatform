@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { logPageView } from '../firebase/analitics/firebaseAnalytics';
 
-const useLogPageView = () => {
-    logPageView();
+const useLogPageView = (pagePath) => {
+    logPageView(pagePath);
 }
 
 export default useLogPageView;

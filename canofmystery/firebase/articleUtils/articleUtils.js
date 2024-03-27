@@ -1,5 +1,5 @@
-import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc, addDoc, toDate} from "firebase/firestore"
-import { firebase_app } from "../config"
+import { getFirestore, collection, query, getDocs, where, doc, deleteDoc, updateDoc, getDoc, addDoc} from "firebase/firestore"
+import  firebase_app  from "../config.js"
 
 const db = getFirestore(firebase_app)
 
@@ -51,11 +51,21 @@ export const fetchArticles = async () => {
     const querySnapshot = await getDocs(collectionRef);
 
     
-
+    
     const articlesArray = [];
     querySnapshot.forEach((doc) => {
-        articlesArray.push({ id: doc.id, ...doc.data() });
+        var image = ""
+        for(var key in doc.data().Content){
+            var section = doc.data().Content[key]
+            if(section.Type == "image"){
+                image = section.Image
+                break;
+            }
+        }
+        articlesArray.push({ id: doc.id, image: image, ...doc.data() });
     });
+    articlesArray.sort((a,b) => b.Time.toMillis()-a.Time.toMillis())
+    
     return articlesArray;
 };
 
@@ -90,14 +100,11 @@ export const deletePages = async (selectedPages) => {
 export const getRecent = async (num) => {
     const articles = await getApprovedArticles();
 
-    const sortedarticles = articles.toSorted((a,b) => a.Time.toMillis()-b.Time.toMillis());
     if(num == -1){
-        console.log(sortedarticles)
-        return sortedarticles;
+        return articles;
     }
     else{
-        console.log(sortedarticles)
-        return sortedarticles.slice(0, num);
+        return articles.slice(0, num);
     }
 }
 
@@ -107,7 +114,15 @@ export const getApprovedArticles = async () => {
     const querySnapshot = await getDocs(q);
     const pagesArray = [];
     querySnapshot.forEach((doc) => {
-        pagesArray.push({ id: doc.id, ...doc.data() });
+        var image = ""
+        for(var key in doc.data().Content){
+            var section = doc.data().Content[key]
+            if(section.Type == "image"){
+                image = section.Image
+                break;
+            }
+        }
+        pagesArray.push({ id: doc.id, image: image, ...doc.data() });
     });
 
     return pagesArray;
@@ -124,7 +139,6 @@ export const getTotalUnapprovedPages = async () => {
     const collectionRef = collection(db, "Pages");
     const q = query(collectionRef, where("Approved", "==", false));
     const querySnapshot = await getDocs(q);
-    console.log("here!!! lol")
     return querySnapshot.docs.length;
 }
 
@@ -147,7 +161,6 @@ export const fetchCitationGuide = async () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       return docSnap.data();
     } else {
       console.log("No such document!");
@@ -182,7 +195,6 @@ export const fetchOurProject = async () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       return docSnap.data();
     } else {
       console.log("No such document!");
@@ -206,8 +218,6 @@ export const searchArticles = async (searchText = [], articles_list = [], search
             search_articles.forEach(
                 (word,index) => {
                     var stop_searching_cur = false
-                    var found_image = false
-                    var image = ""
                     for(var index1 in searchText){
                         var search = searchText[index1] //why u not like python whyyy!?
                         for(var key in word.Content){
@@ -230,16 +240,8 @@ export const searchArticles = async (searchText = [], articles_list = [], search
                         }
                         
                     }
-                    for(var key in word.Content){
-                        var section = word.Content[key]
-                        if(section.Type == "image" && !found_image){
-                            image = section.Image
-                            found_image = true
-                            break;
-                        }
-                    }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, image: word.image});
                     }
                 }
             );
@@ -272,8 +274,6 @@ export const searchByTag = async (searchtags = [], articles_list = [], search_pr
             //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
             search_articles.forEach(
                 (word,index) => {
-                    var found_image = false
-                    var image = ""
                     var stop_searching_cur = false
                     for(var index1 in searchtags){
                         
@@ -290,16 +290,8 @@ export const searchByTag = async (searchtags = [], articles_list = [], search_pr
                             break;
                         }
                     }
-                    for(var key in word.Content){
-                        var section = word.Content[key]
-                        if(section.Type == "image" && !found_image){
-                            image = section.Image
-                            found_image = true
-                            break;
-                        }
-                    }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, image: word.image});
                     }
                     
                 }

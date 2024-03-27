@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { getFirestore, collection, addDoc} from "firebase/firestore"
-import { firebase_app } from "../../firebase/config"
+import  firebase_app  from "../../firebase/config"
 import { AnimatePresence, motion } from "framer-motion";
 
 import Link from "../TextComponents/Link"
@@ -91,22 +91,22 @@ const Footer = () => {
                 Explore
               </div>
               <div className="flex flex-col justify-between gap-[10px]">
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
                 </a>
-                <Link href="citations">
+                <Link href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link href="blog">
+                <Link href="Articles">
                   Articles
                 </Link>
                 <Link href="canitems">
                   Can Items
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </a>
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="" rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://canofmystery.blogspot.com/" rel="noopener noreferrer">
                   Old Can Of Mystery
                 </a>
               </div>
@@ -128,7 +128,7 @@ const Footer = () => {
                 <Link href="/admin">
                   Admin Dashboard
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </a>
                 <Link href="instructions">
@@ -142,22 +142,22 @@ const Footer = () => {
                 Explore
               </div>
               <div className="flex flex-wrap justify-between gap-[10px]">
-              <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
                 </a>
-                <Link href="citations">
+                <Link href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link href="blog">
+                <Link href="Articles">
                   Articles
                 </Link>
                 <Link href="canitems">
                   Can Items
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </a>
-                <a className="w-full text-t-header-light dark:text-t-header-dark opacity-75" target="_blank" href="" rel="noopener noreferrer">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="" rel="noopener noreferrer">
                   Old Can Of Mystery
                 </a>
               </div>
@@ -179,9 +179,9 @@ const Footer = () => {
                 <Link href="/admin">
                   Admin Dashboard
                 </Link>
-                <Link href="/">
+                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </Link>
+                </a>
                 <Link href="/">
                   Instructions
                 </Link>

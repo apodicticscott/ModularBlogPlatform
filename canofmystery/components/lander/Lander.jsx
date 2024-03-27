@@ -11,22 +11,12 @@ const Lander = () => {
     const [article, setArticle] = useState([]);
 
     const fixArticles = (value) =>{
-        var found_image = false
-        var image = ""
-        for(var key in value.Content){
-            var section = value.Content[key]
-            if(section.Type == "image" && !found_image){
-                image = section.Image
-                found_image = true
-                break;
-            }
-        }
-        setArticle({author: value.Author, title: value.Title, image: image, id: value.id});
+        
+        setArticle({author: value.Author, title: value.Title, image: value.image, id: value.id});
     }
 
     
     useEffect(() => {
-        console.log(getRecent(1));
         getRecent(1).then((value) => {fixArticles(value[0])}, (value) => {fixArticles(value[0])});
     }, []);
     return (

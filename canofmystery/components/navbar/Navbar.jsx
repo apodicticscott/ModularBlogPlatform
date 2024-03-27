@@ -7,15 +7,14 @@ import { RiSearchFill } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { getAuth } from "@firebase/auth";
-import firebase_app from '/firebase/config';
+import firebase_app from "../../firebase/config";
 import {getFirestore, collection, getDoc, doc, updateDoc} from "firebase/firestore"
-import { app } from "../../app/firebase"
+import Link from "../../components/TextComponents/Link"
 const auth = getAuth(firebase_app);
 
 import uscaLogo from "../../components/Assets/uscalogo.png"
 
-import DropDownItem from "./components/dropDownItem";
-console.log(uscaLogo)
+import DropDownItem from "./Components/DropDownItem";
 
 const Navbar = () => {
 
@@ -139,7 +138,6 @@ const Navbar = () => {
 
   const swsDrop = "px-7 lg:px-14 border-y-2 explore-size-md lg:border-y-3 lg:explore-size-lg xl:explore-size-xl 2xl:explore-size-2xl"
 
-  console.log(open)
   return (
     <>
       {/* Drop Down */}
@@ -155,10 +153,10 @@ const Navbar = () => {
             <MdAccountCircle style={{fontSize: "35px"}}/>
           </div>
           <div className=" flex flex-row flex-wrap justify-between sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
-            <DropDownItem title="USCA" background="bg-sunset" classes="w-full w-full xs-sm:explore-itm-top-size-xs">
+            <DropDownItem link = "https://www.usca.edu/" title="USCA" background="bg-sunset" classes="w-full w-full xs-sm:explore-itm-top-size-xs">
               <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
             </DropDownItem>
-            <DropDownItem title="Can Items" background="bg-pale-green" classes="w-full xs-sm:explore-itm-top-size-xs">
+            <DropDownItem link = "canitems" title="Can Items" background="bg-pale-green" classes="w-full xs-sm:explore-itm-top-size-xs">
                 <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                   <div className="w-[644px] h-15 whitespace-nowrap">
                     Example Text
@@ -168,11 +166,12 @@ const Navbar = () => {
                   </div>
                 </div>
             </DropDownItem>
-            <DropDownItem title="Articles" background="bg-dark-purple" classes="w-full sm:w-[500px] lg:w-[230.38px] xl:w-[267.3px]">
-              <div className="flex justify-center h-[110%] w-[90%] border-2 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
-                <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>    
+            <DropDownItem link="Articles" title="Articles" background="bg-dark-purple" classes="w-full sm:w-[500px] lg:w-[230.38px] xl:w-[267.3px]">
+
+                <div className="flex justify-center h-[110%] w-[90%] border-2 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
+                  <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>
+                  </div>
                 </div>
-              </div>
             </DropDownItem>
           </div>
           <div className="flex flex-col justify-center items-center shrink-1 w-full  lg:w-0 ml-0 lg:ml-2">

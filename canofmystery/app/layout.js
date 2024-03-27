@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import useLogPageView from "../hooks/useLogPageView"
 import { Lexend_Mega } from 'next/font/google'
 import './globals.css'
@@ -37,11 +37,16 @@ export default function RootLayout({ children  }) {
     Cookies.set('hasConsent', 'true')
     setCookieConsent(true)
   }
-
-  if(cookieConsent){
-    useLogPageView(); 
-  }
-  
+  useEffect(function mount(){
+    if(cookieConsent){
+      if(window != undefined){
+        const pagePath = window.location.pathname;
+        console.log(pagePath)
+        useLogPageView(pagePath);
+      }
+    }
+  });
+    
   return (
     <html data-theme="mytheme" className="" lang="en">
       <body className={`${LexM.className} tracking-tighter`}>

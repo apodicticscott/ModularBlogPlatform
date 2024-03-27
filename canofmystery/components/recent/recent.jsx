@@ -74,7 +74,7 @@ const Recent = () => {
                         articles.map((article, index) => {
 
                             return(
-                                <Link href={"blog/"+article.id} children={
+                                <Link key={article.id} href={"blog/"+article.id} children={
                                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}  id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
                                         <div>
                                             <svg width="45" height="35" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative left-[-15px] top-[25px]">
@@ -87,8 +87,8 @@ const Recent = () => {
                                                     <circle cx="17" cy="16.5" r="16" stroke="black"/>
                                                 </g>
                                                 <defs>
-                                                    <filter id="filter0_d_941_99" x="7.5" y="6" width="42" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                                    <filter id="filter0_d_941_99" x="7.5" y="6" width="42" height="40" filterUnits="userSpaceOnUse">
+                                                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                                                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                                                         <feOffset dx="4" dy="4"/>
                                                         <feComposite in2="hardAlpha" operator="out"/>
@@ -96,8 +96,8 @@ const Recent = () => {
                                                         <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_941_99"/>
                                                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_941_99" result="shape"/>
                                                     </filter>
-                                                    <filter id="filter1_d_941_99" x="0.5" y="0" width="35" height="35" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                                    <filter id="filter1_d_941_99" x="0.5" y="0" width="35" height="35" filterUnits="userSpaceOnUse">
+                                                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                                                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                                                         <feOffset dx="2" dy="2"/>
                                                         <feComposite in2="hardAlpha" operator="out"/>
