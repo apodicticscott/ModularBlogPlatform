@@ -117,6 +117,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 Class Session
                             </Header>
                         </div>
+                        
                         <span className="text-lg underline decoration-dashed">
                             Session ID
                         </span>
@@ -133,9 +134,12 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </>
                             }
                         </span>
-                        <span className="text-lg underline decoration-dashed">
-                            Expiration
-                        </span>
+                        <Tooltip classes={{ tooltip: classes.customTooltip }} title="The date this session id will expire">
+                            <span className="text-lg underline decoration-dashed">
+                                Expiration
+                            </span>
+                        </Tooltip>
+                        
                         <div className="h-max">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
@@ -174,15 +178,21 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                     </div>
                     <div className="grow flex flex-col w-full xl:w-[30%] 2xl:w-full ">
                         <div className={`flex justify-between w-full h-max px-[15px] py-[5px] items-center text-lg `}>
-                            <div className="flex-1 underline decoration-dashed">
-                                Session ID
-                            </div>
-                            <div className="flex-1 px-[15px] underline decoration-dashed">
-                                Expiration
-                            </div>
-                            <div className="flex-1 text-right underline decoration-dashed">
-                                Is Expired
-                            </div>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="The selected session id">
+                                <div className="flex-1 underline decoration-dashed">
+                                    Session ID
+                                </div>
+                                </Tooltip>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="The expiration date for the session id.">
+                                <div className="flex-1 px-[15px] underline decoration-dashed">
+                                    Expiration
+                                </div>
+                            </Tooltip>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the session id has expired.">
+                                <div className="flex-1 text-right underline decoration-dashed">
+                                    Is Expired
+                                </div>
+                            </Tooltip>
                         </div>
                         <div className="flex w-full grow flex flex-col text-lg Unapproved200 rounded-t-md  border-3 border-b-0 bg-base-200 min-h-[400px] md:min-h-0 overflow-y-scroll scrollbar-hide">
                             {
@@ -221,9 +231,11 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             <Header type="sm" >
                                 Class Session
                             </Header>
-                            <span className="text-lg underline decoration-dashed">
-                                Selected Session ID
-                            </span>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="The selected session ID.">
+                                <span className="text-lg underline decoration-dashed">
+                                    Selected Session ID
+                                </span>
+                            </Tooltip>
                             <span className="text-lg">
                                 {
                                     selectedSession
@@ -266,18 +278,26 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                     <div className="h-full flex flex-col w-full xl:w-[60%] gap-[25px]">
                         <div className="w-full flex flex-col grow gap-[15px]">
                             <div className="w-full flex h-min">
-                                <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    First Name
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Last Name
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Session ID
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Has Published
-                                </div>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
+                                    <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        First Name
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Last Name
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's current session id for their log in">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Session ID
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user has published or not.">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Has Published
+                                    </div>
+                                </Tooltip>
                             </div>
                             <div className="flex w-full h-[300px] max-h-[300px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
                                 {
@@ -339,7 +359,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                         <div className="grow flex ">
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
-                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have signed up using the selected session ID.">
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The amount of submitted articles this session">
                                     <span className="text-lg underline decoration-dashed">
                                         Articles This Session
                                     </span>
@@ -350,7 +370,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col justify-center">
-                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have submitted an article with the selected session ID.">
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="how many articles have been approved this session">
                                     <span className="text-lg underline decoration-dashed">
                                         Approved
                                     </span>
@@ -391,18 +411,26 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                         <div className="w-full flex flex-col grow gap-[15px]">
                             <div className="w-full flex h-min">
-                                <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Publisher
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Title
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Date
-                                </div>
-                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Approval
-                                </div>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user who published the article">
+                                    <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Publisher
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The display title of the article">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Title
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The date the article was submitted">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Date
+                                    </div>
+                                </Tooltip>
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the article is approved or not">
+                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Approval
+                                    </div>
+                                </Tooltip>
                                 <div className="flex h-full min-w-[90px] p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
 
                                 </div>
