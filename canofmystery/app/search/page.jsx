@@ -97,7 +97,7 @@ const SearchPage = () => {
 
     return(
         <div className="flex flex-col justify-start self-center min-h-screen align-center dark:bg-base-100-dark p-20 gap-[50px]">
-            {articles.length > 0 ? (
+            {articles ? (
                 <>
                     <div className="w-full flex flex-col gap-[25px] mt-[25px]">
                         <form  className="gap-[15px]">
