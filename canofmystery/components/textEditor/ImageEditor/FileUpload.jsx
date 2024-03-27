@@ -4,30 +4,34 @@ import { FaImage, FaUpload } from "react-icons/fa";
 import { MdOutlineDownloadDone, MdCrop, MdImageNotSupported } from "react-icons/md";
 import axios from 'axios';
 
-
-
 const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, isImageAddOpen, removeImage, type}) => {
     const fileInputRef = useRef(null);
-
 
     const handleFileSelect = (event) => {
         if (event.target.files && event.target.files.length > 0) {
           const reader = new FileReader();
     
-          reader.addEventListener("load", () => {
+          reader.addEventListener("load", async () => {
+            // 
             const image = reader.result;
-    
-            setImageToCrop(image)
+            const resizedImage = await compress.compress([image], {
+                size: 1, // the max size in MB, defaults to 2MB
+                quality: 1, // the quality of the image, max is 1,
+                maxWidth: 900, // the max width of the output image, defaults to 1920px
+                maxHeight: 900, // the max height of the output image, defaults to 1920px
+                resize: true // defaults to true, set false if you do not want to resize the image width and height
+              })
+            setImageToCrop(resizedImage)
           });
     
-          reader.readAsDataURL(event.target.files[0]);
+          //reader.readAsDataURL(event.target.files[0]);
+          
         }
         if(type === "cover"){
             enableCrop(true, type)
         }
         
     };
-
 
     const handleRemoveImage = () => {
         removeImage()
@@ -48,10 +52,6 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
         enableCrop(false, '')
 
     }
-
-
-
-
 
     return(
         <>  

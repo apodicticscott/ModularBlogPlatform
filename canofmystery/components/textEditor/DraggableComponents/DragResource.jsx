@@ -40,6 +40,8 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
         };
     });
 
+
+
     return(
         <div
             id="clickable-parent"
@@ -60,6 +62,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
             <Resource
                 type={comp.Size}
                 id={comp.ID} 
+                classes={comp.Style.join(" ")}
             >
                 <ContentEditable 
                 id="resource"

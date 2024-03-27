@@ -69,7 +69,7 @@ const Header = ({children, text, type, classes, style, highlight, onClick, onKey
             sizeLg: "",
             sizeXL: "",
             size2XL: "",
-            size3XL: "3xl:text-[2.5vw]"
+            size3XL: "3xl:text-6xl"
         },
         xl: {
             width: "w-full",
@@ -90,7 +90,7 @@ const Header = ({children, text, type, classes, style, highlight, onClick, onKey
             sizeLg: "",
             sizeXL: "",
             size2XL: "",
-            size3XL: "3xl:text-[3.5vw]"
+            size3XL: "3xl:text-7xl",
         },
         landerTitle: {
             width: "w-full",

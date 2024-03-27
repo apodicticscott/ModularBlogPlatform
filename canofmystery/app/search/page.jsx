@@ -1,35 +1,22 @@
 'use client'
-import styles from "/app/homepage.module.css";
-import React, {  useEffect, useState } from "react";
-import {searchArticles, searchByTag, fetchArticles} from "./../../firebase/articleUtils/articleUtils";
-import  NeoButton  from "/components/TextComponents/NeoButton"
-
-
-export const article_result = (article) => {
-
-    return(
-        <div className= "px-[20px] py-[15px] flex-end ">
-            <img src={article.image} alt="Article Image" className=" w-full h-[139px] rounded-md"/>
-            
-            <p>{article.Title}</p>
-            <p>@{article.author}</p>
-
-
-        </div>
-
-    );
-
-
-}
-
+import React, { useEffect, useState } from "react";
+import Tag from "../../components/TextComponents/NeoTag";
+import {RiSearchFill} from "react-icons/ri";
+import NeoButton from "../../components/TextComponents/NeoButton";
+import Image from "../../components/textComponents/Image";
+import { useRouter } from "next/navigation";
+import DropDown from "../../components/TextComponents/dropDown";
+import { searchArticles, searchByTag, fetchArticles } from "../../firebase/articleUtils/articleUtils";
+import { Divider } from "@material-ui/core";
 
 const SearchPage = () => {
-    
-    const [json_search_results, setJson] = useState([]);
-    const [searchterm, setSearchTerm] = useState('');
-    const [tags, setTags] = useState('');
-    const [articles, setArticles] = useState([]);
+    const [searchResults, setSearchResults] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [articles, setArticles] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [uniqueTags, setUniqueTags] = useState([]);
 
+    const router = useRouter();
 
     const SearchSubmit = async (event) => {
         event.preventDefault();
@@ -51,72 +38,167 @@ const SearchPage = () => {
             setJson(array);
         }
         else{
-            setJson(articles);
+            setJson(array);
         }
-        console.log(array);
+        console.log(array)
+        setSearchResults(array);
+    };
+
+    const handleDelete = (index) => {
+        setSelectedTags(prevState => prevState.filter((item, idx) => idx !== index));
     }
 
+    const handleTagClick = (tag) => {
+        if (!selectedTags.some(selectedTag => selectedTag.Text.toLowerCase() === tag.Text.toLowerCase())) {
+            setSelectedTags(prevTags => [...prevTags, tag]);
+        }
+    };
+
+    const handleArticleClick = (e, url) => {
+        if(e.target.id !== "tag"){
+            router.push("/blog/" + url)
+        }else{
+            return;
+        }
+    }
+
+    const updateUrl = (tags) => {
+        const tagQuery = tags.map(tag => encodeURIComponent(tag.Text)).join(',');
+        router.push(`/search?search=${encodeURIComponent(searchTerm)}&tags=${tagQuery}`, undefined, { shallow: true });
+    };
+
+
+    useEffect((e) => {
+        updateUrl(selectedTags)
+    }, [selectedTags, searchTerm])
+
+
     useEffect(() => {
-        fetchArticles().then((value) => {setArticles(value)}, (value) => {setArticles(value)});
+        console.log(articles)
+        if(!articles){
+            fetchArticles().then(articles => {
+                console.log(articles)
+                setArticles(articles);
+                const newTags = articles.reduce((acc, article) => {
+                    article.Tags.forEach(tag => {
+                        if (!acc.some(accTag => accTag.Text.toLowerCase() === tag.Text.toLowerCase())) {
+                            acc.push(tag);
+                        }
+                    });
+                    return acc;
+                }, []);
+                console.log(newTags)
+                setUniqueTags(newTags);
+            });
+        }
     }, []);
 
+
+
     return(
-        
-        <div class="justify-center self-center align-center p-20">
+        <div className="flex flex-col justify-start self-center min-h-screen align-center dark:bg-base-100-dark p-20 gap-[50px]">
             {articles.length > 0 ? (
                 <>
-                    {/* Current Filters */}
-                    {/*<div className="flex flex-row gap-[20px] items-center">
-                        <p className="text-2.5xl text-bold tracking-minimal">Current Filters:</p>
-                        <div className="flex flex-row">
+                    <div className="w-full flex flex-col gap-[25px] mt-[25px]">
+                        <form  className="gap-[15px]">
+                            <div className="flex flex-row gap-[20px] items-center pt-[20px]">
+                                <input type="search" name="search" placeholder="Search" onChange={(e) => (setSearchTerm(e.target.value), SearchChange(e))} required id="search" className="neo-input w-[300px] rounded-md p-3 h-[40px]"/>
+                            </div>
+                        </form>
+                        <div className="z-10">
                             {
-                                json_cur_search_tags.map((tag, index) => (
-                                    <Tag key={index} tag={tag.tag} backgroundColor={tag.color}></Tag>
-                                    )
-                                )
+                                uniqueTags
+                                &&
+                                <DropDown tags={uniqueTags} setSelectedTags={setSelectedTags} selectedTags={selectedTags} label={"Tags"}>
+                                
+                                </DropDown>
                             }
 
                         </div>
-                    </div>*/}
-                    {/* search query */}
+                        <div className="z-0 flex flex-wrap gap-[10px] min-h-[50px] w-full">
+                            {
+                                selectedTags
+                                &&
+                                selectedTags.map((tag, index) => (
+                                    <Tag tag={tag.Text} backgroundColor={tag.Color} key={index} isDeletable={true} handleDelete={handleDelete}  id={index}>
 
-                    
-                        
-                    <form onSubmit={SearchSubmit} className="gap-[15px]">
-                        <div className="flex flex-row gap-[20px] items-center pt-[20px]">
-                            <p className="text-2.5xl text-bold tracking-minimal">Search Query:</p>
-                            <input onChange={(e) => setSearchTerm(e.target.value)} required type="search" name="search" id="search"  className="text-2.5xl"/>
+                                    </Tag>
+                                ))
+                            }
                         </div>
-                        <div className="flex flex-row gap-[20px] items-center pt-[20px]">
-                            <p className="text-2.5xl text-bold tracking-minimal">Search Tags (comma separated):</p>
-                            <input onChange={(e) => setTags(e.target.value)} name="tags" id="tags"  className="text-2.5xl"/>
-                        </div>
-                        <div className="flex flex-row gap-[20px] items-center pt-[20px]">
-                            <NeoButton classes={"bg-primary-dark "} type="submit" onSubmit={SearchSubmit}>
-                                Search
-                            </NeoButton>
-                        </div>
-                    </form>
-                    
-                    <br/>
-                    <br/>
-                    <br/>
+                    </div>
+                    <Divider />
+
                     <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max">
                         {
-                            json_search_results.map((article,index) => (
-                                <a key={article.id} href={`"blog/${article.id}`} className="w-[400px] h-[240px] bg-secondary-content border-3 rounded-md shadow-lg">
-                                    {article_result(article)}
-                                </a>
+                            searchResults
+                            ?
+                            searchResults.map((article, index) => (
+                                <div className="w-[274px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                    <div className="w-full p-[10px] pb-0 h-max">
+                                        <img src={article.CoverImage} className="w-full h-[160px] rounded-md border-2">
+                        
+                                        </img>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2xl">
+                                        <div className="truncate h-[35px] w-full flex items-center">
+                                            {article.Title}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-xl">
+                                        {article.Author}
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] pt-[5px] w-full  px-[10px] text-2.5xl">
+                                        {
+                                            article.Tags
+                                            &&
+                                            article.Tags.map((tag, index) => (
+                                                <div className={`rounded-md text-shadow px-[10px] py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max `}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
+                                                    {tag.Text}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            ))
+                            :
+                            articles.map((article, index) => (
+                                <div className="w-[274px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                    <div className="w-full p-[10px] pb-0 h-max">
+                                        <img src={article.CoverImage} className="w-full h-[160px] rounded-md border-2">
+                        
+                                        </img>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2xl">
+                                        <div className="truncate h-[35px] w-full flex items-center">
+                                            {article.Title}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-xl">
+                                        {article.Author}
+                                    </div>
+                                    <div className="flex items-center justify-between gap-[15px] h-[50x] pt-[5px] w-full  px-[10px] text-2.5xl">
+                                        {
+                                            article.Tags
+                                            &&
+                                            article.Tags.map((tag, index) => (
+                                                <div className={`rounded-md text-shadow px-[10px] py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max `}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
+                                                    {tag.Text}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
                             ))
                         }
                     </div>
                 </>
             ): (
                 <div className="h-screen w-screen flex items-center ">
-                    <div class="loader">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
+                    <div className="loader">
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
                     </div>
                 </div>
             )}
@@ -125,4 +207,3 @@ const SearchPage = () => {
 };
 
 export default SearchPage
-

@@ -5,7 +5,6 @@ import {getRecent} from "../../firebase/articleUtils/articleUtils";
 import Header from "../TextComponents/Header1"
 import LargeParagraph from "../TextComponents/LargeParagraph"
 import NeoButton from "../../components/TextComponents/NeoButton"
-import Image from "../../components/TextComponents/Image"
 
 const Lander = () => {
     const [article, setArticle] = useState([]);
@@ -55,7 +54,7 @@ const Lander = () => {
                             </div>
                             <div className="relative top-[-15px] md:top-[-25px] w-full h-max flex flex-col items-end p-[10px] ">
                                 <h2 className="w-content text-xl tracking-[-1.76px]">
-                                    @{article.author}
+                                @{article.author}
                                 </h2>
                             </div>
                         </div>
@@ -66,7 +65,7 @@ const Lander = () => {
                             <div className="h-[35vw] w-[45vw] lg:h-[450px] lg:w-[650px] 3xl:w-full 3xl:h-[28vw] 3xl:my-[2vw] bg-dark-purple rounded-lg border-2 lg:border-3 my-[26px] shadow-lg">
                                 <img src={article.image} alt="Uploaded Image" className="w-full object-cover h-full bg-dark-purple rounded-[15px] border-2 lg:border-3"/>
                             </div>
-                            <div className="w-full 3xl:w-full h-max flex flex-col items-end p-[10px] ">
+                            <div className="w-full 3xl:w-full h-max flex flex-col items-end p-[10px] pt-0 pb-[25px]">
                                 <h2 className="w-content text-xl tracking-[-1.76px] xl:text-2xl xl:tracking-[-3.32px] 2xl:text-2.5xl 3xl:text-[1.25vw] tracking-[-5.76px]">
                                 @{article.author}
                                 </h2>
