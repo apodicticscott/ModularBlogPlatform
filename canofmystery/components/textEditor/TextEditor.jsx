@@ -430,7 +430,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         Content: comp.Content,
                         Style: comp.Style || '', // Assuming style is an optional field
                         Type: comp.Type,
-                        //ImageOriginal: comp.OriginalImage || '',
+                        ImageOriginal: comp.OriginalImage || '',
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
