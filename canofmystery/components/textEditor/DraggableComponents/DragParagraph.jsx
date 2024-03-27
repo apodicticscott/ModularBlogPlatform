@@ -7,8 +7,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Paragraph from "../../TextComponents/Paragraph";
 
-const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, compArray }) => {
-    const [styleString, setStyleString] = useState("")
+const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, styles }) => {
 
     const contentRef = useRef();
     const {
@@ -24,13 +23,6 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
         transition,
     };
 
-    useEffect(() => {
-        // Assuming Style is an array of CSS class names or style strings
-        // Join the styles into a single string if necessary (for class names or inline styles)
-        const styleString = comp.Style ? comp.Style.join(' ') : '';
-        setStyleString(styleString);
-        console.log(styleString)
-    }, [compArray]); // Ensure Style is a dependency here
 
     const handleKeyDown = (event) => {
         if (event.metaKey) {
@@ -49,7 +41,7 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
         };
     }, []);
 
-    console.log(styleString, comp.Style, comp.ID);
+    console.log(styles, comp.Style, comp.ID);
 
 
     return (
@@ -72,14 +64,13 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
             <Paragraph
                 type={comp.Size}
                 id={comp.Id}
-                classes={styleString}
+                classes={styles}
             >
                 <ContentEditable
                     id="paragraph"
                     html={comp.Content}
                     innerRef={contentRef}
-                    onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
-                    style={{ ...style, ...styleString }}
+                    onChange={(event) => updateContent(comp.ID, event.target.value, "text")} 
                 />
             </Paragraph>
             <TiDelete className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`} onClick={() => removeComp(comp.ID)} onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} />

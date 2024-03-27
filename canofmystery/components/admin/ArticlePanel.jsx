@@ -136,7 +136,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {article.Time} 
+                                            {/* {article.Time}  */}
                                         </div>
                                         <Divider orientation="vertical" className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />

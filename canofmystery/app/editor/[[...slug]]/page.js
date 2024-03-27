@@ -55,31 +55,31 @@ export default function Page({ params }) {
                     setTimeout(() => setHideLoader(true), 2500);
                     setExists(true);
                 }
-                console.log(exists);
             });
         }
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                console.log("here5")
-                const docRef = doc(firestore, 'users', user.uid);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const userData = docSnap.data();
-                    setTimeout(() => setLoading(false), 2000);
-                    setTimeout(() => setHideLoader(true), 2500);
-                    setIsWriter(userData.studentWriter);
-                    setIsAdmin(userData.adminPerm);
-                    setHasPublished(userData.hasPublished);
-                    setUser(userData);
-                } else {
-                    console.log("No such User");
-                }
-            } else {
-                router.push('/login'); 
-            }
-        });
+        // const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        //     if (user) {
+        //         console.log("here5")
+        //         const docRef = doc(firestore, 'users', user.uid);
+        //         const docSnap = await getDoc(docRef);
+        //         if (docSnap.exists()) {
+        //             const userData = docSnap.data();
+        //             setTimeout(() => setLoading(false), 2000);
+        //             setTimeout(() => setHideLoader(true), 2500);
+        //             setIsWriter(userData.studentWriter);
+        //             setIsAdmin(userData.adminPerm);
+        //             setHasPublished(userData.hasPublished);
+        //             setUser(userData);
+        //         } else {
+        //             console.log("No such User");
+        //         }
+        //     } else {
+        //         router.push('/login'); 
+        //     }
+        // });
 
-        return () => unsubscribe();
+        // return () => unsubscribe();
+        setTimeout(() => setHideLoader(true), 2500)
     }, [hasId]);
 
 

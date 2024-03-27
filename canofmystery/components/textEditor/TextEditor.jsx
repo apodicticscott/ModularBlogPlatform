@@ -216,19 +216,33 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     }
 
     function applyTailwindStyles(compId, styleClass) {
+
         console.log(compId)
         setCompArray(compArray.map(comp => {
             if (comp.ID === compId) {
-                const updatedStyle = comp.Style.includes(styleClass) ? comp.Style : [...comp.Style, styleClass];
-                console.log(updatedStyle)
-                console.log({...comp, Style: updatedStyle})
+                let stylesToRemove = ["text-left", "text-center", "text-right"];
+
+                let updatedStyle = comp.Style.includes(styleClass) ?
+                    comp.Style.filter(s => s !== styleClass) :
+                    comp.Style;
+    
+                if (stylesToRemove.includes(styleClass)) {
+                    updatedStyle = updatedStyle.filter(s => !stylesToRemove.includes(s));
+                    if (!comp.Style.includes(styleClass)) {
+                        updatedStyle.push(styleClass);
+                    }
+                }else{
+                    updatedStyle = updatedStyle.filter(s => s !== styleClass)
+                    if (!comp.Style.includes(styleClass)) {
+                        updatedStyle.push(styleClass);
+                    }
+                }
+    
                 return { ...comp, Style: updatedStyle };
             }
-            
             return comp;
         }));
     }
-
 
     const handleSetLink = (e) => {
         const url = currentLink
@@ -281,6 +295,9 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     const handleSelectComponent = (e, id, compType) => {
         let eventType;
+        console.log(compType)
+        console.log(id)
+        console.log(e.target.id)
         if(e.target.id === "header" || e.target.id === "paragraph" || e.target.id === "resource"){
             eventType = "in-text-click"
         }else{
@@ -336,8 +353,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
         if(Type === "header"){
             newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
         }else if(Type === "paragraph"){
-            newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
-        }else if(Type === "in-paragraph"){
             newComponent = { Type: Type, Size: "md", Style: [], ID: `component-${newId}`, Content: "New Text", Image: "", OriginalImage: "", VideoEmbededId: "" };
         }else if(Type === "image"){
             if(imageData[1]){
@@ -452,8 +467,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     UserId: userId
                 };
 
-                console.log(page)
-
                 response = await addDocument("Pages", page) && await setHasPublished("users", userId);
             }
             
@@ -496,19 +509,19 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
                             <FaList className="text-lg sm:text-xl"/>
                         </button >
-                        {/* <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
-                            <FaIndent className="text-lg sm:text-xl"/>
-                        </button > */}
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
-                            <FaAlignRight className="text-lg sm:text-xl"/>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
+                            <FaIndent className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
                         </button >
-                        {/* <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
-                            <FaAlignCenter className="text-lg sm:text-xl"/>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-left")}>
+                            <FaAlignLeft className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => }>
-                            <FaAlignLeft className="text-lg sm:text-xl"/>
-                        </button > */}
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(pevState => !prevState)}>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-center")}>
+                            <FaAlignCenter className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
+                            <FaAlignRight className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
                             <FaLink className="text-lg sm:text-xl"/>
                         </button >
 
@@ -630,6 +643,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                             panelOptions={panelOptions} 
                             handleAddComponent={handleAddComponent} 
                             setTitle={setTitle} 
+                            Author={Author}
                             setAuthor={setAuthor} 
                             currentAuthor={Author} 
                             setTags={setTags} 
@@ -784,7 +798,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                                 <>
                                                     {comp.Type === "header" && (
                                                         <>
-                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                     {comp.Type === "image" && (
@@ -792,36 +806,31 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                                             <DragImage key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
-                                                    {(comp.Type === "in-paragraph")&& (
-                                                        <>
-                                                            <DragParagraph  key={comp.ID} indent={true} comp={comp} compArray={compArray}  isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent} Style={comp.Style}/>          
-                                                        </>
-                                                    )}
                                                     {(comp.Type === "paragraph")&& (
                                                         <>
-                                                            <DragParagraph  key={comp.ID} indent={false} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
+                                                            <DragParagraph  key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''}  removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
                                                         </>
                                                     )}
                                                     {comp.Type === "resource" && (
                                                         <> 
-                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                     {comp.Type === "list" && (
                                                         <> 
-                                                            <DragList  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragList  key={comp.ID} comp={comp} isEnabled={isPreview}  removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                    {comp.Type === "youtube" && (
                                                         <> 
                                                             <DragVideo key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
                                                         </>
-                                                    )}
+                                                    )} 
                                                 </>
                                             ))}
                                         </SortableContext>
                                     </DndContext>
-                                    <div className={`flex items-center w-full gap-[30px] ${!isPreview && "px-[51px]"}`} >
+                                    <div className={`transition duration-1 flex items-center w-full gap-[30px] ${Tags.length > 0 ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex flex-col h-max w-full gap-[15px]">
                                             <Header type="sm" classes="border-b-[2px] border-b-black w-full">
                                                 Tags:
@@ -833,7 +842,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={`flex items-center w-full gap-[30px] mt-[15px] ${!isPreview && "px-[51px]"}`} >
+                                    <div className={`transition duration-1 flex items-center w-full gap-[30px] mt-[15px] ${Category ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex w-full items-center gap-[15px]">
                                             <Tag  backgroundColor={"#29ff80"} tag={Category} />
                                         </div>

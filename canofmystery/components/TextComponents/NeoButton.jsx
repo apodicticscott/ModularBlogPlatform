@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion"
 
+
 const neoButton = ({children, classes, onClick, href}) => {
     if (href){
         return(
@@ -15,7 +16,7 @@ const neoButton = ({children, classes, onClick, href}) => {
                     <div className="w-max h-full flex items-center p-1 pr-2 z-10">
                         {children}
                     </div>
-        
+
                 </motion.button>
             </a>
         )
@@ -30,7 +31,7 @@ const neoButton = ({children, classes, onClick, href}) => {
             <div className="w-max h-full flex items-center p-1 pr-2 z-10">
                 {children}
             </div>
-
+            
         </motion.button>
     )
 }

@@ -7,7 +7,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import Header from "../../TextComponents/Header1";
 
-const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick}) => {
+const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onClick, styles}) => {
     const contentRef = useRef();
     const {
         attributes,
@@ -40,15 +40,18 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         };
     });
 
+    console.log(styles, comp.Style, comp.ID);
+
     return (
         <div
         id="clickable-parent"
         ref={setNodeRef}
         style={style}
+        onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
         className={`w-full justify-between ${
             ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
         } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
-        onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
+        
         >
             <GrDrag
                 id={comp.ID + "-grab"}
@@ -57,7 +60,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
-            <Header type={comp.Size} id={comp.ID} classes={comp.Style.map((style) => (style))}>
+            <Header type={comp.Size} id={comp.ID} classes={comp.styles.map((style) => (style))}>
                 <ContentEditable
                 html={comp.Content}
                 innerRef={contentRef}

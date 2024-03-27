@@ -1,3 +1,5 @@
+'use effect'
+
 import styles from "./homepage.module.css";
 import Lander from "../components/lander/Lander"
 import CategoriesSection from "../components/categories/categories";
@@ -6,6 +8,9 @@ import UseUsAsASource from "../components/useUsAsASource/useUsAsASource.jsx";
 import CanItemsScroll from "../components/canItems/canItemsScroll.jsx"
 
 export default function Home() {
+
+
+
   return (
     <div className={`${styles.container} overflow-hidden`}>
         <Lander/>

@@ -55,6 +55,7 @@ const ControlPanel = ({
     handleAddComponent, 
     setTitle, 
     setAuthor, 
+    Author,
     setTags, 
     currentTags, 
     setCategory, 
@@ -379,7 +380,7 @@ const ControlPanel = ({
                     <Header type="sm" >
                         Author
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeholder={"Author Name"} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -465,15 +466,9 @@ const ControlPanel = ({
                     <span className='text-t-header-light dark:text-t-header-dark' >Header</span>
                 </div>
                 <div className="flex flex-col">
-                    <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("in-paragraph")}>
-                        <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Indented Paragraph</span>
-                    </div>
-                </div>
-                <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("paragraph")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Unindented Paragraph</span>
+                        <span className='text-t-header-light dark:text-t-header-dark'>Paragraph</span>
                     </div>
                 </div>
                 {/* <div className="flex flex-col">

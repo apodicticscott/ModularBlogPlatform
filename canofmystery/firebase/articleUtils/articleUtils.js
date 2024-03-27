@@ -188,12 +188,8 @@ export const fetchOurProject = async () => {
       console.log("No such document!");
     }
 };
-export var articles = null
 
-fetchArticles().then((value) => {articles = value}, (value) => {articles = value});
-
-
-export const searchArticles = async (searchText = [], articles_list = [], search_provided_list=false) => {
+export const searchArticles = async (searchText = [], articles_list = [], search_provided_list=false, articles) => {
     var search_articles = articles
     if(search_provided_list){
         search_articles = articles_list
@@ -239,7 +235,7 @@ export const searchArticles = async (searchText = [], articles_list = [], search
                         }
                     }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push(word);
                     }
                 }
             );
@@ -258,7 +254,7 @@ export const searchArticles = async (searchText = [], articles_list = [], search
 }
 
 
-export const searchByTag = async (searchtags = [], articles_list = [], search_provided_list=false) => {
+export const searchByTag = async (searchtags = [], articles_list = [], search_provided_list=false, articles) => {
     
     var search_articles = articles
     if(search_provided_list){
@@ -299,7 +295,7 @@ export const searchByTag = async (searchtags = [], articles_list = [], search_pr
                         }
                     }
                     if(stop_searching_cur){
-                        found_articles.push({id: word.id, author: word.Author, tags: word.Tags, Title: word.Title, Approved: word.Approved, first_image: image});
+                        found_articles.push({word});
                     }
                     
                 }
