@@ -16,9 +16,11 @@ const UserPanel = ({users}) => {
                             Users
                         </Header>
                     </div>
-                    <span className="text-lg underline decoration-dashed">
-                        User First and Last Name.
-                    </span>
+                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="The first and last name of the user">
+                        <span className="text-lg underline decoration-dashed">
+                            User First and Last Name.
+                        </span>
+                    </Tooltip>
                     <span className="text-lg">
                         {
                             selectedUser.userName
@@ -36,18 +38,26 @@ const UserPanel = ({users}) => {
                 <div className="h-full flex flex-col w-full gap-[25px]">
                     <div className="w-full flex flex-col grow gap-[15px]">
                         <div className="w-full flex h-min">
-                            <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                First Name
-                            </div>
-                            <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                Last Name
-                            </div>
-                            <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                Session ID
-                            </div>
-                            <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                Has Published
-                            </div>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
+                                <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                    First Name
+                                </div>
+                            </Tooltip>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
+                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                    Last Name
+                                </div>
+                            </Tooltip>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's current session id for their log in">
+                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                    Session ID
+                                </div>
+                            </Tooltip>
+                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user has published or not.">
+                                <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                    Has Published
+                                </div>
+                            </Tooltip>
                         </div>
                         <div className="flex w-full h-full max-h-[450px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
                             {
@@ -103,43 +113,53 @@ const UserPanel = ({users}) => {
                         <>
                             <div className="flex flex-col w-[50%]  h-full gap-[25px]">
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        First Name.
-                                    </span>
-                                    <span className="text-lg">
-                                        {selectedUser.userData.firstName}
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
+                                        <span className="text-lg underline decoration-dashed">
+                                            First Name.
+                                        </span>
+                                        <span className="text-lg">
+                                            {selectedUser.userData.firstName}
+                                        </span>
+                                    </Tooltip>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Last Name.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Last Name.
+                                        </span>
                                     <span className="text-lg">
                                         {selectedUser.userData.lastName}
                                     </span>
+                                    </Tooltip>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Display Name.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's display name they chose">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Display Name.
+                                        </span>
                                     <span className="text-lg">
                                         {selectedUser.userData.userInfo.displayName}
                                     </span>
+                                    </Tooltip>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Email.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's email they registered with">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Email.
+                                        </span>
                                     <span className="text-lg">
                                         {selectedUser.userData.userInfo.email}
                                     </span>
+                                    </Tooltip>
                                 </div>
                             </div>
                             <div className="flex flex-col w-[50%] h-full gap-[25px]">
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Student Writer.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user is a student writer">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Student Writer.
+                                        </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {
                                         selectedUser.userData.studentWriter
@@ -151,17 +171,21 @@ const UserPanel = ({users}) => {
                                     </span>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Session Code.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's session code that they registered with">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Session Code.
+                                        </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {selectedUser.userData.sessionCode}
                                     </span>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Has Published.
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="whether the user has published an article or not">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Has Published.
+                                        </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {
                                         selectedUser.userData.hasPublished
@@ -173,9 +197,11 @@ const UserPanel = ({users}) => {
                                     </span>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        Is Admin
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether this user is an admin account or not.">
+                                        <span className="text-lg underline decoration-dashed">
+                                            Is Admin
+                                        </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {
                                         selectedUser.userData.adminPerm
@@ -187,12 +213,14 @@ const UserPanel = ({users}) => {
                                     </span>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
-                                    <span className="text-lg underline decoration-dashed">
-                                        User ID
-                                    </span>
-                                    <span className="text-lg">
-                                        {selectedUser.userData.userInfo.uid}
-                                    </span>
+                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's unique id.">
+                                        <span className="text-lg underline decoration-dashed">
+                                            User ID
+                                        </span>
+                                        <span className="text-lg">
+                                            {selectedUser.userData.userInfo.uid}
+                                        </span>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </>

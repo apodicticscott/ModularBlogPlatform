@@ -1,9 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import Tag from "../../components/TextComponents/NeoTag";
-import {RiSearchFill} from "react-icons/ri";
-import NeoButton from "../../components/TextComponents/NeoButton";
-import Image from "../../components/textComponents/Image";
 import { useRouter } from "next/navigation";
 import DropDown from "../../components/TextComponents/dropDown";
 import { searchArticles, searchByTag, fetchArticles } from "../../firebase/articleUtils/articleUtils";

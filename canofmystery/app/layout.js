@@ -37,6 +37,7 @@ export default function RootLayout({ children  }) {
     Cookies.set('hasConsent', 'true')
     setCookieConsent(true)
   }
+  
   useEffect(function mount(){
     if(cookieConsent){
       if(window != undefined){
