@@ -1,31 +1,35 @@
 import React, { useState, useRef, useCallback } from "react";
 import CropUtils from "./cropUtils"
+import Compress from "compress.js";
 import { FaImage, FaUpload } from "react-icons/fa";
 import { MdOutlineDownloadDone, MdCrop, MdImageNotSupported } from "react-icons/md";
 import axios from 'axios';
 
 const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, isImageAddOpen, removeImage, type}) => {
     const fileInputRef = useRef(null);
+    const compress = new Compress();
 
     const handleFileSelect = (event) => {
         if (event.target.files && event.target.files.length > 0) {
-          const reader = new FileReader();
+            const file = event.target.files[0]; // This is the File object you need
     
-          reader.addEventListener("load", async () => {
-            // 
-            const image = reader.result;
-            const resizedImage = await compress.compress([image], {
+            compress.compress([file], { // Pass the File object directly to compress
                 size: 1, // the max size in MB, defaults to 2MB
                 quality: 1, // the quality of the image, max is 1,
-                maxWidth: 900, // the max width of the output image, defaults to 1920px
-                maxHeight: 900, // the max height of the output image, defaults to 1920px
+                maxWidth: 1200, // the max width of the output image, defaults to 1920px
+                maxHeight: 1200, // the max height of the output image, defaults to 1920px
                 resize: true // defaults to true, set false if you do not want to resize the image width and height
-              })
-            setImageToCrop(resizedImage)
-          });
-    
-          //reader.readAsDataURL(event.target.files[0]);
-          
+            }).then((compressedResult) => {
+                // The compressedResult is an array of compressed files
+                // Assuming you want to set the first (and likely only) result
+                const img = compressedResult[0]; // Get the first result
+                const base64str = img.data; // Base64 string
+                const imgType = img.ext; // File extension (e.g., 'jpeg', 'png')
+                const convertedImage = Compress.convertBase64ToFile(base64str, imgType);
+                setImageToCrop(URL.createObjectURL(convertedImage));
+            }).catch((error) => {
+                console.error("Error compressing the file:", error);
+            });
         }
         if(type === "cover"){
             enableCrop(true, type)

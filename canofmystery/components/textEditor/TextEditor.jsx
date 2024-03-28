@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaList, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent } from "react-icons/fa";
+import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent } from "react-icons/fa";
 import { MdOutlinePreview, MdOutlineQuestionMark, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -63,6 +63,7 @@ import addLinkHelp from "./Assets/help_add_link.gif"
 import {getFirestore, collection, getDoc, doc} from "firebase/firestore"
 import { app } from "../../app/firebase"
 import { Timestamp } from "firebase/firestore";
+import paragraph from "../TextComponents/Paragraph";
 
 const useStyles = makeStyles({
     button: {
@@ -121,7 +122,8 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     const [selectedComp, setSelectedComp] = useState({id: undefined, compType: undefined, eventType: undefined});
     const [sizeDrop, setSizeDrop] = useState(false);
     const [linkInput, setLinkInput] = useState(false);
-    const [textIsHighlighted, setTextIsHighlighted] = useState(false)
+    const [textIsSelected, setTextIsSelected] = useState(false)
+    const [canAddList, setCanAddList] = useState(true);
     const [innerHtmlContent, setInnerHtmlContent] = useState([]);
     const [isPreview, setIsPreview] = useState(false)
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -206,8 +208,13 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
         document.execCommand("strikeThrough")
     };
 
-    const handleListClick = () => {
-        document.execCommand('formatblock', false, 'p')
+    const handleUnorderedListClick = () => {
+        document.execCommand("insertUnorderedList")
+        
+    }
+
+    const handleOrderedListClick = () => {
+        document.execCommand("insertOrderedList")
         
     }
 
@@ -288,28 +295,51 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     }
 
     const handleSelectComponent = (e, id, compType) => {
-        let eventType;
-        if(e.target.id === "header" || e.target.id === "paragraph" || e.target.id === "resource"){
-            eventType = "in-text-click"
-        }else{
-            eventType = "comp-click"
-        }
+        console.log(e.target)
 
+        let tagName = e.target.tagName
+        let selectionName = window.getSelection().type
 
-        handleGetInnerHtml(e)
+        console.log(selectionName)
 
-        if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
-            setSelectedComp({id: id, compType: compType, eventType: eventType});
-        }else if (selectedComp.id === id) {
-            // Toggle the dropdown only if the same component is clicked again
-            toggleSizeDropdown();
-            setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
-        }else {
-            // Close the dropdown when a different component is selected
-            setSizeDrop(false);
-            setSelectedComp({id: id, compType: compType, eventType: eventType});
-        }
+        if(tagName === "DIV" && (selectionName === "Caret" || selectionName === "None")){
+            if(e.target.id && e.target.id !== "paragraph"){
+                let eventType;
+
+                if(e.target.id === "header" || e.target.id === "paragraph" || e.target.id === "resource"){
+                    eventType = "in-text-click"
+                }else{
+                    eventType = "comp-click"
+                }
         
+                handleGetInnerHtml(e)
+        
+                if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
+                    setSelectedComp({id: id, compType: compType, eventType: eventType});
+                }else if (selectedComp.id === id) {
+                    // Toggle the dropdown only if the same component is clicked again
+                    toggleSizeDropdown();
+                    setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
+                }else {
+                    // Close the dropdown when a different component is selected
+                    setSizeDrop(false);
+                    setSelectedComp({id: id, compType: compType, eventType: eventType});
+                }
+                setCanAddList(false);
+                setTextIsSelected(false);
+            }else if(selectionName === "Caret"){
+                setCanAddList(true)
+                setTextIsSelected(false)
+                setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
+            }
+        }else if(selectionName === "Range"){
+            setCanAddList(false);
+            setTextIsSelected(true)
+            setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
+        }else if(selectionName === "Caret"){
+            setTextIsSelected(false)
+            setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
+        }
     }
 
 
@@ -413,7 +443,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
             // Reference to the 'Articles' collection
             if(pageType === "blog"){
                 const article = {
-                    Title: Title,
+                    Title: Title ? Title : "",
                     Tags: Tags,
                     Content: compArray.map(comp => ({
                         ID: comp.ID,
@@ -424,16 +454,16 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    firstName: user.firstName ? user.firstName : "",
+                    lastName: user.lastName ? user.lastName : "",
                     Time: formatDate(new Date()),
                     CoverImage: coverImageData[0] ? coverImageData[0] : null,
                     Approved: false,
-                    Author: Author,
-                    UserId: userId
+                    Author: Author ? Author : "",
+                    UserId: userId ? userId : "",
                 };
 
-                response = await addDocument("Articles", article) && await setHasPublished("users", userId);
+                response = await addDocument("Articles", article) 
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,
@@ -484,20 +514,23 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
                             <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
                         </button>     
-                        <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
+                        <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
                             <FaBold className="text-lg sm:text-xl"/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
                             <FaItalic className="text-lg sm:text-xl"/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
                             <FaStrikethrough className="text-lg sm:text-xl"/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "in-text-click") ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
                             <FaUnderline className="text-lg sm:text-xl"/>
                         </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(textIsHighlighted === true) ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleListClick}>
-                            <FaList className="text-lg sm:text-xl"/>
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnorderedListClick}>
+                            <FaListUl className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleOrderedListClick}>
+                            <FaListOl className="text-lg sm:text-xl"/>
                         </button >
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
                             <FaIndent className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
@@ -610,11 +643,9 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     }
                 <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
-
-                <div className="flex w-full h-[calc(100vh_-_117px)] border-y-[3px] overflow-x-hidden ">
-                               
-                    <div className={`h-full flex items-end border-r-[3px] ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0"}`}>
-                        <div className={`h-full overflow-hidden z-10 ${isSideBarOpen ? "w-[100vw] xs-sm:w-max" : "w-0" }`}>
+                <div className="transition duration-200 flex w-full h-[calc(100vh_-_117px)] border-y-[3px] overflow-x-hidden ">    
+                    <div className={`transition duration-200 h-full flex items-end border-r-[3px] xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
+                        <div className={`transition duration-200 h-full overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
                             <ControlPanel 
                             enableCrop={(value, type) => setIsCropEnabled({value: value, type: type})} 
 
@@ -788,32 +819,27 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                                 <>
                                                     {comp.Type === "header" && (
                                                         <>
-                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                     {comp.Type === "image" && (
                                                         <>
-                                                            <DragImage key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragImage key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                     {(comp.Type === "paragraph")&& (
                                                         <>
-                                                            <DragParagraph  key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''}  removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>          
+                                                            <DragParagraph  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"} onClick={handleSelectComponent}/>          
                                                         </>
                                                     )}
                                                     {comp.Type === "resource" && (
                                                         <> 
-                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} styles={comp.Style ? comp.Style.join(' ') : ''} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
-                                                        </>
-                                                    )}
-                                                    {comp.Type === "list" && (
-                                                        <> 
-                                                            <DragList  key={comp.ID} comp={comp} isEnabled={isPreview}  removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
                                                         </>
                                                     )}
                                                    {comp.Type === "youtube" && (
                                                         <> 
-                                                            <DragVideo key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp} onClick={handleSelectComponent}/>
+                                                            <DragVideo key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
                                                         </>
                                                     )} 
                                                 </>

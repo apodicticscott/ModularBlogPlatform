@@ -20,8 +20,9 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
+        border: selected ? "3px solid black" : "3px solid transparent",
+        transition: "border 250ms ease-in-out",
     };
-
   
     const handleKeyDown = (event) => {
         if (event.metaKey) {
@@ -40,26 +41,19 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         };
     });
 
-    console.log(comp.Style, comp.ID);
-
-
-
     return (
         <div
         id="clickable-parent"
         ref={setNodeRef}
         style={style}
+        className={`w-full justify-between flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
         onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
-        className={`w-full justify-between ${
-            ((selected.id === comp.ID) && selected.eventType === "comp-click") && "border-[3px] w-[calc(100%_+_3px)]"
-        } flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
-        
         >
             <GrDrag
                 id={comp.ID + "-grab"}
                 {...attributes}
                 {...listeners}
-                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
+                className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark outline-none`}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
             />
             <Header type={comp.Size} id={comp.ID} classes={comp.Style.join(" ")}>
@@ -69,12 +63,11 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 id="header"
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
                 onClick={(e) => onClick(e, comp.ID, comp.Type)}
-                
                 />
             </Header>
             <TiDelete
                 className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
-                isDragging={false}
+                isdragging={false}
                 onClick={() => removeComp(comp.ID)}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
             />

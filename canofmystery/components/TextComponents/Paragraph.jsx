@@ -16,21 +16,21 @@ const paragraph = ({children, text, type, classes, style, editable, highlight, o
             width: "w-full",
             flex: "",
             gap: "",
-            style: "font-bold",
+            style: "",
             lightColor: "text-t-header-light",
             darkColor: "dark:text-t-dark",
-            tracking: "tracking-[-3px]",
+            tracking: "tracking-[-2px]",
             trackingMd: "",
             trackingLg: "",
             tracking2xl: "",
             tracking3xl: "",
-            size: "text-2.2xl",
-            sizeMd: "",
+            size: "text-lg",
+            paddingTop: "py-[15px]",
+            sizeMd: "md:text-lg",
             sizeLg: "",
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: indentVal
         },
         md: {
             width: "w-full",
@@ -51,7 +51,6 @@ const paragraph = ({children, text, type, classes, style, editable, highlight, o
             sizeXL: "",
             size2XL: "",
             size3XL: "",
-            textIndent: indentVal
         }
     }
 

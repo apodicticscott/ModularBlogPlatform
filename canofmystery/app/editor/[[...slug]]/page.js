@@ -37,7 +37,10 @@ export default function Page({ params }) {
     const [articleUser, setArticleUser] = useState('');
 
     useEffect(() => {
+        console.log(articleId)
+        console.log(hasId)
         if (hasId) {
+            console.log("Here")
             setLoading(true);
 
             fetchArticle(articleId).then((exists) => {
@@ -57,44 +60,53 @@ export default function Page({ params }) {
                 }
             });
         }
-        // const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        //     if (user) {
-        //         console.log("here5")
-        //         const docRef = doc(firestore, 'users', user.uid);
-        //         const docSnap = await getDoc(docRef);
-        //         if (docSnap.exists()) {
-        //             const userData = docSnap.data();
-        //             setTimeout(() => setLoading(false), 2000);
-        //             setTimeout(() => setHideLoader(true), 2500);
-        //             setIsWriter(userData.studentWriter);
-        //             setIsAdmin(userData.adminPerm);
-        //             setHasPublished(userData.hasPublished);
-        //             setUser(userData);
-        //         } else {
-        //             console.log("No such User");
-        //         }
-        //     } else {
-        //         router.push('/login'); 
-        //     }
-        // });
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("here5")
+                console.log(user)
+                try{
+                    const docRef = doc(firestore, 'users', user.uid);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+                        setTimeout(() => setLoading(false), 2000);
+                        setTimeout(() => setHideLoader(true), 2500);
+                        setIsWriter(userData.studentWriter);
+                        setIsAdmin(userData.adminPerm);
+                        setHasPublished(userData.hasPublished);
+                        setUser(userData);
+                        
+                    } else {
+                        console.log("No such User");
+                    }
+                }catch(error){
+                    console.log(error)
+                }
 
-        // return () => unsubscribe();
+            } else {
+                router.push('/login'); 
+            }
+        });
+
         setTimeout(() => setHideLoader(true), 2500)
+        return () => unsubscribe();
     }, [hasId]);
 
 
     useEffect(() => {
         const fetchUser = async () => {
-        try {
-            const userId = await fetchArticleUser(articleId);
-            setArticleUser(userId); // Set articleUser state with the returned userId
-        } catch (error) {
-            console.error('Error fetching article user:', error);
-        }
+            try {
+                const userId = await fetchArticleUser(articleId);
+                setArticleUser(userId); // Set articleUser state with the returned userId
+            } catch (error) {
+                console.error('Error fetching article user:', error);
+            }
         };
 
-        fetchUser(); // Call fetchUser function when component mounts or articleId changes
-    }, [articleId]);
+        if(exists){
+            fetchUser(); // Call fetchUser function when component mounts or articleId changes
+        }
+    }, [exists]);
 
     // Adjustments to handle editorType and articleId states
     useEffect(() => {

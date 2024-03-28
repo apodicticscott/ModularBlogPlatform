@@ -20,6 +20,8 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
+        border: selected ? "3px solid black" : "3px solid transparent",
+        transition: "border 250ms ease-in-out",
     };
 
   
@@ -53,9 +55,7 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
         id="clickable-parent"
         ref={setNodeRef}
         style={style}
-        className={`w-full justify-between ${
-            selected.id === comp.id && "border-[3px] w-[calc(100%_+_3px)]"
-        } flex flex-col items-center gap-[15px] rounded-md `}
+        className={`w-full justify-between flex flex-col items-center gap-[15px] rounded-md `}
         onClick={(e) => {!isEnabled && onClick(e, comp.id, comp.type)}}
         >   
             <div className="flex justify-between w-full ">
@@ -63,7 +63,7 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
                     id={comp.id + "-grab"}
                     {...attributes}
                     {...listeners}
-                    className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
+                    className={`text-[25px] touch-none ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark outline-none`}
                     onMouseOver={(e) => (e.currentTarget.style.cursor = "move")}
                 />
                     <div className="w-full">
@@ -86,7 +86,7 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
                     </div>
                 <TiDelete
                     className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
-                    isDragging={false}
+                    isdragging={false}
                     onClick={() => removeComp(comp.id)}
                     onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
                 />

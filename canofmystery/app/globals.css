@@ -304,3 +304,57 @@ html {
 .text-shadow{
   text-shadow: white 0px 0px 20px;
 }
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.25px;
+}
+
+#text-editor ol{
+  font-size: 16px;
+  counter-reset: item;
+}
+
+#text-editor ul, #text-editor ol { padding-left: 50px; }
+#text-editor li { 
+  color: #4F4F4F; 
+  padding-left: 16px;
+  position: relative;
+  line-height: content;
+  margin-top: 15px;
+}
+
+#text-editor ol li::before{
+  content: counter(item);
+  counter-increment: item;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  position: absolute; 
+  left: -25px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#text-editor ul li::before {
+  content: '';
+  display: block;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  position: absolute; 
+  left: -25px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#text-editor strong { color: #292929; }
+
+#text-editor ul li:nth-child(odd)::before, #text-editor ol li:nth-child(odd)::before { border-color: #fd6666; }
+#text-editor ul li:nth-child(even)::before , #text-editor ol li:nth-child(even)::before { border-color: #fcc800; }
