@@ -463,7 +463,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     UserId: userId ? userId : "",
                 };
 
-                response = await addDocument("Articles", article) 
+                response = await addDocument("Articles", article) && await setHasPublished("users", userId);
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,
