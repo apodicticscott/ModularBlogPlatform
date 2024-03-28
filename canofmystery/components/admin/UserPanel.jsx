@@ -2,8 +2,9 @@
 import React, {useState} from "react";
 import { Divider } from "@material-ui/core";
 import Header from "../TextComponents/Header1";
+import { Tooltip } from "@material-ui/core";
 
-const UserPanel = ({users}) => {
+const UserPanel = ({users, classes}) => {
 
     const [selectedUser, setSelectedUser] = useState({userId: null, userName: null, userData: null})
 

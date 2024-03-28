@@ -312,13 +312,13 @@ html {
   letter-spacing: -0.25px;
 }
 
-#text-editor ol{
+#article ol, #text-editor ol{
   font-size: 16px;
   counter-reset: item;
 }
 
-#text-editor ul, #text-editor ol { padding-left: 50px; }
-#text-editor li { 
+#article ul, #article ol, #text-editor ul, #text-editor ol { padding-left: 50px; }
+#article li, #text-editor li { 
   color: #4F4F4F; 
   padding-left: 16px;
   position: relative;
@@ -326,7 +326,7 @@ html {
   margin-top: 15px;
 }
 
-#text-editor ol li::before{
+#article ol li::before, #text-editor ol li::before{
   content: counter(item);
   counter-increment: item;
   display: flex;
@@ -342,7 +342,7 @@ html {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
-#text-editor ul li::before {
+#article ul li::before, #text-editor ul li::before {
   content: '';
   display: block;
   height: 25px;
@@ -354,7 +354,7 @@ html {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
-#text-editor strong { color: #292929; }
+#article strong, #text-editor strong { color: #292929; }
 
-#text-editor ul li:nth-child(odd)::before, #text-editor ol li:nth-child(odd)::before { border-color: #fd6666; }
-#text-editor ul li:nth-child(even)::before , #text-editor ol li:nth-child(even)::before { border-color: #fcc800; }
+#article ul li:nth-child(odd)::before,  #article ol li:nth-child(odd)::before, #text-editor ul li:nth-child(odd)::before, #text-editor ol li:nth-child(odd)::before { border-color: #fd6666; }
+#article ul li:nth-child(even)::before,  #article ol li:nth-child(even)::before, #text-editor ul li:nth-child(even)::before , #text-editor ol li:nth-child(even)::before { border-color: #fcc800; }

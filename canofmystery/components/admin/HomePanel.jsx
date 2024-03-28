@@ -457,7 +457,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         </div>
                                         <div className="flex h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
                                             <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                                <button onClick={() => router.push(`/editor/${article.id}`)} >
+                                                <button onClick={() => router.push(`/editor/blog/${article.id}`)} >
                                                     <FaPen className="text-xl w-[25px]"/>
                                                 </button>
                                             </Tooltip>

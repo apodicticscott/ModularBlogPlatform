@@ -131,7 +131,7 @@ const SearchPage = () => {
                             searchResults
                             ?
                             searchResults.map((article, index) => (
-                                <div className="w-[274px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                <div className="w-[274px] mt-[20px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
                                     <div className="w-full p-[10px] pb-0 h-max">
                                         <img src={article.CoverImage} className="w-full h-[160px] rounded-md border-2">
                         
@@ -160,7 +160,7 @@ const SearchPage = () => {
                             ))
                             :
                             articles.map((article, index) => (
-                                <div className="w-[274px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                <div className="w-[274px] mt-[20px] h-max flex flex-col justify-start bg-secondary-content border-3 rounded-md shadow-lg gap-[5px] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
                                     <div className="w-full p-[10px] pb-0 h-max">
                                         <img src={article.CoverImage} className="w-full h-[160px] rounded-md border-2">
                         

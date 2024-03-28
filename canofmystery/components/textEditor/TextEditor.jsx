@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent } from "react-icons/fa";
+import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent, FaAlignJustify, FaSubscript, FaSuperscript    } from "react-icons/fa";
 import { MdOutlinePreview, MdOutlineQuestionMark, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -214,14 +214,24 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     }
 
     const handleOrderedListClick = () => {
-        document.execCommand("insertOrderedList")
+        document.execCommand("insertUnorderedList")
+        
+    }
+
+    const handleSubScriptClick = () => {
+        document.execCommand("subscript")
+        
+    }
+
+    const handleSuperScriptClick = () => {
+        document.execCommand("superscript")
         
     }
 
     function applyTailwindStyles(compId, styleClass) {
         setCompArray(compArray.map(comp => {
             if (comp.ID === compId) {
-                let stylesToRemove = ["text-left", "text-center", "text-right"];
+                let stylesToRemove = ["text-left", "text-center", "text-right", "text-justify"];
 
                 let updatedStyle = comp.Style.includes(styleClass) ?
                     comp.Style.filter(s => s !== styleClass) :
@@ -526,6 +536,12 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
                             <FaUnderline className="text-lg sm:text-xl"/>
                         </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSubScriptClick}>
+                            <FaSubscript className="text-lg sm:text-xl"/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSuperScriptClick}>
+                            <FaSuperscript className="text-lg sm:text-xl"/>
+                        </button >
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnorderedListClick}>
                             <FaListUl className="text-lg sm:text-xl"/>
                         </button >
@@ -543,6 +559,9 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                         </button >
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
                             <FaAlignRight className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                        </button >
+                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-justify")}>
+                            <FaAlignJustify className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
                         </button >
                         <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
                             <FaLink className="text-lg sm:text-xl"/>

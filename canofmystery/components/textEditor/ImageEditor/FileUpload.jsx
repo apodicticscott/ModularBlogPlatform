@@ -12,7 +12,7 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
     const handleFileSelect = (event) => {
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0]; // This is the File object you need
-    
+            console.log(file)
             compress.compress([file], { // Pass the File object directly to compress
                 size: 1, // the max size in MB, defaults to 2MB
                 quality: 1, // the quality of the image, max is 1,
@@ -22,11 +22,17 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
             }).then((compressedResult) => {
                 // The compressedResult is an array of compressed files
                 // Assuming you want to set the first (and likely only) result
-                const img = compressedResult[0]; // Get the first result
-                const base64str = img.data; // Base64 string
-                const imgType = img.ext; // File extension (e.g., 'jpeg', 'png')
-                const convertedImage = Compress.convertBase64ToFile(base64str, imgType);
-                setImageToCrop(URL.createObjectURL(convertedImage));
+                const compressedFile = compressedResult[0];
+                console.log(compressedFile)
+                const base64str = compressedFile.data;
+                const imgExt = compressedFile.ext;
+
+                // Instead of converting the base64 to a Blob, we directly use the raw compressed image data
+                // Pass this base64str or imgExt as needed for further processing or use
+                // For example, setting it directly to an image source for preview (if that's your intention)
+                console.log(`data:image/${imgExt};base64,${base64str}`)
+                setImageToCrop(`data:image/${imgExt};base64,${base64str}`); // Direct base64 string for image preview
+
             }).catch((error) => {
                 console.error("Error compressing the file:", error);
             });

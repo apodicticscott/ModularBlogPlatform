@@ -10,7 +10,7 @@ import Tag from "../TextComponents/NeoTag"
 const Article = ({article}) => {
     return (
         <div className="w-full flex justify-center px-7 md:px-0 bg-base-100 dark:bg-base-100-dark min-h-screen">
-            <div className="w-full flex flex-col items-center max-w-[800px] h-max ">
+            <div className="w-full flex flex-col items-center max-w-[800px] h-max " id="article">
             {article ? (
                 <>
                 <div className="pb-[50px] w-full pt-[100px]">
@@ -30,7 +30,7 @@ const Article = ({article}) => {
                         <>
                             {(comp.Type === "paragraph")&& (
                                 <>
-                                    <Paragraph type={comp.Size}  key={comp.ID} indent={false} innerHTML={comp.Content} classes="w-full"></Paragraph> 
+                                    <Paragraph type={comp.Size}  key={comp.ID} indent={false} innerHTML={comp.Content} classes={`w-full ${comp.Style}`}></Paragraph> 
                                 </>
                             )}
                             {(comp.Type === "image")&& (

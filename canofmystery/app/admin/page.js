@@ -334,7 +334,7 @@ export default function Page({params}){
                         {
                             (currentPanel === "users")
                             &&
-                            <UserPanel users={users} setUsers={setUsers}/>
+                            <UserPanel users={users} setUsers={setUsers} classes={classes}/>
                         }
                         {
                             (currentPanel === "home")
