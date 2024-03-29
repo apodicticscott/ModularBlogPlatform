@@ -256,49 +256,49 @@ export const searchArticles = async (searchText = [], articles_list = [], search
 }
 
 
-export const searchByTag = async (searchtags = [], articles_list = [], search_provided_list=false, articles) => {
+// export const searchByTag = async (searchtags = [], articles_list = [], search_provided_list=false, articles) => {
     
-    var search_articles = articles
-    if(search_provided_list){
-        search_articles = articles_list
-    }
-    if(searchtags.length > 0){
-        if(search_articles.length > 0 || search_provided_list){
-            var found_articles = []
+//     var search_articles = articles
+//     if(search_provided_list){
+//         search_articles = articles_list
+//     }
+//     if(searchtags.length > 0){
+//         if(search_articles.length > 0 || search_provided_list){
+//             var found_articles = []
             
-            //this is kinda inefficient, but aren't all algorithims like this are? - @989onan
-            //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
-            search_articles.forEach(
-                (word,index) => {
-                    var stop_searching_cur = false
-                    for(var index1 in searchtags){
+//             //this is kinda inefficient, but aren't all algorithims like this are? - @989onan
+//             //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
+//             search_articles.forEach(
+//                 (word,index) => {
+//                     var stop_searching_cur = false
+//                     for(var index1 in searchtags){
                         
-                        var search = searchtags[index1] //why u not like python whyyy!?
-                        for(var key in word.Tags){
-                            var tag = word.Tags[key]
-                            var tag = tag.Text
-                            if(tag == search){
-                                stop_searching_cur = true
-                                break;
-                            }
-                        }
-                        if(stop_searching_cur){
-                            break;
-                        }
-                    }
-                    if(stop_searching_cur){
-                        found_articles.push({word});
-                    }
+//                         var search = searchtags[index1] //why u not like python whyyy!?
+//                         for(var key in word.Tags){
+//                             var tag = word.Tags[key]
+//                             var tag = tag.Text
+//                             if(tag == search){
+//                                 stop_searching_cur = true
+//                                 break;
+//                             }
+//                         }
+//                         if(stop_searching_cur){
+//                             break;
+//                         }
+//                     }
+//                     if(stop_searching_cur){
+//                         found_articles.push({word});
+//                     }
                     
-                }
-            );
-            return found_articles;
-        }
-        else{
-            throw new Error("Articles not loaded yet!")
-        }
-    }
-    else{
-        return search_articles;
-    }
-}
+//                 }
+//             );
+//             return found_articles;
+//         }
+//         else{
+//             throw new Error("Articles not loaded yet!")
+//         }
+//     }
+//     else{
+//         return search_articles;
+//     }
+// }
