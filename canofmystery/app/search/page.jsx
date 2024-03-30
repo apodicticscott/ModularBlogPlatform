@@ -132,6 +132,10 @@ const SearchPage = () => {
                     return acc;
                 }, []);
                 console.log(newTags)
+                newTags.push({Text:"Spooky", Color:"#69d3e8"});
+                newTags.push({Text:"Unsolved", Color:"#69d3e8"});
+                newTags.push({Text:"Folklore", Color:"#69d3e8"});
+                newTags.push({Text:"Creature", Color:"#69d3e8"});
                 setUniqueTags(newTags);
             });
         }

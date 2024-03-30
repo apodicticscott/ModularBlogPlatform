@@ -3,7 +3,7 @@ import { Link } from "../TextComponents/Link";
 
 
 const json_categories = [
-    {title:"Spooky",link:"../link/to/page"},{title:"Folklore",link:"../link/to/page"},{title:"Unsolved",link:"../link/to/page"},{title:"Creature",link:"../link/to/page"},
+    {title:"Spooky",link:"/search?search=null&tags=Spooky"},{title:"Folklore",link:"/search?search=null&tags=Folklore"},{title:"Unsolved",link:"/search?search=null&tags=Unsolved"},{title:"Creature",link:"/search?search=null&tags=Creature"},
 ];
 
 
