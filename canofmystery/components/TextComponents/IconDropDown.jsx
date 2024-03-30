@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 const IconDropDown = ({icon, options, handleSetSelected, dropDownControl, currentDrop, id}) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
+    const dropDownRef = useRef(null);
 
     const handleSetIsOpen = () => {
 
@@ -33,17 +34,34 @@ const IconDropDown = ({icon, options, handleSetSelected, dropDownControl, curren
         }
     }, [currentDrop])
 
+    const [isTransformed, setIsTransformed] = useState(false)
+
+    useEffect(() => {
+        if (isOpen && dropDownRef.current) {
+            const { right } = dropDownRef.current.getBoundingClientRect();
+            const { innerWidth } = window;
+            if(!isTransformed){
+                if (right > innerWidth) {
+                    const overlap = right - innerWidth + 28;
+                    console.log("here!")
+                    dropDownRef.current.style.transform = `translateX(-${overlap}px)`;
+                }
+            }
+
+        }
+    }, [isOpen]);
+
     return (
         <>
-            <div ref={containerRef} className='w-max h-max'>
-                <div className='w-max h-max p-[5px]' onClick={() => (handleSetIsOpen())}>
+            <div ref={containerRef} className='w-max h-max relative'>
+                <button className='w-max h-max p-[5px]' onClick={() => (handleSetIsOpen())}>
                     {icon}
-                </div>
-                <div  className={`transition-all duration-300 absolute w-[250px] max-h-[300px] bg-base-100 dark:bg-base-100-dark dark:text-t-header-dark overflow-y-scroll mt-3 rounded-md border-2 ${isOpen ? 'max-h-[300px] opacity-1 pointer-events-auto' : 'max-h-0 opacity-0 pointer-events-none'} scrollbar-hide `}>
+                </button>
+                <div  ref={dropDownRef} className={`transition-all duration-300 absolute max-h-[300px] bg-base-100 dark:bg-base-100-dark dark:text-t-header-dark overflow-y-scroll mt-3 rounded-md border-2 ${isOpen ? 'max-h-[300px] opacity-1 pointer-events-auto' : 'max-h-0 opacity-0 pointer-events-none'} scrollbar-hide`}>
                     {options.map((option, index) => (
                         <React.Fragment key={index}>
                             <Divider />
-                            <button id={index} className={`flex justify-between items-center h-max w-full p-3 text-left hover:bg-base-200 dark:hover:text-t-header-light`} onClick={() => handleSetSelected(option, index)}>
+                            <button id={index} className={`w-max h-max dark:hover:text-t-header-light hover:bg-base-200`} onClick={() => (handleSetSelected(option, index), setIsOpen(false))}>
                                 {option.fragment}
                             </button>
                         </React.Fragment>

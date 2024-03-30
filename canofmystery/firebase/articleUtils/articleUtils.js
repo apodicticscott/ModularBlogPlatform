@@ -201,95 +201,44 @@ export const fetchOurProject = async () => {
     }
 };
 
-export const searchArticles = async (searchText = [], articles_list = [], search_provided_list=false, articles) => {
-    var search_articles = articles
-    if(search_provided_list){
-        search_articles = articles_list
-    }
-    if(searchText.length > 0){
-        if(search_articles.length > 0 || search_provided_list){
-            var found_articles = []
-            //this is kinda inefficient, but aren't all algorithims like this are? - @989onan
-            //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
-            search_articles.forEach(
-                (word,index) => {
-                    var stop_searching_cur = false
-                    for(var index1 in searchText){
-                        var search = searchText[index1] //why u not like python whyyy!?
-                        for(var key in word.Content){
-                            var section = word.Content[key]
-                            if(section.Type == "paragraph" && !stop_searching_cur){
-                                var words = section.Content.split(" ")
-                                for(var indexg in words){
-                                    
-                                    var word1 = words[indexg] //why u not like python whyyy!?
-                                    var result = dziemba_levenshtein(word1.toLowerCase(), search.toLowerCase())
-                                    if(result < 3){
-                                        stop_searching_cur = true
-                                        break;
-                                    }
-                                }
-                            }
-                            if(stop_searching_cur){
-                                break;
-                            }
-                        }
-                        
-                    }
-                    if(stop_searching_cur){
-                        found_articles.push(word);
-                    }
-                }
-            );
-            return found_articles;
-        }
-        else{
-            throw new Error("Articles not loaded yet!")
-        }
-    }
-    else{
-        return search_articles;
-    }
-    
-    
-    
-}
-
-
-// export const searchByTag = async (searchtags = [], articles_list = [], search_provided_list=false, articles) => {
-    
+// export const searchArticles = async (searchText = [], articles_list = [], search_provided_list=false, articles) => {
 //     var search_articles = articles
 //     if(search_provided_list){
 //         search_articles = articles_list
 //     }
-//     if(searchtags.length > 0){
+//     if(searchText.length > 0){
 //         if(search_articles.length > 0 || search_provided_list){
 //             var found_articles = []
-            
 //             //this is kinda inefficient, but aren't all algorithims like this are? - @989onan
 //             //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
 //             search_articles.forEach(
 //                 (word,index) => {
 //                     var stop_searching_cur = false
-//                     for(var index1 in searchtags){
-                        
-//                         var search = searchtags[index1] //why u not like python whyyy!?
-//                         for(var key in word.Tags){
-//                             var tag = word.Tags[key]
-//                             var tag = tag.Text
-//                             if(tag == search){
-//                                 stop_searching_cur = true
+//                     for(var index1 in searchText){
+//                         var search = searchText[index1] //why u not like python whyyy!?
+//                         for(var key in word.Content){
+//                             var section = word.Content[key]
+//                             if(section.Type == "paragraph" && !stop_searching_cur){
+//                                 var words = section.Content.split(" ")
+//                                 for(var indexg in words){
+                                    
+//                                     var word1 = words[indexg] //why u not like python whyyy!?
+//                                     var result = dziemba_levenshtein(word1.toLowerCase(), search.toLowerCase())
+//                                     if(result < 3){
+//                                         stop_searching_cur = true
+//                                         break;
+//                                     }
+//                                 }
+//                             }
+//                             if(stop_searching_cur){
 //                                 break;
 //                             }
 //                         }
-//                         if(stop_searching_cur){
-//                             break;
-//                         }
+                        
 //                     }
 //                     if(stop_searching_cur){
-//                         found_articles.push({word});
+//                         found_articles.push(word);
 //                     }
-                    
 //                 }
 //             );
 //             return found_articles;
@@ -302,3 +251,69 @@ export const searchArticles = async (searchText = [], articles_list = [], search
 //         return search_articles;
 //     }
 // }
+
+
+export const searchArticles = async (searchText = [], articles_list = [], search_provided_list = false, articles) => {
+    var search_articles = articles
+    if (search_provided_list) {
+        search_articles = articles_list
+    }
+    let gradedArticles = [];
+    if (searchText.length > 0) {
+        if (search_articles.length > 0 || search_provided_list) {
+            search_articles.forEach(article => {
+                let titleWeight = 0.8; // Increased weight for title relevance
+                let paragraphWeight = 0.2; // Weight for paragraph relevance
+                let titleCharactersMatched = 0;
+                // Removing spaces from title for character count
+                let totalCharactersInTitle = article.Title.replace(/\s/g, '').length;
+                let paragraphMatches = 0;
+                let titleGrade, paragraphGrade = 0;
+
+                // Calculate title character match likelihood, excluding spaces from search terms
+                searchText.forEach(searchTerm => {
+                    let searchLower = searchTerm.toLowerCase().replace(/\s/g, '');
+                    if (article.Title.toLowerCase().includes(searchLower)) {
+                        titleCharactersMatched += searchLower.length;
+                    }
+                    // Check for paragraph matches
+                    article.Content.forEach(section => {
+                        if (section.Type == "paragraph" && section.Content.toLowerCase().includes(searchLower)) {
+                            paragraphMatches += 1;
+                            return; // Count only the first match to avoid overrepresentation
+                        }
+                    });
+                });
+
+                // Normalizing the character matches in title to a scale of 0 to 1
+                let characterMatchRatio = titleCharactersMatched / totalCharactersInTitle;
+                titleGrade = Math.min(characterMatchRatio * titleWeight, titleWeight); // Ensuring title grade does not exceed its weight
+                
+                // Normalizing paragraph matches (assuming 1 match per search text is optimal)
+                if (searchText.length > 0 && paragraphMatches > 0) {
+                    paragraphGrade = Math.min((paragraphMatches / searchText.length) * paragraphWeight, paragraphWeight);
+                }
+
+                let articleGrade = titleGrade + paragraphGrade;
+
+                // Ensuring total grade does not exceed 1
+                articleGrade = Math.min(articleGrade, 1);
+
+                if (articleGrade > 0) {
+                    gradedArticles.push({ article, grade: articleGrade });
+                }
+            });
+
+            // Sort the articles based on their grades, highest to lowest
+            gradedArticles.sort((a, b) => b.grade - a.grade);
+
+            // Return the sorted array of articles
+            return gradedArticles.map(item => item.article);
+        } else {
+            throw new Error("No articles available for searching.");
+        }
+    } else {
+        return search_articles;
+    }
+};
+

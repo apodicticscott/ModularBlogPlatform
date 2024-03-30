@@ -89,6 +89,7 @@ module.exports = {
       backgroundImage:{
         'grid-image': 'url("../components/Assets/grid.png")',
         'dark-grid-image': 'url("../components/Assets/dark-grid.png")',
+        'image-missing-image': 'url("../components/Assets/variable-placeholder-product-31.png")',
       },
     },
   },

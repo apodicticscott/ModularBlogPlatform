@@ -4,6 +4,7 @@ import Tag from "../../components/TextComponents/NeoTag";
 import { useRouter } from "next/navigation";
 import TextDropDown from "../../components/TextComponents/TextDropDown";
 import IconDropDown from "../../components/TextComponents/IconDropDown";
+import { BsFillGridFill } from "react-icons/bs";
 import Pagination from '@mui/material/Pagination';
 import { searchArticles, searchByTag, fetchArticles } from "../../firebase/articleUtils/articleUtils";
 import { FaSlidersH, FaSortAlphaDown, FaSortAlphaUp, FaSortNumericDown, FaSortNumericUp  } from "react-icons/fa";
@@ -18,10 +19,10 @@ const SearchPage = () => {
     const [filteredArticles, setFilteredArticles] = useState([]);
     const [uniqueTags, setUniqueTags] = useState([]);
     const [currentDropDown, setCurrentDropDown] = useState('');
+    const [articlesPerPage, setArticlesPerPage] = useState(50)
 
     const [currentPage, setCurrentPage] = useState(1);
     const [currentArticles, setCurrentArticles] = useState([])
-    const articlesPerPage = 25; // Now displaying pages per page
 
     // Calculate the indices of the pages to display
     const indexOfLastPage = currentPage * articlesPerPage;
@@ -65,7 +66,7 @@ const SearchPage = () => {
                 }))
             }
         }
-    }, [articles, searchResults, selectedTags, selectedFilter]);
+    }, [articles, searchResults, selectedTags, selectedFilter, articlesPerPage]);
 
     useEffect(() => {
         setCurrentArticles(filteredArticles.slice(indexOfFirstPage, indexOfLastPage))
@@ -75,12 +76,15 @@ const SearchPage = () => {
 
     const SearchChange = async (event) => {
         const term = event.target.value;
+
+        console.log(term)
         setSearchTerm(term);
 
         if(term) {
             const terms = term.split(" ");
             if(terms.length > 0 ){
                 const array = await searchArticles(terms, articles, true);
+                // const array2 = await searchArticles2(terms, articles, true);
                 setSearchResults(array);
             }
         } else {
@@ -118,10 +122,8 @@ const SearchPage = () => {
 
 
     useEffect(() => {
-        console.log(articles)
         if(!articles){
             fetchArticles().then(articles => {
-                console.log(articles)
                 setArticles(articles);
                 const newTags = articles.reduce((acc, article) => {
                     article.Tags.forEach(tag => {
@@ -131,7 +133,6 @@ const SearchPage = () => {
                     });
                     return acc;
                 }, []);
-                console.log(newTags)
                 newTags.push({Text:"Spooky", Color:"#69d3e8"});
                 newTags.push({Text:"Unsolved", Color:"#69d3e8"});
                 newTags.push({Text:"Folklore", Color:"#69d3e8"});
@@ -143,25 +144,48 @@ const SearchPage = () => {
 
     const sortOptions = [
         {
-            fragment: <>A to Z <FaSortAlphaDown className="text-2.5xl"/> </>,
+            fragment: <div className="flex justify-between items-center w-[250px] h-max p-3 text-left">A to Z <FaSortAlphaDown className="text-2.5xl"/> </div>,
             text: "A to Z", 
             id: 0,
         },
         {
-            fragment: <>Z to A <FaSortAlphaUp className="text-2.5xl"/> </>,
+            fragment: <div className="flex justify-between items-center w-[250px] h-max p-3 text-left">Z to A <FaSortAlphaUp className="text-2.5xl"/> </div>,
             text: "Z to A",
             id: 1,
         },
         {
-            fragment: <>Old to New <FaSortNumericUp className="text-2.5xl"/> </>,
+            fragment: <div className="flex justify-between items-center w-[250px] h-max p-3 text-left">Old to New <FaSortNumericUp className="text-2.5xl"/> </div>,
             text: "Old to New",
             id: 2,
         },
         {
-            fragment: <>New to Old <FaSortNumericDown className="text-2.5xl"/> </>,
+            fragment: <div className="flex justify-between items-center w-[250px] h-max p-3 text-left hover:bg-base-200">New to Old <FaSortNumericDown className="text-2.5xl"/> </div>,
             text: "New to Old",
             id: 3,
         }
+    ]
+
+    const gridOptions = [
+        {
+            fragment: <div className="p-3 w-[80px]">100</div>,
+            num: 100, 
+            id: 0,
+        },
+        {
+            fragment: <div className="p-3 w-[80px]">50</div>,
+            num: 50,
+            id: 1,
+        },
+        {
+            fragment: <div className="p-3 w-[80px]">25</div>,
+            num: 25,
+            id: 2,
+        },
+        {
+            fragment: <div className="p-3 w-[80px]">1</div>,
+            num: 1,
+            id: 2,
+        },
     ]
 
     const handleSetSortOption = (option, id) => {
@@ -172,20 +196,24 @@ const SearchPage = () => {
         setSelectedFilter();
     }
 
+    const handleSetPageOption = (option, id) => {
+        setArticlesPerPage(option.num)
+    }
+
 
 
     return(
-        <div className="w-screen min-h-screen">
-            <div className="flex flex-col justify-center self-center h-full w-max max-w-full align-center dark:bg-base-100-dark py-20 px-7 xl:px-14  gap-[25px] pb-30">
+        <div className="w-screen h-screen ">
+            <div className="flex flex-col justify-center self-center h-full w-full max-w-full align-center dark:bg-base-100-dark py-[100px] px-7 xl:px-14 gap-[25px]">
                 {articles ? (
                     <>
-                        <div className="h-max grow flex flex-col gap-[25px] mt-[25px]">
+                        <div className="h-max w-full flex flex-col gap-[25px] mt-[25px]">
                             <form  className="gap-[15px]">
                                 <div className="flex flex-row gap-[20px] items-center pt-[20px]">
-                                    <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-[300px] rounded-md p-3 h-[40px]"/>
+                                    <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full sm:w-[300px] rounded-md p-3 h-[40px]"/>
                                 </div>
                             </form>
-                            <div className="z-10 flex w-full gap-[15px] items-center justify-between">
+                            <div className="z-10 flex w-full gap-[15px] items-center">
                                 {
                                     uniqueTags
                                     &&
@@ -193,9 +221,13 @@ const SearchPage = () => {
                                         
                                     </TextDropDown>
                                 }
-                                <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                <div className="w-full h-max flex gap-[15px]">
+                                    <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                    <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light "/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                </div>
+                                
                             </div>
-                            <div className="z-0 flex flex-wrap gap-[10px] min- h-max w-full">
+                            <div className="z-0 flex flex-wrap gap-[10px] w-full">
                                 {
                                     selectedTags
                                     &&
@@ -214,7 +246,7 @@ const SearchPage = () => {
                                 }
                             </div>
                         </div>
-                        <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full">
+                        <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full grow">
                             {
                                 currentArticles.filter(article => selectedTags.length === 0 || article.Tags.some(tag => selectedTags.map(selectedTag => selectedTag.Text).includes(tag.Text))).sort((a, b) => {
                                     if(selectedFilter){
@@ -229,39 +261,55 @@ const SearchPage = () => {
                                         return 0;
                                     }
                                 }).map((article, index) => (
-                                    <div className="w-[274px]  w-[calc((100%_/_2)_-_20px)]  h-[calc(100vw_/_2)] md:w-[calc((100%_/_3)_-_20px)] md:h-[calc(100vw_/_3)] lg:w-[calc((100%_/_4)_-_20px)] lg:h-[calc(100vw_/_4)] xl:w-[calc((100%_/_5)_-_20px)] xl:h-[calc(100vw_/_5.5)] 2xl:w-[calc((100%_/_6)_-_20px)] mt-[20px] 2xl:h-[calc(100vw_/_6.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md  gap-[1vw] md:gap-[.8vw] lg:gap-[.6vw] xl:gap-[.4vw] 2xl:gap-[.2vw] pb-[15px] dark:bg-base-100 hover:scale-105 transition duration-100" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
-                                        <div className="w-full  p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] pb-0 min-h-[65%]">
-                                            <img src={article.CoverImage} className="w-full h-full rounded-md border-2">
-                            
-                                            </img>
+                                    <div className="">
+                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_4.25)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                            <div className="w-full p-[1.8vw] sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] md:h-[75%]">
+                                                {
+                                                    article.CoverImage 
+                                                    ?
+                                                    <img src={article.CoverImage} className="w-full h-full rounded-md border-2">
+                                
+                                                    </img>
+                                                    :
+                                                    <div className="w-full h-full rounded-md border-2 bg-image-missing-image">
+                                
+                                                    </div>
+                                                         
+                                                }
+
+                                            </div>
+                                            <div className="flex w-full grow flex-col justify-center gap-[1vw] sm:gap-0 pb-[1.4vw] sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[1.4vw] sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
+                                                {/* <div className="flex flex-col justify-between gap-[1.4vw] sm:gap-[.8vw] md:gap-[.6vw] lg:gap-[.4vw] xl:gap-[.2vw] 2xl:gap-[.1vw] h-max w-full  text-[4vw]  sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]"> */}
+                                                    <div className="truncate h-max w-full text-[4vw]  sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
+                                                        {article.Title}
+                                                    </div>
+                                                    <div className="text-t-light font-light text-[3vw]  sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
+                                                        {
+                                                            article.Author
+                                                            ?
+                                                            <>
+                                                                By: {article.Author}
+                                                            </>
+                                                            :
+                                                            <>
+                                                            No Author Available
+                                                            </>
+                                                            
+                                                        }
+                                                    </div>
+                                                {/* </div> */}
+                                            </div>
                                         </div>
-                                        <div className="flex w-full grow flex-col justify-between  px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
-                                            <div className="flex items-center justify-between gap-[15px]  h-max w-full    text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
-                                                <div className="truncate h-max w-full flex items-center">
-                                                    {article.Title}
-                                                </div>
-                                            </div>
-                                            <div className="h-min w-full    text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw] text-ellipsis">
-                                                {
-                                                    article.Author
-                                                    &&
-                                                    <>
-                                                        By: {article.Author}
-                                                    </>
-                                                    
-                                                }
-                                            </div>
-                                            <div className="flex items-center justify-between gap-[15px] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
-                                                {
-                                                    article.Tags
-                                                    &&
-                                                    article.Tags.map((tag, index) => (
-                                                        <div className={`rounded-md text-shadow  px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]  py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw]  text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw] border-2  max-h-max min-w-max `}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
-                                                            {tag.Text}
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
+                                        <div className="flex items-center justify-between gap-[15px] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
+                                            {
+                                                article.Tags
+                                                &&
+                                                article.Tags.map((tag, index) => (
+                                                    <div className={`rounded-md text-shadow mt-[3vw] shadow-md sm:mt-[1.8vw] md:mt-[1.4vw] lg:mt-[1.2vw] xl:mt-[1vw] 2xl:mt-[.8vw] px-[1.8vw] sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[4vw] sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
+                                                        {tag.Text}
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
                                     </div>
                                 ))

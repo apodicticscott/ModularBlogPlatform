@@ -15,7 +15,7 @@ const CookieConsent = ({ setCookieConsent, classes, cookieConsent }) => {
 
     return (
         <motion.div 
-            className={`fixed w-full bottom-0 bg-base-100 border-t-3 flex justify-center py-7 z-[20] shadow px-7 ${classes}`} 
+            className={`fixed w-[100vw] bottom-0 bg-base-100 border-t-3 flex justify-center py-7 z-[20] shadow px-7 ${classes}`} 
             variants={variants} 
             initial="hidden" 
             animate={cookieConsent ? "hidden" : isHidden ? "hidden" : "visible"}
