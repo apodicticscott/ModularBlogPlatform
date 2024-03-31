@@ -41,11 +41,11 @@ const Footer = () => {
     <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-2 border-t-black lg:border-t-3">
       <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
             <div className="flex flex-col gap-[15px] md:w-[784px] w-full">
-              <Header type={"lg"} classes="flex flex-wrap text-[6.65vw] md:text-4xl tracking-[-3.76px] md:tracking-[-7.2px] font-bold text-t-header-light gap-[10px] text-t-header-light dark:text-t-dark">
-                <span>
+              <Header type={"lg"} classes="flex flex-wrap gap-[10px] text-t-header-light dark:text-t-dark">
+                <span style={{letterSpacing: "inherit"}}>
                   Subscribe 
                 </span>
-                <span>
+                <span style={{letterSpacing: "inherit"}}>
                   To The Can
                 </span>
               </Header>
@@ -75,9 +75,9 @@ const Footer = () => {
         <div className="w-[784px] h-max flex md:flex-row md:h-full flex-col gap-[25px] justify-between">
           <div className="h-full w-full md:w-[22.22%] flex flex-row md:flex-col justify-between">
             <div>
-              <div className="w-max md:w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
+              <Header type="sm">
                 Can Of Mystery
-              </div>
+              </Header>
               <img className="w-[35px] md:w-[35px] mt-[10px]" src={"/_next/static/media/uscalogo.f84310d7.png"} alt="Usca Logo"/>
             </div>
 
@@ -87,102 +87,102 @@ const Footer = () => {
               </div>
           </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] hidden md:flex">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
+              <Header type="sm">
                 Explore
-              </div>
+              </Header>
               <div className="flex flex-col justify-between gap-[10px]">
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
-                </a>
-                <Link href="citation-guide">
+                </Link>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link href="Articles">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="Articles">
                   Articles
                 </Link>
-                <Link href="canitems">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="canitems">
                   Can Items
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </a>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://canofmystery.blogspot.com/" rel="noopener noreferrer">
+                </Link>
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://canofmystery.blogspot.com/" rel="noopener noreferrer">
                   Old Can Of Mystery
-                </a>
+                </Link>
               </div>
             </div>
             <div className="h-max w-[22.22%] flex-col justify-items-right gap-[10px] text-right md:text-left hidden md:flex">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
+              <Header type="sm">
                 Quick Links
-              </div>
+              </Header>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link href="/">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
                   Home
                 </Link>
-                <Link href="/about">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/about">
                   About
                 </Link>
-                <Link href="/login">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login">
                   Login
                 </Link>
-                <Link href="/admin">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/admin">
                   Admin Dashboard
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </a>
-                <Link href="instructions">
+                </Link>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="instructions">
                   Instructions
                 </Link>
               </div>
             </div>
           <div className="flex flex-row visible md:hidden">
             <div className="h-max w-[50%] flex flex-col justify-items-right gap-[10px]">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
+              <Header type="sm">
                 Explore
-              </div>
+              </Header>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
-                </a>
-                <Link href="citation-guide">
+                </Link>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link href="Articles">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="Articles">
                   Articles
                 </Link>
-                <Link href="canitems">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="canitems">
                   Can Items
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </a>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="" rel="noopener noreferrer">
+                </Link>
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="" rel="noopener noreferrer">
                   Old Can Of Mystery
-                </a>
+                </Link>
               </div>
             </div>
             <div className="h-max w-[50%] flex flex-col justify-items-right gap-[10px] text-right">
-              <div className="w-full  text-2.2xl tracking-[-4.5px] font-bold text-t-header-light dark:text-t-dark">
-                Quick Links
-              </div>
+              <Header type="sm">
+                Explore
+              </Header>
               <div className="flex flex-wrap justify-between gap-[10px] text-t-header-light dark:text-t-dark">
-                <Link href="/">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
                   Home
                 </Link>
-                <Link href="/about">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/about">
                   About
                 </Link>
-                <Link href="/login">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login">
                   Login
                 </Link>
-                <Link href="/admin">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/admin">
                   Admin Dashboard
                 </Link>
-                <a className="w-full text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
-                </a>
-                <Link href="/">
+                </Link>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
                   Instructions
                 </Link>
               </div>

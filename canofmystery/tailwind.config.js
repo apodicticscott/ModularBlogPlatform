@@ -165,11 +165,6 @@ module.exports = {
           'border-radius': '6px',
           'min-height' : '29.17px',
         },
-        '.neo-input-sm': {
-          'border': '2px solid black',
-          'border-radius': '6px',
-          'min-height' : '29.17px',
-        },
         '.explore-itm-size-2xl': {
           'width' : '290px',
           'height' : '100%'
@@ -199,7 +194,7 @@ module.exports = {
           'height' : '40vw'
         },
         '.explore-itm-top-size-xs': {
-          'width' : 'calc(50% - 20px) ', 
+          'width' : 'calc(50% - 30px) ', 
           'height' : '30vw'
         },
         '.explore-size-2xl': {
@@ -220,7 +215,7 @@ module.exports = {
         '.explore-size-md': {
           'width' : '100vw',
           'height' : 'calc(100vh - 67px)',
-          'font-size' : '12.62px'
+          'font-size' : '16px'
         },
         '.article-link': {
           'color': '#fcc800',

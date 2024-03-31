@@ -17,6 +17,8 @@ const firestore = getFirestore(app);
 
 import signUp from "../../firebase/auth/signup"
 
+import {fetchSession } from "../../firebase/sessionUtils/sessionUtils"
+
 const SignUpPage = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -30,6 +32,7 @@ const SignUpPage = () => {
   const [infoErrorMessage, setInfoErrorMessage] = useState('');
   const [displayNameErrorVisible, setDisplayNameErrorVisible] = useState(false)
   const [displayNameErrorMessage, setDisplayNameErrorMessage] = useState("")
+  const [sessionCodeErrorMessage, setSessionCodeErrorMessage] = useState();
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -80,21 +83,52 @@ const SignUpPage = () => {
     }
 };
 
+const isTimeInPast = (time) => new Date(time) < new Date()
 
 const handleInfo = async (event) => {
   event.preventDefault();
 
 
+  const sessionData = await fetchSession(sessionCode)
+
+  console.log(sessionData)
+
   // Check if email or password is empty
-  if (!firstName.trim() || !lastName.trim()) {
+  if (!firstName.trim() || !lastName.trim() && !displayName.trim() && !sessionCode.trim()) {
     setInfoErrorMessage(true);
     setInfoErrorMessage("First and Last name are required.");
-    return;
-  }
-
-  if (!displayName.trim()) {
     setDisplayNameErrorMessage(true);
     setDisplayNameErrorMessage("Display Name is Required.");
+    setSessionCodeErrorMessage("Session Code is Required.");
+    return;
+  }else if (!firstName.trim() || !lastName.trim() && !displayName.trim()) {
+    setInfoErrorMessage(true);
+    setInfoErrorMessage("First and Last name are required.");
+    setDisplayNameErrorMessage(true);
+    setDisplayNameErrorMessage("Display Name is Required.");
+    return;
+  }else if (!firstName.trim() || !lastName.trim() && !sessionCode.trim()) {
+    setInfoErrorMessage(true);
+    setInfoErrorMessage("First and Last name are required.");
+    setSessionCodeErrorMessage("Session Code is Required.");
+  }else if(!displayName.trim() && !sessionCode.trim()){
+    setDisplayNameErrorMessage(true);
+    setDisplayNameErrorMessage("Display Name is Required.");
+    setSessionCodeErrorMessage("Session Code is Required.");
+  }else if(!firstName.trim() || !lastName.trim()){
+    setInfoErrorMessage(true);
+    setInfoErrorMessage("First and Last name are required.");
+  }else if(!displayName.trim()){
+    setDisplayNameErrorMessage(true);
+    setDisplayNameErrorMessage("Display Name is Required.");
+  }else if(!sessionCode.trim()){
+    setSessionCodeErrorMessage("Session Code is Required.");
+    return;
+  }else if(sessionData === null){
+    setSessionCodeErrorMessage("This session code does not exist.");
+    return;
+  }else if(isTimeInPast(sessionData.Experation)){
+    setSessionCodeErrorMessage("This session code is expired.");
     return;
   }
 
@@ -108,6 +142,7 @@ const handleInfo = async (event) => {
               lastName: lastName,
               "userInfo.displayName": displayName,
               sessionCode: sessionCode && sessionCode,
+              studentWriter: sessionCode ? true : false,
           });
       }
     });
@@ -123,7 +158,6 @@ const handleInfo = async (event) => {
       return;
   }
 };
-
 
 
 
@@ -246,7 +280,19 @@ const handleInfo = async (event) => {
                 class="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="5D12gD" 
               />
             </div>
-
+            <AnimatePresence>
+                  {sessionCodeErrorMessage && (
+                      <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="rounded-md p-[10px]"
+                          style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
+                      >
+                        {sessionCodeErrorMessage}
+                      </motion.div>
+                  )}
+            </AnimatePresence>   
           </div>
           <NeoButton
             onSubmit={handleInfo}

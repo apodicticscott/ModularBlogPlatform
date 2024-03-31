@@ -203,27 +203,31 @@ const SearchPage = () => {
 
 
     return(
-        <div className="w-screen h-screen ">
-            <div className="flex flex-col justify-center self-center h-full w-full max-w-full align-center dark:bg-base-100-dark py-[100px] px-7 xl:px-14 gap-[25px]">
+        <div className="w-screen min-h-screen h-max overflow-hidden">
+            <div className="flex flex-col justify-center self-center h-full w-full  max-w-full align-center dark:bg-base-100-dark py-[50px] sm:py-[100px] px-7 xl:px-14 gap-[25px]">
                 {articles ? (
                     <>
-                        <div className="h-max w-full flex flex-col gap-[25px] mt-[25px]">
-                            <form  className="gap-[15px]">
-                                <div className="flex flex-row gap-[20px] items-center pt-[20px]">
-                                    <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full sm:w-[300px] rounded-md p-3 h-[40px]"/>
-                                </div>
-                            </form>
-                            <div className="z-10 flex w-full gap-[15px] items-center">
+                        <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
+
+                            <div className="z-10 flex w-full gap-[15px] items-center p-3 pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
                                 {
                                     uniqueTags
                                     &&
-                                    <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"} dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                    <div className="flex justify-between w-full h-max items-center">
+                                        <div className="flex flex-row gap-[20px] items-center ">
+                                            <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full xs-sm:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
+                                        </div>
+
+                                        <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"} dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
                                         
-                                    </TextDropDown>
+                                        </TextDropDown>
+                                    </ div>
+
+
                                 }
-                                <div className="w-full h-max flex gap-[15px]">
-                                    <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
-                                    <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light "/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                <div className="h-max flex gap-[15px]">
+                                    <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light dark:text-t-header-dark "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                    <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
                                 </div>
                                 
                             </div>
@@ -246,7 +250,7 @@ const SearchPage = () => {
                                 }
                             </div>
                         </div>
-                        <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full grow">
+                        <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full grow rounded-md">
                             {
                                 currentArticles.filter(article => selectedTags.length === 0 || article.Tags.some(tag => selectedTags.map(selectedTag => selectedTag.Text).includes(tag.Text))).sort((a, b) => {
                                     if(selectedFilter){
@@ -262,8 +266,8 @@ const SearchPage = () => {
                                     }
                                 }).map((article, index) => (
                                     <div className="">
-                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_4.25)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
-                                            <div className="w-full p-[1.8vw] sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] md:h-[75%]">
+                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                            <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
                                                 {
                                                     article.CoverImage 
                                                     ?
@@ -278,12 +282,12 @@ const SearchPage = () => {
                                                 }
 
                                             </div>
-                                            <div className="flex w-full grow flex-col justify-center gap-[1vw] sm:gap-0 pb-[1.4vw] sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[1.4vw] sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
-                                                {/* <div className="flex flex-col justify-between gap-[1.4vw] sm:gap-[.8vw] md:gap-[.6vw] lg:gap-[.4vw] xl:gap-[.2vw] 2xl:gap-[.1vw] h-max w-full  text-[4vw]  sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]"> */}
-                                                    <div className="truncate h-max w-full text-[4vw]  sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
+                                            <div className="flex w-full grow flex-col justify-center gap-[1vw] xs-sm:gap-0 pb-[3.5vw] xs-sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[3.5vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
+                                                {/* <div className="flex flex-col justify-between gap-[1.4vw] xs-sm:gap-[.8vw] md:gap-[.6vw] lg:gap-[.4vw] xl:gap-[.2vw] 2xl:gap-[.1vw] h-max w-full  text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]"> */}
+                                                    <div className="truncate h-max w-full text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
                                                         {article.Title}
                                                     </div>
-                                                    <div className="text-t-light font-light text-[3vw]  sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
+                                                    <div className="text-t-light font-light text-[3.25vw]  xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
                                                         {
                                                             article.Author
                                                             ?
@@ -300,12 +304,12 @@ const SearchPage = () => {
                                                 {/* </div> */}
                                             </div>
                                         </div>
-                                        <div className="flex items-center justify-between gap-[15px] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
+                                        <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
                                             {
                                                 article.Tags
                                                 &&
                                                 article.Tags.map((tag, index) => (
-                                                    <div className={`rounded-md text-shadow mt-[3vw] shadow-md sm:mt-[1.8vw] md:mt-[1.4vw] lg:mt-[1.2vw] xl:mt-[1vw] 2xl:mt-[.8vw] px-[1.8vw] sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[4vw] sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
+                                                    <div className={`rounded-md text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
                                                         {tag.Text}
                                                     </div>
                                                 ))

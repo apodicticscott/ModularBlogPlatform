@@ -13,7 +13,7 @@ import { FaPen } from 'react-icons/fa';
 
 import Header from '../TextComponents/Header1';
 import NeoButton from '../TextComponents/NeoButton';
-
+import Paragraph from "../TextComponents/Paragraph"
 import { deleteArticles, fetchArticles,  getTotalUnapprovedArticles} from '../../firebase/articleUtils/articleUtils';
 import { fetchSessions, addSession } from '../../firebase/sessionUtils/sessionUtils';
 
@@ -34,6 +34,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
 
     const router = useRouter();
+    const dayjs = new AdapterDayjs(); 
 
     
     const handleFetchSessions = async () => {
@@ -76,7 +77,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     const handleAddSession = () => {
 
         if(sessionInfo.Experation !== null && sessionInfo.ID !== null){
-            
+            console.log(sessionInfo.Experation)
             addSession(sessionInfo.ID, sessionInfo.Experation, false)
             handleFetchSessions();
         }else{
@@ -101,16 +102,25 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     }
 
     const handleSetSessionDate = (Date) => {
-        setSessionInfo({ID: sessionInfo.ID, Experation: Date})
+        console.log(Date)
+        setSessionInfo({ID: sessionInfo.ID, Experation: Date.format()})
     }
 
-  
+    const convertDateTime = (dateTime) => {
+        const date = new Date(dateTime);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() returns 0-11
+        const day = date.getDate();
+        return `${year}-${month}-${day}`;
+      };
 
+
+      const isTimeInPast = (time) => new Date(time) < new Date()
 
     return(
         <>
-            <div className="h-full w-full flex flex-col xl:grid xl:grid-cols-4 xl:grid-rows-4 gap-7 p-7 bg-grid-image ">
-                <div className="col-span-4  2xl:col-span-1 2xl:row-span-4 rounded-md border-3 flex flex-col md:flex-row justify-between 2xl:flex-col p-[15px] shadow pb-0 gap-7 bg-base-100">
+            <div className="h-full w-full flex flex-col 2xl:flex-row  gap-7 p-7 bg-grid-image transition duration-100">
+                <div className=" rounded-md border-3 flex flex-col md:flex-row justify-between 2xl:flex-col p-[15px] shadow pb-0 gap-7 bg-base-100">
                     <div className="flex flex-col gap-[15px] w-full xl:w-[40%] pb-[20px] 2xl:w-full 2xl:pb-0 h-max ">
                         <div className="w-full h-max ">
                             <Header type="sm" >
@@ -201,17 +211,17 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 <>
                                     {
                                         sessions.map((data, index) => (
-                                            <div className={`flex justify-between w-full h-max px-[15px] py-[5px] border-b-3 bg-base-100 shadow items-center ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
-                                                <div className="flex-1">
+                                            <div className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 border-b-3 bg-base-100 shadow items-center ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
+                                                <div className="flex-1 py-[5px]"  onClick={() => setSelectedSession(data.id)}>
                                                     {data.id}
                                                 </div>
                                                 <Divider orientation="vertical" />
-                                                <div className="flex-1 px-[15px]">
-                                                    {data.Experation}
+                                                <div className="flex-1 px-[15px] py-[5px]"  onClick={() => setSelectedSession(data.id)}>
+                                                    {convertDateTime(data.Experation)}
                                                 </div>
                                                 <Divider orientation="vertical" />
-                                                <div className="flex-1 text-right">
-                                                    {data.IsExpired ? "Yes" : "No"}
+                                                <div className="flex-1 text-right py-[5px]" onClick={() => setSelectedSession(data.id)}>
+                                                    {isTimeInPast(convertDateTime(data.Experation)) ? "True" : "False"}
                                                 </div>
                                             </div>
                                         ))
@@ -225,9 +235,10 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                     </div>
                 </div>
-                <div class="col-span-4 2xl:col-span-3 2xl:row-span-2 rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
-                    <div className="flex w-full flex-col items-center md:justify-between md:flex-row lg:flex-col lg:w-max xl:grow gap-[15px]">
-                        <div className="flex flex-col w-full grow gap-[15px]">
+                <div className='flex flex-col gap-7 grow h-full'>
+                <div class="h-max rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
+                    <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
+                        <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
                                 Class Session
                             </Header>
@@ -252,7 +263,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             </span>
                         </div>
                         <div className="grow flex ">
-                            <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                            <div className="h-full w-[200px] flex text-center flex-col justify-center lg:justify-start">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have signed up using the selected session ID.">
                                     <span className="text-lg underline decoration-dashed">
                                         Users This Session
@@ -263,7 +274,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     {users.filter(user => !selectedSession || user.sessionCode === selectedSession).length}
                                 </div>
                             </div>
-                            <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                            <div className="h-full w-[200px] flex text-center flex-col justify-center lg:justify-start">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have submitted an article with the selected session ID.">
                                     <span className="text-lg underline decoration-dashed">
                                         User Submittions
@@ -299,12 +310,16 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </div>
                                 </Tooltip>
                             </div>
-                            <div className="flex w-full h-[300px] max-h-[300px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
+                            <div className="flex w-full h-[300px] min-h-[400px] xl:min-h-[300px] sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
                                 {
                                     users
+                                    &&
+                                    users.filter(user => !selectedSession || user.sessionCode === selectedSession).length !== 0
+                                    ?
+                                    sessionInfo.ID
                                     ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).map((user, index) => (
-                                        <div className={`flex justify-between w-full h-max bg-base-100 items-center shadow ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
+                                        <div className={`flex justify-between w-full h-max  bg-base-100 items-center shadow ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
                                             <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                                 {user.firstName}
                                             </div>
@@ -329,16 +344,37 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         </div>
                                     ))
                                     :
-                                    <>
-                                    </>
+                                    <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                        <div className='w-[300px]'>
+                                            <Header type="lg" classes="w-[300px] text-center">
+                                                    Oops!
+                                            </Header>
+                                            <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                    It looks like you dont have an ID selected!
+                                                    Click one.
+                                            </Paragraph>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                        <div className='w-[300px]'>
+                                            <Header type="lg" classes="w-[300px] text-center">
+                                                    Oops!
+                                            </Header>
+                                            <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                    It looks like no one has used this session code yet!
+                                                    Check again later.
+                                            </Paragraph>
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-span-4 2xl:col-span-3 2xl:row-span-2 rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
-                    <div className="flex w-full flex-col items-center md:justify-between md:flex-row lg:flex-col lg:w-max xl:grow gap-[15px]">
-                        <div className="flex flex-col w-full grow gap-[15px]">
+                <div class=" rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
+                    <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
+                    <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
                                 Class Session
                             </Header>
@@ -358,7 +394,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             </span>
                         </div>
                         <div className="grow flex ">
-                            <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                            <div className="h-full w-[200px] flex text-center flex-col">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="The amount of submitted articles this session">
                                     <span className="text-lg underline decoration-dashed">
                                         Articles This Session
@@ -369,7 +405,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     1
                                 </div>
                             </div>
-                            <div className="h-full w-[200px] flex text-center flex-col justify-center">
+                            <div className="h-full w-[200px] flex text-center flex-col">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="how many articles have been approved this session">
                                     <span className="text-lg underline decoration-dashed">
                                         Approved
@@ -435,45 +471,75 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
 
                                 </div>
                             </div>
-                            <div className="flex w-full min-h-[400px] xl:min-h-0 sm:h-auto sm:grow  flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide">
+                            <div className={`flex w-full min-h-[400px] xl:min-h-[300px] sm:h-auto sm:grow  flex flex-col text-lg bg-base-200 rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide ${articles.length === 0 && !sessionInfo.ID && "justify-center"}`}>
                                 {
-                                articles
-                                &&
-                                articles.map((article, index) => (
-                                    <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 shadow items-center ${index === 0 ? "rounded-t-md" : ""}`}>
-                                        <div className="flex grow md:basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Publisher}
-                                        </div>
-                                        <Divider orientation="vertical"/>
-                                        <div className="hidden md:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Title}
-                                        </div>
-                                        <Divider orientation="vertical"/>
-                                        <div className="hidden md:flex basis-[200px]  py-0 pl-[10px] items-center min-h-[50px]">
-                                            Date here
-                                        </div>
-                                        <div className={`hidden md:flex basis-[200px] grow border-x-3 border-y-0 h-full pl-[10px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `}>
-                                            {article.Approved ? "Approved" : "Unapproved"}
-                                        </div>
-                                        <div className="flex h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
-                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                                <button onClick={() => router.push(`/editor/blog/${article.id}`)} >
-                                                    <FaPen className="text-xl w-[25px]"/>
-                                                </button>
-                                            </Tooltip>
+                                    articles
+                                    &&
+                                    articles.length !== 0
+                                    ?
+                                    sessionInfo.ID
+                                    ?
+                                    articles.map((article, index) => (
+                                        <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 shadow items-center ${index === 0 ? "rounded-t-md" : ""}`}>
+                                            <div className="flex grow md:basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
+                                                {article.Publisher}
+                                            </div>
                                             <Divider orientation="vertical"/>
-                                            <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
-                                                <button>
-                                                    <MdOutlinePreview className="text-2xl w-[25px]" />
-                                                </button>
-                                            </Tooltip>
+                                            <div className="hidden md:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
+                                                {article.Title}
+                                            </div>
+                                            <Divider orientation="vertical"/>
+                                            <div className="hidden md:flex basis-[200px]  py-0 pl-[10px] items-center min-h-[50px]">
+                                                Date here
+                                            </div>
+                                            <div className={`hidden md:flex basis-[200px] grow border-x-3 max-w-[70px] border-y-0 h-full pl-[10px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `}>
+                                                {article.Approved ? "True" : "False"}
+                                            </div>
+                                            <div className="flex h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
+                                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
+                                                    <button onClick={() => router.push(`/editor/blog/${article.id}`)} >
+                                                        <FaPen className="text-xl w-[25px]"/>
+                                                    </button>
+                                                </Tooltip>
+                                                <Divider orientation="vertical"/>
+                                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
+                                                    <button>
+                                                        <MdOutlinePreview className="text-2xl w-[25px]" />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))
+                                        ))
+                                        :
+                                        <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                            <div className='w-[300px]'>
+                                                <Header type="lg" classes="w-[300px] text-center">
+                                                        Oops!
+                                                </Header>
+                                                <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                        It looks like you dont have an ID selected!
+                                                        Click one.
+                                                </Paragraph>
+                                            </div>
+                                        </div>
+                                        :
+                                        <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                            <div className='w-[300px]'>
+                                                <Header type="lg" classes="w-[300px] text-center">
+                                                        Oops!
+                                                </Header>
+                                                <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                        It looks like no one has used this session code yet!
+                                                        Check again later.
+                                                </Paragraph>
+                                            </div>
+                                        </div>
+
                                 }
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </>

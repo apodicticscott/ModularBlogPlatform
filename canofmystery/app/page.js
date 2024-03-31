@@ -12,12 +12,13 @@ export default function Home() {
 
 
   return (
-    <div className={`${styles.container} overflow-hidden`}>
+    <div className={`${styles.container} overflow-hidden`} style={{WebkitMaskImage: "-webkit-gradient(linear, left 90%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))"}}>
         <Lander/>
+
         <CanItemsScroll/>
         <Recent/>
         <UseUsAsASource/>
-        <CategoriesSection/>
+        <CategoriesSection/>;
         
         {/* <div className="h-max dark:bg-base-100-dark text-t-header-light bg-base-100">
           <DisplayTextComp />

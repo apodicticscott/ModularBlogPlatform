@@ -4,8 +4,7 @@ import { useLayoutEffect } from "react";
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { RiSearchFill } from "react-icons/ri";
-import { MdAccountCircle } from "react-icons/md";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { FaBars, FaUserCircle } from "react-icons/fa";
 import { getAuth } from "@firebase/auth";
 import firebase_app from "../../firebase/config";
 import {getFirestore, collection, getDoc, doc, updateDoc} from "firebase/firestore"
@@ -87,7 +86,7 @@ const Navbar = () => {
       closed: {
         top: -dropDownHeight, // You can also use the calculated height if needed
         ease: "easeInOut",
-      
+        opacity: 0,
         transition: { duration: 0.5 }
       }
     };
@@ -136,109 +135,100 @@ const Navbar = () => {
     setOpen(!open);
   }
 
-  const swsDrop = "px-7 lg:px-14 border-y-2 explore-size-md lg:border-y-3 lg:explore-size-lg xl:explore-size-xl 2xl:explore-size-2xl"
+  const swsDrop = "px-7 lg:px-14 explore-size-md border-y-3 lg:explore-size-lg xl:explore-size-xl 2xl:explore-size-2xl"
 
   return (
     <>
       {/* Drop Down */}
-
-      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={{  opacity: 0 }}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-2 md:border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
+      <div className={`transition duration-300 fixed w-screen h-screen z-20 ${open ? "pointer-events-auto backdrop-blur-sm " : "pointer-events-none backdrop-blur-none"}`}>
+      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={closed}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
         <div className="flex flex-row justify-center w-full lg:py-2 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
-          <div className="navbar-end lg:hidden w-full md:w-[750px]  md:flex flex justify-center gap-1 text-t-header-light dark:text-t-header-dark ">
-            <RiSearchFill style={{fontSize: "30px"}}/>
-            <form>
-              <input type="text" name="search" placeholder="Search" required minLength="4" className="neo-input-sm sm:neo-input grow-0 w-[65vw]  sm:w-[450px]"/>
-            </form>
-            
-            <MdAccountCircle style={{fontSize: "35px"}}/>
-          </div>
-          <div className=" flex flex-row flex-wrap justify-between sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
-            <DropDownItem link = "https://www.usca.edu/" title="USCA" background="bg-sunset" classes="w-full w-full xs-sm:explore-itm-top-size-xs">
-              <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
-            </DropDownItem>
-            <DropDownItem link = "canitems" title="Can Items" background="bg-pale-green" classes="w-full xs-sm:explore-itm-top-size-xs">
-                <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
-                  <div className="w-[644px] h-15 whitespace-nowrap">
-                    Example Text
+          <div className=" flex flex-row flex-wrap justify-between gap-[20px] lg:gap-0 sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
+            <div className="w-full sm:w-[500px] lg:w-max flex flex-wrap h-max lg:h-full gap-[20px]">
+              <div className="navbar-end lg:hidden w-full flex justify-center items-center gap-1 text-t-header-light dark:text-t-header-dark ">
+                <RiSearchFill style={{fontSize: "30px"}}/>
+                <form className="grow">
+                  <input type="text" name="search" placeholder="Search" required minLength="4" className="neo-input h-full w-full px-3"/>
+                </form>
+                <FaUserCircle className="text-2.7xl"/>
+              </div>
+              <DropDownItem link = "https://www.usca.edu/" title="USCA" background="bg-sunset" classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+                <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
+              </DropDownItem>
+              <DropDownItem link = "canitems" title="Can Items" background="bg-pale-green" classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+                  <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
+                    <div className="w-[644px] h-15 whitespace-nowrap">
+                      Example Text
+                    </div>
+                    <div className="w-[644px] h-15 whitespace-nowrap">
+                      Example Text
+                    </div>
                   </div>
-                  <div className="w-[644px] h-15 whitespace-nowrap">
-                    Example Text
+              </DropDownItem>
+              <DropDownItem link="Articles" title="Articles" background="bg-dark-purple" classes="w-full h-[16.5vh] sm:w-[500px] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+                  <div className="flex justify-center h-[110%] w-[90%] border-3 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
+                    <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>
+                    </div>
                   </div>
-                </div>
-            </DropDownItem>
-            <DropDownItem link="Articles" title="Articles" background="bg-dark-purple" classes="w-full sm:w-[500px] lg:w-[230.38px] xl:w-[267.3px]">
+              </DropDownItem>
+            </div>
+            <div className="w-full sm:w-[500px] justify-between flex lg:hidden">
+              <div className="w-max flex flex-col gap-[5px] lg:hidden h-max whitespace-nowrap">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/" > Home </Link>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/our-project"> About </Link>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login"> Login </Link>
 
-                <div className="flex justify-center h-[110%] w-[90%] border-2 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
-                  <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>
-                  </div>
-                </div>
-            </DropDownItem>
-          </div>
-          <div className="flex flex-col justify-center items-center shrink-1 w-full  lg:w-0 ml-0 lg:ml-2">
-            <div className="w-full sm:w-[530px] lg:w-full lg:h-2/4 flex justify-between px-2 md:px-0">
-              <ul className="w-max lg:inline-block hidden whitespace-nowrap">
-                {
-                  dropDownLinks.map((link, index) => 
-                    <li key={index}>
-                      <a className="hover:text-t-header-light dark:hover:text-t-header-dark" href={link.link}> {link.text} </a>
-                    </li>
-                  )
-                }
-              </ul>
-              <ul className="w-max md:flex-wrap lg:hidden h-max whitespace-nowrap">
-                <li>
-                  <a href="/" > Home </a>
-                </li>
-                <li>
-                  <a href="/our-project"> About </a>
-                </li>
-                <li>
-                  <a href="/login"> Login </a>
-                </li>
-                <li>
-                  <a href="/signup"> Signup </a>
-                </li>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/signup"> Signup </Link>
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
-                    <li key={index}>
-                      <a href={link.link}> {link.text} </a>
-                    </li>
+                      <Link key={index} classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href={link.link}> {link.text} </Link>
                     :
                     null
                   )
                 }
-              </ul>
-              <ul className="w-max md:flex-wrap lg:hidden h-max whitespace-nowrap ">
+              </div>
+              <div className="w-max flex flex-col gap-[5px] lg:hidden h-max whitespace-nowrap ">
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                    <li key={link.text} className="text-right">
-                      <a className="hover:text-" href={link.link}> {link.text} </a>
-                    </li>
+                      <Link key={index} classes={"text-t-light tracking-[-2.3px] text-right decoration-t-light"} href={link.link}> {link.text} </Link>
                     :
                     null
                   )
                 }
-              </ul>
-
+              </div>
+            </div>
+          </div>
+          <div className="flex   lg:flex-col justify-center lg:justify-end shrink-1 w-full  lg:w-0 ml-0 lg:ml-2">
+            <div className="w-full sm:w-[530px] lg:w-full lg:h-2/3 flex justify-between  px-2 md:px-0">
+              <div className="min-w-max hidden lg:flex lg:flex-col content-center gap-[5px]">
+                {
+                  dropDownLinks.map((link, index) => 
+                    <div key={index}>
+                      <a className="mt-[15px] hover:text-t-header-light dark:hover:text-t-header-dark hover:decoration-t-header-light text-t-light tracking-[-2.3px]  hover:underline decoration-t-light" href={link.link}> {link.text} </a>
+                    </div>
+                  )
+                }
+              </div>
             </div>
           </div>
 
         </div>
       </motion.div>
+    </div>
     {/* Nav Bar */}
-    <div ref={navRef} className="fixed w-screen border-b-2 md:border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
+    <div ref={navRef} className="fixed w-screen border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
       <div className="navbar p-0 h-16 items-stretch">
         <div className="flex flex-row grow justify-between lg:justify-between ">
-          <RxHamburgerMenu onClick={() => handleDropDownClick()} className="lg:hidden text-2xl" />
+          <FaBars onClick={() => handleDropDownClick()} className="lg:hidden text-2.5xl text-t-header-light" />
           <div className="navbar-start flex-shrink w-fit lg:w-60">
             <a className="text-lg lg:text-xl xl:text-2xl font-black ">Can of Mystery</a>
           </div>
           <div className="navbar-center  justify-center pb-0 pt-0 flex-grow h-full hidden lg:flex">
             <ul style={{fontSize: '20px', fontWeight: "700"}} className="menu menu-horizontal items-center items-stretch justify-center h-full pt-0 pb-0 m-0 ">
-              <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
-                <a  className="flex flex-1 rounded-none text-2xl" href="\">Home</a>
+              <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a " : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
+                <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus" href="\">Home</a>
               </li>
               <li>
                 <details className="flex flex-1 h-full">
@@ -252,15 +242,15 @@ const Navbar = () => {
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} role="link">search</RiSearchFill>
-            <input type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px]"/>
+            <input type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px] px-3"/>
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <MdAccountCircle style={{fontSize: "35px"}} />
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avitar">
+                <FaUserCircle tabIndex={0} role="button" className="text-2.7xl" />
               </div>
               <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-base-100-dark	border-3 rounded-md w-52">
-                {isLoggedIn ? <strong>Welcome!</strong> : <a href=""></a>}
-                {isLoggedIn ? <li><input type="text" className="my-1 w-full border-2 neo-input dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-2" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
-                {isLoggedIn ? <li><button className="border-2 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-2 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
+                {isLoggedIn ? <strong>Welcome!</strong> : <a classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href=""></a>}
+                {isLoggedIn ? <li><input type="text" className="my-1 w-full border-3 neo-input dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-3" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
+                {isLoggedIn ? <li><button className="border-3 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-3 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
               </ul>
             </div>
           </div>
