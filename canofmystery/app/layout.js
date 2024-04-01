@@ -22,21 +22,21 @@ const LexM = Lexend_Mega(
 
 
 export default function RootLayout({ children  }) {
-  const [cookieConsent, setCookieConsent] = useState(false);
+  // const [cookieConsent, setCookieConsent] = useState(false);
 
-  let consentCookie = Cookies.get("hasConsent")
+  // let consentCookie = Cookies.get("hasConsent")
 
-  if(consentCookie === undefined){
-    Cookies.set('hasConsent', 'false')
-    setCookieConsent(false)
-  }else if(consentCookie === 'true' && cookieConsent === false){
-    setCookieConsent(true)
-  }
+  // if(consentCookie === undefined){
+  //   Cookies.set('hasConsent', 'false')
+  //   setCookieConsent(false)
+  // }else if(consentCookie === 'true' && cookieConsent === false){
+  //   setCookieConsent(true)
+  // }
 
-  const handleGiveConsent = () => {
-    Cookies.set('hasConsent', 'true')
-    setCookieConsent(true)
-  }
+  // const handleGiveConsent = () => {
+  //   Cookies.set('hasConsent', 'true')
+  //   setCookieConsent(true)
+  // }
   
   // useEffect(() => {
   //   if(cookieConsent){
@@ -54,7 +54,7 @@ export default function RootLayout({ children  }) {
             <div className="container k h-screen min-w-full ">  
               <Navbar className="z-50"/>
               {children}
-              <CookieConsent setCookieConsent={handleGiveConsent} cookieConsent={cookieConsent}/>
+              {/* <CookieConsent setCookieConsent={handleGiveConsent} cookieConsent={cookieConsent}/> */}
               <Footer />
             </div>
           </AuthContextProvider>
