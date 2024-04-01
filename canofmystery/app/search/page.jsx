@@ -117,7 +117,11 @@ const SearchPage = () => {
 
 
     useEffect(() => {
-        updateUrl(selectedTags)
+        console.log(selectedTags, searchTerm)
+        if(selectedTags || searchTerm){
+            console.log("here")
+            updateUrl(selectedTags)
+        }
     }, [selectedTags, searchTerm])
 
 
