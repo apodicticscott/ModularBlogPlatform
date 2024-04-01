@@ -116,7 +116,7 @@ const SearchPage = () => {
     };
 
 
-    useEffect((e) => {
+    useEffect(() => {
         updateUrl(selectedTags)
     }, [selectedTags, searchTerm])
 
