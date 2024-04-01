@@ -1,6 +1,5 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import useLogPageView from "../hooks/useLogPageView"
 import { Lexend_Mega } from 'next/font/google'
 import './globals.css'
 import Navbar from "/components/navbar/Navbar"
@@ -8,6 +7,7 @@ import Footer from "/components/footer/Footer"
 import { AuthContextProvider } from '/context/AuthContext'
 import CookieConsent from "../components/cookies/cookieConsent"
 import Cookies from 'js-cookie';
+import { logPageView } from "../firebase/analitics/firebaseAnalytics"
 
 const LexM = Lexend_Mega(
   {
@@ -38,15 +38,14 @@ export default function RootLayout({ children  }) {
     setCookieConsent(true)
   }
   
-  useEffect(function mount(){
+  useEffect(() => {
     if(cookieConsent){
       if(window != undefined){
         const pagePath = window.location.pathname;
-        console.log(pagePath)
-        useLogPageView(pagePath);
+        logPageView(pagePath);
       }
     }
-  });
+  }, []);
     
   return (
     <html data-theme="mytheme" className="" lang="en">

@@ -133,17 +133,27 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {/* {page.Time}  */}
+                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleTimeString()}
                                         </div>
                                         <Divider orientation="vertical" className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            Date here
+                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleDateString()}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
-                                            No Cover Image Available
+                                            {
+                                                page.coverImage
+                                                ?
+                                                <>
+                                                Is Available
+                                                </>
+                                                :
+                                                <>
+                                                Is Not Available
+                                                </>
+                                            }
                                         </div>
                                         <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {

@@ -6,13 +6,14 @@ import LinearProgress from '@mui/material/LinearProgress';
 import WorldMap from "../../Maps/mapUtils"
 import { Divider } from "@material-ui/core";
 import Header from "../TextComponents/Header1";
+import { Tooltip } from "@mui/material";
 
 import { fetchGoogleAnalyticsReport} from "../../firebase/analitics/analyticsUtils"
 
 const propertyId = process.env.NEXT_PUBLIC_PROPERTY_ID;
 
 
-const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData, setLocNumber, locNumber, pageVisitData, setPageVisitData}) => {
+const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData, setLocNumber, locNumber, pageVisitData, setPageVisitData, classes}) => {
 
 
     function calculateCountryUserPercentage(data) {
@@ -116,9 +117,9 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                                 {
                                     locNumber
                                     &&
-                                    locNumber.map((data) => (
+                                    locNumber.map((data, index) => (
                                         <>
-                                            <div className="w-full flex justify-between">
+                                            <div className="w-full flex justify-between" key={index}>
                                                 <span className="text-lg decoration-dashed">
                                                     {data.country}
                                                 </span>
@@ -164,7 +165,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                                     <>
                                         {
                                             pageVisitData.map((visit, index) => (
-                                                <div className={`flex justify-between w-full h-max px-[15px] py-[5px]  bg-base-100 shadow items-center ${index !== (pageVisitData.length - 1) ? "border-b-3" : "rounded-bl-md border-b-0"}`} onClick={() => setSelectedSession(data.id)}>
+                                                <div key={index} className={`flex justify-between w-full h-max px-[15px] py-[5px]  bg-base-100 shadow items-center ${index !== (pageVisitData.length - 1) ? "border-b-3" : "rounded-bl-md border-b-0"}`} onClick={() => setSelectedSession(data.id)}>
                                                     <div className="flex-1">
                                                         {visit.path}
                                                     </div>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { makeStyles } from "@mui/styles";
 import { TiDelete } from "react-icons/ti";
 import { IoChevronBackCircleSharp } from "react-icons/io5";
-import Header from "../../textComponents/header1"
+import Header from "../../TextComponents/Header1"
 
 import helpAddVideoGif from "../Assets/help_add_vido.gif"
 import helpAddLinkGif from "../Assets/help_add_link.gif"

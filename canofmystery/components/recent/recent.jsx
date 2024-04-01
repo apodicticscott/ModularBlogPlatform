@@ -46,8 +46,24 @@ const Recent = () => {
 
     
     useEffect(() => {
-        getRecent(4).then((value) => {fixArticles(value)}, (value) => {fixArticles(value)});
-    }, []);
+        // Define an async function inside the useEffect
+        const fetchData = async () => {
+          try {
+            // Call your async function `getRecent` with the argument 5
+            const result = await getRecent(5);
+            // Set the state of `articles` with the result
+            console.log(result)
+            setArticles(result);
+          } catch (error) {
+            // Handle any errors, such as by logging or displaying an error message
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        // Call the fetchData function
+        fetchData();
+      }, []); 
+
     return(
         <>
             <div id="recent-container" className="flex flex-col w-full h-max gap-[15px] pt-[50px] pb-[100px] bg-[length:500px_450px] bg-t-header-dark dark:bg-base-100-dark bg-grid-image bg-secondary-content border-b-3 overflow-hidden">
@@ -74,8 +90,8 @@ const Recent = () => {
                         articles.map((article, index) => {
 
                             return(
-                                <Link key={article.id} href={"blog/"+article.id} children={
-                                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}  id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
+                                <Link isUnderlined={false} key={article.id} href={"blog/"+article.id} classes={"hover:underline-none"}>
+                                    <div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}  id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
                                         <div>
                                             <svg width="45" height="35" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative left-[-15px] top-[25px]">
                                                 <g filter="url(#filter0_d_941_99)">
@@ -112,22 +128,22 @@ const Recent = () => {
                                             <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                 <div className="w-full p-[10px] pb-0 h-max">
                                                     <div className=" w-full h-[160px] bg-primary items-center rounded-md overflow-hidden">
-                                                        <img src={article.image} alt="Article Image" className=" h-full w-full object-fill" />
+                                                        <img src={article.CoverImage} alt="Article Image" className=" h-full w-full object-fill" />
                                                     </div>
                                                 </div>
 
                                                 <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2xl">
                                                     <div className="truncate h-[35px] w-full">
-                                                        {article.title}
+                                                        {article.Title}
                                                     </div>
                                                     
-                                                    <div className="flex text-xl gap-[5px] w-[120px]">
+                                                    {/* <div className="flex text-xl gap-[5px] w-[120px]">
                                                         <GoClockFill className="text-2.5xl"/>
                                                         {article.time} mins
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-xl">
-                                                    {article.author}
+                                                    {article.Author}
                                                 </div>
                                                 <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2.5xl">
                                                     <div className="flex max-w-[170px] h-[35px] gap-[5px] overflow-hidden">
@@ -137,10 +153,12 @@ const Recent = () => {
                                                             </div>
                                                         </div>
                                                         {
-                                                            article.tags.map((tag, index) => {
+                                                            article.Tags
+                                                            &&
+                                                            article.Tags.map((tag, index) => {
                                                                 return(
                                                                     
-                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-md  px-[10px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max`} style={{backgroundColor: tag.color}}>
+                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-md  px-[10px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max`} style={{backgroundColor: tag.Color}}>
                                                                         {tag.Text}
                                                                     </div>
                                                                     
@@ -157,8 +175,8 @@ const Recent = () => {
                                                 Read More
                                             </div>
                                         </div>
-                                    </motion.div>
-                                }/>
+                                    </div>
+                                </Link>
                             )
                         })
                         ) : (

@@ -18,6 +18,7 @@ const Lander = () => {
     useEffect(() => {
         getRecent(1).then((value) => {fixArticles(value[0])}, (value) => {fixArticles(value[0])});
     }, []);
+    
     return (
         <div className="h-max  w-screen overflow-hidden flex flex-col lg:flex-row bg-base-100 ">
             {article ? (

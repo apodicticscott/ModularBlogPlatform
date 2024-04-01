@@ -265,8 +265,8 @@ const SearchPage = () => {
                                         return 0;
                                     }
                                 }).map((article, index) => (
-                                    <div className="">
-                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} key={index}>
+                                    <div key={index}>
+                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
                                             <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
                                                 {
                                                     article.CoverImage 

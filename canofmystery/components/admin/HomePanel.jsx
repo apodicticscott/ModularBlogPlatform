@@ -14,8 +14,9 @@ import { FaPen } from 'react-icons/fa';
 import Header from '../TextComponents/Header1';
 import NeoButton from '../TextComponents/NeoButton';
 import Paragraph from "../TextComponents/Paragraph"
-import { deleteArticles, fetchArticles,  getTotalUnapprovedArticles} from '../../firebase/articleUtils/articleUtils';
+import { deleteArticles, fetchArticles,  getTotalUnapprovedArticles, setArticlesApproval} from '../../firebase/articleUtils/articleUtils';
 import { fetchSessions, addSession } from '../../firebase/sessionUtils/sessionUtils';
+import { TextField } from '@mui/material';
 
 const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, setSessions, users, setUsers}) => {
     const [sessionInfo, setSessionInfo] = useState({ID: null, Experation: null});
@@ -73,11 +74,10 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
             handleFetchSessions();
         }
     }, [])
-
+    
     const handleAddSession = () => {
 
         if(sessionInfo.Experation !== null && sessionInfo.ID !== null){
-            console.log(sessionInfo.Experation)
             addSession(sessionInfo.ID, sessionInfo.Experation, false)
             handleFetchSessions();
         }else{
@@ -102,7 +102,6 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     }
 
     const handleSetSessionDate = (Date) => {
-        console.log(Date)
         setSessionInfo({ID: sessionInfo.ID, Experation: Date.format()})
     }
 
@@ -116,6 +115,15 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
 
 
       const isTimeInPast = (time) => new Date(time) < new Date()
+
+      const handleSetSelectedArticles = (id) => {
+        if(selectedArticles.includes(id)){
+            const tempArticles = selectedArticles.filter(item => item !== id);
+            setSelectedArticles(tempArticles)
+        }else{
+            setSelectedArticles(prevState => [...prevState, id])
+        }
+      }
 
     return(
         <>
@@ -211,7 +219,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 <>
                                     {
                                         sessions.map((data, index) => (
-                                            <div className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 border-b-3 bg-base-100 shadow items-center ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
+                                            <div key={index} className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 border-b-3 bg-base-100 shadow items-center ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
                                                 <div className="flex-1 py-[5px]"  onClick={() => setSelectedSession(data.id)}>
                                                     {data.id}
                                                 </div>
@@ -236,7 +244,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                     </div>
                 </div>
                 <div className='flex flex-col gap-7 grow h-full'>
-                <div class="h-max rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
+                <div className="h-max rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                         <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -281,7 +289,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    1
+                                    {users.filter(user => !selectedSession || (user.sessionCode === selectedSession && user.hasPublished)).length}
                                 </div>
                             </div>
                         </div>
@@ -314,12 +322,12 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 {
                                     users
                                     &&
+                                    selectedSession
+                                    ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).length !== 0
                                     ?
-                                    sessionInfo.ID
-                                    ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).map((user, index) => (
-                                        <div className={`flex justify-between w-full h-max  bg-base-100 items-center shadow ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
+                                        <div key={index} className={`flex justify-between w-full h-max  bg-base-100 items-center shadow ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
                                             <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                                 {user.firstName}
                                             </div>
@@ -372,7 +380,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                     </div>
                 </div>
-                <div class=" rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
+                <div className=" rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 shadow">
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                     <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -402,7 +410,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    1
+                                    {articles.filter(article => !selectedSession || article.SessionCode === selectedSession).length}
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col">
@@ -412,7 +420,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    0
+                                    {articles.filter(article => !selectedSession || (article.SessionCode === selectedSession && article.Approved)).length}
                                 </div>
                             </div>
                         </div>
@@ -477,10 +485,10 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     &&
                                     articles.length !== 0
                                     ?
-                                    sessionInfo.ID
+                                    selectedSession
                                     ?
-                                    articles.map((article, index) => (
-                                        <div className={`flex justify-between w-full h-max border-b-3 bg-base-100 shadow items-center ${index === 0 ? "rounded-t-md" : ""}`}>
+                                    articles.filter(article => !selectedSession || article.SessionCode === selectedSession).map((article, index) => (
+                                        <div key={index} className={`flex justify-between w-full h-max border-b-3 bg-base-100 shadow items-center ${selectedArticles.includes(article.id) ? "bg-base-200" : ""} ${index === 0 ? "rounded-t-md" : ""}`} onClick={() => handleSetSelectedArticles(article.id)}>
                                             <div className="flex grow md:basis-[200px] py-0 pl-[10px] min-h-[50px] items-center">
                                                 {article.Publisher}
                                             </div>
@@ -490,7 +498,8 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                             </div>
                                             <Divider orientation="vertical"/>
                                             <div className="hidden md:flex basis-[200px]  py-0 pl-[10px] items-center min-h-[50px]">
-                                                Date here
+                                                {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString()}
+                                                
                                             </div>
                                             <div className={`hidden md:flex basis-[200px] grow border-x-3 max-w-[70px] border-y-0 h-full pl-[10px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `}>
                                                 {article.Approved ? "True" : "False"}

@@ -22,7 +22,7 @@ const UserPanel = ({users, classes}) => {
                             User First and Last Name.
                         </span>
                     </Tooltip>
-                    <span className="text-lg">
+                    <span className="text-lg h-[50px]">
                         {
                             selectedUser.userName
                             ?
@@ -65,7 +65,7 @@ const UserPanel = ({users, classes}) => {
                                 users
                                 ?
                                 users.map((user, index) => (
-                                    <div className={`flex justify-between w-full h-max bg-base-100 items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user})}>
+                                    <div key={index} className={`flex justify-between w-full h-max bg-base-100 items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user})}>
                                         <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {user.firstName}
                                         </div>
@@ -82,9 +82,9 @@ const UserPanel = ({users, classes}) => {
                                             {
                                             user.hasPublished
                                             ?
-                                            "Has Published"
+                                            "True"
                                             :
-                                            "Has Not Published"
+                                            "False"
                                             }
                                         </div>
                                     </div>
@@ -114,44 +114,44 @@ const UserPanel = ({users, classes}) => {
                         <>
                             <div className="flex flex-col w-[50%]  h-full gap-[25px]">
                                 <div className="flex flex-col gap-[15px]">
-                                    <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
                                         <span className="text-lg underline decoration-dashed">
                                             First Name.
                                         </span>
                                         <span className="text-lg">
                                             {selectedUser.userData.firstName}
                                         </span>
-                                    </Tooltip>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
                                         <span className="text-lg underline decoration-dashed">
                                             Last Name.
                                         </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {selectedUser.userData.lastName}
                                     </span>
-                                    </Tooltip>
+                                    
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's display name they chose">
                                         <span className="text-lg underline decoration-dashed">
                                             Display Name.
                                         </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {selectedUser.userData.userInfo.displayName}
                                     </span>
-                                    </Tooltip>
                                 </div>
                                 <div className="flex flex-col gap-[15px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's email they registered with">
                                         <span className="text-lg underline decoration-dashed">
                                             Email.
                                         </span>
+                                    </Tooltip>
                                     <span className="text-lg">
                                         {selectedUser.userData.userInfo.email}
                                     </span>
-                                    </Tooltip>
+                                    
                                 </div>
                             </div>
                             <div className="flex flex-col w-[50%] h-full gap-[25px]">
@@ -218,10 +218,11 @@ const UserPanel = ({users, classes}) => {
                                         <span className="text-lg underline decoration-dashed">
                                             User ID
                                         </span>
+                                    </Tooltip>
                                         <span className="text-lg">
                                             {selectedUser.userData.userInfo.uid}
                                         </span>
-                                    </Tooltip>
+                                   
                                 </div>
                             </div>
                         </>

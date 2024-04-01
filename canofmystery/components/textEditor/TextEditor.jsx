@@ -471,6 +471,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     Approved: false,
                     Author: Author ? Author : "",
                     UserId: userId ? userId : "",
+                    SessionCode: user.sessionCode
                 };
 
                 response = await addDocument("Articles", article) && await setHasPublished("users", userId);
@@ -495,6 +496,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     Approved: true,
                     Author: Author,
                     UserId: userId
+                    
                 };
 
                 response = await addDocument("Pages", page) && await setHasPublished("users", userId);

@@ -3,28 +3,6 @@ import  firebase_app  from "../config.js"
 
 const db = getFirestore(firebase_app)
 
-//by https://github.com/DerekZiemba on github. MIT License:
-const dziemba_levenshtein = (a, b) => {
-	var tmp;
-	if (a.length === 0) { return b.length; }
-	if (b.length === 0) { return a.length; }
-	if (a.length > b.length) { tmp = a; a = b; b = tmp; }
-
-	var i, j, res, alen = a.length, blen = b.length, row = Array(alen);
-	for (i = 0; i <= alen; i++) { row[i] = i; }
-
-	for (i = 1; i <= blen; i++) {
-		res = i;
-		for (j = 1; j <= alen; j++) {
-			tmp = row[j - 1];
-			row[j - 1] = res;
-			res = Math.min(tmp + (b[i - 1] !== a[j - 1]), res + 1, row[j] + 1);
-		}
-		row[j - 1] = res;
-	}
-	return res;
-}
-
 export const addDocument = async (collectionName, docData) => {
     const colRef = collection(db, collectionName);
     const response = await addDoc(colRef, docData);
@@ -97,16 +75,28 @@ export const deletePages = async (selectedPages) => {
 }
 
 
-export const getRecent = async (num) => {
-    const articles = await getApprovedArticles();
-
-    if(num == -1){
-        return articles;
+export const getRecent = async (sliceNumber) => {
+    try {
+      // Call the async function getApprovedArticles
+      const articles = await getApprovedArticles();
+  
+      // Sort articles from closest to the current date and time to the furthest
+      const sortedArticles = articles.sort((a, b) => {
+        // Parse the timestamps into JavaScript Date objects and compare
+        const dateA = new Date(a.Time); // Assuming 'a.Time' is a string in the given format
+        const dateB = new Date(b.Time); // Assuming 'b.Time' is a string in the given format
+        return dateB - dateA; // Sort in descending order
+      });
+  
+  
+      // Return the specified slice of articles
+      return sortedArticles.slice(0, sliceNumber);
+    } catch (error) {
+      // Handle errors, such as logging or re-throwing
+      console.error('Error fetching or sorting articles:', error);
+      throw error; // Re-throw the error after logging or handling it
     }
-    else{
-        return articles.slice(0, num);
-    }
-}
+  }
 
 export const getApprovedArticles = async () => {
     const collectionRef = collection(db, "Articles");

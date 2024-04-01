@@ -121,7 +121,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                 <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg ${selectedArticles.includes(article.id) && 'bg-[#c8c8c8]'}`} key={article.id} onClick={() => handleSelection(article.id)}>
                                     <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
                                         <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {article.Publisher}
+                                            {article.firstName + " " + article.lastName}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
@@ -136,17 +136,27 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {/* {article.Time}  */}
+                                            {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleTimeString()}
                                         </div>
                                         <Divider orientation="vertical" className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            Date here
+                                            {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString()}
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
                                         <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
-                                            No Cover Image Available
+                                            {
+                                                article.coverImage
+                                                ?
+                                                <>
+                                                    Is Available
+                                                </>
+                                                :
+                                                <>
+                                                    Is Not Available
+                                                </>
+                                            }
                                         </div>
                                         <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {

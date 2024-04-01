@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
       // Customize letter-spacing
       letterSpacing: '0.1em', // Adjust as needed
     },
-  }));
+}));
 
 export default function Page({params}){
     const [signedIn, setSignedIn] = useState(false)
@@ -117,7 +117,6 @@ export default function Page({params}){
             setIsLoading(false);
             } else {
             setIsLoading(false);
-            console.log("No such document!");
             }
         } else {
             setIsLoading(true);
@@ -134,14 +133,18 @@ export default function Page({params}){
     
 
     const handleFetchArticles = async () => {
-        setArticles(await fetchArticles());
-        setNumUnapproved(await getTotalUnapprovedArticles());
+        const tempArticles = await fetchArticles();
+
+        setArticles(tempArticles);
+        setNumUnapproved(tempArticles.filter(article => !article.Approved).length);
         setLoading(false)
     };
 
     const handleFetchPages = async () => {
-        setPages(await fetchPages())
-        setNumPagesUnapproved(await getTotalUnapprovedPages())
+        const tempPages = await fetchPages()
+
+        setPages(tempPages)
+        setNumPagesUnapproved(tempPages.filter(page => !page.Approved).length)
         setLoading(false)
     }
 
@@ -159,7 +162,6 @@ export default function Page({params}){
             handleFetchArticles();
             handleFetchPages();
             handleFetchUsers();
-            console.log(articles)
         } else {
             handleSearchArticles(search);
         }
@@ -234,7 +236,7 @@ export default function Page({params}){
                                 </button>
                             
                             <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("pages")}>
-                                <Badge badgeContent={numUnapproved} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
+                                <Badge badgeContent={numPagesUnapproved} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                     <MdArticle className="text-2.7xl"/> 
                                 </Badge>
                                 <span className="hidden lg:inline">
@@ -329,7 +331,7 @@ export default function Page({params}){
                         {
                             (currentPanel === "analytics")
                             &&
-                            <AnalyticPanel chartData={chartData} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
+                            <AnalyticPanel chartData={chartData} classes={classes} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
                         }
                         {
                             (currentPanel === "users")

@@ -12,7 +12,7 @@ export default function Home() {
 
 
   return (
-    <div className={`${styles.container} overflow-hidden`} style={{WebkitMaskImage: "-webkit-gradient(linear, left 90%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))"}}>
+    <div className={`${styles.container} overflow-hidden`}>
         <Lander/>
 
         <CanItemsScroll/>
