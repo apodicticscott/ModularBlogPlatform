@@ -16,13 +16,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "../../app/firebase";
 // Use window size hook assuming it's already handling window undefined check
 import useWindowSize from '../../hooks/useWindowSize';
-import {
-    AnalyticPanel,
-    HomePanel,
-    ArticlePanel,
-    PagePanel,
-    UserPanel
-} from "../../components/admin/adminPanels";
+import Home from "../page";
 
 const auth = getAuth(firebase_app);
 const firestore = getFirestore(app);
@@ -66,6 +60,32 @@ export default function Page({ params }) {
         }
     }, [signedIn]);
 
+    // States to hold your dynamically imported components
+    const [components, setComponents] = useState({
+        AnalyticPanel: null,
+        HomePanel: null,
+        ArticlePanel: null,
+        PagePanel: null,
+        UserPanel: null,
+    });
+
+    useEffect(() => {
+        // This checks if 'self' is defined, indicating a browser-like environment
+        if (typeof self !== 'undefined') {
+            import("../../components/admin/adminPanels").then(modules => {
+                setComponents({
+                    AnalyticPanel: modules.AnalyticPanel,
+                    HomePanel: modules.HomePanel,
+                    ArticlePanel: modules.ArticlePanel,
+                    PagePanel: modules.PagePanel,
+                    UserPanel: modules.UserPanel,
+                });
+            });
+        }
+    }, []);
+
+    // Destructure the loaded components for easier usage
+    const { AnalyticPanel, HomePanel, ArticlePanel, PagePanel, UserPanel } = components;
 
     let slug = params.slug;
 
@@ -325,29 +345,45 @@ export default function Page({ params }) {
                     </div>
                     <div className="h-full w-full flex flex-col items-center gap-[15px]">
                         {
-                            (currentPanel === "articles")
+                            typeof self !== undefined
                             &&
-                            <ArticlePanel classes={classes} numUnapproved={numUnapproved} setNumUnapproved={setNumUnapproved} articles={articles} setArticles={setArticles}/>
-                        }
-                        {
-                            (currentPanel === "pages")
-                            &&
-                            <PagePanel pages={pages} setPages={setPages} classes={classes} numUnapproved={numPagesUnapproved} setNumUnapproved={setNumPagesUnapproved}/>
-                        } 
-                        {
-                            (currentPanel === "analytics")
-                            &&
-                            <AnalyticPanel chartData={chartData} classes={classes} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
-                        }
-                        {
-                            (currentPanel === "users")
-                            &&
-                            <UserPanel users={users} setUsers={setUsers} classes={classes}/>
-                        }
-                        {
-                            (currentPanel === "home")
-                            &&
-                            <HomePanel articles={articles} setArticles={setArticles} classes={classes} setNumUnapproved={setNumUnapproved} setSessions={setSessions} sessions={sessions} users={users} setUsers={setUsers}/>
+                            <>
+                                {
+                                    (currentPanel === "articles")
+                                    &&
+                                    ArticlePanel
+                                    &&
+                                    <ArticlePanel classes={classes} numUnapproved={numUnapproved} setNumUnapproved={setNumUnapproved} articles={articles} setArticles={setArticles}/>
+                                }
+                                {
+                                    (currentPanel === "pages")
+                                    &&
+                                    PagePanel
+                                    &&
+                                    <PagePanel pages={pages} setPages={setPages} classes={classes} numUnapproved={numPagesUnapproved} setNumUnapproved={setNumPagesUnapproved}/>
+                                } 
+                                {
+                                    (currentPanel === "analytics")
+                                    &&
+                                    AnalyticPanel
+                                    &&
+                                    <AnalyticPanel chartData={chartData} classes={classes} setChartData={setChartData} locationData={locationData} setLocationData={setLocationData} setLocNumber={setLocNumber} locNumber={locNumber} setPageVisitData={setPageVisitData} pageVisitData={pageVisitData}/>
+                                }
+                                {
+                                    (currentPanel === "users")
+                                    &&
+                                    UserPanel
+                                    &&
+                                    <UserPanel users={users} setUsers={setUsers} classes={classes}/>
+                                }
+                                {
+                                    (currentPanel === "home")
+                                    &&
+                                    HomePanel
+                                    &&
+                                    <HomePanel articles={articles} setArticles={setArticles} classes={classes} setNumUnapproved={setNumUnapproved} setSessions={setSessions} sessions={sessions} users={users} setUsers={setUsers}/>
+                                }
+                            </>
                         }
                     </div>
                 </div>
