@@ -14,7 +14,7 @@ const SearchPage = () => {
     const [searchResults, setSearchResults] = useState(null);
     const [searchTerm, setSearchTerm] = useState(null);
     const [articles, setArticles] = useState(null);
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState()
     const [filteredArticles, setFilteredArticles] = useState([]);
     const [uniqueTags, setUniqueTags] = useState([]);
@@ -93,7 +93,9 @@ const SearchPage = () => {
     };
 
     const handleDelete = (index) => {
-        setSelectedTags(prevState => prevState.filter((item, idx) => idx !== index));
+        if(selectedTags){
+            setSelectedTags(prevState => prevState.filter((item, idx) => idx !== index));
+        }
     }
 
     const handleTagClick = (tag) => {
@@ -213,7 +215,7 @@ const SearchPage = () => {
                     <>
                         <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
 
-                            <div className="z-10 flex w-full gap-[15px] items-center p-3 pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
+                            <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
                                 {
                                     uniqueTags
                                     &&
@@ -222,7 +224,7 @@ const SearchPage = () => {
                                             <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full xs-sm:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
                                         </div>
 
-                                        <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"} dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                        <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"} classes="hidden md:flex" dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
                                         
                                         </TextDropDown>
                                     </ div>

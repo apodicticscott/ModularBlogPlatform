@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaCaretDown } from "react-icons/fa";
 import Divider from '@mui/material/Divider';
 
-const TextDropDown = ({ tags, handleSetSelected, label, id, dropDownControl, currentDrop}) => {
+const TextDropDown = ({ tags, handleSetSelected, label, id, dropDownControl, currentDrop, classes}) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
 
@@ -35,7 +35,7 @@ const TextDropDown = ({ tags, handleSetSelected, label, id, dropDownControl, cur
 
     return (
         <>
-            <div ref={containerRef} className='w-max h-max'>
+            <div ref={containerRef} className={`w-max h-max ${classes}`}>
                 <button className='w-[200px] h-[40px] rounded-md border-3 shadow-md bg-primary-dark flex items-center p-3 z-10' onClick={() => handleSetIsOpen()}>
                     <div className='grow h-full flex items-center'>
                         {
