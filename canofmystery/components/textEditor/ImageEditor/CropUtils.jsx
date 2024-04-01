@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import Cropper from 'react-easy-crop';
-import getCroppedImg from './cropImage';
+import getCroppedImg from './CropImage';
 import { MdOutlineAspectRatio } from "react-icons/md";
 import "./style.css";
 
