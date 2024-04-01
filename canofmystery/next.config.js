@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
-
-module.exports = nextConfig
+const nextConfig = {
+    experimental: {
+      nftTracing: true,
+    },
+    images: {
+      domains: [],
+    },
+    reactStrictMode: true,
+  }
+  
+  module.exports = nextConfig
