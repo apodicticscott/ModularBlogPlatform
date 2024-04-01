@@ -38,7 +38,7 @@ import "../../app/globals.css"
 import ControlPanel from "./ControlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
-import CropUtils from "./ImageEditor/cropUtils";
+import CropUtils from "./ImageEditor/CropUtils";
 import {addDocument, setHasPublished} from "../../firebase/articleUtils/articleUtils"
 import firebase_app from '/firebase/config';
 const auth = getAuth(firebase_app);
@@ -56,7 +56,7 @@ import DragVideo from "./DraggableComponents/DragVideo"
 
 import NeoButton from "../TextComponents/NeoButton";
 
-import Help from "./Help/help"
+import Help from "./Help/Help"
 
 import addLinkHelp from "./Assets/help_add_link.gif"
 

@@ -4,8 +4,8 @@ import styles from "./homepage.module.css";
 import Lander from "../components/lander/Lander"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent";
-import UseUsAsASource from "../components/useUsAsASource/useUsAsASource.jsx";
-import CanItemsScroll from "../components/canItems/canItemsScroll.jsx"
+import UseUsAsASource from "../components/UseUsAsASource/UseUsAsASource.jsx";
+import CanItemsScroll from "../components/CanItems/CanItemsScroll.jsx"
 
 export default function Home() {
 

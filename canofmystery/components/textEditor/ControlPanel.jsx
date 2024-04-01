@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
-import FileUpload from "./ImageEditor/fileUpload";
+import FileUpload from "./ImageEditor/FileUpload";
 import { MdOutlineDownloadDone } from "react-icons/md"
 import { MdOutlineQuestionMark } from "react-icons/md"
 import { Dialog, Button} from '@mui/material';
