@@ -44,7 +44,10 @@ const CategoriesSection = () => {
                         <div className="resize-none flex flex-wrap maw-full max-w-[1500px] gap-[20px] grid-flow-row auto-rows-max justify-center ">
                             {
                                 json_categories.map((category, index) => 
-                                    CategoryCard(category, index)
+                                    <div key={index}>
+                                        {CategoryCard(category, index)}
+                                    </div>
+                                    
                                 )
                             }
                         </div>

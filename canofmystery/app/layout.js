@@ -38,14 +38,14 @@ export default function RootLayout({ children  }) {
     setCookieConsent(true)
   }
   
-  useEffect(() => {
-    if(cookieConsent){
-      if(window != undefined){
-        const pagePath = window.location.pathname;
-        logPageView(pagePath);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(cookieConsent){
+  //     if(window != undefined){
+  //       const pagePath = window.location.pathname;
+  //       logPageView(pagePath);
+  //     }
+  //   }
+  // }, []);
     
   return (
     <html data-theme="mytheme" className="" lang="en">

@@ -60,7 +60,7 @@ const Header = ({children, text, type, classes, style, highlight, onClick, onKey
             tracking: "tracking-[-3px]",
             trackingSm: "sm:tracking-[-3.5px]",
             trackingMd: "",
-            trackingLg: "lg:tracking-[-4px]",
+            trackingLg: "lg:text-[-4px]",
             tracking2xl: "",
             tracking3xl: "",
             size: "text-2.5xl",

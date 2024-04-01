@@ -4,7 +4,7 @@
 import React, {useState} from "react";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { useRouter } from 'next/navigation'
-import { NeoButton } from "../../components/TextComponents/NeoButton"
+import NeoButton from "../../components/TextComponents/NeoButton"
 import { AnimatePresence, motion } from "framer-motion";
 import { sendPasswordResetEmail } from "firebase/auth";
 import {auth} from "../firebase"

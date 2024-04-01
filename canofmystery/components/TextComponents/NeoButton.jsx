@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion"
 
 
-const neoButton = ({children, classes, onClick, href}) => {
+const NeoButton = ({children, classes, onClick, href}) => {
     if (href){
         return(
             <a href={href}>
@@ -36,4 +36,4 @@ const neoButton = ({children, classes, onClick, href}) => {
     )
 }
 
-export default neoButton;
+export default NeoButton;

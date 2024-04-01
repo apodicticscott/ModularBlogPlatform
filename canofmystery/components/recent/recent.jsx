@@ -1,13 +1,8 @@
 'use client'
 import React, { useEffect, useState, useRef } from "react";
-import { GoClockFill } from "react-icons/go";
 import Link from "../TextComponents/Link";
 import { BiSolidBookOpen } from "react-icons/bi";
 import { getRecent } from "../../firebase/articleUtils/articleUtils";
-import useWindowSize from '../../hooks/useWindowSize';
-import { motion } from "framer-motion"
-import Image from "next/image";
-import hand from "./22becce14efa74bc6c83bec78f9d9b1e-pixel-hand-cursor-icon.png"
 
 const Recent = () => {
     const ref = useRef(null);
@@ -91,7 +86,7 @@ const Recent = () => {
 
                             return(
                                 <Link isUnderlined={false} key={article.id} href={"blog/"+article.id} classes={"hover:underline-none"}>
-                                    <div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}  id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
+                                    <div id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
                                         <div>
                                             <svg width="45" height="35" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative left-[-15px] top-[25px]">
                                                 <g filter="url(#filter0_d_941_99)">
