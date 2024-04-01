@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback } from "react";
-import CropUtils from "./cropUtils"
 import Compress from "compress.js";
 import { FaImage, FaUpload } from "react-icons/fa";
 import { MdOutlineDownloadDone, MdCrop, MdImageNotSupported } from "react-icons/md";

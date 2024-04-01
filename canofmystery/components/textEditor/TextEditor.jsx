@@ -38,7 +38,7 @@ import "../../app/globals.css"
 import ControlPanel from "./ControlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
-import CropUtils from "./ImageEditor/cropUtils";
+import CropUtils from "./ImageEditor/CropUtils";
 import {addDocument, setHasPublished} from "../../firebase/articleUtils/articleUtils"
 import firebase_app from '/firebase/config';
 const auth = getAuth(firebase_app);
