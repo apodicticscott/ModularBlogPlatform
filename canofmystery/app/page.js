@@ -4,7 +4,7 @@ import styles from "./homepage.module.css";
 import Lander from "../components/lander/Lander"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent";
-import UseUsAsASource from "../components/UseUsAsASource/UseUsAsASource"
+import UseUsAsASource from "../components/useUs/useUs"
 import CanItemsScroll from "../components/CanItems/CanItemsScroll"
 
 export default function Home() {
