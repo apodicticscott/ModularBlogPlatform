@@ -35,7 +35,7 @@ import {
 
 import "../../app/globals.css"
 
-import ControlPanel from "./controlPanel"
+import ControlPanel from "./ControlPanel"
 import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/cropUtils";
@@ -47,12 +47,12 @@ import { getAuth } from "@firebase/auth";
 import placeholderOne from "../../public/Assets/1.png"
 import placeholderTwo from "../../public/Assets/2.jpg"
 
-import DragHeader from "./draggableComponents/dragHeader";
-import DragParagraph from "./draggableComponents/dragParagraph"
-import DragResource from "./draggableComponents/dragResource";
-import DragImage from "./draggableComponents/dragImage";
-import DragList from "./draggableComponents/dragList"
-import DragVideo from "./draggableComponents/dragVideo"
+import DragHeader from "./DraggableComponents/DragHeader";
+import DragParagraph from "./DraggableComponents/DragParagraph"
+import DragResource from "./DraggableComponents/DragResource";
+import DragImage from "./DraggableComponents/DragImage";
+import DragList from "./DraggableComponents/DragList"
+import DragVideo from "./DraggableComponents/DragVideo"
 
 import NeoButton from "../TextComponents/NeoButton";
 
