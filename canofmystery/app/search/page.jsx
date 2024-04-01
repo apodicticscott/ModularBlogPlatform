@@ -14,7 +14,7 @@ const SearchPage = () => {
     const [searchResults, setSearchResults] = useState(null);
     const [searchTerm, setSearchTerm] = useState(null);
     const [articles, setArticles] = useState(null);
-    const [selectedTags, setSelectedTags] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([]);
     const [selectedFilter, setSelectedFilter] = useState()
     const [filteredArticles, setFilteredArticles] = useState([]);
     const [uniqueTags, setUniqueTags] = useState([]);
@@ -93,9 +93,10 @@ const SearchPage = () => {
     };
 
     const handleDelete = (index) => {
-        if(selectedTags){
+        if(selectedTags.length !== 0){
             setSelectedTags(prevState => prevState.filter((item, idx) => idx !== index));
         }
+        
     }
 
     const handleTagClick = (tag) => {
@@ -120,7 +121,7 @@ const SearchPage = () => {
 
     useEffect(() => {
         console.log(selectedTags, searchTerm)
-        if(selectedTags || searchTerm){
+        if(selectedTags.length !== 0 || searchTerm){
             console.log("here")
             updateUrl(selectedTags)
         }
