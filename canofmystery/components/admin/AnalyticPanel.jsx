@@ -19,7 +19,6 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
     function calculateCountryUserPercentage(data) {
         // Initialize a map to hold country totals
         const countryTotals = new Map();
-        console.log(data)
         // Calculate total users and accumulate totals by country
         let totalUsers = 0;
         data.forEach(item => {
@@ -44,7 +43,6 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
 
     const handleFetch = async () => {
         const {pivotReport, realTimeReport, pageVisitReport} = await fetchGoogleAnalyticsReport(propertyId)
-        console.log(pageVisitReport.result)
         setPageVisitData(pageVisitReport.result)
         setLocNumber(calculateCountryUserPercentage(pivotReport.result))
         setLocationData(pivotReport)
@@ -53,11 +51,9 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
     }
 
     useEffect(() => {
-        console.log(chartData.result, locationData.result, locNumber)
         if(!chartData.result && !locationData.result && !locNumber){
             handleFetch()
         }
-        
     }, [])
 
     const valueFormatter = (value) => `${value} Users`;

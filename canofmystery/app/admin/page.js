@@ -1,67 +1,70 @@
 'use client'
-import React, {useState, useEffect, useRef} from "react"
-import { searchArticles, fetchArticles, fetchPages, getTotalUnapprovedArticles, getTotalUnapprovedPages} from "../../firebase/articleUtils/articleUtils"
-import { fetchUsers } from "../../firebase/userUtils/userUtils"
+import React, { useState, useEffect, useRef } from "react";
+// Removed the static import of ApiSignIn
+import { searchArticles, fetchArticles, fetchPages, getTotalUnapprovedArticles, getTotalUnapprovedPages } from "../../firebase/articleUtils/articleUtils";
+import { fetchUsers } from "../../firebase/userUtils/userUtils";
 import { makeStyles } from '@material-ui/core/styles';
-import Header from "../../components/TextComponents/Header1"
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
-import { MdArticle, MdAccountCircle,  MdAnalytics, MdHome  } from "react-icons/md";
-import { Badge,  ThemeProvider, createTheme } from "@mui/material"
+import Header from "../../components/TextComponents/Header1";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { MdArticle, MdAccountCircle, MdAnalytics, MdHome } from "react-icons/md";
+import { Badge, ThemeProvider, createTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { RiPagesFill } from "react-icons/ri";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import firebase_app from "../../firebase/config";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { app } from "../../app/firebase"
-import { ApiSignIn } from "../../firebase/analitics/analyticsUtils"
+import { app } from "../../app/firebase";
+// Use window size hook assuming it's already handling window undefined check
+import useWindowSize from '../../hooks/useWindowSize';
+import {
+    AnalyticPanel,
+    HomePanel,
+    ArticlePanel,
+    PagePanel,
+    UserPanel
+} from "../../components/admin/adminPanels";
 
 const auth = getAuth(firebase_app);
-const firestore = getFirestore(app)
-
-import useWindowSize from '../../hooks/useWindowSize'; // Assuming you have a hook for window size
-
-import { AnalyticPanel, HomePanel, ArticlePanel, PagePanel, UserPanel} from "../../components/admin/adminPanels"
+const firestore = getFirestore(app);
 
 const theme = createTheme({
     palette: {
-      primary: {
-        main: '#29ff80', // Black
-      },
-      secondary: {
-        main: '#000000', // Red
-      },
+        primary: {
+            main: '#29ff80',
+        },
+        secondary: {
+            main: '#000000',
+        },
     },
 });
-  
-
-// import Loader from "../../../components/loader/loader"
 
 const useStyles = makeStyles((theme) => ({
     customTooltip: {
-      // Customize letter-spacing
-      letterSpacing: '0.1em', // Adjust as needed
+        letterSpacing: '0.1em',
     },
 }));
 
-export default function Page({params}){
-    const [signedIn, setSignedIn] = useState(false)
+export default function Page({ params }) {
+    const [signedIn, setSignedIn] = useState(false);
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            // Dynamically import ApiSignIn only on the client side
+            import("../../firebase/analitics/analyticsUtils")
+                .then(({ ApiSignIn }) => {
+                    if (!signedIn) {
+                        const response = ApiSignIn();
 
-        const handleSignIn = async () => {
-            if(!signedIn){
-                const response = ApiSignIn();
-    
-                if(response.error){
-                    setSignedIn(false)
-                }else{
-                    setSignedIn(true)
-                }
-            }
+                        if (response.error) {
+                            setSignedIn(false);
+                        } else {
+                            setSignedIn(true);
+                        }
+                    }
+                })
+                .catch(error => console.error("Failed to load ApiSignIn", error));
         }
-
-        handleSignIn();
-    }, [])
+    }, [signedIn]);
 
 
     let slug = params.slug;
@@ -175,33 +178,36 @@ export default function Page({params}){
     const [currentTop, setCurrentTop] = useState();
     
     useEffect(() => {
-        const handleScroll = () => {
-            if (!sidebarRef.current) return;
-    
-            const sidebarRect = sidebarRef.current.getBoundingClientRect();
-            const viewportBottom = window.innerHeight;
-    
-            if(sidebarRect.bottom <= viewportBottom) {
-                if (!isFloating) {
-                    setIsFloating(true);
-                    setCurrentTop(sidebarRect.bottom - sidebarRect.height);
+        if(typeof window !== undefined){
+            const handleScroll = () => {
+                if (!sidebarRef.current) return;
+        
+                const sidebarRect = sidebarRef.current.getBoundingClientRect();
+                const viewportBottom = window.innerHeight;
+        
+                if(sidebarRect.bottom <= viewportBottom) {
+                    if (!isFloating) {
+                        setIsFloating(true);
+                        setCurrentTop(sidebarRect.bottom - sidebarRect.height);
+                    }
+                } else {
+                    if (isFloating) {
+                        setIsFloating(false);
+                        setCurrentTop(25);
+                    }
                 }
-            } else {
-                if (isFloating) {
-                    setIsFloating(false);
-                    setCurrentTop(25);
-                }
-            }
-        };
+            };
     
-        handleScroll(); // Call it once on component mount
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleScroll);
-    
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
-        };
+        
+            handleScroll(); // Call it once on component mount
+            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', handleScroll);
+        
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+                window.removeEventListener('resize', handleScroll);
+            };
+        }
     }, [isFloating]);
 
     return(
@@ -323,11 +329,11 @@ export default function Page({params}){
                             &&
                             <ArticlePanel classes={classes} numUnapproved={numUnapproved} setNumUnapproved={setNumUnapproved} articles={articles} setArticles={setArticles}/>
                         }
-                                                {
+                        {
                             (currentPanel === "pages")
                             &&
                             <PagePanel pages={pages} setPages={setPages} classes={classes} numUnapproved={numPagesUnapproved} setNumUnapproved={setNumPagesUnapproved}/>
-                        }
+                        } 
                         {
                             (currentPanel === "analytics")
                             &&

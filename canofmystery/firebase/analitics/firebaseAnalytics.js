@@ -1,9 +1,17 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent as firebaseLogEvent } from 'firebase/analytics';
+import { getAnalytics, isSupported, logEvent as firebaseLogEvent } from 'firebase/analytics';
 import firebase_app from "../config"
-const analytics = getAnalytics(firebase_app)
 
+let analytics;
+
+isSupported().then((isSupported) => {
+  if (isSupported) {
+    analytics = getAnalytics(firebase_app);
+  }
+});
 
 export const logPageView = (pagePath) => {
-  firebaseLogEvent(analytics, 'page_view', { page_path: pagePath });
+  if (analytics) {
+    firebaseLogEvent(analytics, 'page_view', { page_path: pagePath });
+  }
 };
