@@ -211,32 +211,46 @@ const SearchPage = () => {
 
     return(
         <div className="w-screen min-h-screen h-max overflow-hidden">
-            <div className="flex flex-col justify-center self-center h-full w-full  max-w-full align-center dark:bg-base-100-dark py-[50px] sm:py-[100px] px-7 xl:px-14 gap-[25px]">
+            <div className="flex flex-col justify-center self-center h-full w-full  max-w-full align-center dark:bg-base-100-dark py-[70px] sm:py-[100px] px-7 xl:px-14 gap-[25px]">
                 {articles ? (
                     <>
                         <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
 
-                            <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
+                            <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-[5px] md:pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
                                 {
                                     uniqueTags
                                     &&
                                     <div className="flex justify-between w-full h-max items-center">
-                                        <div className="flex flex-row gap-[20px] items-center ">
-                                            <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full xs-sm:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
+                                        <div className="flex flex-row gap-[20px] items-center w-full md:w-max">
+                                            <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full md:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
                                         </div>
 
-                                        <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"} classes="hidden md:flex" dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
-                                        
-                                        </TextDropDown>
+                                        <div className="hidden md:flex">
+                                            <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                            
+                                            </TextDropDown>
+                                        </div>
+
                                     </ div>
 
 
                                 }
-                                <div className="h-max flex gap-[15px]">
+                                <div className="h-max gap-[15px] hidden md:flex">
                                     <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light dark:text-t-header-dark "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
                                     <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
                                 </div>
                                 
+                            </div>
+                            <div className="flex pb-[5px] md:pb-0 md:hidden gap-[15px] items-center justify-between">
+                                <div className="flex md:hidden">
+                                    <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                            
+                                    </TextDropDown>
+                                </div>
+                                <div className="h-max flex gap-[15px] flex md:hidden">
+                                    <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light dark:text-t-header-dark "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                    <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                </div>
                             </div>
                             <div className="z-0 flex flex-wrap gap-[10px] w-full">
                                 {

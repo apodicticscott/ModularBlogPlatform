@@ -35,7 +35,7 @@ const TextDropDown = ({ tags, handleSetSelected, label, id, dropDownControl, cur
 
     return (
         <>
-            <div ref={containerRef} className={`w-max h-max ${classes}`}>
+            <div ref={containerRef} className={`w-max h-max `}>
                 <button className='w-[200px] h-[40px] rounded-md border-3 shadow-md bg-primary-dark flex items-center p-3 z-10' onClick={() => handleSetIsOpen()}>
                     <div className='grow h-full flex items-center'>
                         {
@@ -50,7 +50,7 @@ const TextDropDown = ({ tags, handleSetSelected, label, id, dropDownControl, cur
                     {tags.map((tag, index) => (
                         <React.Fragment key={index}>
                             <Divider />
-                            <button className={`h-max w-full p-3 pr-2 text-left hover:bg-base-200 dark:hover:text-t-header-light`} onClick={() => (handleSetSelected(tag.Text, tag.Color), setIsOpen(false))}>
+                            <button className={`h-max w-full p-3 pr-2 text-left  hover:bg-base-200 dark:hover:text-t-header-light`} onClick={() => (handleSetSelected(tag.Text, tag.Color), setIsOpen(false))}>
                                 {tag.Text}
                             </button>
                         </React.Fragment>

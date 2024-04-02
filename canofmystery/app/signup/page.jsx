@@ -29,10 +29,11 @@ const SignUpPage = () => {
   const [panel, setPanel] = React.useState('cradentials');
   const [signUpErrorVisible, setSignUpErrorVisible] = useState(false);
   const [infoErrorVisible, setInfoErrorVisible] = useState(false)
-  const [infoErrorMessage, setInfoErrorMessage] = useState('');
   const [displayNameErrorVisible, setDisplayNameErrorVisible] = useState(false)
+  const [sessionCodeErrorVisible, setSessionCodeErrorVisible] = useState(false)
+  const [infoErrorMessage, setInfoErrorMessage] = useState("");
   const [displayNameErrorMessage, setDisplayNameErrorMessage] = useState("")
-  const [sessionCodeErrorMessage, setSessionCodeErrorMessage] = useState();
+  const [sessionCodeErrorMessage, setSessionCodeErrorMessage] = useState("");
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -46,6 +47,7 @@ const SignUpPage = () => {
     if (!emailInput.trim() || !passwordInput.trim()) {
       setSignUpErrorVisible(true);
       setErrorMessage("Email and password are required.");
+      setTimeout(() => setSignUpErrorVisible(false), 3000);
       return;
     }
 
@@ -53,6 +55,7 @@ const SignUpPage = () => {
     if (passwordInput.length < 8) {
       setSignUpErrorVisible(true);
       setErrorMessage("Password must be at least 8 characters long.");
+      setTimeout(() => setSignUpErrorVisible(false), 3000);
       return;
     }
 
@@ -61,6 +64,7 @@ const SignUpPage = () => {
     if (!passwordRegex.test(passwordInput)) {
       setSignUpErrorVisible(true);
       setErrorMessage("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      setTimeout(() => setSignUpErrorVisible(false), 3000);
       return;
     }
 
@@ -70,6 +74,7 @@ const SignUpPage = () => {
         if(response.error && response.error.code === "auth/email-already-in-use"){
           setSignUpErrorVisible(true);
           setErrorMessage("The email you have chosen is already in use.");
+          setTimeout(() => setSignUpErrorVisible(false), 3000);
           return;
         }
 
@@ -95,40 +100,57 @@ const handleInfo = async (event) => {
 
   // Check if email or password is empty
   if (!firstName.trim() || !lastName.trim() && !displayName.trim() && !sessionCode.trim()) {
-    setInfoErrorMessage(true);
+    setInfoErrorVisible(true);
     setInfoErrorMessage("First and Last name are required.");
     setDisplayNameErrorMessage(true);
     setDisplayNameErrorMessage("Display Name is Required.");
     setSessionCodeErrorMessage("Session Code is Required.");
+    setTimeout(() => setInfoErrorVisible(false), 3000); 
+    setTimeout(() => setDisplayNameErrorMessage(false), 3000);
     return;
   }else if (!firstName.trim() || !lastName.trim() && !displayName.trim()) {
-    setInfoErrorMessage(true);
+    setInfoErrorVisible(true);
     setInfoErrorMessage("First and Last name are required.");
     setDisplayNameErrorMessage(true);
     setDisplayNameErrorMessage("Display Name is Required.");
+    setTimeout(() => setInfoErrorVisible(false), 3000);
+    setTimeout(() => setDisplayNameErrorMessage(false), 3000);
     return;
   }else if (!firstName.trim() || !lastName.trim() && !sessionCode.trim()) {
-    setInfoErrorMessage(true);
+    setInfoErrorVisible(true);
     setInfoErrorMessage("First and Last name are required.");
+    setSessionCodeErrorVisible(true)
     setSessionCodeErrorMessage("Session Code is Required.");
+    setTimeout(() => setInfoErrorVisible(false), 3000);
   }else if(!displayName.trim() && !sessionCode.trim()){
     setDisplayNameErrorMessage(true);
     setDisplayNameErrorMessage("Display Name is Required.");
+    setSessionCodeErrorVisible(true)
     setSessionCodeErrorMessage("Session Code is Required.");
+    setTimeout(() => setDisplayNameErrorVisible(false), 3000);
+    setTimeout(() => setSessionCodeErrorVisible(false), 3000);
   }else if(!firstName.trim() || !lastName.trim()){
-    setInfoErrorMessage(true);
+    setInfoErrorVisible(true);
     setInfoErrorMessage("First and Last name are required.");
+    setTimeout(() => setInfoErrorVisible(false), 3000);
   }else if(!displayName.trim()){
-    setDisplayNameErrorMessage(true);
+    setDisplayNameErrorVisible(true);
     setDisplayNameErrorMessage("Display Name is Required.");
+    setTimeout(() => setDisplayNameErrorVisible(false), 3000);
   }else if(!sessionCode.trim()){
+    setSessionCodeErrorVisible(true)
     setSessionCodeErrorMessage("Session Code is Required.");
+    setTimeout(() => setSessionCodeErrorVisible(false), 3000);
     return;
   }else if(sessionData === null){
+    setSessionCodeErrorVisible(true)
     setSessionCodeErrorMessage("This session code does not exist.");
+    setTimeout(() => setSessionCodeErrorVisible(false), 3000);
     return;
   }else if(isTimeInPast(sessionData.Experation)){
+    setSessionCodeErrorVisible(true)
     setSessionCodeErrorMessage("This session code is expired.");
+    setTimeout(() => setSessionCodeErrorVisible(false), 3000);
     return;
   }
 
@@ -162,20 +184,20 @@ const handleInfo = async (event) => {
 
 
   return (
-    <div className="w-full h-[100vh] flex items-center justify-center">
+    <div className="w-full h-[100vh] flex items-center justify-center duration-100">
 
       <div class={`flex flex-col justify-center self-center align-center sm:max-w-[450px] border-2 md:border-3    shadow-lg m-7 sm:m-0 h-max min-h-[480px] w-[calc(100vw_-_29px)] p-7 rounded-md transition-all duration-500`}>
         
           {panel === "cradentials" 
           ?
             <div class="mb-4">
-              <h3 class="font-bold text-3xl text-gray-200">Sign Up</h3>
+              <h3 class="font-bold text-3xl text-gray-200 tracking-tighter">Sign Up</h3>
             </div>
           :
             panel === "name"
             &&
             <div class="mb-4">
-              <h3 class="font-bold text-3xl text-gray-200">User Info</h3>
+              <h3 class="font-bold text-3xl text-gray-200 tracking-tighter">User Info</h3>
             </div>
           }
         
@@ -185,7 +207,7 @@ const handleInfo = async (event) => {
           ?
           <form onSubmit={handleCradentials} className="flex flex-col gap-[25px]">
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-wide">
+              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-tighter">
                 Email
               </label>
               <input 
@@ -194,33 +216,34 @@ const handleInfo = async (event) => {
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="password" class="text-2xl font-medium text-gray-700 tracking-wide">
+              <label htmlFor="password" class="text-2xl font-medium text-gray-700 tracking-tighter">
                 Password
               </label>
               <input
                 onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" 
                 class="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Password" 
               /> 
-              <AnimatePresence>
-                  {signUpErrorVisible && (
-                      <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="rounded-md p-[10px]"
-                          style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
-                      >
-                        {errorMessage}
-                      </motion.div>
-                  )}
-                </AnimatePresence>           
+            <AnimatePresence>
+              {signUpErrorVisible && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, paddingX: 0, paddingY: 0 }}
+                  animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
+                  exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
+                  transition={{ duration: 0.5 }}
+                  className="rounded-md overflow-hidden p-[10px] px-[15px]"
+                  style={{ background: '#fd6666', color: "black", marginTop: "15px" }}
+                >
+                  {errorMessage}
+                </motion.div>
+              )}
+            </AnimatePresence>         
             </div>
             <a href="/login" class="text-green-400 hover:text-green-500 2xl:text-2xl w-full">
                   Have an account? click here!
             </a>
             <NeoButton
               onSubmit={handleCradentials}
-              type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer"
+              type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
             >
               Next
             </NeoButton>
@@ -229,33 +252,36 @@ const handleInfo = async (event) => {
 
           panel === "name"
           ?
-          <form onSubmit={handleInfo} className="flex flex-col gap-[20px]">
+          <form onSubmit={handleInfo} className="flex flex-col gap-[20px] ">
           <div className="flex flex-col gap-[20px]">
-            <div className="flex w-full h-max items-center gap-[10px]">
-              <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-wide grow">
-                First Name
-              </label>
-              <label htmlFor="password" class="text-xl font-medium text-gray-700 tracking-wide grow">
-                Last Name
-              </label>
-            </div>
-            <div className="flex flex-row w-full h-max gap-[20px]">
-              <input 
-                onChange={(e) => setFirstName(e.target.value)} required type="text" name="FirstName" id="FirstName"
-                class="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
-              />
-              <input
-                onChange={(e) => setLastName(e.target.value)} required type="text" name="LastName" id="LastName" 
-                class="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
-              /> 
+            <div className="flex flex-col gap-[10px]">
+              <div className="flex w-full h-max items-center gap-[10px]">
+                <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-tighter grow">
+                  First Name
+                </label>
+                <label htmlFor="password" class="text-xl font-medium text-gray-700 tracking-tighter grow">
+                  Last Name
+                </label>
+              </div>
+              <div className="flex flex-row w-full h-max gap-[20px]">
+                <input 
+                  onChange={(e) => setFirstName(e.target.value)} required type="text" name="FirstName" id="FirstName"
+                  class="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
+                />
+                <input
+                  onChange={(e) => setLastName(e.target.value)} required type="text" name="LastName" id="LastName" 
+                  class="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
+                /> 
+              </div>
             </div>
             <AnimatePresence>
                   {infoErrorVisible && (
-                      <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="rounded-md p-[10px]"
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, paddingX: 0, paddingY: 0 }}
+                      animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
+                      exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
+                      transition={{ duration: 0.5 }}
+                      className="rounded-md overflow-hidden p-[10px] px-[15px]"
                           style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
                       >
                         {infoErrorMessage}
@@ -263,7 +289,7 @@ const handleInfo = async (event) => {
                   )}
             </AnimatePresence>   
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-wide">
+              <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-tighter">
                 Display Name
               </label>
               <input 
@@ -272,31 +298,32 @@ const handleInfo = async (event) => {
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-wide">
+              <label htmlFor="email" class="text-xl font-semibold text-gray-700 tracking-tighter">
                 Session Code
               </label>
               <input 
                 onChange={(e) => setSessionCode(e.target.value)} type="sessionCode" name="sessionCode" id="sessionCode"
                 class="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="5D12gD" 
               />
-            </div>
-            <AnimatePresence>
-                  {sessionCodeErrorMessage && (
+                <AnimatePresence>
+                  {sessionCodeErrorVisible && (
                       <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="rounded-md p-[10px]"
-                          style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
+                        initial={{ opacity: 0, height: 0, paddingX: 0, paddingY: 0 }}
+                        animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
+                        exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
+                        transition={{ duration: 0.5 }}
+                        className="rounded-md overflow-hidden p-[10px] px-[15px]"
+                        style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
                       >
                         {sessionCodeErrorMessage}
                       </motion.div>
                   )}
-            </AnimatePresence>   
+              </AnimatePresence>   
+            </div>
           </div>
           <NeoButton
             onSubmit={handleInfo}
-            type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-wide font-semibold cursor-pointer"
+            type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
           >
             Sign up
           </NeoButton>
