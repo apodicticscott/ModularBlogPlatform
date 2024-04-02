@@ -9,6 +9,9 @@ import Pagination from '@mui/material/Pagination';
 import { searchArticles, searchByTag, fetchArticles } from "../../firebase/articleUtils/articleUtils";
 import { FaSlidersH, FaSortAlphaDown, FaSortAlphaUp, FaSortNumericDown, FaSortNumericUp  } from "react-icons/fa";
 import { Divider } from "@material-ui/core";
+import { useInView } from 'react-intersection-observer';
+import { motion, useAnimation } from 'framer-motion';
+import { Skeleton } from "@mui/material";
 
 const SearchPage = () => {
     const [searchResults, setSearchResults] = useState(null);
@@ -28,11 +31,26 @@ const SearchPage = () => {
     const indexOfLastPage = currentPage * articlesPerPage;
     const indexOfFirstPage = indexOfLastPage - articlesPerPage;
 
+    const controls = useAnimation();
+    const [ref, inView] = useInView();
+
     // Handle page change
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
 
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (inView) {
+                controls.start("visible");
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [inView]);
 
     useEffect(() => {
         if(searchResults){
@@ -208,6 +226,11 @@ const SearchPage = () => {
     }
 
 
+    useEffect(() => {
+        if (inView) {
+            controls.start("visible");
+        }
+    }, [controls, inView]);
 
     return(
         <div className="w-screen min-h-screen h-max overflow-hidden">
@@ -286,7 +309,16 @@ const SearchPage = () => {
                                         return 0;
                                     }
                                 }).map((article, index) => (
-                                    <div key={index}>
+                                    <motion.div 
+                                    ref={ref} 
+                                    animate={controls} 
+                                    initial="hidden" 
+                                    variants={{
+                                        visible: { opacity: 1, translateY: 0 },
+                                        hidden: { opacity: 0, translateY: 100 }
+                                    }} 
+                                    transition={{ delay: index * 0.2, duration: 0.5 }}
+                                    key={index}>
                                         <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
                                             <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
                                                 {
@@ -336,7 +368,7 @@ const SearchPage = () => {
                                                 ))
                                             }
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))
                             }
                         </div>
@@ -349,13 +381,80 @@ const SearchPage = () => {
                     }
                     </>
                 ): (
-                    <div className="h-screen w-screen flex items-center ">
-                        <div className="loader">
-                            <div className="dot"></div>
-                            <div className="dot"></div>
-                            <div className="dot"></div>
+                    <>
+                        <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
+
+                            <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-[5px] md:pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
+                                <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
+                                    <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-[5px] md:pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
+                                    
+                                        <div className="flex justify-between w-full h-max items-center">
+                                            <div className="flex flex-row gap-[20px] items-center w-full md:w-max">
+                                                <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full md:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
+                                            </div>
+
+                                            <div className="hidden md:flex">
+                                                <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                                    
+                                                </TextDropDown>
+                                            </div>
+
+                                        </ div>
+                                        <div className="h-max gap-[15px] hidden md:flex">
+                                            <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light dark:text-t-header-dark "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                            <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                        </div>
+                                        
+                                    </div>
+                                    <div className="flex pb-[5px] md:pb-0 md:hidden gap-[15px] items-center justify-between">
+                                        <div className="flex md:hidden">
+                                            <TextDropDown id={1} tags={uniqueTags} handleSetSelected={(text, color) => setSelectedTags([...selectedTags, {Text: text, Color: color}])} label={"Tags"}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}>
+                                                    
+                                            </TextDropDown>
+                                        </div>
+                                        <div className="h-max flex gap-[15px] flex md:hidden">
+                                            <IconDropDown id={2} icon={< FaSlidersH  className="text-2.5xl text-t-header-light dark:text-t-header-dark "/>} options={sortOptions} handleSetSelected={handleSetSortOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                            <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
+                                        </div>
+                                    </div>
+                                        <div className="z-0 flex flex-wrap gap-[10px] w-full">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full grow rounded-md">
+                                    {Array.from({ length: 6 }, (_, index) => (
+                                        <div
+                                        height={"auto"}
+                                        width={"auto"}
+                                        key={index}>
+                                            <div className="skeleton  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
+                                                <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
+                                                    
+                                                            
+                                    
+
+                                                </div>
+                                                <div className="flex w-full grow flex-col justify-center gap-[1vw] xs-sm:gap-0 pb-[3.5vw] xs-sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[3.5vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
+                                                <div className={`skeleton rounded-md text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
+                                                   <span className="opacity-[0]">
+                                                        Text Here
+                                                   </span>
+                                                </div>
+                                                <div className={`skeleton rounded-md text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
+                                                   <span className="opacity-[0]">
+                                                        Text Here
+                                                   </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
         </div>

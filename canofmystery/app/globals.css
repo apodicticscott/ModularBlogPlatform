@@ -380,3 +380,83 @@ html {
 
 #article ul li:nth-child(odd)::before,  #article ol li:nth-child(odd)::before, #text-editor ul li:nth-child(odd)::before, #text-editor ol li:nth-child(odd)::before { border-color: #fd6666; }
 #article ul li:nth-child(even)::before,  #article ol li:nth-child(even)::before, #text-editor ul li:nth-child(even)::before , #text-editor ol li:nth-child(even)::before { border-color: #fcc800; }
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+  height: 40px;
+  background: #ccc;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #ccc, #dedede, #ccc);
+  animation: progress 1s ease-in-out infinite;
+}
+
+.skeleton-lander {
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+  height: 40px;
+  background: #836589;
+}
+.skeleton-lander::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #836589, #96809b, #836589);
+  animation: progress 1s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+
+.react-horizontal-scrolling-menu--wrapper{
+  width: 100vw;
+}
+
+
+.react-horizontal-scrolling-menu--arrow-right, .react-horizontal-scrolling-menu--arrow-left{
+  width: 0px;
+}
+.react-horizontal-scrolling-menu--wrapper {
+  position: relative;
+  left: 0;
+}
+
+.right-arrow{
+  position: relative;
+  background: rgb(235,235,235);
+  background: linear-gradient(-90deg, rgba(235,235,235,1) 1%, rgba(192,192,192,0) 100%);
+  left: -42px;
+  padding-right: 10px;
+}
+
+.left-arrow{
+  position: relative;
+  background: rgb(235,235,235);
+  background: linear-gradient(90deg, rgba(235,235,235,1) 1%, rgba(192,192,192,0) 100%);
+  z-index: 1;
+}
+
+@media only screen and (min-width: 500px) {
+  .react-horizontal-scrolling-menu--item {
+    width: 100vw;
+  }
+}

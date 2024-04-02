@@ -12,7 +12,7 @@ export default function Home() {
 
 
   return (
-    <div className={`${styles.container} overflow-hidden`}>
+    <div className={`${styles.container} overflow-y-hidden overflow-hidden`}>
         <Lander/>
         <CanItemsScroll/>
         <Recent/>
