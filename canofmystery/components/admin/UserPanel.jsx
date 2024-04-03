@@ -9,8 +9,8 @@ const UserPanel = ({users, classes}) => {
     const [selectedUser, setSelectedUser] = useState({userId: null, userName: null, userData: null})
 
     return(
-        <div className="grid grid-rows-2 grid-cols-2 h-full w-full justify-between p-7 gap-7">
-            <div className="flex flex-col justify-between gap-[25px] col-span-1 row-span-2 rounded-md border-3 p-7 pb-0 text-lg w-full">
+        <div className="grid grid-rows-2 grid-cols-2 h-full w-full justify-between p-7 gap-7 dark:font-extralight">
+            <div className="flex flex-col justify-between gap-[25px] col-span-1 row-span-2 rounded-md border-3 p-7 pb-0 text-lg w-full dark:bg-base-100-dark">
                 <div className="flex flex-col gap-[15px]">
                     <div className="w-full h-max flex flex-col">
                         <Header type="sm" >
@@ -60,12 +60,12 @@ const UserPanel = ({users, classes}) => {
                                 </div>
                             </Tooltip>
                         </div>
-                        <div className="flex w-full h-full max-h-[450px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 overflow-y-scroll scrollbar-hide">
+                        <div className="flex w-full h-full max-h-[450px] xl:min-h-0 sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 dark:bg-secondary-dark overflow-y-scroll scrollbar-hide">
                             {
                                 users
                                 ?
                                 users.map((user, index) => (
-                                    <div key={index} className={`flex justify-between w-full h-max bg-base-100 items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user})}>
+                                    <div key={index} className={`flex justify-between w-full h-max bg-base-100 dark:bg-[#353335] items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200 dark:bg-secondary-dark"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user})}>
                                         <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {user.firstName}
                                         </div>
@@ -97,7 +97,7 @@ const UserPanel = ({users, classes}) => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-[25px] col-span-1 row-span-2 rounded-md border-3 w-full p-7 text-lg">
+            <div className="flex flex-col gap-[25px] col-span-1 row-span-2 rounded-md border-3 w-full p-7 text-lg dark:bg-base-100-dark">
                 <Header type="sm">
                     User Info.
                 </Header>

@@ -72,8 +72,8 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
             <div className="flex flex-col gap-[25px] w-full">
                 <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
                     <div className="w-full sm:w-max h-full flex gap-[15px]">
-                        <RiSearchFill style={{fontSize: "30px"}} role="link"/> 
-                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px]"/>
+                        <RiSearchFill className={"text-base-100-dark"} style={{fontSize: "30px"}} role="link"/> 
+                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px] dark:bg-base-100-dark"/>
                     </div>
                     <Divider   className="flex sm:hidden" flexItem />
                     <div className="w-full flex sm:w-max ">
@@ -95,13 +95,13 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                     </button> 
                                 </Tooltip>                    
                             </div>
-                            <NeoButton classes="bg-primary-dark" onClick={handleSelectAll}>
+                            <NeoButton classes="bg-primary-dark dark:text-t-header-light " onClick={handleSelectAll}>
                                 Select All
                             </NeoButton>
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-max">
+                <div className="w-full h-max dark:font-extralight">
                     {
                         numUnapproved > 0
                         ?
@@ -115,7 +115,7 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                             currentPages
                             &&
                             currentPages.map((page) => (
-                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg ${selectedPages.includes(page.id) && 'bg-[#c8c8c8]'}`} key={page.id} onClick={() => handleSelection(page.id)}>
+                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg dark:bg-base-100-dark dark:font-extralight ${selectedPages.includes(page.id) && 'bg-[#c8c8c8]'}`} key={page.id} onClick={() => handleSelection(page.id)}>
                                     <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
                                         <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {page.Publisher}
@@ -155,7 +155,7 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                                 </>
                                             }
                                         </div>
-                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center dark:text-t-header-light font-normal ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {
                                                 page.Approved
                                                 ?

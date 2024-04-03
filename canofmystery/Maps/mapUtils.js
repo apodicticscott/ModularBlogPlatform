@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import tt from '@tomtom-international/web-sdk-maps';
+import useDocumentClassChange from '../hooks/useDocumentClassChange';
 
 const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY;
 
@@ -9,13 +10,14 @@ const MapComponent = ({ locationData }) => {
     const [mapZoom, setMapZoom] = useState(2);
     const [map, setMap] = useState({});
 
+    const currentTheme = useDocumentClassChange();
+
     const mapElement = useRef();
-    console.log(apiKey)
 
     useEffect(() => {
         const map = tt.map({
             key: apiKey,
-            style: "https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAWjI2SE5SSENsREFSWE1DQTs0MWZkNzkzYS0zMjYyLTQxZjctOWIwYS05ZWExMjc4NzBhNTA=/drafts/0.json",
+            style: currentTheme === "dark" ? "https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAWjI2SE5SSENsREFSWE1DQTtlMzY3MzQ0MC01OTYxLTQ2ODctODAzMy0xMzA3YTc1ZTVjNGM=/drafts/0.json" : "https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAWjI2SE5SSENsREFSWE1DQTs0MWZkNzkzYS0zMjYyLTQxZjctOWIwYS05ZWExMjc4NzBhNTA=/drafts/0.json",
             container: mapElement.current,
             center: [mapLongitude, mapLatitude],
             zoom: mapZoom
@@ -37,7 +39,7 @@ const MapComponent = ({ locationData }) => {
 
 
         return () => map.remove(); // Cleanup on component unmount
-    }, [apiKey, locationData]);
+    }, [apiKey, locationData, currentTheme]);
 
     return <div id="map" ref={mapElement} style={{ width: '100%', height: '548px' }} className='border-b-3  mapDiv' />;
 };

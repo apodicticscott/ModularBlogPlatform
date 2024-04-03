@@ -26,7 +26,7 @@ const CategoryCard = (category, index) => {
 const CategoriesSection = () => {
     return (
         <>
-            <div className="pt-[50px] dark:bg-base-100-dark bg-grid-image bg-base-100 border-t-3 ">
+            <div className="pt-[50px] grid-lines-light dark:grid-lines-dark border-t-3 ">
                 <div className={`h-max bg-[50%]`}>
                     <div className="flex justify-between h-[70px]">
                         <div className="flex">

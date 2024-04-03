@@ -157,10 +157,10 @@ const Navbar = () => {
               </DropDownItem>
               <DropDownItem link = "canitems" title="Can Items" background="bg-pale-green" classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                   <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
-                    <div className="w-[644px] h-15 whitespace-nowrap">
+                    <div className="w-[644px] h-15 whitespace-nowrap dark:text-t-header-light">
                       Example Text
                     </div>
-                    <div className="w-[644px] h-15 whitespace-nowrap">
+                    <div className="w-[644px] h-15 whitespace-nowrap dark:text-t-header-light">
                       Example Text
                     </div>
                   </div>
@@ -174,11 +174,11 @@ const Navbar = () => {
             </div>
             <div className="w-full sm:w-[500px] justify-between flex lg:hidden">
               <div className="w-max flex flex-col gap-[5px] lg:hidden h-max whitespace-nowrap">
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/" > Home </Link>
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/our-project"> About </Link>
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login"> Login </Link>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/", undefined, { shallow: true}))} > Home </Link>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"}  onClick={() => (router.push("/about-project", undefined, { shallow: true}))}> About </Link>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/login", undefined, { shallow: true}))}> Login </Link>
 
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/signup"> Signup </Link>
+                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/signup", undefined, { shallow: true}))}> Signup </Link>
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
@@ -221,22 +221,22 @@ const Navbar = () => {
     <div ref={navRef} className="fixed w-screen border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
       <div className="navbar p-0 h-16 items-stretch">
         <div className="flex flex-row grow justify-between lg:justify-between ">
-          <FaBars onClick={() => handleDropDownClick()} className="lg:hidden text-2.5xl text-t-header-light" />
+          <FaBars onClick={() => handleDropDownClick()} className="lg:hidden text-2.5xl text-t-header-light dark:text-t-header-dark" />
           <div className="navbar-start flex-shrink w-fit lg:w-60">
             <a className="text-lg lg:text-xl xl:text-2xl font-black ">Can of Mystery</a>
           </div>
           <div className="navbar-center  justify-center pb-0 pt-0 flex-grow h-full hidden lg:flex">
             <ul style={{fontSize: '20px', fontWeight: "700"}} className="menu menu-horizontal items-center items-stretch justify-center h-full pt-0 pb-0 m-0 ">
-              <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a " : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
-                <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus" href="\">Home</a>
+              <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a " : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
+                <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus" onClick={() => router.push("/", undefined, { shallow: true})}>Home</a>
               </li>
               <li>
                 <details className="flex flex-1 h-full">
-                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl  ${active === "Explore" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>Explore</summary>
+                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl  ${active === "Explore" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>Explore</summary>
                 </details>
               </li>
               <li className="flex items-center">
-                <a href="/our-project" onClick={() => handleLinkClick("About")} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-primary-dark bg-primary a" : ""}`}>About</a>
+                <a href="/our-project" onClick={() => (handleLinkClick("About"), router.push("/about-project", undefined, { shallow: true}))} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>About</a>
               </li>
             </ul>
           </div>

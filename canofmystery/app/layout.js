@@ -40,12 +40,12 @@ export default function RootLayout({ children  }) {
   
   // useEffect(() => {
   //   if(cookieConsent){
-  //     if(window != undefined){
+  //     if(window !== undefined){
   //       const pagePath = window.location.pathname;
   //       logPageView(pagePath);
   //     }
   //   }
-  // }, []);
+  // }, [cookieConsent]);
     
   return (
     <html data-theme="mytheme" className="" lang="en">

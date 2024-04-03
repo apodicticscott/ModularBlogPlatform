@@ -17,7 +17,7 @@ export default function Home() {
         <CanItemsScroll/>
         <Recent/>
         <UseUsAsASource/>
-        <CategoriesSection/>;
+        <CategoriesSection/>
     </div>
   )
 }

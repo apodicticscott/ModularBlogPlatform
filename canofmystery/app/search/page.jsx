@@ -234,7 +234,7 @@ const SearchPage = () => {
 
     return(
         <div className="w-screen min-h-screen h-max overflow-hidden">
-            <div className="flex flex-col justify-center self-center h-full w-full  max-w-full align-center dark:bg-base-100-dark py-[70px] sm:py-[100px] px-7 xl:px-14 gap-[25px]">
+            <div className="flex flex-col justify-center self-center h-full w-full  max-w-full align-center dark:bg-secondary-dark py-[70px] sm:py-[100px] px-7 xl:px-14 gap-[25px]">
                 {articles ? (
                     <>
                         <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
@@ -310,16 +310,8 @@ const SearchPage = () => {
                                     }
                                 }).map((article, index) => (
                                     <motion.div 
-                                    ref={ref} 
-                                    animate={controls} 
-                                    initial="hidden" 
-                                    variants={{
-                                        visible: { opacity: 1, translateY: 0 },
-                                        hidden: { opacity: 0, translateY: 100 }
-                                    }} 
-                                    transition={{ delay: index * 0.2, duration: 0.5 }}
                                     key={index}>
-                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
+                                        <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 hover:shadow-move transition duration-100 cursor-pointer dark:bg-base-100-dark" onClick={(e) => handleArticleClick(e, article.id)} >
                                             <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
                                                 {
                                                     article.CoverImage 
@@ -337,10 +329,10 @@ const SearchPage = () => {
                                             </div>
                                             <div className="flex w-full grow flex-col justify-center gap-[1vw] xs-sm:gap-0 pb-[3.5vw] xs-sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[3.5vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
                                                 {/* <div className="flex flex-col justify-between gap-[1.4vw] xs-sm:gap-[.8vw] md:gap-[.6vw] lg:gap-[.4vw] xl:gap-[.2vw] 2xl:gap-[.1vw] h-max w-full  text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]"> */}
-                                                    <div className="truncate h-max w-full text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
+                                                    <div className="truncate h-max w-full text-[4vw] text-t-header-light dark:text-t-header-dark  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
                                                         {article.Title}
                                                     </div>
-                                                    <div className="text-t-light font-light text-[3.25vw]  xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
+                                                    <div className="mt-[5px] text-t-light font-light dark:text-base-100 dark:font-extralight text-[3.25vw]  xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
                                                         {
                                                             article.Author
                                                             ?
@@ -382,12 +374,8 @@ const SearchPage = () => {
                     </>
                 ): (
                     <>
-                        <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
-
-                            <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-[5px] md:pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
                                 <div className="h-max w-full flex flex-col gap-[10px] mt-[25px] ">
                                     <div className="z-10 flex w-full gap-[15px] items-center py-3 pb-[5px] md:pb-4 rounded-md dark:bg-gradient-to-r from-cyan-500 to-blue-500">
-                                    
                                         <div className="flex justify-between w-full h-max items-center">
                                             <div className="flex flex-row gap-[20px] items-center w-full md:w-max">
                                                 <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full md:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
@@ -417,35 +405,50 @@ const SearchPage = () => {
                                             <IconDropDown id={2} icon={< BsFillGridFill  className="text-2.5xl text-t-header-light dark:text-t-header-dark"/>} options={gridOptions} handleSetSelected={handleSetPageOption}  dropDownControl={setCurrentDropDown} currentDrop={currentDropDown}  />
                                         </div>
                                     </div>
-                                        <div className="z-0 flex flex-wrap gap-[10px] w-full">
+                                    <div className="z-0 flex flex-wrap gap-[10px] w-full">
 
-                                        </div>
                                     </div>
-                                </div>
                                     <div className="resize-none flex flex-wrap gap-[20px] grid-flow-row auto-rows-max w-full grow rounded-md">
                                     {Array.from({ length: 6 }, (_, index) => (
                                         <div
                                         height={"auto"}
                                         width={"auto"}
                                         key={index}>
-                                            <div className="skeleton  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
-                                                <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
-                                                    
-                                                            
+                                            <div className="w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg bg-secondary-content border-3 rounded-md dark:bg-base-100 transition duration-100 cursor-pointer" onClick={(e) => handleArticleClick(e, article.id)} >
+                                                <div className=" p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
+                                                    {/* {
+                                                        
+                                                        ?
+                                                        <img src={article.CoverImage} className="w-full h-full rounded-md border-2">
                                     
+                                                        </img>
+                                                        :
+                                                        <div className="w-full h-full rounded-md border-2 bg-image-missing-image">
+                                    
+                                                        </div>
+                                                            
+                                                    } */}
 
+                                                    <div className="skeleton w-full h-full rounded-md border-2">
+                                                    </div>                             
                                                 </div>
                                                 <div className="flex w-full grow flex-col justify-center gap-[1vw] xs-sm:gap-0 pb-[3.5vw] xs-sm:pb-[1.2vw] md:pb-[1vw] lg:pb-[.8vw] xl:pb-[.6vw] 2xl:pb-[.4vw] px-[3.5vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw]">
-                                                </div>
+                                                {/* <div className="flex flex-col justify-between gap-[1.4vw] xs-sm:gap-[.8vw] md:gap-[.6vw] lg:gap-[.4vw] xl:gap-[.2vw] 2xl:gap-[.1vw] h-max w-full  text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]"> */}
+                                                    <div className="skeleton w-[75%] truncate h-max w-full text-[4vw]  xs-sm:text-[2vw] md:text-[1.4vw] lg:text-[1.2vw] xl:text-[1vw] 2xl:text-[.8vw]">
+                                                    </div>
+                                                    <div className="skeleton w-[50%] mt-[5px] text-t-light font-light text-[3.25vw]  xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw]">
+                                                    </div>
+                                                {/* </div> */}
                                             </div>
-                                            <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
-                                                <div className={`skeleton rounded-md text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
+                                            </div>
+                                            <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw]  pt-0 2xl:pt-[.2vw] w-full ">
+                                                <div className={`skeleton rounded-md text-shadow max-h-min shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
                                                    <span className="opacity-[0]">
                                                         Text Here
                                                    </span>
                                                 </div>
-                                                <div className={`skeleton rounded-md text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
-                                                   <span className="opacity-[0]">
+                                                <div className={`skeleton rounded-md rounded-md max-h-min text-shadow shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}>
+                                                   <span className="opacity-[0] text-inherit">
                                                         Text Here
                                                    </span>
                                                 </div>

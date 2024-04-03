@@ -21,8 +21,8 @@ module.exports = {
       "dark-red": "#d32a00",
 
       'primary-dark' : '#29ff80',
-      'secondary-dark' : '#5c578d',
-      'base-100-dark' : '#1c1a1a',
+      'secondary-dark' : '#252425',
+      'base-100-dark' : '#100f12',
       'title-color' : '#c4bfff',
       't-header-light' : '#1c1b1c',
       't-header-dark' : '#ebebeb',
@@ -108,7 +108,7 @@ module.exports = {
 
             'primary-dark' : '#29ff80',
             'secondary-dark' : '#5c578d',
-            'base-100-dark' : '#1c1a1a',
+            'base-100-dark' : '#100f12',
 
 
             'accent' : '#a8c6fe',            /* Accent color */
@@ -141,6 +141,35 @@ module.exports = {
           'border-right': '3px solid black',
           'border-left': '3px solid black'
           // You can add more styles if needed
+        },
+        '.shadow-md-move': {
+          'box-shadow': '5px 5px 0px 1px rgba(0,0,0,1)',
+          '-webkit-box-shadow': '5px 5px 0px 1px rgba(0,0,0,1)',
+          '-moz-box-shadow': '5px 5px 0px 1px rgba(0,0,0,1)',
+          // You can add more styles if needed
+        },
+        '.shadow-lg-move': {
+          'box-shadow': '10px 10px 0px 1px rgba(0,0,0,1)',
+          '-webkit-box-shadow': '10px 10px 0px 1px rgba(0,0,0,1)',
+          '-moz-box-shadow': '10px 10px 0px 1px rgba(0,0,0,1)',
+          // You can add more styles if needed
+        },
+        ".grid-lines-light": {
+          "background-size": "100px 100px",
+          "background-image": "linear-gradient(to right, rgb(0, 0, 0) 1px, transparent 1px), linear-gradient(to bottom, rgb(0, 0, 0) 1px, transparent 1px)",
+        },
+        ".grid-lines-dark": {
+          "background": "#252425",
+          "background-size": "100px 100px",
+          "background-image": "linear-gradient(to right, #100f12 1px, transparent 1px), linear-gradient(to bottom, #100f12 1px, transparent 1px)",
+        },
+        ".linear-gradient-overlay-light" : {
+          "background": "rgb(255,255,255)",
+          "background-image" : "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
+        },
+        ".linear-gradient-overlay-dark" : {
+          "background": "rgb(27,27,30)",
+          "background-image" : "linear-gradient(90deg, rgba(27,27,30,0) 0%, rgba(27,27,30,1) 100%)"
         },
         '.neo-bottom-sm': {
           'box-shadow': '0px 4px 0px 0px rgba(0,0,0,1)',

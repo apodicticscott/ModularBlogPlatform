@@ -71,12 +71,12 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
     }
 
     return(
-        <div className="flex flex-col h-full w-full justify-between p-7">
+        <div className="flex flex-col h-full w-full justify-between p-7 dark:font-extralight">
             <div className="flex flex-col gap-[25px] w-full">
                 <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
                     <div className="w-full sm:w-max h-full flex gap-[15px]">
                         <RiSearchFill style={{fontSize: "30px"}} role="link"/> 
-                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px]"/>
+                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px] dark:bg-base-100-dark"/>
                     </div>
                     <Divider   className="flex sm:hidden" flexItem />
                     <div className="w-full flex sm:w-max ">
@@ -98,7 +98,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                     </button> 
                                 </Tooltip>                    
                             </div>
-                            <NeoButton classes="bg-primary-dark" onClick={handleSelectAll}>
+                            <NeoButton classes="bg-primary-dark font-normal dark:text-t-header-light" onClick={handleSelectAll}>
                                 Select All
                             </NeoButton>
                         </div>
@@ -119,7 +119,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                         currentArticles
                         &&
                         currentArticles.map((article) => (
-                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg ${selectedArticles.includes(article.id) && 'bg-[#c8c8c8]'}`} key={article.id} onClick={() => handleSelection(article.id)}>
+                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg dark:bg-base-100-dark ${selectedArticles.includes(article.id) && 'bg-[#c8c8c8]'}`} key={article.id} onClick={() => handleSelection(article.id)}>
                                     <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
                                         <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {article.firstName + " " + article.lastName}
@@ -146,7 +146,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                         </div>
                                         <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
                                         <Divider   className="flex 2xl:hidden" flexItem />
-                                        <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
+                                        <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px] ">
                                             {
                                                 article.coverImage
                                                 ?
@@ -159,7 +159,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                                 </>
                                             }
                                         </div>
-                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center font-normal text-t-header-light ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {
                                                 article.Approved
                                                 ?

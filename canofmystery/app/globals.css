@@ -203,11 +203,11 @@ html {
   from{
     left: -20px;
   }to{
-    left: calc(100% + 40px);
+    left: calc(100% + 300px);
   }
 }
 
-.neoButton-animation .neoButton-rectangle{
+.neoButton .neoButton-animation .neoButton-rectangle{
   height: 500px;
   top: -250px;
   width: 20px;
@@ -218,11 +218,25 @@ html {
 
 }
 
-
-.neoButton:hover .neoButton-animation .neoButton-rectangle {
+.neoDropDownItem .neoButton-animation .neoButton-rectangle{
+  height: 500px;
+  top: -250px;
+  width: 40px;
+  rotate: 45deg;
   position: relative;
-  animation: shine 1s steps(25, end) infinite;
+  left: -100px;
+  background-color: white;
+
 }
+
+
+.neoDropDownItem:hover .neoButton-animation .neoButton-rectangle , .neoButton:hover .neoButton-animation .neoButton-rectangle {
+  position: relative;
+  animation: shine 2s steps(35, end) infinite;
+}
+
+
+
 
 
 .loader {
@@ -384,8 +398,7 @@ html {
 .skeleton {
   position: relative;
   overflow: hidden;
-  width: 50%;
-  height: 40px;
+  height: 100%;
   background: #ccc;
 }
 .skeleton::after {
@@ -426,37 +439,20 @@ html {
   }
 }
 
+.dark-shadow{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
 
-.react-horizontal-scrolling-menu--wrapper{
-  width: 100vw;
+/* .grid-lines-light {
+  background-size: 5vw 5vw;
+  background-image: linear-gradient(to right, rgb(0, 0, 0) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgb(0, 0, 0) 1px, transparent 1px);
 }
 
 
-.react-horizontal-scrolling-menu--arrow-right, .react-horizontal-scrolling-menu--arrow-left{
-  width: 0px;
-}
-.react-horizontal-scrolling-menu--wrapper {
-  position: relative;
-  left: 0;
-}
-
-.right-arrow{
-  position: relative;
-  background: rgb(235,235,235);
-  background: linear-gradient(-90deg, rgba(235,235,235,1) 1%, rgba(192,192,192,0) 100%);
-  left: -42px;
-  padding-right: 10px;
-}
-
-.left-arrow{
-  position: relative;
-  background: rgb(235,235,235);
-  background: linear-gradient(90deg, rgba(235,235,235,1) 1%, rgba(192,192,192,0) 100%);
-  z-index: 1;
-}
-
-@media only screen and (min-width: 500px) {
-  .react-horizontal-scrolling-menu--item {
-    width: 100vw;
-  }
-}
+.grid-lines-dark {
+  background-size: 5vw 5vw;
+  background-color: black;
+  background-image: linear-gradient(to right, #ebebeb 1px, transparent 1px),
+                    linear-gradient(to bottom, #ebebeb 1px, transparent 1px);
+} */

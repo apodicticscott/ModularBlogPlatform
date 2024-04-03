@@ -5,7 +5,8 @@ import { BiSolidBookOpen } from "react-icons/bi";
 import { getRecent } from "../../firebase/articleUtils/articleUtils";
 import { useInView } from 'react-intersection-observer';
 import { motion, useAnimation } from 'framer-motion';
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft, FaBookOpen  } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 
 
@@ -18,16 +19,16 @@ const ScrollMenu = ({ children }) => {
   
     return (
       <div className="flex items-center w-full h-max">
-        <div className="w-0  h-[500px]">
-            <button className="cursor-pointer left-arrow min-h-full" onClick={() => scroll(-295)}>
+        <div className="w-0  h-[500px] z-10">
+            <button className="cursor-pointer left-arrow min-h-full text-t-header-light dark:text-t-header-dark" onClick={() => scroll(-295)}>
                 <FaChevronLeft className="text-4xl"/>
             </button>
         </div>
-        <div ref={containerRef} className="pl-[50px] overflow-auto flex gap-4 scroll-smooth no-scrollbar grow" style={{ scrollBehavior: 'smooth', width: 'calc(100vw - 100px)' }}>
+        <div ref={containerRef} className="pl-[50px] overflow-auto flex gap-4 scroll-smooth no-scrollbar grow z-0" style={{ scrollBehavior: 'smooth', width: 'calc(100vw - 100px)' }}>
           {children}
         </div>
         <div className="w-0 h-[500px]"> 
-            <button className="cursor-pointer right-arrow min-h-full" onClick={() => scroll(295)}>
+            <button className="cursor-pointer right-arrow relative min-h-full left-[-40px] text-t-header-light dark:text-t-header-dark" onClick={() => scroll(295)}>
                 <FaChevronRight className="text-4xl"/>
             </button>
         </div>
@@ -40,6 +41,8 @@ const Recent = () => {
     const controls = useAnimation();
     const [ref, inView] = useInView();
     const [articles, setArticles] = useState([]);
+
+    const router = useRouter();
 
     const fixArticles = (value) =>{
         var articlesNewData = []
@@ -99,7 +102,7 @@ const Recent = () => {
 
     return(
         <>
-            <div id="recent-container" className=" flex flex-col w-full h-max lg:h-[738px] gap-[15px] py-[50px] lg:pb-[100px] bg-[length:500px_450px] bg-t-header-dark dark:bg-base-100-dark bg-grid-image bg-secondary-content border-b-3 overflow-hidden max-w-screen">
+            <div id="recent-container" className=" flex flex-col w-full h-max lg:h-[738px] gap-[15px] py-[50px] lg:pb-[100px] bg-t-header-dark dark:grid-lines-dark grid-lines-light  border-b-3  overflow-hidden max-w-screen " >
                 {/* <div className="w-full h-0 z-10">
                     <div className={`w-full h-[603px]`}>
                         <Image src={hand} alt="Hand PNG" className="max-w-[150px]" />
@@ -112,7 +115,7 @@ const Recent = () => {
                         </div>
                     </div>
                 </div>
-                <div   className={`w-full h-max 2xl:justify-center justify-start gap-[25px] 3xl:px-[100px]  xl:px-[50px] px-7 overflow-x-scroll overflow-y-hidden no-scrollbar hidden xl:flex`}>
+                <div   className={`w-full h-max 2xl:justify-center justify-start gap-[50px] 3xl:px-[100px]  xl:px-[50px] px-7 overflow-x-scroll overflow-y-hidden no-scrollbar hidden xl:flex`}>
                     
                     {articles ? (
                         articles.map((article, index) => {
@@ -128,7 +131,7 @@ const Recent = () => {
                                 }} 
                                 transition={{ delay: index * 0.2, duration: 0.5 }}
                                 key={article.id} href={"blog/"+article.id}>
-                                    <div id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
+                                    <div id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 cursor-pointer ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`} onClick={() => (router.push("/blog/"+article.id, undefined, { shallow: true}))}>
                                         <div>
                                             <svg width="45" height="35" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative left-[-15px] top-[25px]">
                                                 <g filter="url(#filter0_d_941_99)">
@@ -161,10 +164,10 @@ const Recent = () => {
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg">
+                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                             <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                 <div className="w-full p-[10px] pb-0 h-max">
-                                                    <div className=" w-full h-[160px] bg-primary items-center rounded-md overflow-hidden">
+                                                    <div className="w-full h-[160px] items-center rounded-md overflow-hidden">
                                                         <img src={article.CoverImage} alt="Article Image" className=" h-full w-full rounded-md object-fill border-2" />
                                                     </div>
                                                 </div>
@@ -179,13 +182,13 @@ const Recent = () => {
                                                         {article.time} mins
                                                     </div> */}
                                                 </div>
-                                                <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light px-[10px] text-xl">
+                                                <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
                                                     {article.Author}
                                                 </div>
                                                 <div className="flex items-center justify-between  h-[50x] w-full  px-[10px] text-2.5xl">
                                                     <div className="flex w-full h-[35px] overflow-hidden">
                                                         <div className="relative h-full w-0 left-[100%]">
-                                                            <div className="relative w-[50px] left-[-50px] h-full relative bg-primary" style={{background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"}}>
+                                                            <div className="relative w-[50px] left-[-50px] h-full relative linear-gradient-overlay-light dark:linear-gradient-overlay-dark">
 
                                                             </div>
                                                         </div>
@@ -195,7 +198,7 @@ const Recent = () => {
                                                             article.Tags.map((tag, index) => {
                                                                 return(
                                                                     
-                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-md  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max`} style={{backgroundColor: tag.Color}}>
+                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-[7px]  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
                                                                         {tag.Text}
                                                                     </div>
                                                                     
@@ -207,8 +210,8 @@ const Recent = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex text-t-light font-light items-center gap-[5px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
-                                                <BiSolidBookOpen className="text-2.5xl" />
+                                            <div className="flex text-t-light font-light dark:text-t-header-light dark:bg-light-purple rounded-b-md items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
+                                                <FaBookOpen  className="text-2.5xl" />
                                                 Read More
                                             </div>
                                         </div>
@@ -234,7 +237,7 @@ const Recent = () => {
 
                                 return(
                                     <div key={article.id} href={"blog/"+article.id} className="mr-[15px] ">
-                                        <div id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`}>
+                                        <div id={index} key={"recent-article-" + index} className={`flex flex-col w-[280px] h-[500px] py-[35px] hover:scale-105 transition duration-100 cursor-pointer ${((index % 2) === 0) ? "lg:justify-start" : "lg:justify-end"}`} onClick={() => (router.push("/blog/"+article.id, undefined, { shallow: true}))}>
                                             <div>
                                                 <svg width="45" height="35" viewBox="0 0 50 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative left-[-15px] top-[25px]">
                                                     <g filter="url(#filter0_d_941_99)">
@@ -267,10 +270,10 @@ const Recent = () => {
                                                     </defs>
                                                 </svg>
                                             </div>
-                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg">
+                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                                 <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                     <div className="w-full p-[10px] pb-0 h-max">
-                                                        <div className=" w-full h-[160px] bg-primary items-center rounded-md overflow-hidden">
+                                                        <div className="w-full h-[160px] items-center rounded-md overflow-hidden">
                                                             <img src={article.CoverImage} alt="Article Image" className=" h-full w-full rounded-md object-fill border-2" />
                                                         </div>
                                                     </div>
@@ -285,13 +288,13 @@ const Recent = () => {
                                                             {article.time} mins
                                                         </div> */}
                                                     </div>
-                                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light px-[10px] text-xl">
+                                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
                                                         {article.Author}
                                                     </div>
                                                     <div className="flex items-center justify-between  h-[50x] w-full  px-[10px] text-2.5xl">
                                                         <div className="flex w-full h-[35px] overflow-hidden">
                                                             <div className="relative h-full w-0 left-[100%]">
-                                                                <div className="relative w-[50px] left-[-50px] h-full relative bg-primary" style={{background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"}}>
+                                                                <div className="relative w-[50px] left-[-50px] h-full relative linear-gradient-overlay-light dark:linear-gradient-overlay-dark">
 
                                                                 </div>
                                                             </div>
@@ -301,7 +304,7 @@ const Recent = () => {
                                                                 article.Tags.map((tag, index) => {
                                                                     return(
                                                                         
-                                                                        <div key={"recent-article-card-tag-" + index} className={`rounded-md  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max`} style={{backgroundColor: tag.Color}}>
+                                                                        <div key={"recent-article-card-tag-" + index} className={`rounded-[7px]  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
                                                                             {tag.Text}
                                                                         </div>
                                                                         
@@ -313,8 +316,8 @@ const Recent = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="flex text-t-light font-light items-center gap-[5px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
-                                                    <BiSolidBookOpen className="text-2.5xl" />
+                                                <div className="flex text-t-light font-light dark:text-t-header-light dark:bg-light-purple rounded-b-md items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
+                                                    <FaBookOpen  className="text-2.5xl" />
                                                     Read More
                                                 </div>
                                             </div>
