@@ -521,91 +521,127 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
         <>
 
             <div className="w-full" id="text-editor">
-                <div className="flex w-full"> 
-                    <div className="flex flex-wrap w-full h-max sm:h-[50px] border-t-black border-t-[3px] px-[15px] bg-base-300 gap-y-[3px]">
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
-                            <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
-                        </button>     
-                        <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
-                            <FaBold className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
-                            <FaItalic className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
-                            <FaStrikethrough className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
-                            <FaUnderline className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSubScriptClick}>
-                            <FaSubscript className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSuperScriptClick}>
-                            <FaSuperscript className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnorderedListClick}>
-                            <FaListUl className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleOrderedListClick}>
-                            <FaListOl className="text-lg sm:text-xl"/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
-                            <FaIndent className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-left")}>
-                            <FaAlignLeft className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-center")}>
-                            <FaAlignCenter className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
-                            <FaAlignRight className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-justify")}>
-                            <FaAlignJustify className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
-                        </button >
-                        <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
-                            <FaLink className="text-lg sm:text-xl"/>
-                        </button >
+                <div className="flex w-full h-max"> 
+                    <div className="flex flex-wrap w-full h-max px-[15px] bg-base-300 gap-y-[3px]">
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${isPreview ? "bg-base-100" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
+                                <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
+                            </button>  
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">   
+                            <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300 ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleBoldClick}>
+                                <FaBold className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleItalicClick}>
+                                <FaItalic className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleStrikethroughClick}>
+                                <FaStrikethrough className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnderlineClick}>
+                                <FaUnderline className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSubScriptClick}>
+                                <FaSubscript className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected || canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleSuperScriptClick}>
+                                <FaSuperscript className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleUnorderedListClick}>
+                                <FaListUl className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={handleOrderedListClick}>
+                                <FaListOl className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
+                                <FaIndent className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-left")}>
+                                <FaAlignLeft className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-center")}>
+                                <FaAlignCenter className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
+                                <FaAlignRight className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-justify")}>
+                                <FaAlignJustify className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`}/>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light'}`} onClick={() => setLinkInput(prevState => !prevState)}>
+                                <FaLink className="text-lg sm:text-xl"/>
+                            </button >
+                        </div>
 
                         {
                             linkValue
                             &&
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
-                                <FaCheck className="text-lg sm:text-xl"/>
-                            </button >
+                            <div className="h-max sm:h-[50px] w-max">
+                                <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
+                                    <FaCheck className="text-lg sm:text-xl"/>
+                                </button >
+                            </div>
                         }
 
-                        <div className="flex w-max gap-[3px]">
+                        <div className="flex w-max gap-[3px] h-max sm:h-[50px] w-max">
                             <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100" : "bg-base-300"}`} onClick={() => {((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
                                 <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light" : "text-t-header-dark"}`} />
                             </button >
                             <SizeDropDown selected={selectedComp} className={`${(sizeDrop && (selectedComp.compType === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource"))? "w-max" : "w-0"}`} onClick={handleChangeSize} />
                         </div>
-
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] bg-base-100 text-t-header-light`} onClick={() => {setIsHelpOpen({value: !isHelpOpen.value, type: "menue"})}}>
+                                <MdOutlineQuestionMark className='text-2.5xl' ></MdOutlineQuestionMark>
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-base-100 text-t-header-light`} onClick={() => handleClearContent()}>
+                                Clear
+                            </button >
+                        </div>
+                        <div className="h-max sm:h-[50px] w-max">
+                            <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-primary-dark text-t-header-light`} onClick={() => setIsDoneNotificationOpen(true)}>
+                                Done
+                            </button >
+                        </div>
                     </div>
-                    <button className='flex items-center justify-center w-[45px]'>
-                        <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen({value: !isHelpOpen.value, type: "menue"})}}></MdOutlineQuestionMark>
-                    </button> 
-                    <button className="bg-base-100 text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => handleClearContent()}>
-                        Clear
-                    </button>
                     {
                         !isCropEnabled.value
                         &&
                         <>
-                            <button className="bg-primary-dark text-t-header-light text-bold px-[10px] border-l-[3px]" onClick={() => setIsDoneNotificationOpen(true)}>
-                                Done
-                            </button>
-
                             <Dialog
                                 open={isDoneNotificationOpen}
                                 onClose={() => setIsDoneNotificationOpen(prevState => !prevState)}
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
                                 maxWidth="max-content"
-                                classes={{ paper: { borderRadius: '10px'}}}
+                                classes={{ paper: { borderRadius: '20px'}}}
                             >   
                                 <div className="flex flex-col p-7 gap-[15px] bg-base-100">
                                     <Header type="sm" id="alert-dialog-title">
@@ -614,45 +650,62 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                                     <div>
                                         Please make sure this is how you want to submit the article.
                                     </div>
-                                    <div>
-                                        {
-                                            (Title.length === 0 || Author.length === 0 || Tags.length === 0 || compArray.length === 0)
-                                            &&
-                                            "You have left the following items blank:"
-                                        }
-                                    </div>
-                                    <div className="flex flex-col gap-[10px] bg-[#fd6666] rounded-md p-3 w-max">
-                                        {
-                                            (coverImageData.exists === false && coverImageData[0].exists === false)
-                                            &&
-                                            "Cover Image"
-                                        }
-                                        {(Title.length === 0 && (coverImageData.length[0] === undefined)) && "," } &nbsp;
-                                        {
-                                            Title.length === 0
-                                            &&
-                                            "Title"
-                                        }
-                                        {(Title.length === 0 && Author.length === 0) && "," }  &nbsp;
-                                        {
-                                            Author.length === 0
-                                            &&
-                                            "Author"
-                                        }
-                                        {(Tags.length === 0  && Author.length === 0) && "," }  &nbsp;
-                                        {
-                                            Tags.length === 0 
-                                            &&
-                                            "Tags"
-                                        }
-                                        {(Tags.length === 0  && compArray.length === 0) && "," } &nbsp;
-                                        {
-                                            compArray.length === 0
-                                            &&
-                                            "Article Content"
-                                        }
-  
-                                    </div>
+                                    {
+                                        ((coverImageData.exists === false && coverImageData[0].exists === false) || Title.length === 0 || Author.length === 0 || Tags.length === 0 || compArray.length === 0)
+                                        &&
+                                        <>
+                                            <span>You have left the following items blank:</span>
+                                            <div className="flex flex-col gap-[10px] bg-[#fd6666] rounded-md p-3 w-max">
+                                                
+                                                {
+                                                    (coverImageData[0] === undefined && coverImageData[1] === undefined)
+                                                    &&
+                                                    "Cover Image"
+                                                }
+                                                {
+                                                    (Title.length === 0 && (coverImageData[0] === undefined && coverImageData[1] === undefined)) 
+                                                    && 
+                                                    <>, &nbsp;</> 
+                                                } 
+                                                {
+                                                    Title.length === 0
+                                                    &&
+                                                    "Title"
+                                                }
+                                                {
+                                                    (Title.length === 0 && Author.length === 0) 
+                                                    && 
+                                                    <>, &nbsp;</> 
+                                                } 
+                                                {
+                                                    Author.length === 0
+                                                    &&
+                                                    "Author"
+                                                }
+                                                {
+                                                    (Tags.length === 0  && Author.length === 0) 
+                                                    && 
+                                                    <>, &nbsp;</>  
+                                                }  
+                                                {
+                                                    Tags.length === 0 
+                                                    &&
+                                                    "Tags"
+                                                }
+                                                {
+                                                    (Tags.length === 0  && compArray.length === 0) 
+                                                    && 
+                                                    <>, &nbsp;</> 
+                                                }
+                                                {
+                                                    compArray.length === 0
+                                                    &&
+                                                    "Content"
+                                                }
+                                            </div>
+                                        </>
+                                    }
+
                                     <NeoButton classes='flex items-center justify-center w-max p-[5px] bg-primary-dark rounded border-2 bg-primary-dark' onClick={() => {handleUploadArticle(); setIsDoneNotificationOpen(false)}}>
                                         Yes Im Sure!
                                     </NeoButton> 
@@ -664,7 +717,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     }
                 <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
-                <div className="transition duration-200 flex w-full h-[calc(100vh_-_117px)] border-y-[3px] overflow-x-hidden ">    
+                <div className="transition duration-200 flex w-full h-[calc(100vh_-_117px)] border-t-[3px] overflow-x-hidden ">    
                     <div className={`transition duration-200 h-full flex items-end border-r-[3px] xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
                         <div className={`transition duration-200 h-full overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
                             <ControlPanel 

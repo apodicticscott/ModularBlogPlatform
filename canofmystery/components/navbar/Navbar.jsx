@@ -231,7 +231,7 @@ const Navbar = () => {
                 <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus" onClick={() => router.push("/", undefined, { shallow: true})}>Home</a>
               </li>
               <li>
-                <details className="flex flex-1 h-full">
+                <details className="flex flex-1 max-h-full">
                   <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl  ${active === "Explore" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>Explore</summary>
                 </details>
               </li>

@@ -138,7 +138,6 @@ const SearchPage = () => {
 
 
     useEffect(() => {
-        console.log(selectedTags, searchTerm)
         if(selectedTags.length !== 0 || searchTerm){
             console.log("here")
             updateUrl(selectedTags)
@@ -149,7 +148,8 @@ const SearchPage = () => {
     useEffect(() => {
         if(!articles){
             fetchArticles().then(articles => {
-                setArticles(articles);
+                console.log(articles.filter(article => article.Approved === true))
+                setArticles(articles.filter(article => article.Approved === true));
                 const newTags = articles.reduce((acc, article) => {
                     article.Tags.forEach(tag => {
                         if (!acc.some(accTag => accTag.Text.toLowerCase() === tag.Text.toLowerCase())) {

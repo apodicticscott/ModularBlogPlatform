@@ -75,7 +75,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
             <div className="flex flex-col gap-[25px] w-full">
                 <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
                     <div className="w-full sm:w-max h-full flex gap-[15px]">
-                        <RiSearchFill style={{fontSize: "30px"}} role="link"/> 
+                        <RiSearchFill style={{fontSize: "30px"}} className='hidden xs-sm:flex' role="link"/> 
                         <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px] dark:bg-base-100-dark"/>
                     </div>
                     <Divider   className="flex sm:hidden" flexItem />
@@ -100,6 +100,9 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                             </div>
                             <NeoButton classes="bg-primary-dark font-normal dark:text-t-header-light" onClick={handleSelectAll}>
                                 Select All
+                            </NeoButton>
+                            <NeoButton classes="bg-primary-dark font-normal dark:text-t-header-light" onClick={() => router.push("/editor/blog/new", undefined, {shallow: true})}>
+                                Create New
                             </NeoButton>
                         </div>
                     </div>
@@ -171,13 +174,13 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                     </div>
                                     <div className="flex h-full w-full 2xl:w-max p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                            <button onClick={() => router.push(`/editor/blog/${article.id}`)} >
+                                            <button onClick={() => router.push(`/editor/blog/${article.id}`, undefined, {shallow: true})} >
                                                 <FaPen className="text-xl w-[25px]"/>
                                             </button>
                                         </Tooltip>
                                         <Divider orientation="vertical" flexItem />
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
-                                            <button onClick={() => router.push(`/blogs/${page.PageName}`)}>
+                                            <button onClick={() => router.push(`/blog/${article.id}`, undefined, {shallow: true})}>
                                                 <MdOutlinePreview className="text-2xl w-[25px]" />
                                             </button>
                                         </Tooltip>

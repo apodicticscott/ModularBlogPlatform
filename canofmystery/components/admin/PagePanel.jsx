@@ -98,6 +98,9 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                             <NeoButton classes="bg-primary-dark dark:text-t-header-light " onClick={handleSelectAll}>
                                 Select All
                             </NeoButton>
+                            <NeoButton classes="bg-primary-dark font-normal dark:text-t-header-light" onClick={() => router.push("/editor/page/new", undefined, {shallow: true})}>
+                                Create New
+                            </NeoButton>
                         </div>
                     </div>
                 </div>
@@ -167,13 +170,13 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                     </div>
                                     <div className="flex h-full w-full 2xl:w-max p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                            <button onClick={() => router.push(`/editor/page/${page.id}`)} >
+                                            <button onClick={() => router.push(`/editor/page/${page.id}`, undefined, {shallow: true})} >
                                                 <FaPen className="text-xl w-[25px]"/>
                                             </button>
                                         </Tooltip>
                                         <Divider orientation="vertical" flexItem />
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
-                                            <button onClick={() => router.push(`/pages/${page.PageName}`)}>
+                                            <button onClick={() => router.push(`/pages/${page.PageName}`, undefined, {shallow: true})}>
                                                 <MdOutlinePreview className="text-2xl w-[25px]" />
                                             </button>
                                         </Tooltip>

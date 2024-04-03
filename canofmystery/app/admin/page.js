@@ -131,20 +131,24 @@ export default function Page({ params }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const docRef = doc(firestore, 'users', user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-            const userData = docSnap.data();
-            setIsAdmin(userData.adminPerm === true);
-            setIsLoading(false);
+            console.log(user)
+            if (user) {
+                const docRef = doc(firestore, 'users', user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                setIsAdmin(userData.adminPerm === true);
+                    setIsAdmin(true)
+                    setIsLoading(false);
+                }else{
+                    setIsAdmin(false)
+                    setIsLoading(false);
+                    router.push('/login'); 
+                }
             } else {
-            setIsLoading(false);
+                setIsLoading(true);
+                router.push('/login'); 
             }
-        } else {
-            setIsLoading(true);
-            router.push('/login'); 
-        }
         });
 
         return () => unsubscribe();
