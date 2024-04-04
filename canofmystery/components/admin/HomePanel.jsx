@@ -136,8 +136,8 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
 
     return(
         <>
-            <div className="h-full w-full flex flex-col 2xl:flex-row  gap-7 p-7 bg-grid-image transition duration-100 dark:font-extralight">
-                <div className=" rounded-md border-3 flex flex-col md:flex-row justify-between 2xl:flex-col p-[15px] shadow pb-0 gap-7 bg-base-100 dark:bg-base-100-dark">
+            <div className="h-full w-full flex flex-col 2xl:flex-row  sm:gap-7 p-0 sm:p-7 bg-grid-image transition duration-100 dark:font-extralight">
+                <div className=" sm:rounded-md border-b-3 sm:border-3 flex flex-col md:flex-row justify-between 2xl:flex-col px-7 pt-[15px] sm:p-[15px] sm:pb-0 sm:shadow  gap-7 bg-base-100 dark:bg-base-100-dark">
                     <div className="flex flex-col gap-[15px] w-full xl:w-[40%] pb-[20px] 2xl:w-full 2xl:pb-0 h-max ">
                         <div className="w-full h-max ">
                             <Header type="sm" >
@@ -228,7 +228,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 <>
                                     {
                                         sessions.map((data, index) => (
-                                            <div key={index} className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 dark:hover:bg-secondary-dark border-b-3  shadow items-center ${selectedSession === data.id ? "bg-base-200 dark:bg-secondary-dark" : "bg-base-100 dark:bg-[#353335]"} ${(index === 0 && "rounded-t-md")}`} onClick={() => setSelectedSession(data.id)}>
+                                            <div key={index} className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 dark:hover:bg-secondary-dark border-b-3  shadow items-center ${selectedSession === data.id ? "bg-base-200 dark:bg-secondary-dark" : "bg-base-100 dark:bg-[#353335]"} ${(index === 0 && "rounded-t-md")}`} onClick={() => (selectedSession !== data.id ? setSelectedSession(data.id) : setSelectedSession(null))}>
                                                 <div className="flex-1 py-[5px]"  onClick={() => (setSelectedSession(data.id), copyToClip(data.id))}>
                                                     {data.id}
                                                 </div>
@@ -252,8 +252,8 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col gap-7 grow h-full '>
-                <div className="h-max rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
+                <div className='flex flex-col sm:gap-7 grow h-full '>
+                <div className="h-max sm:rounded-md border-b-3 sm:border-3 flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0 gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                         <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -279,7 +279,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 }
                             </span>
                         </div>
-                        <div className="grow flex ">
+                        <div className="grow flex justify-center w-full sm:w-max">
                             <div className="h-full w-[200px] flex text-center flex-col justify-center lg:justify-start">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users who have signed up using the selected session ID.">
                                     <span className="text-lg underline decoration-dashed">
@@ -288,7 +288,14 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    {users.filter(user => !selectedSession || user.sessionCode === selectedSession).length}
+                                    
+                                    {
+                                        selectedSession
+                                        ?
+                                        users.filter(user => !selectedSession || user.sessionCode === selectedSession).length
+                                        :
+                                        "0"
+                                    }
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col justify-center lg:justify-start">
@@ -298,7 +305,13 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    {users.filter(user => !selectedSession || (user.sessionCode === selectedSession && user.hasPublished)).length}
+                                    {
+                                        selectedSession
+                                        ?
+                                        users.filter(user => !selectedSession || (user.sessionCode === selectedSession && user.hasPublished)).length
+                                        :
+                                        "0"
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -308,48 +321,60 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             <div className="w-full flex h-min">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
                                     <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                        First Name
+                                        First 
+                                        <span className='hidden xs-sm:flex'>
+                                        &nbsp;Name
+                                        </span>
                                     </div>
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
-                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                        Last Name
+                                    <div className="flex  w-full grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Last
+                                        <span className='hidden xs-sm:flex'>
+                                        &nbsp;Name
+                                        </span>
                                     </div>
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's current session id for their log in">
-                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                        Session ID
+                                    <div className="flex w-full grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        Session
+                                        <span className='hidden xs-sm:flex'>
+                                        &nbsp;ID
+                                        </span>
                                     </div>
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user has published or not.">
-                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                        Has Published
+                                    <div className="flex h-max w-full md:basis-[100px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                        <span className='hidden xs-sm:flex'>
+                                        Has&nbsp;
+                                        </span>
+                                        Published
                                     </div>
                                 </Tooltip>
                             </div>
-                            <div className="flex w-full h-[300px] min-h-[400px] xl:min-h-[300px] sm:h-auto sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 dark:bg-secondary-dark overflow-y-scroll scrollbar-hide">
+                            <div className="flex w-full h-[300px] min-h-[400px]  sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 dark:bg-secondary-dark overflow-y-scroll scrollbar-hide">
                                 {
                                     users
                                     &&
-                                    selectedSession
-                                    ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).length !== 0
+                                    ?
+                                    selectedSession
                                     ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).map((user, index) => (
                                         <button key={index} className={`flex justify-between w-full h-max  bg-base-100 dark:bg-[#353335] items-center shadow hover:bg-base-200 dark:hover:bg-secondary-dark ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
-                                            <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.firstName)}>
+                                            <div className="flex grow basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.firstName)}>
                                                 {user.firstName}
                                             </div>
-                                            <Divider orientation="vertical"/>
-                                            <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.lastName)}>
+                                            <Divider orientation="vertical" flexItem/>
+                                            <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.lastName)}>
                                                 {user.lastName}
                                             </div>
-                                            <Divider orientation="vertical"/>
-                                            <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(user.sessionCode)}>
+                                            <Divider orientation="vertical" flexItem/>
+                                            <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(user.sessionCode)}>
                                                 {user.sessionCode}
                                             </div>
-                                            <Divider orientation="vertical"/>
-                                            <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`} onClick={() => copyToClip(user.hasPublished)}>
+                                            <Divider orientation="vertical" flexItem/>
+                                            <div className={`flex basis-[100px] 2xl:grow pl-[10px] py-[15px] items-center`} onClick={() => copyToClip(user.hasPublished)}>
                                                 {
                                                 user.hasPublished
                                                 ?
@@ -362,7 +387,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     ))
                                     :
                                     <div className='w-full h-full flex items-center justify-center text-shadow'>
-                                        <div className='w-[300px]'>
+                                        <div className='w-[300px] h-full flex flex-col justify-center'>
                                             <Header type="lg" classes="w-[300px] text-center">
                                                     Oops!
                                             </Header>
@@ -374,7 +399,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </div>
                                     :
                                     <div className='w-full h-full flex items-center justify-center text-shadow'>
-                                        <div className='w-[300px]'>
+                                        <div className='w-[300px] h-full flex flex-col justify-center'>
                                             <Header type="lg" classes="w-[300px] text-center">
                                                     Oops!
                                             </Header>
@@ -389,7 +414,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                     </div>
                 </div>
-                <div className=" rounded-md border-3 flex flex-col xl:flex-row p-[15px] pb-0 gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
+                <div className=" sm:rounded-md sm:border-3 flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0  gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                     <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -410,7 +435,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 }
                             </span>
                         </div>
-                        <div className="grow flex ">
+                        <div className="grow flex justify-center w-full sm:w-max ">
                             <div className="h-full w-[200px] flex text-center flex-col">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="The amount of submitted articles this session">
                                     <span className="text-lg underline decoration-dashed">
@@ -419,7 +444,13 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </Tooltip>
                                 
                                 <div className="w-full h-max text-7xl">
-                                    {articles.filter(article => !selectedSession || article.SessionCode === selectedSession).length}
+                                    {
+                                        selectedSession
+                                        ?
+                                        articles.filter(article => !selectedSession || article.SessionCode === selectedSession).length
+                                        :
+                                        "0"
+                                    }
                                 </div>
                             </div>
                             <div className="h-full w-[200px] flex text-center flex-col">
@@ -429,7 +460,13 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </span>
                                 </ Tooltip>
                                 <div className="w-full h-max text-7xl">
-                                    {articles.filter(article => !selectedSession || (article.SessionCode === selectedSession && article.Approved)).length}
+                                    {
+                                        selectedSession
+                                        ?
+                                        articles.filter(article => !selectedSession || (article.SessionCode === selectedSession && article.Approved)).length
+                                        :
+                                        0
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -463,13 +500,14 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                             </div>
                         </div>
                         <div className="w-full flex flex-col grow gap-[15px]">
-                            <div className="w-full flex h-min">
+                            <div className="w-full h-min hidden xs-sm:flex">
+
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user who published the article">
                                     <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
                                         Publisher
                                     </div>
                                 </Tooltip>
-                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The display title of the article">
+                                <Tooltip classes={{ tooltip: classes.customTooltip }} title="The display title of the article ">
                                     <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
                                         Title
                                     </div>
@@ -480,46 +518,64 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </div>
                                 </Tooltip>
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the article is approved or not">
-                                    <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
+                                    <div className="flex h-max w-full md:basis-[100px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
                                         Approval
                                     </div>
                                 </Tooltip>
-                                <div className="flex h-full min-w-[90px] p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
+                                <div className="flex h-full basis-[100px] min-w-[30px] p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
 
                                 </div>
                             </div>
-                            <div className={`flex w-full min-h-[400px] xl:min-h-[300px] sm:h-auto sm:grow  flex flex-col text-lg bg-base-200 dark:bg-secondary-dark rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide ${articles.length === 0 && !sessionInfo.ID && "justify-center"}`}>
+                            <div className={`flex w-full h-[300px] min-h-[400px] xl:min-h-[300px] sm:grow  flex flex-col text-lg bg-base-200 dark:bg-secondary-dark rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide ${articles.length === 0 && !sessionInfo.ID && "justify-center"}`}>
                                 {
                                     articles
                                     &&
-                                    articles.length !== 0
+                                    articles.filter(article => !selectedSession || article.SessionCode === selectedSession) !== 0
                                     ?
                                     selectedSession
                                     ?
                                     articles.filter(article => !selectedSession || article.SessionCode === selectedSession).map((article, index) => (
                                         <div key={index} className={`flex justify-between w-full h-max border-b-3 shadow items-center hover:bg-base-200 dark:hover:bg-secondary-dark  ${selectedArticles.includes(article.id) ? "bg-base-200 dark:bg-secondary-dark" : "bg-base-100 dark:bg-[#353335]"} ${index === 0 ? "rounded-t-md" : ""}`} onClick={() => handleSetSelectedArticles(article.id)}>
-                                            <div className="flex grow md:basis-[200px] py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(article.Publisher)}>
-                                                {article.Publisher}
+                                            <div className='flex flex-col h-max basis-[200px]'>
+                                                <div className="py-0 pl-[10px] h-[50px] items-center " onClick={() => copyToClip(article.Publisher)}>
+                                                    {article.Publisher}
+                                                </div>
+                                                <div className="xs-sm:hidden flex py-0 pl-[10px] h-[50px] items-center border-t-3 xs-sm:border-0" onClick={() => copyToClip(article.Title)}>
+                                                    {article.Title}
+                                                </div>
                                             </div>
-                                            <Divider orientation="vertical"/>
-                                            <div className="hidden md:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(article.Title)}>
+                                            <div className='h-full w-max hidden xs-sm:flex'>
+                                                <Divider orientation="vertical" flexItem/>
+                                            </div>
+                                            <div className="hidden xs-sm:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(article.Title)}>
                                                 {article.Title}
                                             </div>
-                                            <Divider orientation="vertical"/>
-                                            <div className="hidden md:flex basis-[200px]  py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString())}>
-                                                {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString()}
-                                                
+                                            <Divider orientation="vertical" flexItem/>
+                                            <div className='flex flex-col h-max basis-[200px] border-x-3 xs-sm:border-0'>
+                                                <div className="flex py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString())}>
+                                                    {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString()}
+                                                </div>
+                                                <div className={`xs-sm:hidden flex grow h-[50px] border-t-3  pl-[10px] items-center dark:text-t-header-light dark:font-medium ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `} onClick={() => copyToClip(article.Approved)}>
+                                                    {article.Approved ? "True" : "False"}
+                                                </div>
                                             </div>
-                                            <div className={`hidden md:flex basis-[200px] grow border-x-3 max-w-[70px] border-y-0 h-full pl-[10px] items-center dark:text-t-header-light dark:font-medium ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `} onClick={() => copyToClip(article.Approved)}>
+
+                                            <div className={`xs-sm:flex hidden grow h-[53px] basis-[100px] border-x-3 max-w-[70px] border-y-0  pl-[10px] items-center dark:text-t-header-light dark:font-medium ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"} `} onClick={() => copyToClip(article.Approved)}>
                                                 {article.Approved ? "True" : "False"}
                                             </div>
-                                            <div className="flex h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
+                                            <div className="flex flex-col items-center  basis-[100px] xs-sm:flex-row h-full w-full w-max p-[10px] max-h-[39px] max-h-full gap-[10px] justify-between">
                                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
                                                     <button onClick={() => router.push(`/editor/blog/${article.id}`)} >
                                                         <FaPen className="text-xl w-[25px]"/>
                                                     </button>
                                                 </Tooltip>
-                                                <Divider orientation="vertical"/>
+                                                
+                                                <div className='xs-sm:flex h-full '>
+                                                    <Divider orientation="vertical" flexItem/>
+                                                </div>                                            
+                                                <div className='flex xs-sm:hidden w-full'>
+                                                    <Divider />
+                                                </div>
                                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
                                                     <button>
                                                         <MdOutlinePreview className="text-2xl w-[25px]" />
@@ -530,7 +586,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         ))
                                         :
                                         <div className='w-full h-full flex items-center justify-center text-shadow'>
-                                            <div className='w-[300px]'>
+                                            <div className='w-[300px] h-full flex flex-col justify-center'>
                                                 <Header type="lg" classes="w-[300px] text-center">
                                                         Oops!
                                                 </Header>
@@ -542,7 +598,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         </div>
                                         :
                                         <div className='w-full h-full flex items-center justify-center text-shadow'>
-                                            <div className='w-[300px]'>
+                                            <div className='w-[300px] h-full flex flex-col justify-center'>
                                                 <Header type="lg" classes="w-[300px] text-center">
                                                         Oops!
                                                 </Header>

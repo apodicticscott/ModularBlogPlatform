@@ -9,8 +9,8 @@ const UserPanel = ({users, classes}) => {
     const [selectedUser, setSelectedUser] = useState({userId: null, userName: null, userData: null})
 
     return(
-        <div className="grid grid-rows-2 grid-cols-2 h-full w-full justify-between p-7 gap-7 dark:font-extralight">
-            <div className="flex flex-col justify-between gap-[25px] col-span-1 row-span-2 rounded-md border-3 p-7 pb-0 text-lg w-full dark:bg-base-100-dark">
+        <div className="flex flex-col lg:grid md:grid-rows-2 grid-cols-2 h-full w-full justify-between sm:p-7 sm:gap-7  dark:font-extralight">
+            <div className="flex flex-col justify-between gap-[25px] col-span-1 row-span-2 sm:rounded-md border-b-3 sm:border-3 p-7 pb-0 text-lg w-full dark:bg-base-100-dark ">
                 <div className="flex flex-col gap-[15px]">
                     <div className="w-full h-max flex flex-col">
                         <Header type="sm" >
@@ -65,20 +65,20 @@ const UserPanel = ({users, classes}) => {
                                 users
                                 ?
                                 users.map((user, index) => (
-                                    <div key={index} className={`flex justify-between w-full h-max bg-base-100 dark:bg-[#353335] items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200 dark:bg-secondary-dark"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user})}>
-                                        <div className="flex grow md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                    <div key={index} className={`flex justify-between w-full h-max bg-base-100 dark:bg-[#353335] items-center shadow ${selectedUser.userId === user.userInfo.uid && "bg-base-200 dark:bg-secondary-dark"} ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`} onClick={() => (selectedUser.userId !== user.userInfo.uid ? setSelectedUser({userId: user.userInfo.uid, userName: user.firstName + " " + user.lastName, userData: user}) : setSelectedUser({userId: null, userName: null, userData: null}))}>
+                                        <div className="flex grow basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {user.firstName}
                                         </div>
-                                        <Divider orientation="vertical"/>
-                                        <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
+                                        <Divider orientation="vertical" flexItem/>
+                                        <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {user.lastName}
                                         </div>
-                                        <Divider orientation="vertical"/>
-                                        <div className="hidden md:flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
+                                        <Divider orientation="vertical" flexItem/>
+                                        <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
                                             {user.sessionCode}
                                         </div>
-                                        <Divider orientation="vertical"/>
-                                        <div className={`hidden md:flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
+                                        <Divider orientation="vertical" flexItem/>
+                                        <div className={`flex basis-[200px] 2xl:grow pl-[10px] py-[15px] items-center`}>
                                             {
                                             user.hasPublished
                                             ?
@@ -97,7 +97,7 @@ const UserPanel = ({users, classes}) => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-[25px] col-span-1 row-span-2 rounded-md border-3 w-full p-7 text-lg dark:bg-base-100-dark">
+            <div className="flex flex-col gap-[25px] col-span-1 row-span-2 sm:rounded-md sm:border-3 w-full p-7 text-lg min-h-[600px] dark:bg-base-100-dark">
                 <Header type="sm">
                     User Info.
                 </Header>
@@ -107,13 +107,13 @@ const UserPanel = ({users, classes}) => {
                     "Oops! It looks like no user has been selected."
 
                 }
-                <div className="flex gap-[25px] w-full">
+                <div className="flex gap-[25px] w-full ">
                     {
                         selectedUser.userData
                         ?
                         <>
-                            <div className="flex flex-col w-[50%]  h-full gap-[25px]">
-                                <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col w-[50%] max-w-[50%]  h-full gap-[25px] overflow-hidden  text-wrap">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                         <span className="text-lg underline decoration-dashed">
                                             First Name.
                                         </span>
@@ -121,7 +121,7 @@ const UserPanel = ({users, classes}) => {
                                             {selectedUser.userData.firstName}
                                         </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
                                         <span className="text-lg underline decoration-dashed">
                                             Last Name.
@@ -132,7 +132,7 @@ const UserPanel = ({users, classes}) => {
                                     </span>
                                     
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's display name they chose">
                                         <span className="text-lg underline decoration-dashed">
                                             Display Name.
@@ -142,20 +142,20 @@ const UserPanel = ({users, classes}) => {
                                         {selectedUser.userData.userInfo.displayName}
                                     </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's email they registered with">
                                         <span className="text-lg underline decoration-dashed">
                                             Email.
                                         </span>
                                     </Tooltip>
-                                    <span className="text-lg">
+                                    <div className="text-lg overflow-none text-wrap w-full">
                                         {selectedUser.userData.userInfo.email}
-                                    </span>
+                                    </div>
                                     
                                 </div>
                             </div>
-                            <div className="flex flex-col w-[50%] h-full gap-[25px]">
-                                <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col w-[50%] h-full gap-[25px] ">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user is a student writer">
                                         <span className="text-lg underline decoration-dashed">
                                             Student Writer.
@@ -171,7 +171,7 @@ const UserPanel = ({users, classes}) => {
                                         }
                                     </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's session code that they registered with">
                                         <span className="text-lg underline decoration-dashed">
                                             Session Code.
@@ -181,7 +181,7 @@ const UserPanel = ({users, classes}) => {
                                         {selectedUser.userData.sessionCode}
                                     </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="whether the user has published an article or not">
                                         <span className="text-lg underline decoration-dashed">
                                             Has Published.
@@ -197,7 +197,7 @@ const UserPanel = ({users, classes}) => {
                                         }
                                     </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether this user is an admin account or not.">
                                         <span className="text-lg underline decoration-dashed">
                                             Is Admin
@@ -213,15 +213,15 @@ const UserPanel = ({users, classes}) => {
                                         }
                                     </span>
                                 </div>
-                                <div className="flex flex-col gap-[15px]">
+                                <div className="flex flex-col gap-[15px] min-h-[54px]">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's unique id.">
                                         <span className="text-lg underline decoration-dashed">
                                             User ID
                                         </span>
                                     </Tooltip>
-                                        <span className="text-lg">
-                                            {selectedUser.userData.userInfo.uid}
-                                        </span>
+                                    <div className="flex text-lg h-max w-full">
+                                        {selectedUser.userData.userInfo.uid}
+                                    </div>
                                    
                                 </div>
                             </div>

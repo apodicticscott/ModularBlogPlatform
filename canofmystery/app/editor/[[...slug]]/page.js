@@ -175,7 +175,7 @@ export default function Page({ params }) {
 
                     {
                         !loadReady && (
-                            <></>
+                            <TextEditor pageType={pageType} editorType={editorType}/>
                         )
                     }
                     {
