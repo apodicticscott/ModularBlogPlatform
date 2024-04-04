@@ -18,17 +18,20 @@ export default function Page({params}) {
     const [isAdmin, setIsAdmin] = useState(false);
     const [userId, setUserId] = useState(null)
 
-    console.log("here")
 
     useEffect(() => {
       const fetchArticle = async () => {
+        setIsLoading(true)
         const docRef = doc(db, "Articles", params.slug);
         const docSnap = await getDoc(docRef);
   
         if (docSnap.exists()) {
           setArticle(docSnap.data());
+          setIsLoading(false)
         } else {
           setArticle(null)
+          console.log("here")
+          setIsLoading(false)
         }
       };
 
@@ -36,7 +39,6 @@ export default function Page({params}) {
         if (user) {
             const docRef = doc(db, 'users', user.uid);
             const docSnap = await getDoc(docRef);
-            console.log("User data reference:", docRef); // Corrected to log a meaningful message
             if (docSnap.exists()) {
               const userData = docSnap.data();
               setUserId(user.uid) // Corrected to use the correct user ID from the auth object
@@ -46,16 +48,19 @@ export default function Page({params}) {
               setIsLoading(false);
             }
         } else {
-          setIsLoading(true);
+          setIsLoading(false);
         }
       });
 
       fetchArticle(); // Moved inside useEffect but outside of onAuthStateChanged callback
       return unsubscribe; // Corrected to return the unsubscribe function for cleanup
   }, [params.slug]); // Added params.slug as a dependency
+
+
+  
     if(isLoading){
-      return  <Loader className={`${loading ? "scale-100" : "scale-70"} transition duration-500`}/>;
-    }else if(!article.Approved && !isAdmin && userId !== article.UserId){
+      return  <Loader className={`${isLoading ? "scale-100" : "scale-70"} transition duration-500`}/>;
+    }else if((article && !article.Approved) && !isAdmin && userId !== article.UserId){
       return <PageNotFound />
     }
 

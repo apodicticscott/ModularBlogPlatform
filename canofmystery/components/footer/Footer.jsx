@@ -49,25 +49,11 @@ const Footer = () => {
                   To The Can
                 </span>
               </Header>
-              <form onSubmit={subscribeToTheCan} className="flex flex-row gap-[15px] h-full">
-              
-                <input onChange={(e) => setSubcriberEmail(e.target.value)} required type="email" name="email" id="email" className=" w-full xs-sm:grow text-xl xs:tracking-[-1.76px]  3xl:h-[2.3vw] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md"/>
+              <form onSubmit={subscribeToTheCan} className="flex flex-row gap-[15px] h-max max-h-[54px]">
+                <input onChange={(e) => setSubcriberEmail(e.target.value)} required type="email" name="email" id="email" className="w-full grow text-xl xs:tracking-[-1.76px] 3xl:text-[1.25vw]   lg:text-2xl lg:tracking-[-2.76px]  xl:text-2xl xl:tracking-[-3.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md"/>
                 <NeoButton classes={"bg-primary-dark p-1"} type="submit" onSubmit={subscribeToTheCan}>
                   Submit
                 </NeoButton>
-                <AnimatePresence>
-                    {errorSubscribeVisible && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="rounded-md"
-                            style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
-                        >
-                            Whoa! You may have entered a wrong username or password. Please try again.
-                        </motion.div>
-                    )}
-                </AnimatePresence>
               </form>
         </div>
       </div>

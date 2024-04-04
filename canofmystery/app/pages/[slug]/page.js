@@ -24,6 +24,7 @@ export default function Page({params}){
     // Define an async function to fetch project data
     async function getCitationGuide() {
       const response = await getPageByName(pageName);
+      console.log(response)
       setPage(response)
     }
     
@@ -43,7 +44,7 @@ export default function Page({params}){
             setIsLoading(false);
           }
       } else {
-        setIsLoading(true);
+        setIsLoading(false)
       }
     });
 
@@ -53,41 +54,19 @@ export default function Page({params}){
 
   if(isLoading){
     return(
-      <div className="w-screen h-screen flex items-center justify-center">
-        <div class="book">
-          <div class="inner">
-            <div class="left"></div>
-            <div class="middle"></div>
-            <div class="right"></div>
-          </div>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-        </div><a class="dribbble" href="https://dribbble.com/shots/7199149-Book-Loader" target="_blank"><img src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png"/></a>
-      </div>
+      <div className="h-screen w-screen flex items-center ">
+        <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
     );
-  }else if(!page.Approved && !isAdmin && userId !== page.UserId){
-    console.log(!page.Approved, !isAdmin, userId, page.UserId)
+  }else if((page && !page.Approved) && !isAdmin && userId !== page.UserId){
     return <PageNotFound />
   }
 
+  console.log("here 1")
 
   return <Article article={page} />
 };

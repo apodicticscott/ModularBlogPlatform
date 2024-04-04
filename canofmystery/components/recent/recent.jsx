@@ -173,7 +173,7 @@ const Recent = () => {
                                                 </div>
 
                                                 <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2xl">
-                                                    <div className="truncate h-[35px] w-full">
+                                                    <div className="truncate h-[35px] w-full tracking-tighter">
                                                         {article.Title}
                                                     </div>
                                                     
@@ -182,7 +182,7 @@ const Recent = () => {
                                                         {article.time} mins
                                                     </div> */}
                                                 </div>
-                                                <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
+                                                <div className="flex items-center justify-between gap-[15px] h-[50x] w-full tracking-tighter text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
                                                     {article.Author}
                                                 </div>
                                                 <div className="flex items-center justify-between  h-[50x] w-full  px-[10px] text-2.5xl">
@@ -198,7 +198,7 @@ const Recent = () => {
                                                             article.Tags.map((tag, index) => {
                                                                 return(
                                                                     
-                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-[7px]  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
+                                                                    <div key={"recent-article-card-tag-" + index} className={`rounded-[7px] tracking-tighter px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
                                                                         {tag.Text}
                                                                     </div>
                                                                     
@@ -210,8 +210,8 @@ const Recent = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex text-t-light font-light dark:text-t-header-light dark:bg-light-purple rounded-b-md items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
-                                                <FaBookOpen  className="text-2.5xl" />
+                                            <div className="flex text-t-light font-light dark:text-t-header-light  dark:bg-light-purple rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
+                                                <FaBookOpen  className="text-2.5xl " />
                                                 Read More
                                             </div>
                                         </div>
@@ -279,7 +279,7 @@ const Recent = () => {
                                                     </div>
 
                                                     <div className="flex items-center justify-between gap-[15px] h-[50x] w-full  px-[10px] text-2xl">
-                                                        <div className="truncate h-[35px] w-full">
+                                                        <div className="truncate h-[35px] w-full tracking-tighter">
                                                             {article.Title}
                                                         </div>
                                                         
@@ -288,7 +288,7 @@ const Recent = () => {
                                                             {article.time} mins
                                                         </div> */}
                                                     </div>
-                                                    <div className="flex items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
+                                                    <div className="flex tracking-tighter items-center justify-between gap-[15px] h-[50x] w-full text-t-light font-light dark:text-base-100 dark:font-extralight px-[10px] text-xl">
                                                         {article.Author}
                                                     </div>
                                                     <div className="flex items-center justify-between  h-[50x] w-full  px-[10px] text-2.5xl">
@@ -304,7 +304,7 @@ const Recent = () => {
                                                                 article.Tags.map((tag, index) => {
                                                                     return(
                                                                         
-                                                                        <div key={"recent-article-card-tag-" + index} className={`rounded-[7px]  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
+                                                                        <div key={"recent-article-card-tag-" + index} className={`flex tracking-tighter items-center rounded-[7px]  px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light`} style={{backgroundColor: tag.Color}}>
                                                                             {tag.Text}
                                                                         </div>
                                                                         

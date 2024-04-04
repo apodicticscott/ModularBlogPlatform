@@ -72,7 +72,7 @@ const Lander = () => {
                         
                     </div>
                     <div className="w-full 3xl:w-full h-max flex flex-col items-end p-[10px] pt-0 pb-[25px]">
-                        <h2 className="w-content text-xl tracking-[-1.76px] xl:text-2xl xl:tracking-[-3.32px] 2xl:text-2.5xl 3xl:text-[1.25vw] tracking-[-5.76px]">
+                        <h2 className="w-content text-xl tracking-tighter xl:text-2xl 2xl:text-2.5xl 3xl:text-[1.25vw] ">
                         { article.author ?  <>@{article.author}</> : <div className="skeleton h-max w-max"><span className="opacity-0">Author Here</span></div> }
                         </h2>
                     </div>

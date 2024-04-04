@@ -53,9 +53,13 @@ const useStyles = makeStyles({
 const ControlPanel = ({ 
     panelOptions, 
     handleAddComponent, 
+
     setTitle, 
+    Title,
+
     setAuthor, 
     Author,
+
     setTags, 
     currentTags, 
     setCategory, 
@@ -78,8 +82,9 @@ const ControlPanel = ({
     removeCoverImage,
 
     pageType,
-    pageName,
+
     setPageName,
+    pageName,
 
     isCropEnabled,
     setIsHelpOpen,
@@ -364,7 +369,7 @@ const ControlPanel = ({
                         <Header type="sm" >
                             Page Name
                         </Header>
-                        <input className="w-full p-[5px] rounded" placeholder={"Page Name"} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
+                        <input className="w-full p-[5px] rounded" placeholder={"Page Name"} value={pageName && pageName} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
                         </input>
                     </div>
                     
@@ -373,7 +378,7 @@ const ControlPanel = ({
                     <Header type="sm" >
                         Title
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeholder={pageType === "page" ? "Page Title" : "Article Title" } onChange={(e) => handleSetTitle(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] rounded" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">

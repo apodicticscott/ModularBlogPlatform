@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TextEditor from "../../../components/textEditor/TextEditor";
 import PageNotFound from "../../not-found";
-import { fetchArticle, fetchArticleUser } from "../../../firebase/articleUtils/articleUtils";
+import { fetchArticle, fetchArticleUser, fetchPage } from "../../../firebase/articleUtils/articleUtils";
 import Loader from "../../../components/loader/loader";
 import firebase_app from '../../../firebase/config';
 import { app } from "../../../app/firebase"
@@ -35,35 +35,51 @@ export default function Page({ params }) {
     const [isAdmin, setIsAdmin] = useState(true);
     const [user, setUser] = useState('');
     const [articleUser, setArticleUser] = useState('');
+    const [article, setArticle] = useState(null);
+
+    
 
     useEffect(() => {
-        console.log(articleId)
-        console.log(hasId)
+        console.log("here 23")
         if (hasId) {
-            console.log("Here")
             setLoading(true);
-
-            fetchArticle(articleId).then((exists) => {
-                if (exists === null) {
-                    // Ensure loader stays for 2 more seconds after loading is done
-                    setTimeout(() => setLoading(false), 2000);
-                    setTimeout(() => setHideLoader(true), 2500);
-                    setExists(false);
-                    
-                } else {
-                    
-                    // Ensure loader stays for 2 more seconds after loading is done
-                    setLoadReady(true);
-                    setTimeout(() => setLoading(false), 2000);
-                    setTimeout(() => setHideLoader(true), 2500);
-                    setExists(true);
-                }
-            });
+            if(pageType === "blog"){
+                fetchArticle(articleId).then(response => {
+                    if (response === null) {
+                        // Ensure loader stays for 2 more seconds after loading is done
+                        setTimeout(() => setLoading(false), 2000);
+                        setTimeout(() => setHideLoader(true), 2500);
+                        setExists(false);
+                    } else {
+                        // Ensure loader stays for 2 more seconds after loading is done
+                        setLoadReady(true);
+                        setTimeout(() => setLoading(false), 2000);
+                        setTimeout(() => setHideLoader(true), 2500);
+                        setExists(true);
+                        setArticle(response)
+                    }
+                });
+            }else if(pageType === "page"){
+                
+                fetchPage(articleId).then(response => {
+                    if (response === null) {
+                        // Ensure loader stays for 2 more seconds after loading is done
+                        setTimeout(() => setLoading(false), 2000);
+                        setTimeout(() => setHideLoader(true), 2500);
+                        setExists(false);
+                    } else {
+                        // Ensure loader stays for 2 more seconds after loading is done
+                        setLoadReady(true);
+                        setTimeout(() => setLoading(false), 2000);
+                        setTimeout(() => setHideLoader(true), 2500);
+                        setExists(true);
+                        setArticle(response)
+                    }
+                });
+            }
         }
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                console.log("here5")
-                console.log(user)
                 try{
                     const docRef = doc(firestore, 'users', user.uid);
                     const docSnap = await getDoc(docRef);
@@ -111,13 +127,12 @@ export default function Page({ params }) {
     // Adjustments to handle editorType and articleId states
     useEffect(() => {
         if (editorType !== "new" && editorType !== undefined && articleId === undefined) {
-            console.log("here")
             setArticleId(editorType);
             setHasId(true);
         }
     }, [editorType, articleId]);
 
-    if (articleUser == user.uid && !isAdmin){
+    if (articleUser === user.uid && !isAdmin){
         //console.log("here7");
         return <PageNotFound />;
     }
@@ -160,12 +175,12 @@ export default function Page({ params }) {
 
                     {
                         !loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType} user={user}/>
+                            <></>
                         )
                     }
                     {
                         loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId} user={user}/>
+                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId} article={article} user={user}/>
                         )
                     }
                 </>

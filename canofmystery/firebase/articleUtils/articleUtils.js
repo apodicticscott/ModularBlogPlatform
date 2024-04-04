@@ -167,6 +167,18 @@ export const fetchArticle = async (articleId) => {
       return null
     }
 };
+
+export const fetchPage = async (pageId) => {
+    const docRef = doc(db, "Pages", pageId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return null
+    }
+};
+
 export const fetchArticleUser = async (articleId) => {
     const docRef = doc(db, "Articles", articleId);
     const docSnap = await getDoc(docRef);
@@ -190,58 +202,6 @@ export const fetchOurProject = async () => {
       console.log("No such document!");
     }
 };
-
-// export const searchArticles = async (searchText = [], articles_list = [], search_provided_list=false, articles) => {
-//     var search_articles = articles
-//     if(search_provided_list){
-//         search_articles = articles_list
-//     }
-//     if(searchText.length > 0){
-//         if(search_articles.length > 0 || search_provided_list){
-//             var found_articles = []
-//             //this is kinda inefficient, but aren't all algorithims like this are? - @989onan
-//             //I wish I could search like you can in python, but this is probably the best idk feel free to optimize.
-//             search_articles.forEach(
-//                 (word,index) => {
-//                     var stop_searching_cur = false
-//                     for(var index1 in searchText){
-//                         var search = searchText[index1] //why u not like python whyyy!?
-//                         for(var key in word.Content){
-//                             var section = word.Content[key]
-//                             if(section.Type == "paragraph" && !stop_searching_cur){
-//                                 var words = section.Content.split(" ")
-//                                 for(var indexg in words){
-                                    
-//                                     var word1 = words[indexg] //why u not like python whyyy!?
-//                                     var result = dziemba_levenshtein(word1.toLowerCase(), search.toLowerCase())
-//                                     if(result < 3){
-//                                         stop_searching_cur = true
-//                                         break;
-//                                     }
-//                                 }
-//                             }
-//                             if(stop_searching_cur){
-//                                 break;
-//                             }
-//                         }
-                        
-//                     }
-//                     if(stop_searching_cur){
-//                         found_articles.push(word);
-//                     }
-//                 }
-//             );
-//             return found_articles;
-//         }
-//         else{
-//             throw new Error("Articles not loaded yet!")
-//         }
-//     }
-//     else{
-//         return search_articles;
-//     }
-// }
-
 
 export const searchArticles = async (searchText = [], articles_list = [], search_provided_list = false, articles) => {
     var search_articles = articles

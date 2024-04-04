@@ -13,7 +13,7 @@ const Article = ({article}) => {
             <div className="w-full flex flex-col items-center max-w-[800px] h-max " id="article">
             {article ? (
                 <>
-                <div className="pb-[50px] w-full pt-[100px]">
+                <div k className="pb-[50px] w-full pt-[100px]">
                     {
                         <Header type="xl" classes="flex w-full justify-center" >
                             {article.Title}
@@ -27,7 +27,7 @@ const Article = ({article}) => {
                         </Header>
                     }
                     {article.Content.map((comp, index) => (
-                        <>
+                        <div key={index}>
                             {(comp.Type === "paragraph")&& (
                                 <>
                                     <Paragraph type={comp.Size}  key={comp.ID} indent={false} innerHTML={comp.Content} classes={`w-full ${comp.Style}`}></Paragraph> 
@@ -48,7 +48,12 @@ const Article = ({article}) => {
                                     <Resource type={comp.Size}  key={comp.ID} innerHTML={comp.Content} classes="w-full"></Resource> 
                                 </>
                             )}
-                        </>
+                            {(comp.Type === "youtube") && (
+                                <>
+                                    <YoutubeEmbed id={comp.ID} embededId={comp.VideoEmbededId} key={comp.ID} classes="w-full"></YoutubeEmbed> 
+                                </> 
+                            )}
+                        </ div>
                     ))}
                 </div>
                 {

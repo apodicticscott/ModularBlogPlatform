@@ -186,7 +186,7 @@ const handleInfo = async (event) => {
   return (
     <div className="w-full h-[100vh] flex items-center justify-center duration-100">
 
-      <div class={`flex flex-col justify-center self-center align-center sm:max-w-[450px] border-2 md:border-3    shadow-lg m-7 sm:m-0 h-max min-h-[480px] w-[calc(100vw_-_29px)] p-7 rounded-md transition-all duration-500`}>
+      <div class={`class="flex flex-col justify-center self-center align-center p-7 w-full w-full sm:w-[calc(100vw_-_29px)] sm:max-w-[450px] border-y-3 sm:border-3 sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 transition-all duration-500`}>
         
           {panel === "cradentials" 
           ?
@@ -230,7 +230,7 @@ const handleInfo = async (event) => {
                   animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
                   exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
                   transition={{ duration: 0.5 }}
-                  className="rounded-md overflow-hidden p-[10px] px-[15px]"
+                  className="rounded-md overflow-hidden p-[10px] px-[15px] tracking-tighter"
                   style={{ background: '#fd6666', color: "black", marginTop: "15px" }}
                 >
                   {errorMessage}
@@ -238,7 +238,7 @@ const handleInfo = async (event) => {
               )}
             </AnimatePresence>         
             </div>
-            <a href="/login" class="text-green-400 hover:text-green-500 2xl:text-2xl w-full">
+            <a href="/login" class="text-green-400 hover:text-green-500 tracking-tighter 2xl:text-2xl w-full">
                   Have an account? click here!
             </a>
             <NeoButton
@@ -281,7 +281,7 @@ const handleInfo = async (event) => {
                       animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
                       exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
                       transition={{ duration: 0.5 }}
-                      className="rounded-md overflow-hidden p-[10px] px-[15px]"
+                      className="rounded-md overflow-hidden p-[10px] px-[15px] tracking-tighter"
                           style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
                       >
                         {infoErrorMessage}
@@ -302,7 +302,7 @@ const handleInfo = async (event) => {
                 Session Code
               </label>
               <input 
-                onChange={(e) => setSessionCode(e.target.value)} type="sessionCode" name="sessionCode" id="sessionCode"
+                onChange={(e) => setSessionCode(e.target.value)} type="sessionCode" required name="sessionCode" id="sessionCode"
                 class="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="5D12gD" 
               />
                 <AnimatePresence>

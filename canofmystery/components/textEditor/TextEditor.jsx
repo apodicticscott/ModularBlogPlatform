@@ -40,6 +40,7 @@ import Tag from "../TextComponents/NeoTag"
 import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/CropUtils";
 import {addDocument, setHasPublished} from "../../firebase/articleUtils/articleUtils"
+import {fetchArticle, fetchPage}from "../../firebase/articleUtils/articleUtils"
 import firebase_app from '/firebase/config';
 const auth = getAuth(firebase_app);
 import { getAuth } from "@firebase/auth";
@@ -100,11 +101,9 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = ({pageType, editorType, articleId, user}) => {
-
+const TextEditor = ({pageType, editorType, articleId, user, article}) => {
     const classes = useStyles()
 
-    const [article, setArticle] = useState(null);
     const [compArray, setCompArray] = useState([]);
 
     const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
@@ -112,6 +111,8 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     const [Author, setAuthor] = useState("")
     const [Tags, setTags] = useState([])
     const [Category, setCategory] = useState()
+    const [imageData, setImageData] = useState([undefined, undefined])
+    const [coverImageData, setCoverImageData] = useState([undefined, undefined])
     
     const [linkValue, setLinkValue] = useState();
     const [currentLink, setCurrentLink] = useState("");
@@ -132,49 +133,32 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
     const [pageName, setPageName] = useState("");
 
-    
-
-    const db = getFirestore(app)
-
-    useEffect(() => {
-        if(articleId){
-            const fetchArticle = async () => {
-                const docRef = doc(db, "Articles", articleId);
-                const docSnap = await getDoc(docRef);
-          
-                if (docSnap.exists()) {
-                  setArticle(docSnap.data());
-                } else {
-                  console.log("No such document!");
-                }
-            };
-          
-            fetchArticle();
-        }
-    }, []);
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
-        if (user) {
-            setIsLoggedIn(true);
-            setUserId(user.uid);
-        } else {
-            setIsLoggedIn(false);
-            setUserId(null);
-        }
+            if (user) {
+                setIsLoggedIn(true);
+                setUserId(user.uid);
+            } else {
+                setIsLoggedIn(false);
+                setUserId(null);
+            }
         });
         return () => unsubscribe();
-  }, []);
+    }, []);
 
     useEffect(() => {
-        if(articleId && article){
+        if(article){
             setCompArray(article.Content);
             setTitle(article.Title)
             setAuthor(article.Author)
             setTags(article.Tags)
+            setCoverImageData([article.CoverImage, article.CoverImage])
+            if(pageType === "page"){
+                setPageName(article.PageName)
+            }
         }
     }, [article])
     
@@ -188,8 +172,7 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     );
 
 
-    const [imageData, setImageData] = useState([undefined, undefined])
-    const [coverImageData, setCoverImageData] = useState([undefined, undefined])
+
 
     //Change Content Section ---------------------------------------------------------------------------------------------------------
     const handleItalicClick = () => {
@@ -309,8 +292,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
 
         let tagName = e.target.tagName
         let selectionName = window.getSelection().type
-
-        console.log(selectionName)
 
         if(tagName === "DIV" && (selectionName === "Caret" || selectionName === "None")){
             if(e.target.id && e.target.id !== "paragraph"){
@@ -447,8 +428,6 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
     const handleUploadArticle = async () => {
         try {
             // Construct the article object
-
-    
             let response;
             // Reference to the 'Articles' collection
             if(pageType === "blog"){
@@ -474,7 +453,14 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     SessionCode: user.sessionCode
                 };
 
-                response = await addDocument("Articles", article) && await setHasPublished("users", userId);
+                if(editorType !== "new"){
+                    
+                }else{
+                    response = await addDocument("Articles", article) && await setHasPublished("users", userId);
+                    console.log(response)
+                }
+
+                
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,
@@ -499,9 +485,13 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                     
                 };
 
-                response = await addDocument("Pages", page) && await setHasPublished("users", userId);
+                if(editorType !== "new"){
+
+                }else{
+                    response = await addDocument("Pages", page) && await setHasPublished("users", userId);
+                    console.log(response)
+                }
             }
-            
         } catch (error) {
             console.error("Error adding article: ", error);
         }
@@ -738,8 +728,11 @@ const TextEditor = ({pageType, editorType, articleId, user}) => {
                             panelOptions={panelOptions} 
                             handleAddComponent={handleAddComponent} 
                             setTitle={setTitle} 
-                            Author={Author}
+                            Title={Title}
+
                             setAuthor={setAuthor} 
+                            Author={Author}
+
                             currentAuthor={Author} 
                             setTags={setTags} 
                             currentTags={Tags} 

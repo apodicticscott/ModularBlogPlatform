@@ -152,10 +152,10 @@ const Navbar = () => {
                 </form>
                 <FaUserCircle className="text-2.7xl"/>
               </div>
-              <DropDownItem link = "https://www.usca.edu/" title="USCA" background="bg-sunset" classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+              <DropDownItem href="https://www.usca.edu/" title="USCA" background="bg-sunset"  classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                 <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
               </DropDownItem>
-              <DropDownItem link = "canitems" title="Can Items" background="bg-pale-green" classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+              <DropDownItem href="canitems" title="Can Items" background="bg-pale-green"   classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                   <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                     <div className="w-[644px] h-15 whitespace-nowrap dark:text-t-header-light">
                       Example Text
@@ -165,7 +165,7 @@ const Navbar = () => {
                     </div>
                   </div>
               </DropDownItem>
-              <DropDownItem link="Articles" title="Articles" background="bg-dark-purple" classes="w-full h-[16.5vh] sm:w-[500px] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+              <DropDownItem href="/search" title="Articles" background="bg-dark-purple" classes="w-full h-[16.5vh] sm:w-[500px] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                   <div className="flex justify-center h-[110%] w-[90%] border-3 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
                     <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>
                     </div>

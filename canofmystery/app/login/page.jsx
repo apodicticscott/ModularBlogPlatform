@@ -69,14 +69,14 @@ const LoginPage = () => {
   
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div class="flex flex-col justify-center self-center align-center p-7 w-[calc(100vw_-_29px)] sm:max-w-[450px] border-3 rounded-md shadow-lg m-7 sm:m-0">  
+      <div class="flex flex-col justify-center self-center align-center p-7 w-full w-full sm:w-[calc(100vw_-_29px)] sm:max-w-[450px] border-y-3 sm:border-3 sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 transition-all duration-500">  
         <div class="mb-4">
-          <h3 class="font-bold text-3xl text-gray-200">Login</h3>
+          <h3 class="font-bold text-3xl text-gray-200 tracking-tighter">Login</h3>
         </div>
         <div >
           <form onSubmit={handleForm} className="flex flex-col gap-[15px]">
             <div className="flex flex-col">
-              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-wide mb-[10px]">
+              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-tighter mb-[10px]">
                 Email
               </label>
               <input 
@@ -87,7 +87,7 @@ const LoginPage = () => {
             <div className="flex flex-col">
               
 
-              <label htmlFor="password" class="mt-5 text-2xl font-medium text-gray-700 tracking-wide mb-[10px]">
+              <label htmlFor="password" class="mt-5 text-2xl font-medium text-gray-700 tracking-tighter mb-[10px]">
                 Password
               </label>
               <div className="flex w-full h-max">
@@ -103,20 +103,21 @@ const LoginPage = () => {
               </div>
                 <AnimatePresence>
                   {loginErrorVisible && (
-                      <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="rounded-md"
-                          style={{ background: '#fd6666', marginTop: "5px", padding: "5px", color: "black", marginTop: "15px"}}
-                      >
-                          {errorMessage}
-                      </motion.div>
+                    <motion.div
+                    initial={{ opacity: 0, height: 0, paddingX: 0, paddingY: 0 }}
+                    animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
+                    exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
+                    transition={{ duration: 0.5 }}
+                    className="rounded-md overflow-hidden p-[10px] px-[15px] tracking-tighter"
+                    style={{ background: '#fd6666', color: "black", marginTop: "15px" }}
+                  >
+                    {errorMessage}
+                  </motion.div>
                   )}
                 </AnimatePresence>
             </div>
 
-            <a href="/signup" class="text-green-400 hover:text-green-500  2xl:text-2xl">
+            <a href="/signup" class="text-green-400 hover:text-green-500 tracking-tighter 2xl:text-2xl">
                   Need an account? click here!
             </a>
             <div className="flex w-full flex-col sm:flex-row justify-between">
