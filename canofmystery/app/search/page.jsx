@@ -94,8 +94,6 @@ const SearchPage = () => {
 
     const SearchChange = async (event) => {
         const term = event.target.value;
-
-        console.log(term)
         setSearchTerm(term);
 
         if(term) {
@@ -148,7 +146,6 @@ const SearchPage = () => {
     useEffect(() => {
         if(!articles){
             fetchArticles().then(articles => {
-                console.log(articles.filter(article => article.Approved === true))
                 setArticles(articles.filter(article => article.Approved === true));
                 const newTags = articles.reduce((acc, article) => {
                     article.Tags.forEach(tag => {

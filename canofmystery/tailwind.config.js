@@ -35,6 +35,7 @@ module.exports = {
       '3': "3px",
     },
     boxShadow: {
+      'none': '0px 0px 0px 0px #000',
       'md': '0px 5px 0px 0px #000',
       'lg': '0px 10px 0px 0px #000',
       'sidelg': '-10px 10px 0px 0px #000',

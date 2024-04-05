@@ -4,9 +4,11 @@ import { useLayoutEffect } from "react";
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { RiSearchFill } from "react-icons/ri";
-import { FaBars, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaUserCircle, FaArrowRight } from "react-icons/fa";
 import { getAuth } from "@firebase/auth";
+import Header from "../TextComponents/Header1";
 import firebase_app from "../../firebase/config";
+import { fetchArticles, searchArticles } from "../../firebase/articleUtils/articleUtils";
 import {getFirestore, collection, getDoc, doc, updateDoc} from "firebase/firestore"
 import Link from "../../components/TextComponents/Link"
 const auth = getAuth(firebase_app);
@@ -21,7 +23,8 @@ const Navbar = () => {
   const navRef = useRef(null);
   const dropDownRef = useRef(null);
 
-  const [active, setActive] = useState("");
+
+
   const [open, setOpen] = useState(false);
 
   const [hideTheme, setHideTheme] = useState(false);
@@ -29,12 +32,23 @@ const Navbar = () => {
   const [dropDownHeight, setDropDownHeight,] = useState(0);
   const [isPageReady, setIsPageReady] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [isFocused, setIsFocused] = useState(false)
 
 
   const dropDownLinks = [{text: "Write An Article", link:"/editor/blog/new"}, {text: "Our Capstone Project", link:"https://github.com/apodicticscott/ModularBlogPlatform/"}, {text: "Website Instructions", link:"/instructions"}, {text: "Old Can Of Mystery", link:"https://canofmystery.blogspot.com/"}]
 
   const [textInput, setTextInput] = useState('');
   const [result, setResult] = useState(null);
+
+  //search states
+  const [active, setActive] = useState("");
+  const [query, setQuery] = useState("");
+  const [articles, setArticles] = useState(null)
+  const [searchResults, setSearchResults] = useState(null);
+  const [animate, setAnimate] = useState(false);
+
+  const queryBoxRef = useRef(null)
+
 
   const handleChange = (event) => {
     setTextInput(event.target.value);
@@ -64,6 +78,16 @@ const Navbar = () => {
       setResult(`Error checking for session: ${error.message}`);
     }
   }
+
+
+
+  useEffect(() => {
+    if(!articles){
+      fetchArticles().then(articles => {
+          setArticles(articles.filter(article => article.Approved === true));
+      });
+    }
+  }, [])
 
   useEffect(() => {
 
@@ -137,6 +161,21 @@ const Navbar = () => {
 
   const swsDrop = "px-7 lg:px-14 explore-size-md border-y-3 lg:explore-size-lg xl:explore-size-xl 2xl:explore-size-2xl"
 
+
+  const SearchChange = (text) => {
+    setQuery(text)
+    const tempQuery = text.split(" ");
+    
+    if(tempQuery !== ""){
+      searchArticles(tempQuery, articles, true).then(result => {
+        setSearchResults(result);
+      });
+      setTimeout(() => setAnimate(true), 700);
+    }else{
+      setAnimate(false)
+    }
+  }
+
   return (
     <>
       {/* Drop Down */}
@@ -174,15 +213,14 @@ const Navbar = () => {
             </div>
             <div className="w-full sm:w-[500px] justify-between flex lg:hidden">
               <div className="w-max flex flex-col gap-[5px] lg:hidden h-max whitespace-nowrap">
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/", undefined, { shallow: true}))} > Home </Link>
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"}  onClick={() => (router.push("/about-project", undefined, { shallow: true}))}> About </Link>
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/login", undefined, { shallow: true}))}> Login </Link>
-
-                  <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} onClick={() => (router.push("/signup", undefined, { shallow: true}))}> Signup </Link>
+                <Link onClick={() => (router.push("/", undefined, { shallow: true}))} > Home </Link>
+                <Link onClick={() => (router.push("/about-project", undefined, { shallow: true}))}> About </Link>
+                <Link onClick={() => (router.push("/login", undefined, { shallow: true}))}> Login </Link>
+                <Link onClick={() => (router.push("/signup", undefined, { shallow: true}))}> Signup </Link>
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
-                      <Link key={index} classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href={link.link}> {link.text} </Link>
+                      <Link key={index}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -192,7 +230,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                      <Link key={index} classes={"text-t-light tracking-[-2.3px] text-right decoration-t-light"} href={link.link}> {link.text} </Link>
+                      <Link key={index}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -206,7 +244,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     <div key={index}>
-                      <a className="mt-[15px] hover:text-t-header-light dark:hover:text-t-header-dark hover:decoration-t-header-light text-t-light tracking-[-2.3px]  hover:underline decoration-t-light" href={link.link}> {link.text} </a>
+                      <Link href={link.link}> {link.text} </Link>
                     </div>
                   )
                 }
@@ -216,6 +254,146 @@ const Navbar = () => {
 
         </div>
       </motion.div>
+    </div>
+    {/*  */}
+    <div className={`fixed w-screen h-screen top-0 flex flex-col items-center justify-center z-20 transition-all duration-300 backdrop-blur-sm ${isFocused ? "opacity-1 pointer-events-auto" : "opacity-0 pointer-events-none "}`} onClick={(e) => ((e.target === e.currentTarget) && setIsFocused(false))}>
+        <div className={`flex flex-col justify-start self-center align-center ${query === "" && "p-7"} transition-none w-full w-full sm:w-[calc(100vw_-_29px)]  transition-all duration-100 ${isFocused ? "scale-100" : "scale-0"} bg-base-100 dark:bg-base-100-dark dark:text-t-header-dark dark:font-light w-[450px] max-w-[450px] h-[450px] border-y-3 sm:border-3 dark:shadow-none dark:sm:border-2 dark:border-[#544e5e] sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 overflow-hidden `}>
+            {
+              query !== ""
+              ?
+              <div className="flex flex-col ">
+                <div className="flex items-center gap-[5px] border-b-3 max-h-[50px] dark:border-b-[1px] dark:border-[#544e5e] px-7 py-3">
+                  <div className="w-[50px] h-full flex items-center">
+                    <RiSearchFill className="text-2.7xl"/>
+                  </div>
+                  <div className="w-[500px] overflow-x-scroll tracking-tighter text-2xl no-scrollbar ">{query}</div>
+                </div>
+
+                <div className={`flex flex-col gap-[10px] px-7 py-3 grow h-[400px] overflow-y-scroll`}>
+                  {
+                    searchResults
+                    &&
+                    searchResults.map((article, index) => (
+                      <div key={index} className={`flex w-full rounded-md border-3 dark:border-[#544e5e] ${animate ? "top-[0px] scale-100 opacity-100 top-[0px]" : "relative top-[100px] scale-50 opacity-0 top-[-20px]"} dark:border-2 h-[125px] p-1 hover:scale-[1.02] cursor-pointer hover:shadow-md-move transition duration-100`} onClick={() => (router.push(`/blog/${article.id}`, undefined, {shallow: true}), setIsFocused(false))}>
+                        <div className="w-[157.16px] h-full">
+                          {
+                            article.CoverImage
+                            ?
+                            <img src={article.CoverImage} className="h-full w-full rounded-md"/>
+                            :
+                            <div className="h-full w-full rounded-md bg-image-missing-image bg-contain">
+                            </div>
+                          }
+                          
+                        </div>
+                        <div className="flex flex-col justify-between h-full grow p-3 text-lg gap-[5px]">
+                          <div className="flex flex-col grow gap-[5px]">
+                            <span className="tracking-tighter">
+                              {article.Title}
+                            </span>
+                            <span className="tracking-tighter">
+                              {article.Author}
+                            </span>
+                          </div>
+                          <div className="flex w-full h-max ">
+                              {
+                                article.Tags.map((tag, index) => (
+                                  <div key={index} className="rounded-[7px] tracking-tighter px-[10px] mr-[5px]  py-[2.5px] text-lg border-2 shadow-md max-h-[30px] min-w-max dark:text-t-header-light tracking-tighter" style={{background: tag.Color}}>
+                                    {tag.Text}
+                                  </div>
+                                ))
+                              }
+                          </div>
+                        </div>
+
+                      </div>
+                    ))
+                  }
+                </div> 
+              </div>
+              :
+              <div className="w-full h-max flex flex-col gap-[15px]">
+                <div className="flex flex-col w-full grow-1 gap-[10px] ">
+                    <span className="font-bold text-wrap tracking-tighter">
+                      Maybe Seach For...
+                    </span>
+                    <div className="flex flex-wrap gap-[5px]">
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                          Article Titles
+                        </div>
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                          Author Names
+                        </div>
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                          Tags
+                        </div>
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                          Can Items
+                        </div>
+                    </div> 
+                </div>
+                <div className="w-full h-max flex gap-[15px]">
+                  <div className="flex flex-col h-[120px] w-[50%] gap-[10px] cursor-pointer" href="www.usca.edu" onClick={() => setIsFocused(false)}>
+                    <div className="h-[20px] tracking-tighter">
+                      USCA
+                    </div>
+                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#544e5e] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-sunset flex items-center justify-center overflow-hidden">
+                      <div className=" w-0">
+                        <div className="neoButton-animation z-0 w-0">
+                          <div className="neoButton-rectangle w-[100px]">
+                
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full h-full z-10 flex items-center justify-center">
+                        <img src="/_next/static/media/uscalogo.f84310d7.png" class="h-2/3" alt="USCA Logo" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col h-[120px] w-[50%] gap-[10px] cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}), setIsFocused(false))}>
+                    <div className="h-[20px] tracking-tighter">
+                      Articles
+                    </div>
+                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#544e5e] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-dark-purple flex items-center justify-center overflow-hidden ">
+                      <div className=" w-0">
+                        <div className="neoButton-animation z-0">
+                          <div className="neoButton-rectangle w-[100px]">
+              
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full h-full z-10 flex items-center justify-center">
+                        <div className="flex justify-center h-[110%] w-[90%] border-3 neo-bottom-lg " style={{ position: "relative", background: "white", top: "15%"}}>
+                          <div className="w-[95%] h-[60%] mt-[2.5%] rounded" style={{backgroundColor: "black"}}>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full h-max flex">
+                  <div className="flex flex-col content-end grow gap-[5px]">
+                    <Link onClick={() => (router.push("/", undefined, { shallow: true}), setIsFocused(false))}> Home </Link>
+                    <Link onClick={() => (router.push("/about", undefined, { shallow: true}), setIsFocused(false))}> About </Link>
+                    <Link onClick={() => (router.push("/login", undefined, { shallow: true}), setIsFocused(false))}> Login </Link>
+                    <Link onClick={() => (router.push("/signup", undefined, { shallow: true}), setIsFocused(false))}> Sign Up </Link>
+                  </div>
+                  <div className="flex flex-col grow gap-[5px]">
+                    <Link classes={"text-right"} href={"https://github.com/apodicticscott/ModularBlogPlatform"}> Our Capstone Project </Link>
+                    <Link classes={"text-right"} onClick={() => (router.push("/instructions", undefined, { shallow: true}), setIsFocused(false))}> Website Instructions </Link>
+                    <Link classes={"text-right"} href={"https://canofmystery.blogspot.com"}> Old Can Of Mystery </Link>
+                    <Link classes={"text-right"}onClick={() => (router.push("/editor/blog/new", undefined, { shallow: true}), setIsFocused(false))}> Write An Article </Link>
+                  </div>
+                </div>
+              </div>
+            }
+        </div>
+        <div className="flex items-center p-3 w-max h-[50px] bg-base-100 dark:bg-base-100-dark dark:shadow-none dark:border-2 dark:border-[#544e5e] dark:text-t-header-dark  rounded-md border-3 shadow-md hover:shadow-md-move gap-[15px] transition duration-100 cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}))}>
+          <span className="font-bold dark:font-medium text-wrap tracking-tighter">
+              Take Me To The Search Page
+          </span>
+          <FaArrowRight className="text-2xl"/>
+        </div>
     </div>
     {/* Nav Bar */}
     <div ref={navRef} className="fixed w-screen border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
@@ -242,13 +420,13 @@ const Navbar = () => {
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} role="link">search</RiSearchFill>
-            <input type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px] px-3"/>
+            <input id="search" onFocus={() => setIsFocused(true)} onChange={(e) => (SearchChange(e.target.value), (e.target.value === "" && setAnimate(false)))} type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px] px-3"/>
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avitar">
                 <FaUserCircle tabIndex={0} role="button" className="text-2.7xl" />
               </div>
               <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-base-100-dark	border-3 rounded-md w-52">
-                {isLoggedIn ? <strong>Welcome!</strong> : <a classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href=""></a>}
+                {isLoggedIn ? <strong>Welcome!</strong> : <a  href=""></a>}
                 {isLoggedIn ? <li><input type="text" className="my-1 w-full border-3 neo-input dark:text-base-100-dark text-base-100-dark active:bg-base-100-dark lg:text-xl drop-nav-input"  placeholder="Session Code" value={textInput} onChange={handleChange}></input><button className="my-1 dark:text-base-100-dark bg-bright-orenge lg:text-xl border-3" onClick={handleCheck}>Check Session</button>{result && <p>{result}</p>}</li> : <a/>}
                 {isLoggedIn ? <li><button className="border-3 bg-bright-orenge my-1 dark:text-base-100-dark lg:text-xl hover:bg-bright-orenge" onClick={handleLogOut}>Logout</button></li> : <li><button className="border-3 my-1 hover:bg-pale-green dark:text-base-100-dark lg:text-xl bg-pale-green" onClick={handleLogin}>Login</button></li>}
               </ul>
