@@ -38,7 +38,7 @@ const Footer = () => {
 
 
   return (
-    <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-2 border-t-black lg:border-t-3">
+    <div className="w-screen bg-neutral-200 w-full flex flex-col h-40 border-t-black border-t-3 dark:border-t-2 dark:border-t-[#302c38]">
       <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
             <div className="flex flex-col gap-[15px] md:w-[784px] w-full">
               <Header type={"lg"} classes="flex flex-wrap gap-[10px] text-t-header-light dark:text-t-dark">
@@ -57,7 +57,7 @@ const Footer = () => {
               </form>
         </div>
       </div>
-      <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous border-t-2 border-t-black dark:bg-base-100-dark lg:border-t-3 ">
+      <div className="w-full  h-max flex flex-row justify-center px-7 md:p-[50px] py-[50px] bg-focous  border-t-black border-t-2 dark:border-t-[#302c38] dark:bg-base-100-dark lg:border-t-3 ">
         <div className="w-[784px] h-max flex md:flex-row md:h-full flex-col gap-[25px] justify-between">
           <div className="h-full w-full md:w-[22.22%] flex flex-row md:flex-col justify-between">
             <div>
@@ -77,22 +77,22 @@ const Footer = () => {
                 Explore
               </Header>
               <div className="flex flex-col justify-between gap-[10px]">
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="citation-guide">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="Articles">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="Articles">
                   Articles
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="canitems">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="canitems">
                   Can Items
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://canofmystery.blogspot.com/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href="https://canofmystery.blogspot.com/" rel="noopener noreferrer">
                   Old Can Of Mystery
                 </Link>
               </div>
@@ -102,22 +102,22 @@ const Footer = () => {
                 Quick Links
               </Header>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/">
                   Home
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/about">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/about">
                   About
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/login">
                   Login
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/admin">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/admin">
                   Admin Dashboard
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="instructions">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="instructions">
                   Instructions
                 </Link>
               </div>
@@ -128,22 +128,22 @@ const Footer = () => {
                 Explore
               </Header>
               <div className="flex flex-wrap justify-between gap-[10px]">
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark font-light" target="_blank" href='https://www.usca.edu/' rel="noopener noreferrer">
                   USCA
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="citation-guide">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="citation-guide">
                   MLA Citations
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="Articles">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="Articles">
                   Articles
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="canitems">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="canitems">
                   Can Items
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href="" rel="noopener noreferrer">
                   Old Can Of Mystery
                 </Link>
               </div>
@@ -153,22 +153,22 @@ const Footer = () => {
                 Explore
               </Header>
               <div className="flex flex-wrap justify-between gap-[10px] text-t-header-light dark:text-t-dark">
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/">
                   Home
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/about">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/about">
                   About
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/login">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/login">
                   Login
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/admin">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/admin">
                   Admin Dashboard
                 </Link>
-                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
+                <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light"} href="/">
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light font-light"} href="/">
                   Instructions
                 </Link>
               </div>

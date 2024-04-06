@@ -152,7 +152,9 @@ const initGapiClient = async () => {
 
 // Function to initialize authentication instance (if not already initialized)
 const initAuthInstance = async () => {
-  if (!gapi.auth2.getAuthInstance()) {
+  await loadGapiAndAuth2();
+  
+  if (!gapi.auth2 || !gapi.auth2.getAuthInstance()) { // Check if auth2 is loaded before calling getAuthInstance
     await gapi.auth2.init({ client_id: CLIENT_ID });
   }
 };
@@ -160,7 +162,8 @@ const initAuthInstance = async () => {
 // Function to sign in
 export const ApiSignIn = async () => {
   try {
-    await initAuthInstance(); // Ensure auth2 instance is initialized
+ // Ensure auth2 instance is initialized
+    await initAuthInstance()
     const response = await gapi.auth2.getAuthInstance().signIn();
     return {result: response, error: null}
   } catch (error) {

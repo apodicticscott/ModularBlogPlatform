@@ -14,3 +14,11 @@ export const fetchUsers = async () => {
 
     return articlesArray;
 };
+
+
+export const updateUserAttribute = async (docId, attributeName, newValue) => {
+    const docRef = doc(db, "users", docId);
+    await updateDoc(docRef, {
+        [attributeName]: newValue
+    });
+};

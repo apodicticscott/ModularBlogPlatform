@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import { FaPen } from "react-icons/fa";
+import useDocumentClassChange from '../../hooks/useDocumentClassChange';
 
 import { 
     fetchPages, 
@@ -26,7 +27,8 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
     const indexOfLastPage = currentPage * pagesPerPage;
     const indexOfFirstPage = indexOfLastPage - pagesPerPage;
 
-
+    const currentTheme = useDocumentClassChange();
+    
     useEffect(() => {
         setCurrentPages(pages.slice(indexOfFirstPage, indexOfLastPage))
     }, [pages])
@@ -70,10 +72,10 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
     return(
         <div className="flex flex-col h-full w-full justify-between p-7">
             <div className="flex flex-col gap-[25px] w-full">
-                <div className="w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between">
-                    <div className="w-full sm:w-max h-full flex gap-[15px]">
+                <div className={`w-full flex flex-col gap-[28px] sm:gap-[15px] sm:flex-row sm:gap-0 justify-between dark:bg-[#322e38] dark:p-3 dark:rounded-md ${currentTheme === "dark" && "shadow-lg-dark"}`}>
+                    <div className="w-full sm:w-max h-full flex gap-[15px] items-center">
                         <RiSearchFill className={"text-base-100-dark"} style={{fontSize: "30px"}} role="link"/> 
-                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px] dark:bg-base-100-dark"/>
+                        <input type="search" name="search" required minLength="4" className="neo-input grow sm:w-[180px] dark:bg-[#18161b] "/>
                     </div>
                     <Divider   className="flex sm:hidden" flexItem />
                     <div className="w-full flex sm:w-max ">
@@ -118,33 +120,33 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                             currentPages
                             &&
                             currentPages.map((page) => (
-                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] shadow md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 overflow-hidden flex flex-col 2xl:flex-row text-lg dark:bg-base-100-dark dark:font-extralight ${selectedPages.includes(page.id) && 'bg-[#c8c8c8]'}`} key={page.id} onClick={() => handleSelection(page.id)}>
+                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] ${currentTheme === "dark" ? "shadow-lg-dark" : "shadow"} md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 dark:border-2 dark:border-[#302c38] overflow-hidden flex flex-col 2xl:flex-row text-lg dark:font-extralight hover:dark:bg-[#18161b] cursor-pointer ${selectedPages.includes(page.id) ? 'bg-[#c8c8c8] dark:bg-[#18161b]' : 'bg-base-100 dark:bg-base-100-dark '}`} key={page.id} onClick={() => handleSelection(page.id)}>
                                     <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
                                         <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {page.Publisher}
                                         </div>
-                                        <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
-                                        <Divider   className="flex 2xl:hidden" flexItem />
+                                        <Divider  orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                        <Divider  className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {page.Author}
                                         </div>
-                                        <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
-                                        <Divider   className="flex 2xl:hidden" flexItem />
+                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
                                             {page.Title}
                                         </div>
-                                        <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
-                                        <Divider   className="flex 2xl:hidden" flexItem />
+                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
                                             {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleTimeString()}
                                         </div>
-                                        <Divider orientation="vertical" className="hidden 2xl:flex" flexItem />
-                                        <Divider   className="flex 2xl:hidden" flexItem />
+                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
                                         <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
                                             {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleDateString()}
                                         </div>
-                                        <Divider orientation="vertical"   className="hidden 2xl:flex" flexItem />
-                                        <Divider   className="flex 2xl:hidden" flexItem />
+                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
                                         <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
                                             {
                                                 page.coverImage
@@ -158,7 +160,7 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                                 </>
                                             }
                                         </div>
-                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center dark:text-t-header-light font-normal ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center dark:text-t-header-light font-normal dark:border-x-[#302c38] ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                             {
                                                 page.Approved
                                                 ?
@@ -174,7 +176,7 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                                                 <FaPen className="text-xl w-[25px]"/>
                                             </button>
                                         </Tooltip>
-                                        <Divider orientation="vertical" flexItem />
+                                        <Divider orientation="vertical" flexItem className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight}/>
                                         <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
                                             <button onClick={() => router.push(`/pages/${page.PageName}`, undefined, {shallow: true})}>
                                                 <MdOutlinePreview className="text-2xl w-[25px]" />

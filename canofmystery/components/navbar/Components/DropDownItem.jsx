@@ -10,7 +10,7 @@ const DropDownItem = ({href, title, background, classes, children }) => {
                 {title}
             </a>
 
-            <div onClick={() => router.push(href, undefined, {shallow: true})} className={`neoDropDownItem w-full h-full lg:h-2/3 cursor-pointer flex flex-col justify-center items-center overflow-hidden rounded-md border-3 shadow-md transition duration-100 hover:scale-[1.05] hover:shadow-md-move ${background}`}>
+            <div onClick={() => router.push(href, undefined, {shallow: true})} className={`neoDropDownItem w-full h-full lg:h-2/3 cursor-pointer flex flex-col justify-center items-center overflow-hidden rounded-md border-3 shadow-md dark:shadow-none dark:border-[#302c38] dark:border-2 hover:dark:shadow-md-move-dark transition duration-100 hover:scale-[1.05] hover:shadow-md-move ${background}`}>
                 <div className="neoButton-animation z-0 ">
                     <div className="neoButton-rectangle w-[100px]">
         

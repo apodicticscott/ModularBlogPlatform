@@ -180,7 +180,7 @@ const Navbar = () => {
     <>
       {/* Drop Down */}
       <div className={`transition duration-300 fixed w-screen h-screen z-20 ${open ? "pointer-events-auto backdrop-blur-sm " : "pointer-events-none backdrop-blur-none"}`}>
-      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={closed}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-3 border-y-black text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
+      <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={closed}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-3 border-y-black dark:border-y-[#302c38] dark:border-y-2  text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
         <div className="flex flex-row justify-center w-full lg:py-2 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className=" flex flex-row flex-wrap justify-between gap-[20px] lg:gap-0 sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
             <div className="w-full sm:w-[500px] lg:w-max flex flex-wrap h-max lg:h-full gap-[20px]">
@@ -220,7 +220,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
-                      <Link key={index}  href={link.link}> {link.text} </Link>
+                      <Link key={index} classes={"dark:font-light"}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -230,7 +230,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                      <Link key={index}  href={link.link}> {link.text} </Link>
+                      <Link key={index} classes={"dark:font-light"}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -244,7 +244,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     <div key={index}>
-                      <Link href={link.link}> {link.text} </Link>
+                      <Link href={link.link} classes={"dark:font-light"} > {link.text} </Link>
                     </div>
                   )
                 }
@@ -257,12 +257,12 @@ const Navbar = () => {
     </div>
     {/*  */}
     <div className={`fixed w-screen h-screen top-0 flex flex-col items-center justify-center z-20 transition-all duration-300 backdrop-blur-sm ${isFocused ? "opacity-1 pointer-events-auto" : "opacity-0 pointer-events-none "}`} onClick={(e) => ((e.target === e.currentTarget) && setIsFocused(false))}>
-        <div className={`flex flex-col justify-start self-center align-center ${query === "" && "p-7"} transition-none w-full w-full sm:w-[calc(100vw_-_29px)]  transition-all duration-100 ${isFocused ? "scale-100" : "scale-0"} bg-base-100 dark:bg-base-100-dark dark:text-t-header-dark dark:font-light w-[450px] max-w-[450px] h-[450px] border-y-3 sm:border-3 dark:shadow-none dark:sm:border-2 dark:border-[#544e5e] sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 overflow-hidden `}>
+        <div className={`flex flex-col justify-start self-center align-center ${query === "" && "p-7"} transition-none w-full w-full sm:w-[calc(100vw_-_29px)]  transition-all duration-100 ${isFocused ? "scale-100" : "scale-0"} bg-base-100 dark:bg-base-100-dark dark:text-t-header-dark dark:font-light w-[450px] max-w-[450px] h-[450px] border-y-3 sm:border-3 dark:shadow-none dark:sm:border-2 dark:border-[#302c38] sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 overflow-hidden `}>
             {
               query !== ""
               ?
               <div className="flex flex-col ">
-                <div className="flex items-center gap-[5px] border-b-3 max-h-[50px] dark:border-b-[1px] dark:border-[#544e5e] px-7 py-3">
+                <div className="flex items-center gap-[5px] border-b-3 max-h-[50px] dark:border-b-2 dark:border-[#302c38] px-7 py-3">
                   <div className="w-[50px] h-full flex items-center">
                     <RiSearchFill className="text-2.7xl"/>
                   </div>
@@ -274,7 +274,7 @@ const Navbar = () => {
                     searchResults
                     &&
                     searchResults.map((article, index) => (
-                      <div key={index} className={`flex w-full rounded-md border-3 dark:border-[#544e5e] ${animate ? "top-[0px] scale-100 opacity-100 top-[0px]" : "relative top-[100px] scale-50 opacity-0 top-[-20px]"} dark:border-2 h-[125px] p-1 hover:scale-[1.02] cursor-pointer hover:shadow-md-move transition duration-100`} onClick={() => (router.push(`/blog/${article.id}`, undefined, {shallow: true}), setIsFocused(false))}>
+                      <div key={index} className={`flex w-full rounded-md border-3 dark:border-[#302c38] ${animate ? "top-[0px] scale-100 opacity-100 top-[0px]" : "relative top-[100px] scale-50 opacity-0 top-[-20px]"} dark:border-2 h-[125px] p-1 hover:scale-[1.02] cursor-pointer hover:shadow-md-move transition duration-100`} onClick={() => (router.push(`/blog/${article.id}`, undefined, {shallow: true}), setIsFocused(false))}>
                         <div className="w-[157.16px] h-full">
                           {
                             article.CoverImage
@@ -318,16 +318,16 @@ const Navbar = () => {
                       Maybe Seach For...
                     </span>
                     <div className="flex flex-wrap gap-[5px]">
-                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#302c38] dark:border-2 rounded-md text-center tracking-tighter">
                           Article Titles
                         </div>
-                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#302c38] dark:border-2 rounded-md text-center tracking-tighter">
                           Author Names
                         </div>
-                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#302c38] dark:border-2 rounded-md text-center tracking-tighter">
                           Tags
                         </div>
-                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#544e5e] dark:border-2 rounded-md text-center tracking-tighter">
+                        <div className="px-2 p-1 h-max grow border-2 dark:border-[#302c38] dark:border-2 rounded-md text-center tracking-tighter">
                           Can Items
                         </div>
                     </div> 
@@ -337,7 +337,7 @@ const Navbar = () => {
                     <div className="h-[20px] tracking-tighter">
                       USCA
                     </div>
-                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#544e5e] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-sunset flex items-center justify-center overflow-hidden">
+                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#302c38] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-sunset flex items-center justify-center overflow-hidden">
                       <div className=" w-0">
                         <div className="neoButton-animation z-0 w-0">
                           <div className="neoButton-rectangle w-[100px]">
@@ -354,7 +354,7 @@ const Navbar = () => {
                     <div className="h-[20px] tracking-tighter">
                       Articles
                     </div>
-                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#544e5e] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-dark-purple flex items-center justify-center overflow-hidden ">
+                    <div className="neoButton w-full h-[calc(100%_-_30px)] border-3 dark:border-2 dark:border-[#302c38] shadow-md rounded-md transition duration-100 hover:shadow-md-move bg-dark-purple flex items-center justify-center overflow-hidden ">
                       <div className=" w-0">
                         <div className="neoButton-animation z-0">
                           <div className="neoButton-rectangle w-[100px]">
@@ -388,7 +388,7 @@ const Navbar = () => {
               </div>
             }
         </div>
-        <div className="flex items-center p-3 w-max h-[50px] bg-base-100 dark:bg-base-100-dark dark:shadow-none dark:border-2 dark:border-[#544e5e] dark:text-t-header-dark  rounded-md border-3 shadow-md hover:shadow-md-move gap-[15px] transition duration-100 cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}))}>
+        <div className="flex items-center p-3 w-max h-[50px] bg-base-100 dark:bg-base-100-dark dark:shadow-none dark:border-2 dark:border-[#302c38] dark:text-t-header-dark  rounded-md border-3 shadow-md hover:shadow-md-move gap-[15px] transition duration-100 cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}))}>
           <span className="font-bold dark:font-medium text-wrap tracking-tighter">
               Take Me To The Search Page
           </span>
@@ -396,7 +396,7 @@ const Navbar = () => {
         </div>
     </div>
     {/* Nav Bar */}
-    <div ref={navRef} className="fixed w-screen border-b-3 border-b-black xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
+    <div ref={navRef} className="fixed w-screen border-b-3 border-b-black dark:border-b-[#302c38] dark:border-b-2 xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
       <div className="navbar p-0 h-16 items-stretch">
         <div className="flex flex-row grow justify-between lg:justify-between ">
           <FaBars onClick={() => handleDropDownClick()} className="lg:hidden text-2.5xl text-t-header-light dark:text-t-header-dark" />

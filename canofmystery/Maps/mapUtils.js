@@ -41,7 +41,7 @@ const MapComponent = ({ locationData }) => {
         return () => map.remove(); // Cleanup on component unmount
     }, [apiKey, locationData, currentTheme]);
 
-    return <div id="map" ref={mapElement} style={{ width: '100%', height: '548px' }} className='border-b-3  mapDiv' />;
+    return <div id="map" ref={mapElement} style={{ width: '100%', height: '100%', minHeight: "500px" }} className='border-b-3  mapDiv' />;
 };
 
 const Map = ({ locationData }) => {

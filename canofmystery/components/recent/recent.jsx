@@ -102,7 +102,7 @@ const Recent = () => {
 
     return(
         <>
-            <div id="recent-container" className=" flex flex-col w-full h-max lg:h-[738px] gap-[15px] py-[50px] lg:pb-[100px] bg-t-header-dark dark:grid-lines-dark grid-lines-light  border-b-3  overflow-hidden max-w-screen " >
+            <div id="recent-container" className=" flex flex-col w-full h-max lg:h-[738px] gap-[15px] py-[50px] lg:pb-[100px] bg-t-header-dark dark:grid-lines-dark grid-lines-light  border-b-3 dark:border-b-2 dark:border-b-[#302c38]  overflow-hidden max-w-screen " >
                 {/* <div className="w-full h-0 z-10">
                     <div className={`w-full h-[603px]`}>
                         <Image src={hand} alt="Hand PNG" className="max-w-[150px]" />
@@ -164,11 +164,11 @@ const Recent = () => {
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
+                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md dark:border-[#302c38] dark:border-[2px] md:shadow-none shadow-lg  hover:dark:shadow-md-move-dark dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                             <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                 <div className="w-full p-[10px] pb-0 h-max">
                                                     <div className="w-full h-[160px] items-center rounded-md overflow-hidden">
-                                                        <img src={article.CoverImage} alt="Article Image" className=" h-full w-full rounded-md object-fill border-2" />
+                                                        <img src={article.CoverImage} alt="Article Image" className=" h-full w-full rounded-md object-fill border-2 dark:border-none" />
                                                     </div>
                                                 </div>
 
@@ -210,7 +210,7 @@ const Recent = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex text-t-light font-light dark:text-t-header-light  dark:bg-light-purple rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
+                                            <div className="flex text-t-light font-light dark:text-t-header-dark  rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 dark:border-t-[1px] dark:border-[#302c38] p-[10px] text-xl">
                                                 <FaBookOpen  className="text-2.5xl " />
                                                 Read More
                                             </div>
@@ -270,7 +270,7 @@ const Recent = () => {
                                                     </defs>
                                                 </svg>
                                             </div>
-                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
+                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg dark:border-[#302c38] dark:border-[2px] md:shadow-none hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                                 <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                     <div className="w-full p-[10px] pb-0 h-max">
                                                         <div className="w-full h-[160px] items-center rounded-md overflow-hidden">

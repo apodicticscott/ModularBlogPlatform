@@ -18,6 +18,8 @@ import { deleteArticles, fetchArticles,  getTotalUnapprovedArticles, setArticles
 import { fetchSessions, addSession } from '../../firebase/sessionUtils/sessionUtils';
 import { TextField } from '@mui/material';
 
+import useDocumentClassChange from '../../hooks/useDocumentClassChange';
+
 const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, setSessions, users, setUsers}) => {
     const [sessionInfo, setSessionInfo] = useState({ID: null, Experation: null});
     const [sessionError, setSessionError] = useState("");
@@ -37,6 +39,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     const router = useRouter();
     const dayjs = new AdapterDayjs(); 
 
+    const currentTheme = useDocumentClassChange();
     
     const handleFetchSessions = async () => {
         const tempSessions = await fetchSessions()
@@ -137,7 +140,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
     return(
         <>
             <div className="h-full w-full flex flex-col 2xl:flex-row  sm:gap-7 p-0 sm:p-7 bg-grid-image transition duration-100 dark:font-extralight">
-                <div className=" sm:rounded-md border-b-3 sm:border-3 flex flex-col md:flex-row justify-between 2xl:flex-col px-7 pt-[15px] sm:p-[15px] sm:pb-0 sm:shadow  gap-7 bg-base-100 dark:bg-base-100-dark">
+                <div className={`sm:rounded-md border-b-3 dark:border-b-2 dark:border-b-[#302c38] sm:border-3 dark:sm:border-2 dark:sm:border-[#302c38] flex flex-col md:flex-row justify-between 2xl:flex-col px-7 pt-[15px] sm:p-[15px] sm:pb-0   gap-7 bg-base-100 dark:bg-base-100-dark ${currentTheme === "dark" ? "shadow-lg-dark" : "sm:shadow" }`}>
                     <div className="flex flex-col gap-[15px] w-full xl:w-[40%] pb-[20px] 2xl:w-full 2xl:pb-0 h-max ">
                         <div className="w-full h-max ">
                             <Header type="sm" >
@@ -221,22 +224,22 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                 </div>
                             </Tooltip>
                         </div>
-                        <div className="flex w-full grow flex flex-col text-lg bg-base-200 dark:bg-secondary-dark rounded-t-md  border-3 border-b-0 bg-base-200 min-h-[400px] md:min-h-0 overflow-y-scroll scrollbar-hide">
+                        <div className="flex w-full grow flex flex-col text-lg bg-base-200 dark:bg-[#18161b] dark:border-b-0 rounded-t-md  border-3 dark:border-2 dark:border-[#302c38] border-b-0 bg-base-200 min-h-[400px] md:min-h-0 overflow-y-scroll scrollbar-hide">
                             {
                                 sessions
                                 ?
                                 <>
                                     {
                                         sessions.map((data, index) => (
-                                            <div key={index} className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200 dark:hover:bg-secondary-dark border-b-3  shadow items-center ${selectedSession === data.id ? "bg-base-200 dark:bg-secondary-dark" : "bg-base-100 dark:bg-[#353335]"} ${(index === 0 && "rounded-t-md")}`} onClick={() => (selectedSession !== data.id ? setSelectedSession(data.id) : setSelectedSession(null))}>
+                                            <div key={index} className={`flex justify-between w-full h-max px-[15px] hover:bg-base-200  border-b-3 dark:border-b-2 dark:border-[#302c38] dark:bg-base-100-dark dark:hover:bg-[#18161b] ${currentTheme === "dark" ? "shadow-lg-dark" : "shadow" } items-center ${selectedSession === data.id ? "bg-base-200 dark:bg-[#18161b]" : "bg-base-100 dark:bg-[#353335]"} ${(index === 0 && "rounded-t-md")}`} onClick={() => (selectedSession !== data.id ? setSelectedSession(data.id) : setSelectedSession(null))}>
                                                 <div className="flex-1 py-[5px]"  onClick={() => (setSelectedSession(data.id), copyToClip(data.id))}>
                                                     {data.id}
                                                 </div>
-                                                <Divider orientation="vertical" />
+                                                <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" />
                                                 <div className="flex-1 px-[15px] py-[5px]"  onClick={() => (setSelectedSession(data.id), copyToClip(data.Experation))}>
                                                     {convertDateTime(data.Experation)}
                                                 </div>
-                                                <Divider orientation="vertical" />
+                                                <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" />
                                                 <div className={`flex-1 text-center border-x-3 py-[5px] dark:text-t-header-light dark:font-medium ${isTimeInPast(convertDateTime(data.Experation)) ? "bg-primary-dark" : "bg-[#fd6666]"}`} onClick={() => (setSelectedSession(data.id), copyToClip(data.Experation))}>
                                                     {isTimeInPast(convertDateTime(data.Experation)) ? "True" : "False"}
                                                 </div>
@@ -253,7 +256,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                     </div>
                 </div>
                 <div className='flex flex-col sm:gap-7 grow h-full '>
-                <div className="h-max sm:rounded-md border-b-3 sm:border-3 flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0 gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
+                <div className={`h-max sm:rounded-md border-b-3 dark:border-b-2 dark:border-b-[#302c38] sm:border-3 dark:sm:border-2 dark:sm:border-[#302c38] flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0 gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark ${currentTheme === "dark" ? "shadow-lg-dark" : "sm:shadow" }`}>
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                         <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -352,7 +355,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     </div>
                                 </Tooltip>
                             </div>
-                            <div className="flex w-full h-[300px] min-h-[400px]  sm:grow flex flex-col text-lg  rounded-t-md  border-3 border-b-0 bg-base-200 dark:bg-secondary-dark overflow-y-scroll scrollbar-hide">
+                            <div className="flex w-full h-[300px] min-h-[400px] sm:grow flex flex-col text-lg rounded-t-md border-3 dark:border-2 dark:border-[#302c38] dark:border-b-0 border-b-0 bg-base-200 dark:bg-[#18161b] overflow-y-scroll scrollbar-hide">
                                 {
                                     users
                                     &&
@@ -361,19 +364,19 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     selectedSession
                                     ?
                                     users.filter(user => !selectedSession || user.sessionCode === selectedSession).map((user, index) => (
-                                        <button key={index} className={`flex justify-between w-full h-max  bg-base-100 dark:bg-[#353335] items-center shadow hover:bg-base-200 dark:hover:bg-secondary-dark ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3"}`}>
+                                        <button key={index} className={`flex justify-between w-full h-max  bg-base-100 dark:bg-base-100-dark dark:hover:bg-[#18161b] items-center shadow hover:bg-base-200 ${index === 0 && "rounded-t-md"} ${index !== (users.length - 1) && "border-b-3 dark:border-b-2 dark:border-b-[#302c38]"}`}>
                                             <div className="flex grow basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.firstName)}>
                                                 {user.firstName}
                                             </div>
-                                            <Divider orientation="vertical" flexItem/>
+                                            <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" flexItem/>
                                             <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(user.lastName)}>
                                                 {user.lastName}
                                             </div>
-                                            <Divider orientation="vertical" flexItem/>
+                                            <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" flexItem/>
                                             <div className="flex basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(user.sessionCode)}>
                                                 {user.sessionCode}
                                             </div>
-                                            <Divider orientation="vertical" flexItem/>
+                                            <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" flexItem/>
                                             <div className={`flex basis-[100px] 2xl:grow pl-[10px] py-[15px] items-center`} onClick={() => copyToClip(user.hasPublished)}>
                                                 {
                                                 user.hasPublished
@@ -414,7 +417,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                         </div>
                     </div>
                 </div>
-                <div className=" sm:rounded-md sm:border-3 flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0  gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark shadow">
+                <div className={`sm:rounded-md border-b-3 dark:border-b-2 dark:border-b-[#302c38] sm:border-3 dark:sm:border-2 dark:sm:border-[#302c38] flex flex-col xl:flex-row  px-7 pt-[15px] sm:p-[15px] sm:pb-0  gap-[25px] text-lg bg-base-100 dark:bg-base-100-dark dark:sm:border-2 dark:sm:border-[#302c38] ${currentTheme === "dark" ? "shadow-lg-dark" : "sm:shadow" }`}>
                     <div className="flex w-full flex-col items-start sm:items-center lg:items-start md:justify-between sm:flex-row xl:flex-col lg:w-max lg:w-auto xl:grow gap-[15px]">
                     <div className="flex flex-col w-max grow gap-[15px]">
                             <Header type="sm" >
@@ -526,7 +529,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
 
                                 </div>
                             </div>
-                            <div className={`flex w-full h-[300px] min-h-[400px] xl:min-h-[300px] sm:grow  flex flex-col text-lg bg-base-200 dark:bg-secondary-dark rounded-t-md  border-3 border-b-0 overflow-y-scroll scrollbar-hide ${articles.length === 0 && !sessionInfo.ID && "justify-center"}`}>
+                            <div className={`flex w-full h-[300px] min-h-[400px] xl:min-h-[300px] sm:grow  flex flex-col text-lg bg-base-200 dark:bg-[#18161b] rounded-t-md  border-3 dark:border-2 dark:border-[#302c38] dark:border-b-0 border-b-0 overflow-y-scroll scrollbar-hide ${articles.length === 0 && !sessionInfo.ID && "justify-center"}`}>
                                 {
                                     articles
                                     &&
@@ -535,7 +538,7 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                     selectedSession
                                     ?
                                     articles.filter(article => !selectedSession || article.SessionCode === selectedSession).map((article, index) => (
-                                        <div key={index} className={`flex justify-between w-full h-max border-b-3 shadow items-center hover:bg-base-200 dark:hover:bg-secondary-dark  ${selectedArticles.includes(article.id) ? "bg-base-200 dark:bg-secondary-dark" : "bg-base-100 dark:bg-[#353335]"} ${index === 0 ? "rounded-t-md" : ""}`} onClick={() => handleSetSelectedArticles(article.id)}>
+                                        <div key={index} className={`flex justify-between w-full h-max border-b-3 dark:border-b-2 dark:border-b-[#302c38]  shadow items-center hover:dark:bg-[#18161b]   ${selectedArticles.includes(article.id) ? "bg-base-200 dark:bg-[#18161b]" : "bg-base-100 dark:bg-base-100-dark"} ${index === 0 ? "rounded-t-md" : ""}`} onClick={() => handleSetSelectedArticles(article.id)}>
                                             <div className='flex flex-col h-max basis-[200px]'>
                                                 <div className="py-0 pl-[10px] h-[50px] items-center " onClick={() => copyToClip(article.Publisher)}>
                                                     {article.Publisher}
@@ -545,12 +548,12 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                                 </div>
                                             </div>
                                             <div className='h-full w-max hidden xs-sm:flex'>
-                                                <Divider orientation="vertical" flexItem/>
+                                                <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" flexItem/>
                                             </div>
                                             <div className="hidden xs-sm:flex basis-[200px] py-0 pl-[10px] min-h-[50px] items-center" onClick={() => copyToClip(article.Title)}>
                                                 {article.Title}
                                             </div>
-                                            <Divider orientation="vertical" flexItem/>
+                                            <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight}  orientation="vertical" flexItem/>
                                             <div className='flex flex-col h-max basis-[200px] border-x-3 xs-sm:border-0'>
                                                 <div className="flex py-0 pl-[10px] items-center min-h-[50px]" onClick={() => copyToClip(new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString())}>
                                                     {new Date(article.Time.seconds * 1000 + article.Time.nanoseconds/1000000).toLocaleDateString()}
@@ -571,10 +574,10 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                                 </Tooltip>
                                                 
                                                 <div className='xs-sm:flex h-full '>
-                                                    <Divider orientation="vertical" flexItem/>
+                                                    <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} orientation="vertical" flexItem/>
                                                 </div>                                            
                                                 <div className='flex xs-sm:hidden w-full'>
-                                                    <Divider />
+                                                    <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
                                                 </div>
                                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
                                                     <button>

@@ -38,6 +38,7 @@ module.exports = {
       'none': '0px 0px 0px 0px #000',
       'md': '0px 5px 0px 0px #000',
       'lg': '0px 10px 0px 0px #000',
+      'lg-dark': '3px 7px 86px -65px rgba(142,131,161,0.47)',
       'sidelg': '-10px 10px 0px 0px #000',
     },
     borderColor: {
@@ -141,6 +142,12 @@ module.exports = {
         '.a': {
           'border-right': '3px solid black',
           'border-left': '3px solid black'
+          // You can add more styles if needed
+        },
+        '.shadow-md-move-dark': {
+          'box-shadow': '3px 7px 30px -16px rgba(142,131,161,1)',
+          '-webkit-box-shadow': '3px 7px 30px -16px rgba(142,131,161,1)',
+          '-moz-box-shadow': '3px 7px 30px -16px rgba(142,131,161,1)',
           // You can add more styles if needed
         },
         '.shadow-md-move': {
