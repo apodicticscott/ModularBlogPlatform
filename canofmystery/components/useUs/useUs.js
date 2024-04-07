@@ -11,7 +11,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 const UseUsAsASource = () => {
     return (
         <>
-            <div className="flex justify-center h-max w-full items-center py-[100px] lg:py-[150px] px-[25px] lg:px-[50px] dark:dark:bg-secondary-dark ">
+            <div className="flex justify-center h-max w-full items-center py-[100px] lg:py-[150px] px-[25px] lg:px-[50px] dark:bg-base-100-dark ">
                 <div className="flex w-max h-full gap-0 sm:gap-[25px] lg:gap-[50px] justify-center">
                     <div className="flex flex-col w-full xl:w-[65vw] h-full gap-[25px] lg:gap-[50px]  ">
                         <Header type="lg" classes="grow text-3xl md:text-4xl subpixel-antialiased">

@@ -389,24 +389,24 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         </button>
                                     ))
                                     :
-                                    <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                    <div className='w-full h-full flex items-center justify-center '>
                                         <div className='w-[300px] h-full flex flex-col justify-center'>
                                             <Header type="lg" classes="w-[300px] text-center">
                                                     Oops!
                                             </Header>
-                                            <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                            <Paragraph type="md" classes="text-t-header-dark text-center ">
                                                     It looks like you dont have an ID selected!
                                                     Click one.
                                             </Paragraph>
                                         </div>
                                     </div>
                                     :
-                                    <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                    <div className='w-full h-full flex items-center justify-center '>
                                         <div className='w-[300px] h-full flex flex-col justify-center'>
                                             <Header type="lg" classes="w-[300px] text-center">
                                                     Oops!
                                             </Header>
-                                            <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                            <Paragraph type="md" classes="text-t-header-dark text-center ">
                                                     It looks like no one has used this session code yet!
                                                     Check again later.
                                             </Paragraph>
@@ -588,24 +588,24 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
                                         </div>
                                         ))
                                         :
-                                        <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                        <div className='w-full h-full flex items-center justify-center '>
                                             <div className='w-[300px] h-full flex flex-col justify-center'>
                                                 <Header type="lg" classes="w-[300px] text-center">
                                                         Oops!
                                                 </Header>
-                                                <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                <Paragraph type="md" classes="text-t-header-dark text-center ">
                                                         It looks like you dont have an ID selected!
                                                         Click one.
                                                 </Paragraph>
                                             </div>
                                         </div>
                                         :
-                                        <div className='w-full h-full flex items-center justify-center text-shadow'>
+                                        <div className='w-full h-full flex items-center justify-center '>
                                             <div className='w-[300px] h-full flex flex-col justify-center'>
                                                 <Header type="lg" classes="w-[300px] text-center">
                                                         Oops!
                                                 </Header>
-                                                <Paragraph type="md" classes="text-t-header-dark text-center text-shadow">
+                                                <Paragraph type="md" classes="text-t-header-dark text-center ">
                                                         It looks like no one has used this session code yet!
                                                         Check again later.
                                                 </Paragraph>

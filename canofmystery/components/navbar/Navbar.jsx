@@ -47,8 +47,6 @@ const Navbar = () => {
   const [searchResults, setSearchResults] = useState(null);
   const [animate, setAnimate] = useState(false);
 
-  const queryBoxRef = useRef(null)
-
 
   const handleChange = (event) => {
     setTextInput(event.target.value);
@@ -79,6 +77,12 @@ const Navbar = () => {
     }
   }
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault(); // Corrected method name
+    const tempQuery = query.trim().split(" ").join("%20"); // Ensure spaces are correctly replaced with URL encoding
+    setOpen(false)
+    router.push(`/search?search=${tempQuery}&tags=`, undefined, { shallow: true });
+  };
 
 
   useEffect(() => {
@@ -179,16 +183,17 @@ const Navbar = () => {
   return (
     <>
       {/* Drop Down */}
-      <div className={`transition duration-300 fixed w-screen h-screen z-20 ${open ? "pointer-events-auto backdrop-blur-sm " : "pointer-events-none backdrop-blur-none"}`}>
+      <div className={`transition duration-300 fixed w-screen h-[110vh] z-20 ${open ? "pointer-events-auto backdrop-blur-sm " : "pointer-events-none backdrop-blur-none"}`}>
       <motion.div ref={dropDownRef} style={{ top: `-${dropDownHeight}px`}} initial={closed}  animate={open ? "open" : "closed"} variants={dropdownVariants} className={`fixed flex bg-base-100 dark:bg-base-100-dark dark:border-y-black left-0 flex flex-end border-y-3 border-y-black dark:border-y-[#302c38] dark:border-y-2  text-t-light dark:text-t-dark z-40 ${isPageReady ? "visible " : "hidden"} ${open ? "pointer-events-auto" : "pointer-events-none"} ${swsDrop}`}>
         <div className="flex flex-row justify-center w-full lg:py-2 py-5 flex-grow md:flex-wrap flex-wrap lg:flex-nowrap content-start">
           <div className=" flex flex-row flex-wrap justify-between gap-[20px] lg:gap-0 sm:justify-center items-center w-full md:items-start md:w-[750px] lg:w-max">
             <div className="w-full sm:w-[500px] lg:w-max flex flex-wrap h-max lg:h-full gap-[20px]">
               <div className="navbar-end lg:hidden w-full flex justify-center items-center gap-1 text-t-header-light dark:text-t-header-dark ">
                 <RiSearchFill style={{fontSize: "30px"}}/>
-                <form className="grow">
-                  <input type="text" name="search" placeholder="Search" required minLength="4" className="neo-input h-full w-full px-3"/>
+                <form className="grow" onSubmit={handleSearchSubmit}>
+                  <input type="text" name="search" placeholder="Search" onChange={(e) => setQuery(e.target.value)}  className="neo-input h-full w-full px-3"/>
                 </form>
+                
                 <FaUserCircle className="text-2.7xl"/>
               </div>
               <DropDownItem href="https://www.usca.edu/" title="USCA" background="bg-sunset"  classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
@@ -213,14 +218,14 @@ const Navbar = () => {
             </div>
             <div className="w-full sm:w-[500px] justify-between flex lg:hidden">
               <div className="w-max flex flex-col gap-[5px] lg:hidden h-max whitespace-nowrap">
-                <Link onClick={() => (router.push("/", undefined, { shallow: true}))} > Home </Link>
-                <Link onClick={() => (router.push("/about-project", undefined, { shallow: true}))}> About </Link>
-                <Link onClick={() => (router.push("/login", undefined, { shallow: true}))}> Login </Link>
-                <Link onClick={() => (router.push("/signup", undefined, { shallow: true}))}> Signup </Link>
+                <Link classes={" dark:font-light"} onClick={() => (router.push("/", undefined, { shallow: true}), setOpen(false))} > Home </Link>
+                <Link classes={" dark:font-light"}  onClick={() => (router.push("/about-project", undefined, { shallow: true}), setOpen(false))}> About </Link>
+                <Link classes={" dark:font-light"}  onClick={() => (router.push("/login", undefined, { shallow: true}), setOpen(false))}> Login </Link>
+                <Link classes={" dark:font-light"}  onClick={() => (router.push("/signup", undefined, { shallow: true}), setOpen(false))}> Signup </Link>
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) <= (dropDownLinks.length / 2)) ?
-                      <Link key={index} classes={"dark:font-light"}  href={link.link}> {link.text} </Link>
+                      <Link key={index} classes={" dark:font-light"}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -230,7 +235,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     ((index + 1) > (dropDownLinks.length / 2)) ?
-                      <Link key={index} classes={"dark:font-light"}  href={link.link}> {link.text} </Link>
+                      <Link key={index} classes={" dark:font-light"}  href={link.link}> {link.text} </Link>
                     :
                     null
                   )
@@ -244,7 +249,7 @@ const Navbar = () => {
                 {
                   dropDownLinks.map((link, index) => 
                     <div key={index}>
-                      <Link href={link.link} classes={"dark:font-light"} > {link.text} </Link>
+                      <Link href={link.link} classes={" dark:font-light"} > {link.text} </Link>
                     </div>
                   )
                 }
@@ -396,31 +401,31 @@ const Navbar = () => {
         </div>
     </div>
     {/* Nav Bar */}
-    <div ref={navRef} className="fixed w-screen border-b-3 border-b-black dark:border-b-[#302c38] dark:border-b-2 xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
+    <div ref={navRef} className="fixed w-screen border-b-3 border-b-black  dark:border-b-2 dark:border-b-[#302c38] xl:px-14 2xl:px-14 px-7 bg-base-100 dark:bg-base-100-dark text-t-header-light dark:text-t-header-dark  z-50">
       <div className="navbar p-0 h-16 items-stretch">
         <div className="flex flex-row grow justify-between lg:justify-between ">
           <FaBars onClick={() => handleDropDownClick()} className="lg:hidden text-2.5xl text-t-header-light dark:text-t-header-dark" />
           <div className="navbar-start flex-shrink w-fit lg:w-60">
-            <a className="text-lg lg:text-xl xl:text-2xl font-black ">Can of Mystery</a>
+            <a className="text-lg lg:text-xl xl:text-2xl font-black tracking-tighter">Can of Mystery</a>
           </div>
           <div className="navbar-center  justify-center pb-0 pt-0 flex-grow h-full hidden lg:flex">
             <ul style={{fontSize: '20px', fontWeight: "700"}} className="menu menu-horizontal items-center items-stretch justify-center h-full pt-0 pb-0 m-0 ">
               <li className={`flex  ${active === "Home" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a " : ""} `} onClick={() => {handleLinkClick("Home"); if(open === true){handleDropDownClick()}}}>
-                <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus" onClick={() => router.push("/", undefined, { shallow: true})}>Home</a>
+                <a  className="flex flex-1 rounded-none text-2xl hover:bg-primary-focus tracking-tighter" onClick={() => router.push("/", undefined, { shallow: true})}>Home</a>
               </li>
               <li>
                 <details className="flex flex-1 max-h-full">
-                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl  ${active === "Explore" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>Explore</summary>
+                  <summary onClick={() => {handleDropDownClick(); handleLinkClick("Explore")}} className={`flex flex-1 h-full items-center rounded-none text-2xl tracking-tighter ${active === "Explore" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>Explore</summary>
                 </details>
               </li>
               <li className="flex items-center">
-                <a href="/our-project" onClick={() => (handleLinkClick("About"), router.push("/about-project", undefined, { shallow: true}))} className={`flex flex-1 rounded-none text-2xl ${active === "About" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>About</a>
+                <a href="/our-project" onClick={() => (handleLinkClick("About"), router.push("/about-project", undefined, { shallow: true}))} className={`flex flex-1 rounded-none text-2xl tracking-tighter ${active === "About" ? "dark:text-t-header-light dark:bg-light-purple bg-primary a" : ""}`}>About</a>
               </li>
             </ul>
           </div>
           <div className="navbar-end lg:flex items-center justify-center md:w-min hidden gap-1">
             <RiSearchFill style={{fontSize: "30px"}} role="link">search</RiSearchFill>
-            <input id="search" onFocus={() => setIsFocused(true)} onChange={(e) => (SearchChange(e.target.value), (e.target.value === "" && setAnimate(false)))} type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px] px-3"/>
+            <input id="search" onFocus={() => setIsFocused(true)} onChange={(e) => (SearchChange(e.target.value), (e.target.value === "" && setAnimate(false)))} type="search" name="search" placeholder="Search" required minLength="4" className="neo-input w-[180px] px-3 dark:text-t-header-light"/>
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avitar">
                 <FaUserCircle tabIndex={0} role="button" className="text-2.7xl" />

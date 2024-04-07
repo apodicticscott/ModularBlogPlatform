@@ -19,17 +19,22 @@ const ScrollMenu = ({ children }) => {
   
     return (
       <div className="flex items-center w-full h-max">
-        <div className="w-0  h-[500px] z-10">
+        <div className="w-0  h-[500px] z-10 ">
             <button className="cursor-pointer left-arrow min-h-full text-t-header-light dark:text-t-header-dark" onClick={() => scroll(-295)}>
-                <FaChevronLeft className="text-4xl"/>
+                <div className="w-max h-max p-2 rounded-md hover:bg-base-100 hover:dark:bg-base-100-dark border-2 border-[#FFFFFF00] hover:dark:border-2 hover:dark:border-[#302c38] transition duration-100 flex items-center ml-1 hover:invert hover:dark:invert-0">
+                    <FaChevronLeft className="text-4xl"/>
+                </div>
+                
             </button>
         </div>
         <div ref={containerRef} className="pl-[50px] overflow-auto flex gap-4 scroll-smooth no-scrollbar grow z-0" style={{ scrollBehavior: 'smooth', width: 'calc(100vw - 100px)' }}>
           {children}
         </div>
         <div className="w-0 h-[500px]"> 
-            <button className="cursor-pointer right-arrow relative min-h-full left-[-40px] text-t-header-light dark:text-t-header-dark" onClick={() => scroll(295)}>
-                <FaChevronRight className="text-4xl"/>
+            <button className="cursor-pointer right-arrow relative min-h-full left-[-50px] text-t-header-light dark:text-t-header-dark " onClick={() => scroll(295)}>
+                <div className="w-max h-max p-2 rounded-md hover:bg-base-100 hover:dark:bg-base-100-dark border-2 border-[#FFFFFF00] hover:dark:border-2 hover:dark:border-[#302c38] hover:dark:border-2 hover:dark:border-[#302c38]  transition duration-100 flex items-center relative left-[-20px] hover:invert hover:dark:invert-0">
+                    <FaChevronRight className="text-4xl"/>
+                </div>
             </button>
         </div>
       </div>
@@ -164,7 +169,7 @@ const Recent = () => {
                                                 </defs>
                                             </svg>
                                         </div>
-                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md dark:border-[#302c38] dark:border-[2px] md:shadow-none shadow-lg  hover:dark:shadow-md-move-dark dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
+                                        <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md dark:border-[#302c38] dark:border-[2px] shadow-lg  hover:shadow-md-move hover:dark:shadow-md-move-dark dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                             <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                 <div className="w-full p-[10px] pb-0 h-max">
                                                     <div className="w-full h-[160px] items-center rounded-md overflow-hidden">
@@ -188,7 +193,7 @@ const Recent = () => {
                                                 <div className="flex items-center justify-between  h-[50x] w-full  px-[10px] text-2.5xl">
                                                     <div className="flex w-full h-[35px] overflow-hidden">
                                                         <div className="relative h-full w-0 left-[100%]">
-                                                            <div className="relative w-[50px] left-[-50px] h-full relative linear-gradient-overlay-light dark:linear-gradient-overlay-dark">
+                                                            <div className="relative w-[50px] left-[-50px] h-full relative linear-gradient-overlay-light dark:linear-gradient-overlay-dark ">
 
                                                             </div>
                                                         </div>
@@ -210,7 +215,7 @@ const Recent = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex text-t-light font-light dark:text-t-header-dark  rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 dark:border-t-[1px] dark:border-[#302c38] p-[10px] text-xl">
+                                            <div className="flex text-t-light font-light dark:text-t-header-dark  rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 dark:border-t-2 dark:border-[#302c38] p-[10px] text-xl">
                                                 <FaBookOpen  className="text-2.5xl " />
                                                 Read More
                                             </div>
@@ -270,7 +275,7 @@ const Recent = () => {
                                                     </defs>
                                                 </svg>
                                             </div>
-                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg dark:border-[#302c38] dark:border-[2px] md:shadow-none hover:shadow-lg-move dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
+                                            <div className="w-full h-[350px] flex flex-col justify-between bg-secondary-content border-3 rounded-md shadow-lg dark:border-[#302c38] dark:border-[2px] dark:shadow-none  hover:shadow-md-move hover:dark:shadow-md-move-dark dark:bg-t-header-light dark:text-t-header-dark transition duration-200">
                                                 <div className="w-full grow flex flex-col justify-between gap-[5px] pb-[15px]">
                                                     <div className="w-full p-[10px] pb-0 h-max">
                                                         <div className="w-full h-[160px] items-center rounded-md overflow-hidden">
@@ -315,9 +320,8 @@ const Recent = () => {
                                                         </ div>
                                                     </div>
                                                 </div>
-
-                                                <div className="flex text-t-light font-light dark:text-t-header-light dark:bg-light-purple rounded-b-md items-center gap-[10px] h-[50x] w-full border-solid border-t-2 p-[10px] text-xl">
-                                                    <FaBookOpen  className="text-2.5xl" />
+                                                <div className="flex text-t-light font-light dark:text-t-header-dark  rounded-b-md tracking-tight items-center gap-[10px] h-[50x] w-full border-solid border-t-2 dark:border-t-[1px] dark:border-[#302c38] p-[10px] text-xl">
+                                                    <FaBookOpen  className="text-2.5xl " />
                                                     Read More
                                                 </div>
                                             </div>

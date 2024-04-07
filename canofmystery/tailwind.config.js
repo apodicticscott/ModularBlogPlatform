@@ -131,7 +131,7 @@ module.exports = {
             'warning' : '#ff9900',           /* Warning */
             'error' : '#ff5724',             /* Error */
               
-              
+            'transparent' : '#FFFFFF00', 
           },
         },
       ],
@@ -171,13 +171,33 @@ module.exports = {
           "background-size": "100px 100px",
           "background-image": "linear-gradient(to right, #100f12 1px, transparent 1px), linear-gradient(to bottom, #100f12 1px, transparent 1px)",
         },
+        ".linear-gradient-overlay-light-primary" : {
+          "background": "rgb(235,235,235)",
+          "background": "-moz-linear-gradient(90deg, rgba(235,235,235,0) 0%, rgba(235,235,235,1) 100%)",
+          "background": "-webkit-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(235,235,235,1) 100%)",
+          "background-image" : "linear-gradient(90deg, rgba(235,235,235,0) 0%, rgba(235,235,235,1) 100%)",
+          "filter": "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb',endColorstr='#ebebeb',GradientType=1)",
+        },
         ".linear-gradient-overlay-light" : {
-          "background": "rgb(255,255,255)",
-          "background-image" : "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
+          "background": "rgb(192,192,192)",
+          "background": "-moz-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)",
+          "background": "-webkit-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)",
+          "background-image" : "linear-gradient(90deg, rgba(192,192,192,0) 0%, rgba(255,255,255,1) 100%)",
+          "filter": "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ffffff',GradientType=1)",
+        },
+        ".linear-gradient-overlay-dark-primary" : {
+          "background": "rgba(16,16,16,0)",
+          "background": "-moz-linear-gradient(90deg, rgba(16,16,16,0) 0%, rgba(16,16,16,1) 100%)",
+          "background": "--webkit-linear-gradient(90deg, rgba(16,16,16,0) 0%, rgba(16,16,16,1) 100%)",
+          "background-image" : "linear-gradient(90deg, rgba(16,16,16,0) 0%, rgba(16,16,16,1) 100%)",
+          "filter": "progid:DXImageTransform.Microsoft.gradient(startColorstr='#100f12',endColorstr='#100f12',GradientType=1)",
         },
         ".linear-gradient-overlay-dark" : {
-          "background": "rgb(27,27,30)",
-          "background-image" : "linear-gradient(90deg, rgba(27,27,30,0) 0%, rgba(27,27,30,1) 100%)"
+          "background": "rgb(255,255,255)",
+          "background": "-moz-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(28,27,28,1) 100%)",
+          "background": "--webkit-linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(28,27,28,1) 100%)",
+          "background-image" : "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(28,27,28,1) 100%)",
+          "filter": "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#1c1b1c',GradientType=1)",
         },
         '.neo-bottom-sm': {
           'box-shadow': '0px 4px 0px 0px rgba(0,0,0,1)',
@@ -251,7 +271,7 @@ module.exports = {
         },
         '.explore-size-md': {
           'width' : '100vw',
-          'height' : 'calc(100vh - 67px)',
+          'height' : 'calc(110vh - 67px)',
           'font-size' : '16px'
         },
         '.article-link': {

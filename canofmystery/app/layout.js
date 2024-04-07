@@ -4,6 +4,7 @@ import { Lexend_Mega } from 'next/font/google'
 import './globals.css'
 import Navbar from "/components/navbar/Navbar"
 import Footer from "/components/footer/Footer"
+import { usePathname } from 'next/navigation'
 import { AuthContextProvider } from '/context/AuthContext'
 import CookieConsent from "../components/cookies/cookieConsent"
 import Cookies from 'js-cookie';
@@ -22,6 +23,7 @@ const LexM = Lexend_Mega(
 
 
 export default function RootLayout({ children  }) {
+
   // const [cookieConsent, setCookieConsent] = useState(false);
 
   // let consentCookie = Cookies.get("hasConsent")
@@ -47,18 +49,18 @@ export default function RootLayout({ children  }) {
   //   }
   // }, [cookieConsent]);
     
+
   return (
     <html data-theme="mytheme" className="" lang="en">
       <body className={`${LexM.className} tracking-tighter`}>
-          <AuthContextProvider>
-            <div className="container k h-screen min-w-full ">  
-              <Navbar className="z-50"/>
-              {children}
-              {/* <CookieConsent setCookieConsent={handleGiveConsent} cookieConsent={cookieConsent}/> */}
-              <Footer />
-            </div>
-          </AuthContextProvider>
+        <AuthContextProvider>
+          <div className="container k h-screen min-w-full ">  
+            <Navbar className="z-50"/>
+            {children}
+            <Footer />
+          </div>
+        </AuthContextProvider>
       </body>
     </html>
-  );    
+  );     
 }

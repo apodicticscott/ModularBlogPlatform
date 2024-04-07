@@ -71,7 +71,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                         {
                             chartData !== undefined
                             &&
-                            <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3  z-10 dark:bg-base-100-dark">
+                            <div className="w-max h-full p-7 relative left-[25px] bg-base-100 rounded-md flex flex-col justify-start gap-[15px] border-3 min-w-[400px] z-10 dark:bg-base-100-dark">
                                 <Tooltip classes={{ tooltip: classes.customTooltip }} title="how many unique users have visited in the last 30 minutes.">
                                     <span className="text-lg underline decoration-dashed" >
                                         USERS IN LAST 30 MINUTES.
@@ -107,7 +107,7 @@ const AnalyticsPanel = ({chartData, setChartData, locationData, setLocationData,
                                 <div className="w-full flex justify-between">
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="Top 3 countries of visting users.">
                                         <span className="text-lg underline decoration-dashed" >
-                                            TOP 3 COUNTRIES.
+                                            TOP { locNumber && locNumber.length } COUNTRIES.
                                         </span>
                                     </Tooltip>
                                     <Tooltip classes={{ tooltip: classes.customTooltip }} title="Users that have visited">

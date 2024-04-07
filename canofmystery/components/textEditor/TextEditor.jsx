@@ -430,6 +430,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
             // Construct the article object
             let response;
             // Reference to the 'Articles' collection
+            console.log(user)
             if(pageType === "blog"){
                 const article = {
                     Title: Title ? Title : "",
@@ -443,24 +444,21 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
                         Image: comp.Image || '',
                         Size: comp.Size || ''
                     })),
-                    firstName: user.firstName ? user.firstName : "",
-                    lastName: user.lastName ? user.lastName : "",
+                    firstName:  user && 'firstName' in user ? user.firstName : "",
+                    lastName: user && 'lastName' in user ? user.lastName : "",
                     Time: formatDate(new Date()),
                     CoverImage: coverImageData[0] ? coverImageData[0] : null,
                     Approved: false,
                     Author: Author ? Author : "",
                     UserId: userId ? userId : "",
-                    SessionCode: user.sessionCode
+                    SessionCode: user && user.sessionCode ? user.sessionCode : ""
                 };
-
                 if(editorType !== "new"){
                     
                 }else{
                     response = await addDocument("Articles", article) && await setHasPublished("users", userId);
                     console.log(response)
-                }
-
-                
+                }    
             }else if(pageType === "page"){
                 const page = {
                     Title: Title,

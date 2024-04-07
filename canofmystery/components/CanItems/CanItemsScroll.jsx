@@ -31,7 +31,7 @@ const shuffle = (arr) => [...arr].sort( () => .5 - Math.random() );
 const CanItemsScroll = () => {
     return (
         <>
-            <div className={`h-[75px] lg:h-[100px] bg-primary-dark border-b-3 border-base-300 dark:border-[#302c38] dark:border-[1px] loop-slider overflow-hidden dark:bg-base-100-dark`} style={{
+            <div className={`h-[75px] lg:h-[100px] bg-primary-dark border-b-3 border-base-300 dark:border-[#302c38] dark:border-t-2 loop-slider overflow-hidden dark:bg-base-100-dark`} style={{
         '--duration': `${random(DURATION - 7000, DURATION + 7000)}ms`,
         '--direction': 'reverse'
       }}>

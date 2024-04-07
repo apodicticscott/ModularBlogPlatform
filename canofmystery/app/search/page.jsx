@@ -12,6 +12,7 @@ import { Divider } from "@material-ui/core";
 import { useInView } from 'react-intersection-observer';
 import { motion, useAnimation } from 'framer-motion';
 import useDocumentClassChange from '../../hooks/useDocumentClassChange';
+import { usePathname } from "next/navigation";
 
 const SearchPage = () => {
     const [searchResults, setSearchResults] = useState(null);
@@ -27,6 +28,8 @@ const SearchPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentArticles, setCurrentArticles] = useState([])
 
+    const pathname = usePathname(); // Use the useRouter hook to get the router object
+
     // Calculate the indices of the pages to display
     const indexOfLastPage = currentPage * articlesPerPage;
     const indexOfFirstPage = indexOfLastPage - articlesPerPage;
@@ -40,6 +43,8 @@ const SearchPage = () => {
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
+
+
 
 
     useEffect(() => {
@@ -96,7 +101,10 @@ const SearchPage = () => {
 
     const SearchChange = async (event) => {
         const term = event.target.value;
+ 
         setSearchTerm(term);
+        
+        
 
         if(term) {
             const terms = term.split(" ");
@@ -109,6 +117,28 @@ const SearchPage = () => {
             setSearchResults(null);
         }
     };
+
+    useEffect(() => {
+        console.log(pathname)
+        if(window.location.href.includes("?search=")){
+            console.log(window.location.href)
+            const string = window.location.href.split("?search=")
+            const string1 = string[1].split("&tags=")
+
+            const query = string1[0].split("%20").join(" ")
+            
+            console.log(query)
+            setSearchTerm(query)
+        }
+        if(window.location.href.includes("&tags=")){
+            const tags = window.location.href.split("&tags=")[1].split(",");
+        
+            if(tags[0].length !== 0){
+                const mappedTags = tags[0].split(",").map(tag => ({ Text: tag }));
+                setSelectedTags(mappedTags);
+            }
+        }
+    }, [])
 
     const handleDelete = (index) => {
         if(selectedTags.length !== 0){
@@ -244,7 +274,7 @@ const SearchPage = () => {
                                     &&
                                     <div className="flex justify-between w-full h-max items-center">
                                         <div className="flex flex-row gap-[20px] items-center w-full md:w-max">
-                                            <input type="search" name="search" placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full md:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
+                                            <input type="search" name="search" value={searchTerm} placeholder="Search" onChange={(e) => SearchChange(e)} required id="search" className="neo-input w-full md:w-[300px] rounded-md shadow-md p-3 h-[40px]"/>
                                         </div>
 
                                         <div className="hidden md:flex">
@@ -309,7 +339,7 @@ const SearchPage = () => {
                                     }
                                 }).map((article, index) => (
                                     <motion.div 
-                                    key={index}>
+                                    key={index} className="w-[calc(100vw_-_56px)] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)]] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)]  ">
                                         <div className="hover:bg-base-100  w-[calc(100vw_-_56px)] h-[80vw] xs-sm:w-[calc(((100vw_-_56px)_/_2)_-_10px)]  xs-sm:h-[calc(100vw_/_2.5)] md:w-[calc(((100vw_-_56px)_/_3)_-_13.5px)] md:h-[calc(100vw_/_3.8)] lg:w-[calc(((100vw_-_56px)_/_4)_-_15px)] lg:h-[calc(100vw_/_5)] xl:w-[calc(((100vw_-_112px)_/_5)_-_16px)] xl:h-[calc(100vw_/_6.5)] 2xl:w-[calc(((100vw_-_112px)_/_6)_-_17px)] mt-[1.4vw] sm:mt-[20px] 2xl:h-[calc(100vw_/_7.5)] flex flex-col justify-start shadow-lg dark:shadow-none dark:border-2 dark:border-[#302c38] dark:hover:shadow-md-move-dark bg-secondary-content border-3 rounded-md dark:bg-base-100 sm:hover:scale-105 hover:shadow-move transition duration-100 cursor-pointer dark:bg-base-100-dark" onClick={(e) => handleArticleClick(e, article.id)} >
                                             <div className="w-full p-[3.5vw] xs-sm:p-[1.2vw] md:p-[1vw] lg:p-[.8vw] xl:p-[.6vw] 2xl:p-[.4vw] h-[80%] xs-sm:h-[75%]">
                                                 {
@@ -348,16 +378,22 @@ const SearchPage = () => {
                                                 {/* </div> */}
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw] min-h-max pt-0 2xl:pt-[.2vw] w-full ">
+                                        <div className="w-full h-max overflow-x-hidden flex mt-[6vw] xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw]">
+                                            <div class="relative min-h-full w-0 left-[100%]">
+                                                <div class="relative w-[50px] left-[-50px] h-full relative linear-gradient-overlay-light-primary dark:linear-gradient-overlay-dark-primary"></div>
+                                            </div>
+                                            <div className="flex items-center gap-[4vw] xs-sm:gap-[2vw] md:gap-[1.8vw] lg:gap-[1.4vw] xl:gap-[1.2vw] 2xl:gap-[1vw] min-h-max pt-0 2xl:pt-[.2vw] overflow-x-scroll no-scrollbar pb-3">
+                                            
                                             {
                                                 article.Tags
                                                 &&
                                                 article.Tags.map((tag, index) => (
-                                                    <div className={`rounded-md text-shadow tracking-tighter shadow-md mt-[6vw]  xs-sm:mt-[3.5vw] md:mt-[2.5vw] lg:mt-[2.25vw] xl:mt-[2vw] 2xl:mt-[1vw] px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
+                                                    <div className={`rounded-md text-shadow tracking-tighter shadow-md   px-[1.8vw] xs-sm:px-[1.2vw] md:px-[1vw] lg:px-[.8vw] xl:px-[.6vw] 2xl:px-[.4vw] py-[1vw] xs-sm:py-[.6vw] md:py-[.4vw] lg:py-[.2vw] xl:py-[.15vw] 2xl:py-[.1vw] text-[3.25vw] xs-sm:text-[1.75vw] md:text-[1.3vw] lg:text-[1.1vw] xl:text-[.9vw] 2xl:text-[.7vw] border-2  max-h-max min-w-max hover:scale-105 transition duration-100 cursor-pointer`}  onClick={() => handleTagClick(tag)} style={{backgroundColor: tag.Color}} id="tag" key={index}>
                                                         {tag.Text}
                                                     </div>
                                                 ))
                                             }
+                                            </div>
                                         </div>
                                     </motion.div>
                                 ))

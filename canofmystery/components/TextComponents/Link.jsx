@@ -1,10 +1,10 @@
 import React from "react";
 
-const Link = ({href, children, classes, isUnderlined, onClick}) => {
+const Link = ({href, children, classes, isUnderlined, onClick, hover}) => {
     
 
     return(
-      <a href={href} onClick={onClick} className={`w-full text-t-header-light dark:text-t-header-dark opacity-70 cursor-pointer transition duration-50 hover:opacity-100 tracking-tighter ${classes}`}>
+      <a href={href} onClick={onClick} className={`w-full   ${!hover && "opacity-70 text-t-header-light dark:text-t-header-dark"} cursor-pointer transition duration-50 hover:opacity-100 tracking-tighter  ${classes}`}>
         {children}
       </a>  
     )
