@@ -46,7 +46,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
         id="clickable-parent"
         ref={setNodeRef}
         style={style}
-        className={`w-full justify-between flex items-center gap-[15px] sm:gap-[30px] rounded-md `}
+        className={`w-full justify-between flex items-center gap-[15px] sm:gap-[30px] rounded-md`}
         onClick={(e) => {!isEnabled && onClick(e, comp.ID, comp.Type)}}
         >
             <GrDrag

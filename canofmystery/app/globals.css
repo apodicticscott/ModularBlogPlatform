@@ -355,7 +355,7 @@ html {
 
 #article ul, #article ol, #text-editor ul, #text-editor ol { padding-left: 50px; }
 #article li, #text-editor li { 
-  color: #4F4F4F; 
+  color: #afafaf; 
   padding-left: 16px;
   position: relative;
   line-height: content;

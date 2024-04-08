@@ -98,6 +98,34 @@ export const getRecent = async (sliceNumber) => {
     }
   }
 
+  export const updateArticle = async (articleId, newContent) => {
+    const articleRef = doc(db, "Articles", articleId);
+    // Update the document
+    await updateDoc(articleRef, newContent).then(() => {
+        console.log("Article successfully updated");
+    }).catch((error) => {
+        console.error("Error updating document: ", error);
+    });
+};
+
+export const checkPageNameExists = async (pageName) => {
+    const collectionRef = collection(db, "Pages");
+    const q = query(collectionRef, where("PageName", "==", pageName));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot)
+    return !querySnapshot.empty;
+};
+
+export const updatePage = async (pageId, newContent) => {
+    const articleRef = doc(db, "Pages", pageId);
+    // Update the document
+    await updateDoc(articleRef, newContent).then(() => {
+        console.log("Page successfully updated");
+    }).catch((error) => {
+        console.error("Error updating document: ", error);
+    });
+};
+
 export const getApprovedArticles = async () => {
     const collectionRef = collection(db, "Articles");
     const q = query(collectionRef, where("Approved", "==", true));

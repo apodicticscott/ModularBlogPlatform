@@ -19,7 +19,7 @@ const paragraph = ({children, text, type, classes, style, editable, highlight, o
             style: "",
             lightColor: "text-t-header-light",
             darkColor: "dark:text-t-dark",
-            tracking: "tracking-[-2px]",
+            tracking: "tracking-tighter",
             trackingMd: "",
             trackingLg: "",
             tracking2xl: "",
@@ -39,7 +39,7 @@ const paragraph = ({children, text, type, classes, style, editable, highlight, o
             style: "",
             lightColor: "text-t-header-light",
             darkColor: "dark:text-t-dark",
-            tracking: "tracking-[-2px]",
+            tracking: "tracking-tighter",
             trackingMd: "",
             trackingLg: "",
             tracking2xl: "",
@@ -87,13 +87,13 @@ const paragraph = ({children, text, type, classes, style, editable, highlight, o
 
     if(type === "sm"){
         return(
-            <div id={id} className={`${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+            <div id={id} className={`dark:font-extralight ${styles.sm} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                 {children}
             </div>
         )
     }else if(type === "md"){
         return(
-            <div id={id} className={`${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
+            <div id={id} className={`dark:font-extralight ${styles.md} ${classes}`} highlighted={highlight} onClick={onClick} onKeyUp={onKeyUp} onKeyDown={onKeyDown} dangerouslySetInnerHTML={{__html: innerHTML}}>
                 {children}
             </div>
         )

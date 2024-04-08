@@ -37,11 +37,11 @@ const Footer = () => {
         
   }
 
-
+  console.log(pathname)
 
   return (
-    <div className={`w-screen  w-full flex flex-col h-40  ${(pathname !== '/admin'  || !pathname.includes("/editor")) && "bg-neutral-200 border-t-black border-t-3 dark:border-t-2 dark:border-t-[#302c38]"}`}>
-      {(pathname !== '/admin'  || !pathname.includes("/editor")) && 
+    <div className={`w-screen  w-full flex flex-col h-40  ${(pathname !== '/admin'  && !pathname.includes("/editor")) && "bg-neutral-200 border-t-black border-t-3 dark:border-t-2 dark:border-t-[#302c38]"}`}>
+      {(pathname !== '/admin'  && !pathname.includes("/editor")) && 
         <div className="w-full px-7 md:p-[50px] pt-[70px] pb-[70px] flex flex-row bg-primary dark:bg-secondary-dark justify-center">
                 <div className="flex flex-col gap-[15px] md:w-[784px] w-full">
                   <Header type={"lg"} classes="flex flex-wrap gap-[10px] text-t-header-light dark:text-t-dark">

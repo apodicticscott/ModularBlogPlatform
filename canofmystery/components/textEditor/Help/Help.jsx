@@ -54,7 +54,7 @@ const Help = ({isOpen, setIsOpen, type}) => {
                             ?
                             <Button  className={`z-10 m-7 h-min rounded-[30px] ${classes.button}`} disableRipple onClick={() => setIsOpen(!isOpen)} >
                                 <TiDelete
-                                    className={`text-[30px] text-base-300`}
+                                    className={`text-[30px] text-base-300 dark:text-t-header-dark`}
                                     onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
                                 />
                             </Button>
@@ -71,37 +71,37 @@ const Help = ({isOpen, setIsOpen, type}) => {
                     {
                         helpImage === "menue"
                         &&
-                        <div className="w-auto h-[30vh] object-cover md:w-[400px] md:h-[400px]  z-0 overflow-hidden flex flex-col p-7 gap-5">
+                        <div className="w-auto h-[30vh] object-cover md:w-[400px] md:h-[400px]  z-0 overflow-hidden flex flex-col p-7 gap-5 dark:bg-base-100-dark">
                             <Header type="md">
                                 Need Help?
                             </Header>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("text_help")}>
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("text_help")}>
                                     How do I add text?
                                 </button>
                             </div>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("image_help")}>
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("image_help")}>
                                     How do I add an image?
                                 </button>
                             </div>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("video_help")}> 
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("video_help")}> 
                                     How do I add a video?
                                 </button>
                             </div>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("tag_help")}>
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("tag_help")}>
                                     How do I add tags?
                                 </button>
                             </div>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("link_help")}>
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("link_help")}>
                                     How do I add a link?
                                 </button>
                             </div>
                             <div className="flex justify-apart">
-                                <button onClick={() => setHelpImage("fontSize_help")}>
+                                <button className="tracking-tighter dark:text-t-header-dark" onClick={() => setHelpImage("fontSize_help")}>
                                     How do i change font sizes?
                                 </button>
                             </div>

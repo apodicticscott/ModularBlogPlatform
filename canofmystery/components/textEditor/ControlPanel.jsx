@@ -7,6 +7,7 @@ import { MdOutlineDownloadDone } from "react-icons/md"
 import { MdOutlineQuestionMark } from "react-icons/md"
 import { Dialog, Button} from '@mui/material';
 import { makeStyles } from '@mui/styles'
+import {getPageByName} from "../../firebase/articleUtils/articleUtils"
 import Image from 'next/image';
 
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
@@ -86,6 +87,8 @@ const ControlPanel = ({
     setPageName,
     pageName,
 
+    setCropType,
+
     isCropEnabled,
     setIsHelpOpen,
     }) => {
@@ -109,6 +112,7 @@ const ControlPanel = ({
 
     const colorPicker = new RandomColorPicker(colors);
     const classes = useStyles()
+    const [pageNameError, setPageNameError] = useState();
 
 
     const categories = [
@@ -239,11 +243,34 @@ const ControlPanel = ({
         
     }
 
-    const handleSetPageName = (value) => {
+    function checkString(input) {
+        const hasSpaces = /\s/.test(input); // Check for spaces
+        const hasNumbers = /\d/.test(input); // Check for numbers
+        const hasSpecialCharacters = /[!@#$%^&*(),.?":{}|<>]/.test(input); // Check for special characters
+    
+        return hasSpaces || hasNumbers || hasSpecialCharacters;
+    }
+
+    const handleSetPageName = async (value) => {
         if(value !== ""){
-            setPageName(value)
+            const test = checkString(value)
+            if(test === true){
+                const test_2 = await getPageByName(value)
+
+                if(test && test_2){
+                    setPageNameError("This page name already exists, and the page name must not include spaces, numbers, but may contain the special character '-'.")
+                }else if(test){
+                    setPageNameError("The page name must not include spaces, numbers, but may contain the special character '-'.")
+                }else if(test_2){
+                    setPageNameError("This page name already exists.")
+                }
+                
+            }else{
+                setPageNameError(null)
+                setPageName(value)
+            }
         }else{
-            setPageName("Example Page Name")
+            setPageName("")
         }
     }
 
@@ -312,11 +339,11 @@ const ControlPanel = ({
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black dark:border-b-2 dark:border-[#302c38]" : ""}`} onClick={() => setPanel(value)}>
                             {value}
                         </button>
                     :
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black" : ""}`} onClick={() => setPanel(value)}>
+                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black dark:border-l-2 dark:border-[#302c38] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black dark:border-b-2 dark:border-[#302c38]" : ""}`} onClick={() => setPanel(value)}>
                             {value}
                         </button>
                 ))}
@@ -359,6 +386,7 @@ const ControlPanel = ({
                         removeImage={removeCoverImage} 
                         isCropEnabled={isCropEnabled}
                         type="cover"
+                        setCropType={setCropType}
                         />
                     </div> 
                 </div>
@@ -369,8 +397,22 @@ const ControlPanel = ({
                         <Header type="sm" >
                             Page Name
                         </Header>
-                        <input className="w-full p-[5px] rounded" placeholder={"Page Name"} value={pageName && pageName} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
+                        <input className="w-full p-[5px] rounded-md dark:bg-base-100-dark dark:border-2 dark:border-[#302c38]" placeholder={"Page Name"} value={pageName && pageName} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
                         </input>
+                        <AnimatePresence>
+                            {pageNameError && (
+                                <motion.div
+                                initial={{ opacity: 0, height: 0, paddingX: 0, paddingY: 0 }}
+                                animate={{ opacity: 1, height: "auto",  paddingX: 15, paddingY: 10, }}
+                                exit={{ opacity: 0, height: 0, paddingY: 0, paddingX: 0}}
+                                transition={{ duration: 0.5 }}
+                                className="rounded-md overflow-hidden p-[10px] px-[15px] tracking-tighter"
+                                    style={{ background: '#fd6666', marginTop: "5px", color: "black", marginTop: "15px"}}
+                                >
+                                    {pageNameError}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>  
                     </div>
                     
                 }
@@ -378,14 +420,14 @@ const ControlPanel = ({
                     <Header type="sm" >
                         Title
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38]" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
-                    <input className="w-full p-[5px] rounded" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38]" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -394,20 +436,20 @@ const ControlPanel = ({
                             Tags
                         </Header>
                         <button>
-                            < FaPlus onClick={() => handleAddTags()}/>
+                            < FaPlus className="dark:text-t-header-dark" onClick={() => handleAddTags()}/>
                         </button>
                     </div>
-                    <div className='flex flex-wrap min-h-[50px] w-full bg-base-300 rounded-md'>
+                    <div className='flex flex-wrap min-h-[50px] w-full bg-base-300 rounded-md dark:bg-base-100-dark dark:border-2 dark:border-[#302c38]'>
                         {currentTags.map((tag, index) => (
                             <div key={`${index}-${tag.Text}`}
-                                className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex flex-wrap items-center gap-[5px] rounded'
+                                className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex items-center gap-[5px] rounded dark:bg-[#57545e] dark:text-t-header-dark rounded-md'
                                 >
                                 
                                 <div className='w-[calc(100%_-_32px)] h-full text-xl max-w-[calc(100%_-_27px)] flex items-center truncate text-ellipsis' suppressContentEditableWarning={true} contentEditable={true} onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
                                     {tag.Text}
                                 </div>
-                                <button onClick={() => handleRemoveTag(index)}>
-                                    <TiDelete className="text-2.7xl" />
+                                <button className="hover:bg-base-300 rounded-md transition duration-100 dark:hover:bg-base-100-dark p-[5px] text-t-header-light hover:text-t-header-dark" onClick={() => handleRemoveTag(index)}>
+                                    <TiDelete className="text-2.7xl text-inherit" />
                                 </button>
                             </div>
                         ))}
@@ -430,7 +472,7 @@ const ControlPanel = ({
                         <Header type="sm" classes={"w-max"}>
                             Categories
                         </Header>
-                        <span className='text-xl text-t-header-light dark:text-t-header-dark'>
+                        <span className='text-xl text-t-header-light dark:text-t-header-dark tracking-tighter'>
                             Pick 1 categorie that best fits your article.
                         </span>
                         <div className="relative mt-[10px]">
@@ -492,7 +534,7 @@ const ControlPanel = ({
                     &&
 
                         <div className={`w-full overflow-hidden h-max`}>
-                            <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage} type="comp" isCropEnabled={isCropEnabled}/>
+                            <FileUpload className='text-t-header-light dark:text-t-header-dark' addImage={handleAddComponent} enableCrop={enableCrop} imageToCrop={imageToCrop} setImageToCrop={setImageToCrop} croppedImage={croppedImage} setCroppedImage={setCroppedImage} isImageAddOpen={setIsImageAddOpen} removeImage={removeImage} type="comp" setCropType={setCropType} isCropEnabled={isCropEnabled}/>
                         </div> 
                     }
   
