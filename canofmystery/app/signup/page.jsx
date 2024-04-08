@@ -8,6 +8,8 @@ import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { useRouter } from 'next/navigation'; // Corrected import
 import NeoButton from "../../components/TextComponents/NeoButton";
 import { AnimatePresence, motion } from "framer-motion";
+import { FaEye } from "react-icons/fa";
+import { FaEyeLowVision } from "react-icons/fa6";
 import firebase_app from "../../firebase/config";
 
 import Header from "../../components/TextComponents/Header1"
@@ -33,6 +35,7 @@ const SignUpPage = () => {
   const [sessionCodeErrorVisible, setSessionCodeErrorVisible] = useState(false)
   const [infoErrorMessage, setInfoErrorMessage] = useState("");
   const [displayNameErrorMessage, setDisplayNameErrorMessage] = useState("")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [sessionCodeErrorMessage, setSessionCodeErrorMessage] = useState("");
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
@@ -219,10 +222,24 @@ const handleInfo = async (event) => {
               <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter">
                 Password
               </label>
-              <input
-                onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" 
-                className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Password" 
-              /> 
+              <div className="w-full h-max flex border-3 rounded-md shadow-md bg-base-100 flex items-center justify-center bg-[#ffffff] pr-[3px]">
+
+                <input
+                  onChange={(e) => setPassword(e.target.value)} required type={isPasswordVisible ? "text" : "password"} name="password" id="password" 
+                  className="text-xl xs:tracking-[-1.76px] grow  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] rounded-md p-1 pr-3  2xl:text-2xl content-center text-base px-4 py-2 focus:outline-none focus:border-green-400" placeholder="Password" 
+                /> 
+                <button className="h-max w-max rounded-md p-[5px] pt-[3px] flex items-center hover:bg-base-200" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                  {
+                    isPasswordVisible
+                    ?
+                    <FaEyeLowVision className="text-2.7xl"/>
+                    :
+                    <FaEye className="text-2.7xl"/>
+                  }
+                  
+                </button>
+              </div>
+
             <AnimatePresence>
               {signUpErrorVisible && (
                 <motion.div
@@ -272,6 +289,7 @@ const handleInfo = async (event) => {
                   onChange={(e) => setLastName(e.target.value)} required type="text" name="LastName" id="LastName" 
                   className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
                 /> 
+
               </div>
             </div>
             <AnimatePresence>

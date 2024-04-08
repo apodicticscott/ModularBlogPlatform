@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { getAuth } from "@firebase/auth";
-import { FaEye } from "react-icons/fa";
+import { FaEye} from "react-icons/fa";
+import { FaEyeLowVision } from "react-icons/fa6";
 import { useRouter } from 'next/navigation'; // Corrected import
 import  NeoButton from "../../components/TextComponents/NeoButton";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,7 +16,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [loginErrorVisible, setLoginErrorVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const router = useRouter();
 
@@ -84,22 +85,26 @@ const LoginPage = () => {
                 class="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="mail@gmail.com" 
               />
             </div>
-            <div className="flex flex-col">
-              
-
-              <label htmlFor="password" class="mt-5 text-2xl font-medium text-gray-700 tracking-tighter mb-[10px]">
+            <div className="flex flex-col w-full gap-[10px]">
+              <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter">
                 Password
               </label>
-              <div className="flex w-full h-max">
+              <div className="max-w-full h-max flex justify-center items-center border-3 rounded-md shadow-md bg-base-100 pr-[3px] bg-[#ffffff]">
+
                 <input
-                  onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" 
-                  class="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400 " placeholder="Password" 
-                />
-                <div className="flex items-center max-w-0 grow">
-                  <div className={`relative text-2.7xl left-[-50px] bg-base-300 p-1 rounded-[50%] ${showPassword ? "bg-base-300 width-100vh" : "bg-base-100"}`}>
-                    <FaEye className="text-t-header-dark min-w-max" onClick={() => {setShowPassword(!showPassword)}}/>
-                  </div>
-                </div>
+                  onChange={(e) => setPassword(e.target.value)} required type={isPasswordVisible ? "text" : "password"} name="password" id="password" 
+                  className="text-xl xs:tracking-[-1.76px] grow  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] rounded-md p-1 pr-3  2xl:text-2xl content-center text-base px-4 py-2 focus:outline-none focus:border-green-400" placeholder="Password" 
+                /> 
+                <button className="h-max w-max rounded-md p-[5px] pt-[3px] flex items-center hover:bg-base-200" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                  {
+                    isPasswordVisible
+                    ?
+                    <FaEyeLowVision className="text-2.7xl"/>
+                    :
+                    <FaEye className="text-2.7xl"/>
+                  }
+                  
+                </button>
               </div>
                 <AnimatePresence>
                   {loginErrorVisible && (
