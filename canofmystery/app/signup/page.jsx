@@ -187,20 +187,20 @@ const handleInfo = async (event) => {
 
 
   return (
-    <div className="w-full h-[100vh] flex items-center justify-center duration-100">
+    <div className="w-full h-[100vh] flex items-center justify-center duration-100 dark:bg-base-100-dark">
 
-      <div className={"flex flex-col justify-center self-center align-center p-7 w-full w-full xs-sm:w-[calc(100vw_-_29px)] xs-sm:max-w-[450px] border-y-3 xs-sm:border-3 xs-sm:rounded-md xs-sm:shadow-lg xs-sm:m-7 xs-sm:m-0 transition-all duration-500"}>
+      <div className={"flex flex-col justify-center self-center align-center p-7 w-full w-full xs-sm:w-[calc(100vw_-_29px)] xs-sm:max-w-[450px] border-y-3 xs-sm:border-3 xs-sm:rounded-md xs-sm:shadow-lg xs-sm:m-7 xs-sm:m-0 transition-all duration-500 dark:border-2 dark:border-[#302c38] dark:shadow-md-move-dark"}>
         
           {panel === "cradentials" 
           ?
             <div className="mb-4">
-              <h3 className="font-bold text-3xl text-gray-200 tracking-tighter">Sign Up</h3>
+              <h3 className="font-bold text-3xl text-gray-200 tracking-tighter dark:text-t-header-dark">Sign Up</h3>
             </div>
           :
             panel === "name"
             &&
             <div className="mb-4">
-              <h3 className="font-bold text-3xl text-gray-200 tracking-tighter">User Info</h3>
+              <h3 className="font-bold text-3xl text-gray-200 tracking-tighter dark:text-t-header-dark">User Info</h3>
             </div>
           }
         
@@ -209,7 +209,7 @@ const handleInfo = async (event) => {
           panel === "cradentials"
           ?
           <form onSubmit={handleCradentials} className="flex flex-col gap-[25px]">
-            <div className="flex flex-col w-full gap-[10px]">
+            <div className="flex flex-col w-full gap-[10px] dark:text-t-header-dark">
               <label htmlFor="email" className="text-2xl font-semibold text-gray-700 tracking-tighter">
                 Email
               </label>
@@ -219,7 +219,7 @@ const handleInfo = async (event) => {
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter">
+              <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter dark:text-t-header-dark">
                 Password
               </label>
               <div className="max-w-full h-max flex justify-center items-center border-3 rounded-md shadow-md  pr-[3px] bg-[#ffffff]">
@@ -255,7 +255,7 @@ const handleInfo = async (event) => {
               )}
             </AnimatePresence>         
             </div>
-            <a href="/login" className="text-green-400 hover:text-green-500 tracking-tighter w-full">
+            <a href="/login" className="text-green-400 hover:text-green-500 tracking-tighter w-full dark:text-t-header-dark">
                   Have an account? click here!
             </a>
             <NeoButton
@@ -273,21 +273,21 @@ const handleInfo = async (event) => {
           <div className="flex flex-col gap-[20px]">
             <div className="flex flex-col gap-[10px]">
               <div className="flex w-full h-max items-center gap-[10px]">
-                <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter grow">
+                <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter dark:text-t-header-dark grow">
                   First Name
                 </label>
-                <label htmlFor="password" className="text-xl font-medium text-gray-700 tracking-tighter grow">
+                <label htmlFor="password" className="text-xl font-medium text-gray-700 tracking-tighter dark:text-t-header-dark grow">
                   Last Name
                 </label>
               </div>
               <div className="flex flex-row w-full h-max gap-[20px]">
                 <input 
                   onChange={(e) => setFirstName(e.target.value)} required type="text" name="FirstName" id="FirstName"
-                  className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
+                  className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2   lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
                 />
                 <input
                   onChange={(e) => setLastName(e.target.value)} required type="text" name="LastName" id="LastName" 
-                  className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
+                  className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md    content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
                 /> 
 
               </div>
@@ -307,21 +307,21 @@ const handleInfo = async (event) => {
                   )}
             </AnimatePresence>   
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter">
+              <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter dark:text-t-header-dark">
                 Display Name
               </label>
               <input 
                 onChange={(e) => setDisplayName(e.target.value)} required type="displayName" name="displayName" id="displayName"
-                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="Name or Pseudonim" 
+                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2   lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="Name or Pseudonim" 
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter">
+              <label htmlFor="email" className="text-xl font-semibold text-gray-700 tracking-tighter dark:text-t-header-dark">
                 Session Code
               </label>
               <input 
                 onChange={(e) => setSessionCode(e.target.value)} type="sessionCode" requiredname="sessionCode" id="sessionCode"
-                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="5D12gD" 
+                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2   lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="5D12gD" 
               />
                 <AnimatePresence>
                   {sessionCodeErrorVisible && (
@@ -341,7 +341,7 @@ const handleInfo = async (event) => {
           </div>
           <NeoButton
             onSubmit={handleInfo}
-            type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
+            type="submit" classes="w-max mt-4 flex justify-center  bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
           >
             Sign up
           </NeoButton>

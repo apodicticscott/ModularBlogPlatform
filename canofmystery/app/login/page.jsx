@@ -80,15 +80,15 @@ const LoginPage = () => {
   };
   
   return (
-    <div className="w-full h-[100vh] flex items-center justify-center">
-      <div class="flex flex-col justify-center self-center align-center p-7 w-full w-full xs-sm:w-[calc(100vw_-_29px)] xs-sm:max-w-[450px] border-y-3 xs-sm:border-3 xs-sm:rounded-md xs-sm:shadow-lg xs-sm:m-7 xs-sm:m-0 transition-all duration-500">  
+    <div className="w-full h-[100vh] flex items-center justify-center dark:bg-base-100-dark">
+      <div class="flex flex-col justify-center self-center align-center p-7 w-full w-full xs-sm:w-[calc(100vw_-_29px)] xs-sm:max-w-[450px] border-y-3 xs-sm:border-3 xs-sm:rounded-md xs-sm:shadow-lg xs-sm:m-7 xs-sm:m-0 transition-all duration-500 dark:border-2 dark:border-[#302c38] dark:shadow-md-move-dark">  
         <div class="mb-4">
-          <h3 class="font-bold text-3xl text-gray-200 tracking-tighter">Login</h3>
+          <h3 class="font-bold text-3xl text-gray-200 tracking-tighter dark:text-t-header-dark">Login</h3>
         </div>
         <div >
           <form onSubmit={handleForm} className="flex flex-col gap-[15px]">
             <div className="flex flex-col">
-              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-tighter mb-[10px]">
+              <label htmlFor="email" class="text-2xl font-semibold text-gray-700 tracking-tighter mb-[10px] dark:text-t-header-dark">
                 Email
               </label>
               <input 
@@ -97,7 +97,7 @@ const LoginPage = () => {
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
-              <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter">
+              <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter dark:text-t-header-dark">
                 Password
               </label>
               <div className="max-w-full h-max flex justify-center items-center border-3 rounded-md shadow-md  pr-[3px] bg-[#ffffff]">
@@ -133,7 +133,7 @@ const LoginPage = () => {
                 </AnimatePresence>
             </div>
 
-            <a href="/signup" class="text-green-400 hover:text-green-500 tracking-tighter">
+            <a href="/signup" class="text-green-400 hover:text-green-500 tracking-tighter dark:text-t-header-dark">
                   Need an account? click here!
             </a>
             <div className="flex w-full flex-col xs:flex-row justify-between">

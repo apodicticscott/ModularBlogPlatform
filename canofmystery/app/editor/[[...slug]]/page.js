@@ -25,7 +25,7 @@ export default function Page({ params }) {
     const [hasId, setHasId] = useState(false);
     const [loading, setLoading] = useState(true);
     const [loadReady, setLoadReady] = useState(false)
-    const [exists, setExists] = useState(false);
+    const [exists, setExists] = useState(true);
     const [hideLoader, setHideLoader] = useState(false)
     // State to manage loader opacity
     const [loaderOpacity, setLoaderOpacity] = useState(1);
@@ -47,14 +47,11 @@ export default function Page({ params }) {
                 fetchArticle(articleId).then(response => {
                     if (response === null) {
                         // Ensure loader stays for 2 more seconds after loading is done
-                        setTimeout(() => setLoading(false), 2000);
-                        setTimeout(() => setHideLoader(true), 2500);
+
                         setExists(false);
                     } else {
                         // Ensure loader stays for 2 more seconds after loading is done
                         setLoadReady(true);
-                        setTimeout(() => setLoading(false), 2000);
-                        setTimeout(() => setHideLoader(true), 2500);
                         setExists(true);
                         setArticle(response)
                     }
@@ -64,14 +61,10 @@ export default function Page({ params }) {
                 fetchPage(articleId).then(response => {
                     if (response === null) {
                         // Ensure loader stays for 2 more seconds after loading is done
-                        setTimeout(() => setLoading(false), 2000);
-                        setTimeout(() => setHideLoader(true), 2500);
                         setExists(false);
                     } else {
                         // Ensure loader stays for 2 more seconds after loading is done
                         setLoadReady(true);
-                        setTimeout(() => setLoading(false), 2000);
-                        setTimeout(() => setHideLoader(true), 2500);
                         setExists(true);
                         setArticle(response)
                     }
@@ -104,8 +97,9 @@ export default function Page({ params }) {
             }
         });
 
-        setTimeout(() => setHideLoader(true), 2500)
-        return () => unsubscribe();
+
+        return () => unsubscribe()
+        
     }, [hasId]);
 
 
@@ -132,28 +126,9 @@ export default function Page({ params }) {
         }
     }, [editorType, articleId]);
 
-    if (articleUser === user.uid && !isAdmin){
-        //console.log("here7");
-        return <PageNotFound />;
-    }
-
-    if (pageType !== "page" && pageType !== "blog") {
-        //console.log("here1")
-        return <PageNotFound />;
-    }
-
-    if(pageType === "page" && !isAdmin && !loading){
-        //console.log("here2")
-        return <PageNotFound />;
-    }
-
-    if(hasPublished && !isAdmin && !loading){
-        //console.log("here3")
-        return <PageNotFound />;
-    }
-
-    if(!isWriter && !isAdmin && !loading){
-        //console.log("here6")
+    console.log((hasPublished && !isAdmin && !loading), (pageType !== "page" && pageType !== "blog"), (!isWriter && !isAdmin && !loading), (pageType === "page" && editorType !== "new" && !exists))
+    if((hasPublished && !isAdmin && !loading) || (pageType !== "page" && pageType !== "blog") || (!isWriter && !isAdmin && !loading) || (pageType === "page" && editorType !== "new" && !exists)){
+        console.log("here3")
         return <PageNotFound />;
     }
 

@@ -265,27 +265,39 @@ const UserPanel = ({users, handleUpdateUsers, classes}) => {
                         }
                     </span>
                 </div>
-                <div className="h-full flex flex-col w-full gap-[25px]">
-                    <div className="w-full flex flex-col grow gap-[15px]">
+                <div className="h-full flex flex-col w-full  gap-[25px]">
+                    <div className="w-full flex flex-col justify-between grow gap-[15px]">
                         <div className="w-full flex h-min">
                             <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's first name">
                                 <div className="flex grow w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    First Name
+                                    First
+                                    <span className="hidden sm:flex lg:hidden xl:flex">
+                                    &nbsp;Name
+                                    </span>
                                 </div>
                             </Tooltip>
                             <Tooltip classes={{ tooltip: classes.customTooltip }} title="the user's last name">
                                 <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Last Name
+                                    Last
+                                    <span className="hidden sm:flex lg:hidden xl:flex">
+                                    &nbsp;Name
+                                    </span>
                                 </div>
                             </Tooltip>
                             <Tooltip classes={{ tooltip: classes.customTooltip }} title="The user's current session id for their log in">
                                 <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Session ID
+                                    Session
+                                    <span className="hidden sm:flex lg:hidden xl:flex">
+                                    &nbsp;ID
+                                    </span>
                                 </div>
                             </Tooltip>
                             <Tooltip classes={{ tooltip: classes.customTooltip }} title="Whether the user has published or not.">
                                 <div className="flex h-max w-full md:basis-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center underline decoration-dashed">
-                                    Has Published
+                                    <span className="hidden sm:flex lg:hidden xl:flex">
+                                    ID&nbsp;
+                                    </span> 
+                                    Published
                                 </div>
                             </Tooltip>
                         </div>

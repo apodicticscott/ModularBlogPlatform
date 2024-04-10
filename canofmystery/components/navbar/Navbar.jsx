@@ -279,8 +279,8 @@ const Navbar = () => {
                     searchResults
                     &&
                     searchResults.map((article, index) => (
-                      <div key={index} className={`flex w-full rounded-md border-3 dark:border-[#302c38] ${animate ? "top-[0px] scale-100 opacity-100 top-[0px]" : "relative top-[100px] scale-50 opacity-0 top-[-20px]"} dark:border-2 h-[125px] p-1 hover:scale-[1.02] cursor-pointer hover:shadow-md-move transition duration-100`} onClick={() => (router.push(`/blog/${article.id}`, undefined, {shallow: true}), setIsFocused(false))}>
-                        <div className="w-[157.16px] h-full">
+                      <div key={index} className={`flex w-full rounded-md border-3 dark:border-[#302c38] ${animate ? "top-[0px] scale-100 opacity-100 top-[0px]" : "relative top-[100px] scale-50 opacity-0 top-[-20px]"} dark:border-2 h-[125px] p-1 hover:scale-[1.02] cursor-pointer hover:shadow-md-move dark:hover:shadow-md-move-dark transition duration-100`} onClick={() => (router.push(`/blog/${article.id}`, undefined, {shallow: true}), setIsFocused(false))}>
+                        <div className="min-w-[157.16px] h-full">
                           {
                             article.CoverImage
                             ?
@@ -291,7 +291,7 @@ const Navbar = () => {
                           }
                           
                         </div>
-                        <div className="flex flex-col justify-between h-full grow p-3 text-lg gap-[5px]">
+                        <div className="flex flex-col justify-between h-full grow p-3 text-lg gap-[5px] overflow-hidden">
                           <div className="flex flex-col grow gap-[5px]">
                             <span className="tracking-tighter">
                               {article.Title}
@@ -393,7 +393,7 @@ const Navbar = () => {
               </div>
             }
         </div>
-        <div className="flex items-center p-3 w-max h-[50px] bg-base-100 dark:bg-base-100-dark dark:shadow-none dark:border-2 dark:border-[#302c38] dark:text-t-header-dark  rounded-md border-3 shadow-md hover:shadow-md-move gap-[15px] transition duration-100 cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}))}>
+        <div className="flex items-center p-3 w-max h-[50px] bg-base-100 dark:bg-base-100-dark dark:shadow-none dark:border-2 dark:border-[#302c38] dark:text-t-header-dark dark:hover:shadow-md-move-dark rounded-md border-3 shadow-md hover:shadow-md-move gap-[15px] transition duration-100 cursor-pointer" onClick={() => (router.push("/search", undefined, {shallow: true}))}>
           <span className="font-bold dark:font-medium text-wrap tracking-tighter">
               Take Me To The Search Page
           </span>
