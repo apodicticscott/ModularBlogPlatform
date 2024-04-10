@@ -189,7 +189,7 @@ const handleInfo = async (event) => {
   return (
     <div className="w-full h-[100vh] flex items-center justify-center duration-100">
 
-      <div className={"flex flex-col justify-center self-center align-center p-7 w-full w-full sm:w-[calc(100vw_-_29px)] sm:max-w-[450px] border-y-3 sm:border-3 sm:rounded-md sm:shadow-lg sm:m-7 sm:m-0 transition-all duration-500"}>
+      <div className={"flex flex-col justify-center self-center align-center p-7 w-full w-full xs-sm:w-[calc(100vw_-_29px)] xs-sm:max-w-[450px] border-y-3 xs-sm:border-3 xs-sm:rounded-md xs-sm:shadow-lg xs-sm:m-7 xs-sm:m-0 transition-all duration-500"}>
         
           {panel === "cradentials" 
           ?
@@ -215,20 +215,20 @@ const handleInfo = async (event) => {
               </label>
               <input 
                 onChange={(e) => setEmail(e.target.value)} required type="email" name="email" id="email"
-                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="mail@gmail.com" 
+                className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="mail@gmail.com" 
               />
             </div>
             <div className="flex flex-col w-full gap-[10px]">
               <label htmlFor="password" className="text-2xl font-medium text-gray-700 tracking-tighter">
                 Password
               </label>
-              <div className="w-full h-max flex border-3 rounded-md shadow-md bg-base-100 flex items-center justify-center bg-[#ffffff] pr-[3px]">
+              <div className="max-w-full h-max flex justify-center items-center border-3 rounded-md shadow-md  pr-[3px] bg-[#ffffff]">
 
                 <input
                   onChange={(e) => setPassword(e.target.value)} required type={isPasswordVisible ? "text" : "password"} name="password" id="password" 
-                  className="text-xl xs:tracking-[-1.76px] grow  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] rounded-md p-1 pr-3  2xl:text-2xl content-center text-base px-4 py-2 focus:outline-none focus:border-green-400" placeholder="Password" 
+                  className="text-xl xs:tracking-[-1.76px]  w-[calc(100%_-_37px)]  h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] rounded-md p-1 pr-3  content-center text-base px-4 py-2 focus:outline-none focus:border-green-400" placeholder="Password" 
                 /> 
-                <button className="h-max w-max rounded-md p-[5px] pt-[3px] flex items-center hover:bg-base-200" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                <button className="h-[37px] h-[37px] rounded-md p-[5px] pt-[3px] flex items-center hover:bg-base-200" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
                   {
                     isPasswordVisible
                     ?
@@ -255,12 +255,12 @@ const handleInfo = async (event) => {
               )}
             </AnimatePresence>         
             </div>
-            <a href="/login" className="text-green-400 hover:text-green-500 tracking-tighter 2xl:text-2xl w-full">
+            <a href="/login" className="text-green-400 hover:text-green-500 tracking-tighter w-full">
                   Have an account? click here!
             </a>
             <NeoButton
               onSubmit={handleCradentials}
-              type="submit" classes="w-max mt-4 flex justify-center 2xl:text-2xl bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
+              type="submit" classes="w-max mt-4 flex justify-center bg-primary-dark  hover:bg-green-200 text-t-header-light p-3 py-1 border-2 lg:border-3 shadow-md rounded-md tracking-tighter font-semibold cursor-pointer"
             >
               Next
             </NeoButton>
@@ -283,11 +283,11 @@ const handleInfo = async (event) => {
               <div className="flex flex-row w-full h-max gap-[20px]">
                 <input 
                   onChange={(e) => setFirstName(e.target.value)} required type="text" name="FirstName" id="FirstName"
-                  className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
+                  className="text-xl xs:tracking-[-1.76px] w-full 3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  border-2 2xl:text-2xl lg:border-3 rounded-md shadow-md text-base px-4 py-2 border  border-gray-300 focus:outline-none focus:border-green-400" placeholder="First" 
                 />
                 <input
                   onChange={(e) => setLastName(e.target.value)} required type="text" name="LastName" id="LastName" 
-                  className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max 3xl:text-2.5xl   lg:text-xl lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
+                  className="text-xl xs:tracking-[-1.76px] w-full  3xl:h-max lg:tracking-[-2.76px]  xl:tracking-[-2.32px] tracking-[-5.76px] border-2 lg:border-3 p-1 pr-3 rounded-md shadow-md  2xl:text-2xl content-center text-base px-4 py-2 border  border-2 lg:border-3 rounded-md shadow-md focus:outline-none focus:border-green-400" placeholder="Last" 
                 /> 
 
               </div>
