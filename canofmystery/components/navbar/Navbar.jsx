@@ -199,7 +199,7 @@ const Navbar = () => {
               <DropDownItem href="https://www.usca.edu/" title="USCA" background="bg-sunset"  classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                 <img src={uscaLogo.src} className="h-2/3" alt="USCA Logo"/>
               </DropDownItem>
-              <DropDownItem href="canitems" title="Can Items" background="bg-pale-green"   classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
+              <DropDownItem href="/search" title="Can Items" background="bg-pale-green"   classes="w-full h-[16.5vh] sm:w-[calc((100%_/_2)_-_10px)] sm:h-[165px] lg:w-[230.38px] xl:w-[267.3px]">
                   <div className="flex w-full h-80 gap-5 text-[50px] font-bold overflow-hidden justify-center items-center text-t-header-light dark:text-t-header-dark">
                     <div className="w-[644px] h-15 whitespace-nowrap dark:text-t-header-light">
                       Example Text

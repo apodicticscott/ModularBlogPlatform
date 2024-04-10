@@ -38,12 +38,12 @@ const CanItemsScroll = () => {
                 <div className="snap-proximity snap-x flex gap-[40px] flex-nowrap  h-full items-center inner">
                     {
                         json_article_cards_array.map((tag, index) => (
-                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" link={tag.link} style={"snap-center bg-base-100 p-2"}> {tag.title}</NeoButtonLink>
+                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" style={"snap-center bg-base-100 p-2"}> {tag.title}</NeoButtonLink>
                         ))
                     }
                     {
                         json_article_cards_array.map((tag, index) => (
-                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" link={tag.link} style={"snap-center bg-base-100 p-2"}>{tag.title}</NeoButtonLink> 
+                            <NeoButtonLink key={`${index}-${tag.title}`} className="tag" style={"snap-center bg-base-100 p-2"}>{tag.title}</NeoButtonLink> 
                         ))
                     }
                 </div>

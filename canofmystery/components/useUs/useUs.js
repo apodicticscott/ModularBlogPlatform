@@ -3,12 +3,14 @@ import React from "react";
 import Header from "../TextComponents/Header1"
 import LargeParagraph from "../TextComponents/LargeParagraph"
 import { MdArrowForwardIos } from "react-icons/md";
-
+import { useRouter } from "next/navigation";
 
 
 
 
 const UseUsAsASource = () => {
+    const router = useRouter()
+
     return (
         <>
             <div className="flex justify-center h-max w-full items-center py-[100px] lg:py-[150px] px-[25px] lg:px-[50px] dark:bg-base-100-dark ">
@@ -25,7 +27,10 @@ const UseUsAsASource = () => {
                         <Header type="lg" classes="grow text-3xl md:text-4xl opacity-0 h-max max-h-[40%]">
                             d
                         </Header>
-                        <MdArrowForwardIos className="text-2.5xl sm:text-3xl lg:text-5xl dark:text-t-header-dark grow" />
+                        <button className="w-max h-max p-3 hover:bg-base-200 border-3 border-[#ebebeb]  dark:border-2 dark:border-[#100f12] dark:hover:border-2 dark:hover:bg-base-100-dark rounded-md dark:hover:border-[#302c38]  ease-in-out transition duration-300" onClick={() => router.push("/pages/citation-guide", undefined, {shallow: true})}>
+                            <MdArrowForwardIos className="text-2.5xl sm:text-3xl lg:text-5xl dark:text-t-header-dark grow" />
+                        </button>
+                        
                         <Header type="lg" classes="grow text-3xl md:text-4xl opacity-0 max-h-0">
                             d
                         </Header>

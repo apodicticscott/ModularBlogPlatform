@@ -4,6 +4,7 @@ import {
     onAuthStateChanged,
     getAuth,
 } from 'firebase/auth';
+import Loader from "../components/loader/loader"
 import firebase_app from '/firebase/config';
 
 const auth = getAuth(firebase_app);
@@ -33,7 +34,12 @@ export const AuthContextProvider = ({
 
     return (
         <AuthContext.Provider value={{ user }}>
-            {loading ? <div>Loading...</div> : children}
+            {loading ?  
+            <div
+                className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-base-100 ${loading ? "opacity-100" : "opacity-0"} transition-all duration-500`}
+            >
+                <Loader className={`${loading ? "scale-100" : "scale-70"} transition duration-500`}/>
+            </div>: children}
         </AuthContext.Provider>
     );
 };
