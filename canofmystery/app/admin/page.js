@@ -302,7 +302,7 @@ export default function Page({ params }) {
                         </div>
                     </div>
                 </div>
-                <div className="grow min-h-full  flex flex-col">
+                <div className={`${isSideBarOpen ? 'md:w-[calc(100%_-_79px)] lg:w-[calc(100%_-_252px)]' : 'w-0'} grow min-h-full  flex flex-col`}>
                     <div className="w-full h-max border-b-3 dark:border-b-2 dark:border-b-[#302c38] hidden md:flex items-center p-7">
                         <Header type="lg" classes="w-full">
                             {

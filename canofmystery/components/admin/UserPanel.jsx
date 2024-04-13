@@ -501,14 +501,16 @@ const UserPanel = ({users, handleUpdateUsers, classes}) => {
                                                         "false"
                                                     }
                                                 </div>
-                                                <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "studentWriter" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
-                                                    <button className="w-full h-max p-2 text-left bg-base-100  dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
-                                                        true
-                                                    </button >
-                                                    <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
-                                                    <button  className="w-full h-max p-2 text-left bg-base-100 dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
-                                                        false
-                                                    </button >
+                                                <div className="h-0 z-10">
+                                                    <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "studentWriter" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
+                                                        <button className="w-full h-max p-2 text-left bg-base-100  dark:bg-[#18161b]  dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
+                                                            true
+                                                        </button >
+                                                        <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
+                                                        <button  className="w-full h-max p-2 text-left bg-base-100 dark:bg-[#18161b]  dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
+                                                            false
+                                                        </button >
+                                                    </div>
                                                 </div>
                                             </div>
                                             <button className={`w-[30px] h-[30px] bg-base-100 rounded-md flex items-center justify-center transition-opacity duration-200 dark:border-2 dark:border-[#302c38] dark:bg-[#18161b] delay-200 dark:hover:bg-[#302c38] ${inputId === "studentWriter" ? "opacity-1" : "opacity-0"}`} onClick={() => handleChangeUserAttribute_DropDown("studentWriter", selectedUser.userData.userInfo.uid)}>
@@ -544,14 +546,16 @@ const UserPanel = ({users, handleUpdateUsers, classes}) => {
                                                         "false"
                                                     }
                                                 </div>
-                                                <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "adminPerm" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
-                                                    <button className="w-full h-max p-2 text-left bg-base-100 dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
-                                                        true
-                                                    </button >
-                                                    <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
-                                                    <button  className="w-full h-max p-2 text-left bg-base-100 dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
-                                                        false
-                                                    </button >
+                                                <div className="h-0 z-10">
+                                                    <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "adminPerm" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
+                                                        <button className="w-full h-max p-2 text-left bg-base-100 dark:bg-[#18161b] dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
+                                                            true
+                                                        </button >
+                                                        <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
+                                                        <button  className="w-full h-max p-2 text-left bg-base-100 dark:bg-[#18161b] dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
+                                                            false
+                                                        </button >
+                                                    </div>
                                                 </div>
                                             </div>
                                             <button className={`w-[30px] h-[30px] bg-base-100 rounded-md flex items-center justify-center transition-opacity duration-200 dark:border-2 dark:border-[#302c38] dark:bg-[#18161b] delay-200 dark:hover:bg-[#302c38] ${inputId === "adminPerm" ? "opacity-1" : "opacity-0"}`} onClick={() => handleChangeUserAttribute_DropDown("adminPerm", selectedUser.userData.userInfo.uid)}>
@@ -587,15 +591,18 @@ const UserPanel = ({users, handleUpdateUsers, classes}) => {
                                                         "false"
                                                     }
                                                 </div>
-                                                <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "hasPublished" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
-                                                    <button className="w-full h-max p-2 text-left bg-base-100 dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
-                                                        true
-                                                    </button >
-                                                    <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
-                                                    <button  className="w-full h-max p-2 text-left bg-base-100 dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
-                                                        false
-                                                    </button >
+                                                <div className="h-0 z-10">
+                                                    <div className={`transition duration-100 bg-base-100 overflow-hidden ${dropDownId === "hasPublished" ? "w-[100px] h-max dark:bg-[#18161b] dark:border-2 dark:border-[#302c38] rounded-md" : "w-0 h-0 overflow-hidden"}`}>
+                                                        <button className="w-full h-max p-2 text-left bg-base-100 dark:bg-[#18161b] dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(true)}>
+                                                            true
+                                                        </button >
+                                                        <Divider className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
+                                                        <button  className="w-full h-max p-2 text-left bg-base-100 dark:bg-[#18161b] dark:hover:bg-[#302c38]" onClick={() => setDropDownValue(false)}>
+                                                            false
+                                                        </button >
+                                                    </div>
                                                 </div>
+
                                             </div>
                                             <button className={`w-[30px] h-[30px] bg-base-100 rounded-md flex items-center justify-center transition-opacity  duration-200 dark:border-2 dark:border-[#302c38] dark:bg-[#18161b] delay-200 dark:hover:bg-[#302c38] ${inputId === "hasPublished" ? "opacity-1" : "opacity-0"}`} onClick={() => handleChangeUserAttribute_DropDown("hasPublished", selectedUser.userData.userInfo.uid)}>
                                                 <FaCheck />

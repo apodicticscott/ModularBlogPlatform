@@ -137,6 +137,19 @@ const HomePanel = ({articles, setArticles, classes, setNumUnapproved, sessions, 
         document.body.removeChild(el);
     }
 
+    const [lastBasis, setLastBasis] = useState(200);
+    const [firstBasis, setFirstBasis] = useState(200);
+    const [sessionUserBasis, setSessionUserBasis] = useState(200);
+    const [publishedBasis, setPublishedBasis] = useState(200);
+    
+    const labels = [
+        { key: 'first', label: 'First Name', basis: firstBasis, setBasis: (value) =>  setFirstBasis(value) },
+        { key: 'last', label: 'Last Name', basis: lastBasis, setBasis: (value) => setLastBasis(value) },
+        { key: 'sessionUser', label: 'Session ID', basis: sessionUserBasis, setBasis: (value) => setSessionUserBasis(value) },
+        { key: 'published', label: 'Has Published', basis: publishedBasis, setBasis: (value) => setPublishedBasis(value) },
+    ];
+    
+
     return(
         <>
             <div className="h-full w-full flex flex-col 2xl:flex-row  sm:gap-7 p-0 sm:p-7 bg-grid-image transition duration-100 dark:font-extralight">

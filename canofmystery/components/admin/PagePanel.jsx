@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import Pagination from '@mui/material/Pagination';
 import { FaPen } from "react-icons/fa";
 import useDocumentClassChange from '../../hooks/useDocumentClassChange';
+import DynamicLabel from '../TextComponents/DynamicLabel';
 
 import { 
     fetchPages, 
@@ -22,6 +23,23 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
     const [selectedPages, setSelectedPages] = useState([])
     const [currentPages, setCurrentPages] = useState([])
     const pagesPerPage = 25; // Now displaying pages per page
+
+    const [authorBasis, setAuthorBasis] = useState(200);
+    const [publisherBasis, setPublisherBasis] = useState(200);
+    const [titleBasis, setTitleBasis] = useState(200);
+    const [timeBasis, setTimeBasis] = useState(200);
+    const [dateBasis, setDateBasis] = useState(100);
+    const [imageBasis, setImageBasis] = useState(150);
+    
+    const labels = [
+        { key: 'author', label: 'Author', basis: authorBasis, setBasis: (value) => setAuthorBasis(value) },
+        { key: 'publisher', label: 'Publisher', basis: publisherBasis, setBasis: (value) => setPublisherBasis(value) },
+        { key: 'title', label: 'Title', basis: titleBasis, setBasis: (value) => setTitleBasis(value) },
+        { key: 'time', label: 'Time', basis: timeBasis, setBasis: (value) => setTimeBasis(value) },
+        { key: 'date', label: 'Date', basis: dateBasis, setBasis: (value) => setDateBasis(value) },
+        { key: 'image', label: 'Cover Image', basis: imageBasis, setBasis: (value) => setImageBasis(value) },
+    ];
+    
 
     // Calculate the indices of the pages to display
     const indexOfLastPage = currentPage * pagesPerPage;
@@ -115,78 +133,112 @@ const PagePanel = ({setNumUnapproved, numUnapproved, setPages, pages, classes}) 
                         'You are all up to date!'
                     }
                     </div>
-                    <div className="w-full h-max flex flex-wrap 2xl:flex-col gap-[15px]">
-                        {
-                            currentPages
-                            &&
-                            currentPages.map((page) => (
-                                <div className={`w-full h-max sm:w-[calc(100%_/_2)] ${currentTheme === "dark" ? "shadow-lg-dark" : "shadow"} md:w-max 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 dark:border-2 dark:border-[#302c38] overflow-hidden flex flex-col 2xl:flex-row text-lg dark:font-extralight hover:dark:bg-[#18161b] cursor-pointer ${selectedPages.includes(page.id) ? 'bg-[#c8c8c8] dark:bg-[#18161b]' : 'bg-base-100 dark:bg-base-100-dark '}`} key={page.id} onClick={() => handleSelection(page.id)}>
-                                    <div className="flex w-full md:w-max 2xl:grow grow 2xl:h-full flex-col 2xl:flex-row">
-                                        <div className="flex grow w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {page.Publisher}
+                    <div className='flex flex-col 2xl:p-2 rounded-md 2xl:bg-base-200 2xl:dark:bg-[#322e38] gap-[25px] 2xl:pt-[25px]'>
+                        <div className='w-[80%] h-max hidden text-xl 2xl:flex dark:font-extralight'>
+                            <DynamicLabel labels={labels}/>
+                        </div>
+                        <div className="w-full h-max flex flex-wrap 2xl:flex-col gap-[15px]">
+                            {
+                                currentPages
+                                &&
+                                currentPages.map((page) => (
+                                    <div className={`w-full h-max sm:w-[calc((100%_/_2)_-_10px)] ${currentTheme === "dark" ? "shadow-lg-dark" : "shadow"} md:max-w-[200px] 2xl:max-w-none 2xl:w-full rounded-md h-full 2xl:h-[50px] border-3 dark:border-2 dark:border-[#302c38] overflow-hidden flex flex-col 2xl:flex-row text-lg dark:font-extralight hover:dark:bg-[#18161b] cursor-pointer max-w-full ${selectedPages.includes(page.id) ? 'bg-[#c8c8c8] dark:bg-[#18161b]' : 'bg-base-100 dark:bg-base-100-dark '}`} key={page.id} onClick={() => handleSelection(page.id)}>
+                                            <div className='flex flex-col 2xl:flex-row w-full justify-between'>  
+                                                <div className="flex w-full 2xl:w-[80%] md:w-max 2xl:w-full 2xl:h-full flex-col 2xl:flex-row">
+                                                    <div className={`flex w-full py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center `} style={(document.body.clientWidth > 1500) ? {minWidth: authorBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {page.firstName + " " + page.lastName}
+                                                        </div>   
+                                                    </div>
+                                                    <div className='min-w-[10px] h-full flex justify-center'>
+                                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                                    </div>
+                                                    <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
+                                                    <div className={`flex h-full w-full py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center truncate`} style={(document.body.clientWidth > 1500) ? {minWidth: publisherBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {page.Author}
+                                                        </div>   
+                                                    </div>
+                                                    <div className='min-w-[10px] h-full flex justify-center'>
+                                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                                    </div>
+                                                    <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
+                                                    <div className="flex h-[69px] lg:h-max w-full py-[15px] 2xl:py-0 px-[10px] min-h-[50px] items-center truncate" style={(document.body.clientWidth > 1500) ? {minWidth: titleBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {page.Title}
+                                                        </div> 
+                                                    </div>
+                                                    <div className='min-w-[10px] h-full flex justify-center'>
+                                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                                    </div>
+                                                    <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
+                                                    <div className="flex h-full w-full py-[15px] 2xl:py-0 px-[10px] items-center min-h-[50px]" style={(document.body.clientWidth > 1500) ? {minWidth: timeBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleTimeString()}
+                                                        </div> 
+                                                    </div>
+                                                    <div className='min-w-[10px] h-full flex justify-center'>
+                                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                                    </div>
+                                                    <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
+                                                    <div className="flex h-full w-full py-[15px] 2xl:py-0 px-[10px] items-center min-h-[50px]" style={(document.body.clientWidth > 1500) ? {minWidth: dateBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                    <div className='min-w-[10px] h-full flex justify-center'>
+                                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
+                                                    </div>
+                                                    <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
+                                                    <div className="flex h-full w-full flex items-center py-[15px] px-[10px] min-h-[50px] " style={(document.body.clientWidth > 1500) ? {minWidth: imageBasis} : {width: "200px"}}>
+                                                        <div className='h-max w-full truncate'>
+                                                            {
+                                                                page.coverImage
+                                                                ?
+                                                                <>
+                                                                    Available
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    Unavailable
+                                                                </>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='flex flex-col w-full  md:w-[200px] 2xl:flex-row 2xl:w-max'>     
+                                                    <div className={`h-full w-full md:w-[200px] 2xl:w-max flex border-y-3 2xl:border-x-3 2xl:border-y-0 px-[10px] py-[15px] items-center dark:text-t-header-light font-normal dark:border-x-[#302c38] ${page.isApproved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                                        <div className='h-max w-full truncate flex justify-center'>
+                                                            {
+                                                                page.Approved
+                                                                ?
+                                                                "True"
+                                                                :
+                                                                "False"
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex h-full w-full 2xl:w-max p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
+                                                        <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
+                                                            <button onClick={() => router.push(`/editor/blog/${page.id}`, undefined, {shallow: true})} >
+                                                                <FaPen className="text-xl w-[25px]"/>
+                                                            </button>
+                                                        </Tooltip>
+                                                        <Divider orientation="vertical" flexItem className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} />
+                                                        <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
+                                                            <button onClick={() => router.push(`/blog/${page.id}`, undefined, {shallow: true})}>
+                                                                <MdOutlinePreview className="text-2xl w-[25px]" />
+                                                            </button>
+                                                        </Tooltip>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <Divider  orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
-                                        <Divider  className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
-                                        <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {page.Author}
-                                        </div>
-                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
-                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
-                                        <div className="flex h-full w-full h-[69px] lg:h-max md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] min-h-[50px] items-center">
-                                            {page.Title}
-                                        </div>
-                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
-                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
-                                        <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleTimeString()}
-                                        </div>
-                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
-                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
-                                        <div className="flex h-full w-full md:w-[200px] py-[15px] 2xl:py-0 pl-[10px] items-center min-h-[50px]">
-                                            {new Date(page.Time.seconds * 1000 + page.Time.nanoseconds/1000000).toLocaleDateString()}
-                                        </div>
-                                        <Divider orientation="vertical" className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} hidden 2xl:flex`} flexItem />
-                                        <Divider className={`${currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight} flex 2xl:hidden`} flexItem />
-                                        <div className="flex h-full w-full md:w-[200px] flex items-center py-[15px] pl-[10px] min-h-[50px]">
-                                            {
-                                                page.coverImage
-                                                ?
-                                                <>
-                                                Is Available
-                                                </>
-                                                :
-                                                <>
-                                                Is Not Available
-                                                </>
-                                            }
-                                        </div>
-                                        <div className={`h-full w-full md:w-[200px] 2xl:grow flex border-y-3 2xl:border-x-3 2xl:border-y-0 pl-[10px] py-[15px] items-center dark:text-t-header-light font-normal dark:border-x-[#302c38] ${page.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
-                                            {
-                                                page.Approved
-                                                ?
-                                                "Approved"
-                                                :
-                                                "Unapproved"
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className="flex h-full w-full 2xl:w-max p-[10px] max-h-[39px] 2xl:max-h-full 2xl:gap-[10px] justify-between">
-                                        <Tooltip classes={{ tooltip: classes.customTooltip }} title="Edit">
-                                            <button onClick={() => router.push(`/editor/page/${page.id}`, undefined, {shallow: true})} >
-                                                <FaPen className="text-xl w-[25px]"/>
-                                            </button>
-                                        </Tooltip>
-                                        <Divider orientation="vertical" flexItem className={currentTheme === "dark" ? classes.customDividerDark : classes.customDividerLight}/>
-                                        <Tooltip classes={{ tooltip: classes.customTooltip }} title="View">
-                                            <button onClick={() => router.push(`/pages/${page.PageName}`, undefined, {shallow: true})}>
-                                                <MdOutlinePreview className="text-2xl w-[25px]" />
-                                            </button>
-                                        </Tooltip>
-                                    </div>
-                                </div>
-                            ))
-                        }            
-                    </div>
+                                ))
+                            }            
+                        </div>
+
+                    </div> 
                 </div>
                 {
                     (Math.ceil(pages.length / pagesPerPage) > 1)
