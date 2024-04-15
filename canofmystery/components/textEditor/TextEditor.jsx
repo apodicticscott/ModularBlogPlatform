@@ -922,7 +922,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                                     </DndContext>
                                     <div className={`transition duration-1 flex items-center w-full gap-[30px] ${Tags.length > 0 ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
                                         <div className="flex flex-col h-max w-full gap-[15px]">
-                                            <Header type="sm" classes="border-b-[2px] border-b-black w-full">
+                                            <Header type="sm" classes="border-b-[2px] border-b-black dark:border-b-2 dark:border-b-[#ebebeb] w-full">
                                                 Tags:
                                             </Header>
                                             <div className="flex flex-wrap items-center w-full h-max">

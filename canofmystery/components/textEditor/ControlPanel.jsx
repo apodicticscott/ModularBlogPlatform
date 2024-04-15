@@ -397,7 +397,7 @@ const ControlPanel = ({
                         <Header type="sm" >
                             Page Name
                         </Header>
-                        <input className="w-full p-[5px] rounded-md dark:bg-base-100-dark dark:border-2 dark:border-[#302c38]" placeholder={"Page Name"} value={pageName && pageName} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
+                        <input className="w-full p-[5px] rounded-md dark:bg-base-100-dark dark:border-2 dark:border-[#302c38] dark:text-t-header-dark" placeholder={"Page Name"} value={pageName && pageName} onChange={(e) => handleSetPageName(e.currentTarget.value)}>
                         </input>
                         <AnimatePresence>
                             {pageNameError && (
@@ -420,14 +420,14 @@ const ControlPanel = ({
                     <Header type="sm" >
                         Title
                     </Header>
-                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38]" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38] dark:text-t-header-dark tracking-tighter" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
-                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38]" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
+                    <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38] dark:text-t-header-dark tracking-tighter" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
@@ -445,7 +445,7 @@ const ControlPanel = ({
                                 className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex items-center gap-[5px] rounded dark:bg-[#57545e] dark:text-t-header-dark rounded-md'
                                 >
                                 
-                                <div className='w-[calc(100%_-_32px)] h-full text-xl max-w-[calc(100%_-_27px)] flex items-center truncate text-ellipsis' suppressContentEditableWarning={true} contentEditable={true} onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
+                                <div className='w-[calc(100%_-_32px)] h-full text-xl max-w-[calc(100%_-_27px)] flex items-center truncate text-ellipsis tracking-tighter' suppressContentEditableWarning={true} contentEditable={true} onBlur={(e) => handleChangeTag(index, e.currentTarget.textContent)}>
                                     {tag.Text}
                                 </div>
                                 <button className="hover:bg-base-300 rounded-md transition duration-100 dark:hover:bg-base-100-dark p-[5px] text-t-header-light hover:text-t-header-dark" onClick={() => handleRemoveTag(index)}>
@@ -478,7 +478,7 @@ const ControlPanel = ({
                         <div className="relative mt-[10px]">
                             <input
                                 type="text"
-                                className="border border-gray-300 rounded p-2 w-full"
+                                className="border border-gray-300 rounded p-2 w-full tracking-tighter"
                                 placeholder="Search categories..."
                       
                                 onChange={(e) => setSearch(e.target.value)}
@@ -490,7 +490,7 @@ const ControlPanel = ({
                                     {filteredCategories.map((category, index) => (
                                         <div
                                         key={index}
-                                        className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark"
+                                        className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark tracking-tighter"
                                         onMouseDown={() => {setSearch(category); setCategory(category)}}
                                         >   
                                             {category}
@@ -510,12 +510,12 @@ const ControlPanel = ({
                 </Header>
                 <div className="flex flex-row p-2  items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("header")}>
                     < FaPlus  className='text-t-header-light dark:text-t-header-dark'  />
-                    <span className='text-t-header-light dark:text-t-header-dark' >Header</span>
+                    <span className='text-t-header-light dark:text-t-header-dark tracking-tighter' >Header</span>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("paragraph")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Paragraph</span>
+                        <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Paragraph</span>
                     </div>
                 </div>
                 {/* <div className="flex flex-col">
@@ -527,7 +527,7 @@ const ControlPanel = ({
                 <div className="flex flex-col px-[10px]">
                     <div className="flex flex-row  items-center gap-[15px] mt-[15px] p-[10px] pl-[0px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsImageAddOpen(!isImageAddOpen)}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Image</span>
+                        <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Image</span>
                     </div>
                     {
                     isImageAddOpen 
@@ -543,7 +543,7 @@ const ControlPanel = ({
                     <div className="flex justify-between items-center gap-[15px] mt-[15px]  " onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  setIsVideoAddOpen(!isVideoAddOpen)}>
                         <div className="flex w-max gap-[15px] items-center">
                             <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                            <span className='text-t-header-light dark:text-t-header-dark'>Youtube Video</span>
+                            <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Youtube Video</span>
                         </div>
 
                         {
@@ -587,7 +587,7 @@ const ControlPanel = ({
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("resource")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
-                        <span className='text-t-header-light dark:text-t-header-dark'>Resource</span>
+                        <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Resource</span>
                     </div>
                 </div>
             </div>
