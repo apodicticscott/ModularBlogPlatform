@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaAlignLeft, FaIndent, FaAlignJustify, FaSubscript, FaSuperscript    } from "react-icons/fa";
-import { MdOutlinePreview, MdOutlineQuestionMark, MdOutlineDownloadDone } from "react-icons/md";
+import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaQuestion, FaAlignLeft, FaIndent, FaAlignJustify, FaSubscript, FaSuperscript    } from "react-icons/fa";
+import { MdOutlinePreview, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
@@ -83,17 +83,17 @@ const SizeDropDown = ({className, onClick, selected}) => {
 
     
     return(
-        <div className={`${className} flex flex-row bg-base-100 overflow-hidden  h-[30px] sm:h-full border-r-solid border-r-[3px] border-r-black` }>
-            <button id="sm" className="flex flex-row justify-center items-end h-full pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+        <div className={`${className} flex flex-row gap-1 overflow-hidden  h-full min-w-max rounded-md ` }>
+            <button id="sm" className="flex flex-row rounded-md justify-center items-end h-full pb-[5px] min-h-[50px] min-w-[50px] bg-base-100 hover:bg-[#a4a4a4] text-t-header-light transition duration-100 dark:bg-[#18161b] dark:hover:bg-[#302c38] dark:text-t-header-dark" onClick={(e) => onClick(e.currentTarget.id)}>
                 <RiFontFamily id="sm" className="text-[8px] sm:text-xl"/>
             </button>
-            <button id="md" className="flex flex-row justify-center items-end h-full  pb-[5px] w-[50px] " onClick={(e) => onClick(e.currentTarget.id)}>
+            <button id="md" className="flex flex-row rounded-md  justify-center items-end h-full  pb-[5px] min-h-[50px] min-w-[50px] bg-base-100 hover:bg-[#a4a4a4] text-t-header-light transition duration-100 dark:bg-[#18161b] dark:hover:bg-[#302c38] dark:text-t-header-dark" onClick={(e) => onClick(e.currentTarget.id)}>
                 <RiFontFamily id="md" className="text-[10px] sm:text-2.2xl"/>
             </button>
-            <button id="lg" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.compType === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark cursor-not-allowed"}`} onClick={(e) => {selected.compType === "header" && onClick(e.currentTarget.id)}}>
+            <button id="lg" className={`flex flex-row rounded-md  justify-center items-end h-full pb-[5px] min-h-[50px] min-w-[50px] ${selected.compType === "header" ? "bg-base-100 hover:bg-[#a4a4a4] transition duration-100 dark:bg-[#18161b] dark:hover:bg-[#302c38] dark:text-t-header-dark" : "bg-base-300 dark:bg-[#18161b] text-t-header-dark cursor-not-allowed"}`} onClick={(e) => {selected.compType === "header" && onClick(e.currentTarget.id)}}>
                 <RiFontFamily id="lg" className="flex flex-col justify-end text-[12px] sm:text-2.7xl"/>
             </button>
-            <button id="xl" className={`flex flex-row justify-center items-end h-full pb-[5px] w-[50px] ${selected.compType === "header" ? "bg-base-100" : "bg-base-300 text-t-header-dark cursor-not-allowed"}`} onClick={(e) => { selected.compType === "header" && onClick(e.currentTarget.id)}}>
+            <button id="xl" className={`flex flex-row rounded-md  justify-center items-end h-full pb-[5px] min-h-[50px] min-w-[50px] ${selected.compType === "header" ? "bg-base-100 hover:bg-[#a4a4a4] transition duration-100 dark:bg-[#18161b] dark:hover:bg-[#302c38] dark:text-t-header-dark" : "bg-base-300 dark:bg-[#18161b] text-t-header-dark cursor-not-allowed"}`} onClick={(e) => { selected.compType === "header" && onClick(e.currentTarget.id)}}>
                 <RiFontFamily id="xl" className="sm:text-3xl"/>
             </button>
         </div>
@@ -101,7 +101,7 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = ({pageType, editorType, articleId, user, article}) => {
+const TextEditor = ({pageType, editorType, articleId, user, article, testing}) => {
     const classes = useStyles()
 
     const [compArray, setCompArray] = useState([]);
@@ -310,10 +310,12 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
                 handleGetInnerHtml(e)
         
                 if(selectedComp.id === id && eventType === selectedComp.eventType && eventType === "in-text-click"){
+                    setSizeDrop(false);
                     setSelectedComp({id: id, compType: compType, eventType: eventType});
                 }else if (selectedComp.id === id) {
                     // Toggle the dropdown only if the same component is clicked again
                     toggleSizeDropdown();
+                    setSizeDrop(false);
                     setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
                 }else {
                     // Close the dropdown when a different component is selected
@@ -325,14 +327,17 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
             }else if(selectionName === "Caret"){
                 setCanAddList(true)
                 setTextIsSelected(false)
+                setSizeDrop(false);
                 setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
             }
         }else if(selectionName === "Range"){
             setCanAddList(false);
             setTextIsSelected(true)
+            setSizeDrop(false);
             setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
         }else if(selectionName === "Caret"){
             setTextIsSelected(false)
+            setSizeDrop(false);
             setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
         }
     }
@@ -419,6 +424,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
 
     const togglePreviewEnabled = () => {
         setIsPreview(prevState => !prevState);
+        setSelectedComp({id: undefined, compType: undefined, eventType: undefined});
     }
 
     const toggleSideBar = () => {
@@ -430,193 +436,195 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
     }
 
     const handleUploadArticle = async () => {
-        try {
-            // Construct the article object
-            let response;
-            // Reference to the 'Articles' collection
-            console.log(user)
-            if(pageType === "blog"){
-                const article = {
-                    Title: Title ? Title : "",
-                    Tags: Tags,
-                    Content: compArray.map(comp => ({
-                        ID: comp.ID,
-                        Content: comp.Content,
-                        Style: comp.Style || '', // Assuming style is an optional field
-                        Type: comp.Type,
-                        ImageOriginal: comp.OriginalImage || '',
-                        Image: comp.Image || '',
-                        Size: comp.Size || ''
-                    })),
-                    firstName:  user && 'firstName' in user ? user.firstName : "",
-                    lastName: user && 'lastName' in user ? user.lastName : "",
-                    Time: formatDate(new Date()),
-                    CoverImage: coverImageData[0] ? coverImageData[0] : null,
-                    Approved: false,
-                    Author: Author ? Author : "",
-                    UserId: userId ? userId : "",
-                    SessionCode: user && user.sessionCode ? user.sessionCode : ""
-                };
-                if(editorType !== "new"){
-                    response = await updateArticle(articleId, article)
-                }else{
-                    response = await addDocument("Articles", article) && await setHasPublished("users", userId);
-                    console.log(response)
-                }    
-            }else if(pageType === "page"){
-                const page = {
-                    Title: Title,
-                    PageName: pageName,
-                    Tags: Tags,
-                    //CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
-                    Content: compArray.map(comp => ({
-                        ID: comp.ID,
-                        Content: comp.Content,
-                        Style: comp.Style || '', // Assuming style is an optional field
-                        Type: comp.Type,
-                        ImageOriginal: comp.OriginalImage || '',
-                        Image: comp.Image || '',
-                        Size: comp.Size || ''
-                    })),
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    Time: formatDate(new Date()),
-                    Approved: true,
-                    Author: Author,
-                    UserId: userId
-                    
-                };
-
-                if(editorType !== "new"){
-                    response = await updatePage(articleId, page)
-                }else{
-                    response = await addDocument("Pages", page) && await setHasPublished("users", userId);
-                    console.log(response)
+        if(!testing){
+            try {
+                // Construct the article object
+                let response;
+                // Reference to the 'Articles' collection
+                console.log(user)
+                if(pageType === "blog"){
+                    const article = {
+                        Title: Title ? Title : "",
+                        Tags: Tags,
+                        Content: compArray.map(comp => ({
+                            ID: comp.ID,
+                            Content: comp.Content,
+                            Style: comp.Style || '', // Assuming style is an optional field
+                            Type: comp.Type,
+                            ImageOriginal: comp.OriginalImage || '',
+                            Image: comp.Image || '',
+                            Size: comp.Size || ''
+                        })),
+                        firstName:  user && 'firstName' in user ? user.firstName : "",
+                        lastName: user && 'lastName' in user ? user.lastName : "",
+                        Time: formatDate(new Date()),
+                        CoverImage: coverImageData[0] ? coverImageData[0] : null,
+                        Approved: false,
+                        Author: Author ? Author : "",
+                        UserId: userId ? userId : "",
+                        SessionCode: user && user.sessionCode ? user.sessionCode : ""
+                    };
+                    if(editorType !== "new"){
+                        response = await updateArticle(articleId, article)
+                    }else{
+                        response = await addDocument("Articles", article) && await setHasPublished("users", userId);
+                        console.log(response)
+                    }    
+                }else if(pageType === "page"){
+                    const page = {
+                        Title: Title,
+                        PageName: pageName,
+                        Tags: Tags,
+                        //CoverImage: (coverImageData[1] ? coverImageData[1] : coverImageData[0]),
+                        Content: compArray.map(comp => ({
+                            ID: comp.ID,
+                            Content: comp.Content,
+                            Style: comp.Style || '', // Assuming style is an optional field
+                            Type: comp.Type,
+                            ImageOriginal: comp.OriginalImage || '',
+                            Image: comp.Image || '',
+                            Size: comp.Size || ''
+                        })),
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        Time: formatDate(new Date()),
+                        Approved: true,
+                        Author: Author,
+                        UserId: userId
+                        
+                    };
+    
+                    if(editorType !== "new"){
+                        response = await updatePage(articleId, page)
+                    }else{
+                        response = await addDocument("Pages", page) && await setHasPublished("users", userId);
+                        console.log(response)
+                    }
                 }
+            } catch (error) {
+                console.error("Error adding article: ", error);
             }
-        } catch (error) {
-            console.error("Error adding article: ", error);
         }
     };
-
-    const handleClearContent = () => {
-        setAuthor()
-        setTitle()
-        setTags([])
-        setCompArray([])
-        setCategory()
-    }
-
 
 
     return (
         <>
 
             <div className="w-full" id="text-editor">
-                <div className="flex w-full h-max"> 
-                    <div className="flex flex-wrap w-full h-max px-[15px] bg-base-300 gap-y-[3px] border-b-3 dark:border-b-[#302c38] dark:border-b-2 dark:bg-base-100-dark">
-                        <div className="h-max sm:h-[50px] w-max">   
-                            <button  className={`flex justify-center items-center  w-[50px]  h-[30px] sm:h-full  border-r-[3px] border-r-base-300  ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-x-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-x-2 dark:border-[#302c38]"}`} onClick={handleBoldClick}>
-                                <FaBold className="text-lg sm:text-xl"/>
+                <div className="flex flex-col w-full h-max bg-[#302c38]"> 
+                    <div className="flex  flex-wrap flex-wrap w-full h-max px-1 md:px-[15px] bg-base-300  border-b-3 dark:border-b-[#302c38] gap-1 dark:border-b-2 dark:bg-base-100-dark py-[3px]">
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">   
+                            <button  className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed"}`} onClick={handleBoldClick}>
+                                <FaBold className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] dark:border-r-2  ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]" }`} onClick={handleItalicClick}>
-                                <FaItalic className="text-lg sm:text-xl"/>
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed " }`} onClick={handleItalicClick}>
+                                <FaItalic className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] dark:border-r-2  ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleStrikethroughClick}>
-                                <FaStrikethrough className="text-lg sm:text-xl"/>
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={handleStrikethroughClick}>
+                                <FaStrikethrough className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] dark:border-r-2 ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleUnderlineClick}>
-                                <FaUnderline className="text-lg sm:text-xl"/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={handleUnderlineClick}>
+                                <FaUnderline className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px]  ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleSubScriptClick}>
-                                <FaSubscript className="text-lg sm:text-xl"/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={handleSubScriptClick}>
+                                <FaSubscript className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${textIsSelected ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleSuperScriptClick}>
-                                <FaSuperscript className="text-lg sm:text-xl"/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={handleSuperScriptClick}>
+                                <FaSuperscript className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleUnorderedListClick}>
-                                <FaListUl className="text-lg sm:text-xl"/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${canAddList ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-[#302c38]"}`} onClick={handleUnorderedListClick}>
+                                <FaListUl className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${canAddList ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={handleOrderedListClick}>
-                                <FaListOl className="text-lg sm:text-xl"/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${canAddList ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-[#302c38]"}`} onClick={handleOrderedListClick}>
+                                <FaListOl className="text-xl"/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
-                                <FaIndent className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
+                        <div className="flex flex-col md:flex-row content-center gap-[3px] h-max md:h-[50px] w-[50px]  md:w-max flext items-center justify-center">
+                            <button  className={`flex justify-center items-center rounded-md min-w-[50px] max-w-[50px] min-h-[50px] max-h-[50px] relative top-[1px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => {((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
+                                <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light dark:text-t-header-dark " : "text-t-header-dark "}`} />
+                            </button >
+                            <div className={`h-[50px] transition-transform duration-200 overflow-hidden ${sizeDrop ? "w-max flex" : "w-0 hidden"} `}>
+                                <SizeDropDown selected={selectedComp} className={`w-max`} onClick={handleChangeSize} />
+                            </div>
+
+                        </div>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full w-[50px] h-[50px] rounded-md ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => applyTailwindStyles(selectedComp.id, "indent-8")}>
+                                <FaIndent className={`text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-left")}>
-                                <FaAlignLeft className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-left")}>
+                                <FaAlignLeft className={`text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-center")}>
-                                <FaAlignCenter className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-center")}>
+                                <FaAlignCenter className={`text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
-                                <FaAlignRight className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-right")}>
+                                <FaAlignRight className={`text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
                             </button >
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-justify")}>
-                                <FaAlignJustify className={`text-lg sm:text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
+                        <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed "}`} onClick={() => applyTailwindStyles(selectedComp.id, "text-justify")}>
+                                <FaAlignJustify className={`text-xl ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light dark:text-t-header-dark" : "text-t-header-dark"}`}/>
                             </button >
                         </div>
 
-                        <div className="flex w-max gap-[3px] h-max sm:h-[50px] w-max">
-                            <button  className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed dark:border-r-2 dark:border-[#302c38]"}`} onClick={() => {((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") && toggleSizeDropdown()}}>
-                                <RiFontSize className={`text-2xl sm:text-2.5xl text-t-header-dark ${((selectedComp.compType  === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource") && selectedComp.eventType === "comp-click") ? "text-t-header-light dark:text-t-header-dark" : "text-t-header-dark "}`} />
-                            </button >
-                            <SizeDropDown selected={selectedComp} className={`${(sizeDrop && (selectedComp.compType === "header" || selectedComp.compType === "paragraph" || selectedComp.compType === "resource"))? "w-max" : "w-0 hidden"}`} onClick={handleChangeSize} />
-                        </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] dark:border-r-2 ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] '}`} onClick={() => setLinkInput(prevState => !prevState)}>
-                                <FaLink className="text-lg sm:text-xl"/>
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${(linkValue) ? 'bg-base-300 text-t-header-dark' : 'bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] '} transition duration-100`} onClick={() => setLinkInput(prevState => !prevState)}>
+                                <FaLink className="text-xl"/>
                             </button >
                         </div>
 
                         {
                             linkValue
                             &&
-                            <div className="h-max sm:h-[50px] w-max">
-                                <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
-                                    <FaCheck className="text-lg sm:text-xl"/>
+                            <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                                <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${(linkValue)  ? "bg-base-100 text-t-header-light" : "bg-base-300 text-t-header-dark"}`} onClick={() => {(linkValue) && handleCreateLink()}}>
+                                    <FaCheck className="text-xl"/>
                                 </button >
                             </div>
                         }
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] ${!isPreview ? "bg-base-100 text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark" : "text-t-header-dark"}`} onClick={togglePreviewEnabled}>
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md bg-base-100 hover:bg-[#a4a4a4] dark:bg-[#18161b] hover:dark:bg-[#302c38]  text-t-header-light dark:text-t-header-dark transition duration-100`} onClick={togglePreviewEnabled}>
                                 <MdOutlinePreview className="text-2xl sm:text-2.5xl"/>
                             </button>  
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-[50px] h-[30px] sm:h-full  border-r-[3px] bg-base-100 text-t-header-light text-t-header-light dark:text-t-header-dark dark:bg-[#302c38] dark:border-r-2 dark:border-base-100-dark cursor-help`} onClick={() => {setIsHelpOpen({value: !isHelpOpen.value, type: "menue"})}}>
-                                <MdOutlineQuestionMark className='text-2.5xl' ></MdOutlineQuestionMark>
-                            </button >
+                        <div className="h-[50px] w-[50px] flext items-center justify-center">
+                            <button className={`flex justify-center items-center w-[50px] h-[50px] rounded-md bg-base-100 hover:bg-[#a4a4a4] dark:bg-[#18161b] hover:dark:bg-[#302c38]  text-t-header-light dark:text-t-header-dark transition duration-100`} onClick={() => {setIsHelpOpen({value: !isHelpOpen.value, type: "menue"})}}>
+                                <FaQuestion className='text-2.5xl' ></FaQuestion>
+                            </button>  
                         </div>
-                        <div className="h-max sm:h-[50px] w-max">
-                            <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-primary-dark text-t-header-light`} onClick={() => setIsDoneNotificationOpen(true)}>
-                                Done
-                            </button >
-                        </div>
+
+                        {
+                            !testing
+                            &&
+                            <div className="w-[50px] h-[50px]  flext items-center justify-center">
+                                <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-primary-dark text-t-header-light`} onClick={() => setIsDoneNotificationOpen(true)}>
+                                    Done
+                                </button >
+                            </div>
+                        }
+
                     </div>
                     {
                         !isCropEnabled.value
@@ -702,10 +710,10 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
                             
                         </>
                     }
-                <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
+                    <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
                 <div className="transition duration-200 flex w-full h-[calc(100vh_-_117px)] overflow-x-hidden ">    
-                    <div className={`transition duration-200 h-full flex items-end border-r-[3px] dark:border-r-2 dark:border-[#302c38] xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
+                    <div className={`transition duration-200 h-full flex items-end border-r-[3px] dark:border-r-2 dark:border-r-[#302c38]  xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
                         <div className={`transition duration-200 h-full overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
                             <ControlPanel 
                             enableCrop={(value, type) => setIsCropEnabled({value: value, type: type})} 
@@ -844,7 +852,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article}) => {
                                             Enter the url, then highlight your text, and click the checkmark next to the link icon.
                                         </div>
                                         <button className='flex items-center justify-center w-[45px]'>
-                                            <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen({value: true, type: "link_help"})}}></MdOutlineQuestionMark>
+                                            <FaQuestion className='text-2.5xl' onClick={() => {setIsHelpOpen({value: true, type: "link_help"})}}></FaQuestion>
                                         </button>
                                         {
                                             isLinkAddHelpOpen

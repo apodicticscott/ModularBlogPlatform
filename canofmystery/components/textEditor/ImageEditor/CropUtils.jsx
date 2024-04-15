@@ -85,17 +85,20 @@ const CropUtils = ({ imageToCrop, onImageCropped, ratios, cropType }) => {
 
             
             {/* Buttons for changing aspect ratio */}
-            <div className='flex gap-[5px] p-[5px] bg-base-200 dark:bg-[#322e38] rounded-md items-center '>
-              <MdOutlineAspectRatio className='text-2.5xl text-t-header-dark ml-[5px] mr-[10px]'/>
-              {
+            {
                 cropType !== "cover"
                 &&
-                availableRatios.map((ratio) => (
-                  <button key={ratio.id} onClick={() => setRatio(ratio.value)} className="p-[5px] dark:text-t-header-dark hover:text-t-header-dark  dark:hover:bg-base-100-dark hover:bg-base-300 rounded-md transition duration-100">
-                    {ratio.label}
-                  </button>
-              ))}
+            <div className='flex gap-[5px] p-[5px] bg-base-200 dark:bg-[#322e38] rounded-md items-center '>
+              <MdOutlineAspectRatio className='text-2.5xl text-t-header-dark ml-[5px] mr-[10px]'/>
+                {
+                  availableRatios.map((ratio) => (
+                    <button key={ratio.id} onClick={() => setRatio(ratio.value)} className="p-[5px] dark:text-t-header-dark hover:text-t-header-dark  dark:hover:bg-base-100-dark hover:bg-base-300 rounded-md transition duration-100">
+                      {ratio.label}
+                    </button>
+                  ))
+                }
             </div>
+            }
           </div>
 
           <button className="bg-primary-dark text-t-header-light text-bold px-[10px] rounded-md min-w-[81px] " onClick={handleCroppedImage}>
