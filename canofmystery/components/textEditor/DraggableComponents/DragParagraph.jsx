@@ -67,6 +67,7 @@ const DragParagraph = ({ comp, isEnabled, removeComp, updateContent, selected, o
                     id="paragraph"
                     html={comp.Content}
                     innerRef={contentRef}
+                    className="tracking-tighter"
                     onChange={(event) => updateContent(comp.ID, event.target.value, "text")} 
                 />
             </Paragraph>

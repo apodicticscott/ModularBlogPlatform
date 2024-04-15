@@ -213,7 +213,7 @@ const ArticlePanel = ({setNumUnapproved, numUnapproved, setArticles, articles, c
                                                     </div>
                                                 </div>
                                                 <div className='flex flex-col w-full  md:w-[200px] 2xl:flex-row 2xl:w-max'>     
-                                                    <div className={`h-full w-full md:w-[200px] 2xl:w-max flex border-y-3 2xl:border-x-3 2xl:border-y-0 px-[10px] py-[15px] items-center dark:text-t-header-light font-normal dark:border-x-[#302c38] ${article.isApproved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
+                                                    <div className={`h-full w-full md:w-[200px] 2xl:w-max flex border-y-3 2xl:border-x-3 2xl:border-y-0 px-[10px] py-[15px] items-center dark:text-t-header-light font-normal dark:border-x-[#302c38] ${article.Approved ? "bg-primary-dark" : "bg-[#fd6666]"}`}>
                                                         <div className='h-max w-full truncate flex justify-center'>
                                                             {
                                                                 article.Approved

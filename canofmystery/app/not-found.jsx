@@ -1,5 +1,6 @@
 import NeoButton from "../components/TextComponents/NeoButton";
 import Header from "../components/TextComponents/Header1";
+import Paragraph from "../components/TextComponents/Paragraph";
 import React from 'react'
 
 const PageNotFound = () => {
@@ -12,10 +13,10 @@ const PageNotFound = () => {
                 </Header>
                 <Header type="lg">UH OH! You are lost!</Header>
                 <div className="flex flex-col gap-[15px] text-t-header-light dark:text-t-dark">
-                    <p>The page you are looking for does not exist.
+                    <Paragraph type="md">The page you are looking for does not exist.
                     How you got here is a mystery. But you can click the button below
                     to go back to the homepage.
-                    </p>
+                    </Paragraph>
                     <form action="/">
                         <NeoButton classes="bg-primary-dark"  role="link">
                             Home

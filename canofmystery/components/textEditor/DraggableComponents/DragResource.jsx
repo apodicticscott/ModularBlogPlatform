@@ -67,6 +67,7 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
                 id="resource"
                 html={comp.Content}
                 innerRef={contentRef}
+                className="tracking-tighter"
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
                 />
             </Resource>

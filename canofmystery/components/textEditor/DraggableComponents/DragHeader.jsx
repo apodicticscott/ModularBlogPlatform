@@ -61,6 +61,7 @@ const DragHeader = ({ comp, isEnabled, removeComp, updateContent, selected, onCl
                 html={comp.Content}
                 innerRef={contentRef}
                 id="header"
+                className="tracking-tighter"
                 onChange={(event) => updateContent(comp.ID, event.target.value, "text")}
                 onClick={(e) => onClick(e, comp.ID, comp.Type)}
                 />

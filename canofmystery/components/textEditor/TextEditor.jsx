@@ -618,8 +618,8 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                         {
                             !testing
                             &&
-                            <div className="w-[50px] h-[50px]  flext items-center justify-center">
-                                <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-primary-dark text-t-header-light`} onClick={() => setIsDoneNotificationOpen(true)}>
+                            <div className="w-[50px] h-[50px]  flext items-center justify-center ">
+                                <button className={`flex justify-center items-center w-max px-3 h-[30px] sm:h-full  border-r-[3px] bg-primary-dark text-t-header-light rounded-md`} onClick={() => setIsDoneNotificationOpen(true)}>
                                     Done
                                 </button >
                             </div>
@@ -712,9 +712,9 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                     }
                     <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
-                <div className="transition duration-200 flex w-full h-[calc(100vh_-_117px)] overflow-x-hidden ">    
-                    <div className={`transition duration-200 h-full flex items-end border-r-[3px] dark:border-r-2 dark:border-r-[#302c38]  xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
-                        <div className={`transition duration-200 h-full overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
+                <div className="transition duration-200 flex w-full h-max overflow-x-hidden ">    
+                    <div className={`transition duration-200 h-max flex items-start border-r-[3px] dark:border-r-2 dark:border-r-[#302c38]  xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
+                        <div className={`transition duration-200 h-max overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
                             <ControlPanel 
                             enableCrop={(value, type) => setIsCropEnabled({value: value, type: type})} 
 
@@ -754,15 +754,17 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                             setIsHelpOpen={(value, type) => setIsHelpOpen({value: value, type: type})}
                             />
                         </div>
-                        <div className='w-0 h-[45px] py-[2px] z-10'>
-                            <div className={` relative rounded-r w-[30px] justify-center ${isSideBarOpen ? "rounded-l rounded-r-none xs-sm:rounded-r left-[-30px] xs-sm:left-0 w-[30px] xs-sm:w-[25px] " : ""}  h-full flex items-center  bg-base-300 dark:bg-[#302c38]`} onClick={() => toggleSideBar()}>
-                                {
-                                    (isSideBarOpen)
-                                    ?
-                                    <IoIosArrowBack className="text-t-header-dark text-2xl " />
-                                    :
-                                    <IoIosArrowForward className="text-t-header-dark text-2xl"/>
-                                }
+                        <div className='w-0 h-[100vh] flex items-center py-[2px] z-10'>
+                            <div className="w-0 h-[45px] py-[2px] z-10">     
+                                <div className={` relative rounded-r w-[30px] justify-center ${isSideBarOpen ? "rounded-l rounded-r-none xs-sm:rounded-r left-[-30px] xs-sm:left-0 w-[30px] xs-sm:w-[25px] " : ""}  h-full flex items-center  bg-base-300 dark:bg-[#302c38]`} onClick={() => toggleSideBar()}>
+                                    {
+                                        (isSideBarOpen)
+                                        ?
+                                        <IoIosArrowBack className="text-t-header-dark text-2xl " />
+                                        :
+                                        <IoIosArrowForward className="text-t-header-dark text-2xl"/>
+                                    }
+                                </div>
                             </div>
                         </div> 
                  

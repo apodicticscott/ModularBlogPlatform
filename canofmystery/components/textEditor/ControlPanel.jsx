@@ -335,7 +335,7 @@ const ControlPanel = ({
 
     return (
         <>
-            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center select-none`}>
+            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center select-none `}>
                 {panelOptionsArray.map(([key, value], index) => (
                     (index === 0) 
                     ? 
@@ -370,7 +370,7 @@ const ControlPanel = ({
                 </div>
             </Dialog>
             
-            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-full overflow-hidden overflow-y-auto select-none ${panel !== "Info" ? "hidden" : "visible"}`}>
+            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-max overflow-hidden overflow-y-auto select-none  no-scrollbar ${panel !== "Info" ? "hidden" : "visible"}`}>
                 <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Cover Image:
@@ -393,7 +393,7 @@ const ControlPanel = ({
                 {
                     pageType === "page"
                     &&
-                    <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                    <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px] ">
                         <Header type="sm" >
                             Page Name
                         </Header>
