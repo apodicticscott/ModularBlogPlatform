@@ -1,19 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPlus } from "react-icons/fa"
+import { FaPlus, FaExpandAlt,  FaCompressAlt  } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti";
-import FileUpload from "./ImageEditor/FileUpload";
 import { MdOutlineDownloadDone } from "react-icons/md"
-import { MdOutlineQuestionMark } from "react-icons/md"
+import { MdOutlineQuestionMark, MdOutlineSubtitles, MdOutlinePlaylistAdd} from "react-icons/md"
 import { Dialog, Button} from '@mui/material';
 import { makeStyles } from '@mui/styles'
-import {getPageByName} from "../../firebase/articleUtils/articleUtils"
+import { getPageByName } from "../../firebase/articleUtils/articleUtils"
 import Image from 'next/image';
-
+import FileUpload from "./ImageEditor/FileUpload";
 import helpAddVideoGif from "./Assets/help_add_vido.gif"
-
-
 import Header from "../TextComponents/Header1"
+
+
 
 class RandomColorPicker {
     constructor(colors) {
@@ -62,8 +62,11 @@ const ControlPanel = ({
     Author,
 
     setTags, 
-    currentTags, 
-    setCategory, 
+    tags, 
+
+    setSelectedCanItem, 
+    selectedCanItem,
+
     innerHtml, 
     exportContent,
 
@@ -87,10 +90,15 @@ const ControlPanel = ({
     setPageName,
     pageName,
 
+    canItems,
+
     setCropType,
 
     isCropEnabled,
     setIsHelpOpen,
+
+    isPanelOpen,
+    setIsPanelOpen,
     }) => {
     const panelOptionsArray = Object.entries(panelOptions); // Convert object to array of [key, value] pairs
     const [panel, setPanel] = useState(panelOptionsArray[0][1]); // Initialize with the value of the first entry
@@ -113,125 +121,15 @@ const ControlPanel = ({
     const colorPicker = new RandomColorPicker(colors);
     const classes = useStyles()
     const [pageNameError, setPageNameError] = useState();
-
-
-    const categories = [
-        "Bog Bodies",
-        "Point Des Arts Bridge, Paris",
-        "Kolmanskop, Namibia",
-        "The Wawel Dragon",
-        "Viking Runestones in America",
-        "Hill of Crosses, Lithuania",
-        "Queen Mary, Long Beach, California",
-        "Fiji Mermaid",
-        "Shroud of Turin",
-        "St. Bernadette of Lourdes",
-        "King Solomon’s Mines",
-        "Oak Island Money Pit",
-        "The Lost Dutchman Mine",
-        "Giant Skeletons (of humans) in America",
-        "Curse of King Tutankhamen",
-        "Catacombs of Paris",
-        "Catacombs of Rome",
-        "Vlad the Impaler",
-        "Lady Elizabeth Bathory, Blood Countess",
-        "Lucky Number 7",
-        "Unlucky Number 13",
-        "El Dorado",
-        "The Beale Treasure/Beale Papers",
-        "Fountain of Youth",
-        "Hollow Earth Theory",
-        "Flat Earth Theory",
-        "Loch Ness Monster",
-        "Lake Champlain Monster",
-        "Big Foot",
-        "Wendigo",
-        "Shapeshifters",
-        "The Beast of Gévaudan",
-        "Mothman",
-        "Chupacabra",
-        "Sedlec Ossuary, Kutna Hora",
-        "Issie, Lake Ikeda, Japan",
-        "Mokele-mbembe",
-        "The Jersey Devil",
-        "The Bray Road Beast",
-        "The Vampire Beast of Bladenboro",
-        "Mayan Prophecy, December 21, 2012",
-        "The Brown Mountain Lights",
-        "The Marfa Lights",
-        "The Maco Light",
-        "Bingham Light",
-        "Lands End Light",
-        "Crystal Skulls",
-        "Bermuda Triangle",
-        "The Lost Civilization of Lemura/Mu",
-        "Bimini Road/Bimini Wall (Atlantis)",
-        "Zombies (Voodoo ones)",
-        "Nazca Lines",
-        "Stonehenge",
-        "Taj Mahal",
-        "Alice of the Hermitage",
-        "Gray Man of Pawley’s Island",
-        "The Bell Witch",
-        "Old Ford’s Glowing Cross",
-        "Messie, Lake Murray Monster",
-        "Lizardman of Scape Ore Swamp",
-        "Edinburg Vaults",
-        "Yonaguni Monument, Japan",
-        "Coral Castle, Florida",
-        "The Ideal Palace, Hauterives, France",
-        "Glastonbury Abbey (Grail/Camelot)",
-        "Georgia Guidestones",
-        "Machu Picchu",
-        "Reptilians/Lizard People",
-        "The Illuminati",
-        "The Knights Templar",
-        "The Voynich Manuscript",
-        "Codas Gigas (The Devil’s Bible)",
-        "The 23 Enigma",
-        "Zé Arigó",
-        "Chemtrail Conspiracy",
-        "Kidney Heist",
-        "Crocodiles in the Sewers",
-        "Vanishing Hitchhiker/Resurrection Mary",
-        "Bloody Mary (game/ghost story)",
-        "The Hookman",
-        "Cry Baby Bridge",
-        "The Grey Lady, Willard Library, Evansville, IN",
-        "Stull Cemetery",
-        "The Winchester Mystery House",
-        "Suicidal Roommate/Straight A Semester",
-        "Killer in the Backseat",
-        "The Haunted Railroad Crossing",
-        "Ghostly Athens (Athens, OH)",
-        "Shanghai Tunnels (Portland, OR)",
-        "Greyfriars Cemetery",
-        "Dock Street Theater (Charleston, SC)",
-        "La Isla De Las Munecas, Mexico",
-        "Waverly Hills Sanatorium",
-        "Saint Louis Cemetery #1, New Orleans",
-        "Marie Laveau",
-        "The Fox Sisters",
-        "Edgar Cayce",
-        "Slenderman",
-        "The Mary Celeste",
-        "Dyatlov Pass incident",
-        "D.B. Cooper",
-        "Spooky",
-        "Folklore",
-        "Unsolved",
-        "Creature",
-        "Historical Fears",
-        "Pop Culture",
-        "Elisa Lam"
-    ];
+    
     
 
-    
+    const containerStyle = {
+        display: 'flex', // Ensure the container is always flex
+        flexDirection: isPanelOpen ? 'row' : 'column', // Dynamic flex-direction
+        transition: { duration: 0.5 } // Apply a transition duration
+    };
 
-    const filteredCategories = categories.filter(category =>
-        category.toLowerCase().includes(search.toLowerCase())
-    );
     
 
     const handleSetTitle = (value) => {
@@ -287,7 +185,6 @@ const ControlPanel = ({
         setTags(tags => {
             const newTags = [...tags];
             newTags[index] = {Text: newValue, Color: newTags[index].Color};
-            console.log(newTags)
             return newTags;
         });
     };
@@ -299,7 +196,7 @@ const ControlPanel = ({
     }
 
     const handleAddTags = () => {
-        if (currentTags.length < 4) {
+        if (tags.length < 4) {
             setTags(tags => [...tags, {Text: "Text Here", Color: colorPicker.pickColor()}]);
         } else {
             setTagErrorVisible(true); // Show error
@@ -321,34 +218,59 @@ const ControlPanel = ({
         }
     }
 
-    useEffect(() => {
-        if (isSearchOpen && containerRef.current && dropdownRef.current) {
-            const dropdownRect = dropdownRef.current.getBoundingClientRect();
-            const containerRect = containerRef.current.getBoundingClientRect();
-            const scrollY = dropdownRect.top + containerRef.current.scrollTop - containerRect.top - (containerRect.height / 2) + (dropdownRect.height / 2);
-            containerRef.current.scrollTop = scrollY;
-        }
-    }, [isSearchOpen]);
     
 
 
+    const spring = {
+        type: "linear",
+        stiffness: 700,
+        damping: 30
+    };
+
+    const handleChangePanel = (value) => {
+        if(value !== panel){
+            setPanel(value); 
+        }else if(value === panel){
+            setIsPanelOpen(!isPanelOpen)
+        }else{
+            setPanel(value);
+        }
+    }
 
     return (
         <>
-            <div className={`flex w-[100vw] xs-sm:max-w-[300px] items-center select-none `}>
-                {panelOptionsArray.map(([key, value], index) => (
-                    (index === 0) 
-                    ? 
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black dark:border-b-2 dark:border-[#302c38]" : ""}`} onClick={() => setPanel(value)}>
-                            {value}
-                        </button>
-                    :
-                        <button key={key} className={`flex justify-center items-center font-bold w-[33.33%] h-[50px] border-l-[3px] border-l-black dark:border-l-2 dark:border-[#302c38] text-t-header-light dark:text-t-header-dark ${panel !== value ? "border-b-[3px] border-b-black dark:border-b-2 dark:border-[#302c38]" : ""}`} onClick={() => setPanel(value)}>
-                            {value}
-                        </button>
-                ))}
+            <AnimatePresence className="w-0" >
+                <div  key={isPanelOpen ? "open" : "closed"} id="control-panel"  className={` ${isPanelOpen ? " flex " : " flex xs-sm:w-max xs-sm:flex-col " } mr-0  origin-bottom-right items-center select-none p-2 rounded-md bg-base-300 m-2 mb-0  transition-width duration-200 dark:bg-[#322e38] `} style={{width: isPanelOpen ? "calc(100vw - 8px)" : "max", maxWidth: isPanelOpen && "290px", transition: 'width 0.3s ease-in-out' }}>
+                        <div
+                            key={isPanelOpen ? "open" : "closed"} // Key change triggers re-animation
+                            className={`flex gap-[5px] ${isPanelOpen ? 'flex-row w-full ' : 'w-[calc(100vw_-_90px)]  xs-sm:w-full  xs-sm:flex-col'}`}
+                        >
+                            {panelOptionsArray.map(([key, value], index) => (
+                                <button key={key} className={`flex justify-center items-center font-bold w-[50px] h-[45px] transition duration-200 rounded-md  mr-1 ${panel !== value ? " bg-base-300 text-t-header-dark hover:bg-base-100 hover:text-t-header-light dark:text-t-header-dark hover:dark:text-t-header-dark  dark:bg-[#322e38] hover:dark:bg-base-100-dark " : isPanelOpen ? " bg-base-100 text-t-header-light  dark:bg-base-100-dark dark:text-t-header-dark" : " bg-base-300 text-t-header-dark hover:bg-base-100 hover:text-t-header-light dark:text-t-header-dark hover:dark:text-t-header-dark  dark:bg-[#322e38] hover:dark:bg-base-100-dark"}`} onClick={() => handleChangePanel(value)}>   
+                                    {
+                                        (index === 0) 
+                                        ?
+                                        < MdOutlineSubtitles className='text-3xl' />
+                                        :
+                                        < MdOutlinePlaylistAdd className='text-3xl' />
 
-            </div>
+                                    }   
+                                </button>
+                            ))}
+                        </div>
+                    <div className={`w-max h-max`}>
+                        <button className={`flex justify-center transition duration-200 items-center font-bold w-[50px] h-[45px] relative bg-base-300 rounded-md  text-t-header-dark dark:text-t-header-dark hover:bg-base-100 hover:text-t-header-light dark:bg-[#322e38] hover:dark:bg-base-100-dark ${!isPanelOpen && "mt-[5px]"}`} onClick={() => {setIsPanelOpen(!isPanelOpen);}}>
+                            {
+                                isPanelOpen
+                                ?
+                                <FaCompressAlt className='text-2.7xl' />
+                                :
+                                <FaExpandAlt className='text-2.7xl' />
+                            }
+                        </button>
+                    </div>   
+                </div>
+            </AnimatePresence>
             <Dialog
                 open={isVideoAddHelpOpen}
                 onClose={() => setIsVideoAddHelpOpen(prevState => !prevState)}
@@ -369,13 +291,12 @@ const ControlPanel = ({
                     <Image src={helpAddVideoGif} className="w-auto h-[30vh] object-cover md:w-[800px] md:h-auto  z-0 overflow-hidden" />   
                 </div>
             </Dialog>
-            
-            <div  ref={containerRef} className={`flex flex-col w-[calc(100vw_-_20px)] xs-sm:w-[300px] h-max overflow-hidden overflow-y-auto select-none  no-scrollbar ${panel !== "Info" ? "hidden" : "visible"}`}>
-                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+            <div key={isPanelOpen ? "open" : "closed"} transition={spring}  ref={containerRef} className={`flex flex-col border-3  bg-base-100 dark:bg-base-100-dark dark:border-2 dark:border-[#322e38] m-2 mr-0  rounded-md   overflow-hidden overflow-y-auto select-none  no-scrollbar overflow-scroll transition-all duration-100 ${panel !== "Info" ? "hidden" : "visible"} ${isPanelOpen ? `opacity-1 transition duration-100 w-[calc(100vw_-_20px)] xs-sm:w-[290px] h-[calc(100vh_-_240px)]` : "opacity-0 transition duration-100 pointer-events-none w-0 h-0"} `}>
+                <div className="flex flex-col w-full h-max mt-[15px] p-2 pt-[0px] bg-black">
                     <Header type="sm" >
                         Cover Image:
                     </Header>
-                    <div className={`w-full overflow-hidden h-max`}>
+                    <div className={`w-full overflow-hidden h-max mt-3`}>
                         <FileUpload 
                         className='text-t-header-light dark:text-t-header-dark' 
                         enableCrop={enableCrop}
@@ -393,7 +314,7 @@ const ControlPanel = ({
                 {
                     pageType === "page"
                     &&
-                    <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px] ">
+                    <div className="flex flex-col w-full h-max mt-[15px] p-2 pt-[0px] bg-black gap-[10px] ">
                         <Header type="sm" >
                             Page Name
                         </Header>
@@ -416,31 +337,31 @@ const ControlPanel = ({
                     </div>
                     
                 }
-                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                <div className="flex flex-col w-full h-max mt-[15px] p-2 pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Title
                     </Header>
                     <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38] dark:text-t-header-dark tracking-tighter" placeholder={pageType === "page" ? "Page Title" : "Article Title" } value={Title && Title} onChange={(e) => handleSetTitle(e.currentTarget.value)}>
                     </input>
                 </div>
-                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                <div className="flex flex-col w-full h-max mt-[15px] p-2 pt-[0px] bg-black gap-[10px]">
                     <Header type="sm" >
                         Author
                     </Header>
                     <input className="w-full p-[5px] dark:bg-base-100-dark rounded-md dark:border-2 dark:border-[#302c38] dark:text-t-header-dark tracking-tighter" placeholder={"Author Name"} value={Author && Author} onChange={(e) => handleSetAuthor(e.currentTarget.value)}>
                     </input>
                 </div>
-                <div className="flex flex-col w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black gap-[10px]">
+                <div className="flex flex-col w-full h-max mt-[15px] p-2 pt-[0px] bg-black gap-[10px]">
                     <div className='flex gap-[15px] items-center'>
                         <Header type="sm" classes={"w-max"}>
                             Tags
                         </Header>
-                        <button>
+                        <button className='rounded-md dark:hover:bg-[#322e38] w-max h-max p-3'>
                             < FaPlus className="dark:text-t-header-dark" onClick={() => handleAddTags()}/>
                         </button>
                     </div>
                     <div className='flex flex-wrap min-h-[50px] w-full bg-base-300 rounded-md dark:bg-base-100-dark dark:border-2 dark:border-[#302c38]'>
-                        {currentTags.map((tag, index) => (
+                        {tags.map((tag, index) => (
                             <div key={`${index}-${tag.Text}`}
                                 className='p-[5px] m-[5px] bg-base-100 w-[calc(100%_-_10px)] flex items-center gap-[5px] rounded dark:bg-[#57545e] dark:text-t-header-dark rounded-md'
                                 >
@@ -467,7 +388,7 @@ const ControlPanel = ({
                         )}
                     </AnimatePresence>
                 </div>
-                <div className="w-full h-max mt-[15px] p-[10px] pt-[0px] bg-black">
+                <div className="w-full h-max mt-[15px] p-2 pt-[0px] bg-black">
                     <div className='flex flex-col gap-[10px]'>
                         <Header type="sm" classes={"w-max"}>
                             Categories
@@ -475,11 +396,18 @@ const ControlPanel = ({
                         <span className='text-xl text-t-header-light dark:text-t-header-dark tracking-tighter'>
                             Pick 1 categorie that best fits your article.
                         </span>
+                        {
+                            selectedCanItem
+                            &&
+                            <span className='text-xl text-t-header-light dark:text-t-header-dark tracking-tighter'>
+                                Selected: {selectedCanItem}
+                            </span>
+                        }
                         <div className="relative mt-[10px]">
                             <input
                                 type="text"
                                 className="border border-gray-300 rounded p-2 w-full tracking-tighter"
-                                placeholder="Search categories..."
+                                placeholder="Search Can Item..."
                       
                                 onChange={(e) => setSearch(e.target.value)}
                                 onFocus={() => setIsSearchOpen(true)}
@@ -487,15 +415,24 @@ const ControlPanel = ({
                             />
                             {isSearchOpen && (
                                 <div ref={dropdownRef} className="rounded mt-1 max-h-60 overflow-y-auto bg-[white] w-full rounded-md bg-base-300">
-                                    {filteredCategories.map((category, index) => (
-                                        <div
-                                        key={index}
-                                        className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark tracking-tighter"
-                                        onMouseDown={() => {setSearch(category); setCategory(category)}}
-                                        >   
-                                            {category}
-                                        </div>
-                                    ))}
+                                    <div
+                                    className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark tracking-tighter"
+                                    onMouseDown={() => { setSelectedCanItem("")}}
+                                    >   
+                                        None
+                                    </div>
+                                    {
+                                        canItems.filter(canItem => search ? canItem.text.includes(search) : true)
+                                        .map((canItem, index) => (
+                                            <div
+                                            key={index}
+                                            className="flex items-center p-2 cursor-pointer p-[5px] rounded m-[5px] text-t-header-dark tracking-tighter"
+                                            onMouseDown={() => { setSelectedCanItem(canItem.text)}}
+                                            >   
+                                                {canItem.text}
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                             )}
                         </div>
@@ -504,7 +441,7 @@ const ControlPanel = ({
                     </div>
                 </div>
             </div>
-            <div className={`flex flex-col w-full xs-sm:w-[300px] h-full select-none ${panel !== "Add" ? "hidden" : "visible"}`}>
+            <div className={`flex flex-col border-3 dark:border-2 dark:border-[#322e38] m-2 mr-0 rounded-md h-full select-none pb-[15px] bg-base-100 dark:bg-base-100-dark overflow-hidden ${panel !== "Add" ? "hidden" : "visible"}  ${isPanelOpen ? "opacity-1 transition duration-100 w-[calc(100vw_-_20px)] xs-sm:w-[290px]" : "opacity-0 transition duration-100 pointer-events-none w-0"}`}>
                 <Header type="sm" classes={"mt-[15px] p-[10px] pt-[0px]"} >
                     Componets
                 </Header>
@@ -545,7 +482,6 @@ const ControlPanel = ({
                             <FaPlus className='text-t-header-light dark:text-t-header-dark' />
                             <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Youtube Video</span>
                         </div>
-
                         {
                             isVideoAddOpen
                             &&
@@ -553,7 +489,6 @@ const ControlPanel = ({
                                 <MdOutlineQuestionMark className='text-2.5xl' onClick={() => {setIsHelpOpen(true, "video_help")}}></MdOutlineQuestionMark>
                             </button> 
                         }
-                        
                     </div>
                     {
                         isVideoAddOpen
@@ -564,7 +499,6 @@ const ControlPanel = ({
                                 <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
                                     <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleAddYoutubeVideo()}}></MdOutlineDownloadDone>
                                 </button>   
-                                
                             </div>
                         }
                     {
@@ -581,26 +515,11 @@ const ControlPanel = ({
                             )}
                         </AnimatePresence>
                     }
-                    
-  
                 </div>
                 <div className="flex flex-col">
                     <div className="flex flex-row p-2 items-center gap-[15px] mt-[15px] p-[10px] pt-[0px]" onMouseOver={(e) => e.currentTarget.style.cursor = 'pointer'} onClick={() =>  handleAddComponent("resource")}>
                         <FaPlus className='text-t-header-light dark:text-t-header-dark' />
                         <span className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Resource</span>
-                    </div>
-                </div>
-            </div>
-            <div className={`flex w-full h-full ${panel !== "HTML" ? "hidden" : "visible"} select-none`}>
-                <div className="w-full  h-max mt-[15px] p-[10px] pt-[0px] ">
-                    <Header type="sm" >
-                        Inner HTML
-                    </Header>
-                    <textarea placeholder="Click on an editable element to see its raw content" value={innerHtml[1]} className="w-full rounded p-[5px] min-h-[200px]">
-                       
-                    </textarea >
-                    <div className='p-[5px] bg-base-100 w-full h-[50px] flex justify-center items-center gap-[5px] rounded bg-base-300 text-t-header-dark' onClick={() => exportContent()}>
-                        Export Content JSON
                     </div>
                 </div>
             </div>

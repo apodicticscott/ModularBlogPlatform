@@ -6,6 +6,7 @@ import Lander from "../components/lander/Lander"
 import CategoriesSection from "../components/categories/categories";
 import Recent from "../components/recent/recent";
 import UseUsAsASource from "../components/useUs/useUs"
+import { AnimatePresence } from 'framer-motion';
 import CanItemsScroll from "../components/CanItems/CanItemsScroll"
 import Link from "../components/TextComponents/Link";
 import { FaAngleDown } from "react-icons/fa";
@@ -186,40 +187,6 @@ export default function Home() {
       <CanItemsScroll/>
       <Recent/>
       <UseUsAsASource/>
-      {/* <CategoriesSection/>
-      <div className={`transition-all duration-700 ease-in-out flex items-center ${isOpen ? "fixed w-screen h-screen inset-0 z-50 delay-100" : "top-[relative w-full h-[300px]"} overflow-hidden`}>
-        <div className={`transition-all delay-200 duration-1000  ease-in-out bg-base-300 flex flex-col items-center overflow-y-scroll  ${isOpen ? "w-full h-full" : "w-full h-[350px]"}`}>
-          <div className={`w-full min-h-[70px] relative flex justify-center top-[230px] bg-base-300 z-10 ${isOpen && "hidden"}`}>
-            <div className="relative w-[50px] rounded-t-md bg-base-100">
-              <button onClick={() => setIsOpen(true)} className="w-[50px] h-[35px] flex items-center justify-center hover:rotate-[180deg] transition duration-100">
-                <FaAngleDown className={"text-3xl"}/>
-              </button>
-            </div>
-          </div>
-          <AnimatePresence>
-            <motion.div 
-              initial="closed"
-              animate={isOpen ? "open" : "closed"}
-              variants={variants}
-              className={`px-[50px] overflow-y-scroll w-full ${isOpen ? "py-[50px]" : "h-max top-0"}`}
-            >
-            {
-              categoriesLarge && categoriesLarge.map((categoriePart, index) => (
-                <div key={index} className="h-max flex flex-col gap-[15px] justify-center">
-                  {
-                    categoriePart.map((categoriePartItem, itemIndex) => (
-                      <Link key={itemIndex} hover={true} classes={"text-base-100 dark:font-thin"}>
-                        {categoriePartItem}
-                      </Link>
-                    ))
-                  }
-                </div>
-              ))
-            }
-                {/* The rest of your component 
-            </motion.div>
-          </div>
-        </div> */}
     </div>
   )
 }

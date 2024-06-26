@@ -59,7 +59,7 @@ const Article = ({article}) => {
                 {
                     article.Tags.length !== 0 
                     &&
-                    <div className={`flex items-center w-full gap-[30px] pb-[100px]`} >
+                    <div className={`flex items-center w-full gap-[30px] pb-[30px]`} >
                         <div className="flex flex-col h-max w-full gap-[15px]">
                             <Header type="sm" classes="border-b-[2px] border-b-black w-full">
                                 Tags:
@@ -74,9 +74,24 @@ const Article = ({article}) => {
                                 ))
                             }
                             </div>
+
                         </div>
                     </div>
                 }
+                {
+                    article.CanItem !== "" && article.CanItem
+                    &&
+                    <div className="flex justify-right w-full gap-[30px] pb-[30px]">
+                        <Header type="sm" classes="border-b-black max-w-max">
+                            Can Item:
+                        </Header>
+                        <div className="flex flex-wrap items-center w-full h-max">
+                            <Tag tag={article.CanItem} />
+                        </div>
+                    </div>
+
+                }
+
                 </>
             ) : (
                 <div className="h-screen w-screen flex items-center ">

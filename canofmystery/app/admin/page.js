@@ -1,13 +1,44 @@
 'use client'
 import React, { useState, useEffect, useRef } from "react";
 // Removed the static import of ApiSignIn
-import { searchArticles, fetchArticles, fetchPages, getTotalUnapprovedArticles, getTotalUnapprovedPages } from "../../firebase/articleUtils/articleUtils";
-import { fetchUsers } from "../../firebase/userUtils/userUtils";
+import { 
+    searchArticles, 
+    fetchArticles, 
+    fetchPages, 
+} from "../../firebase/articleUtils/articleUtils";
+
+import { 
+    fetchUsers 
+} from "../../firebase/userUtils/userUtils";
+
 import { makeStyles } from '@material-ui/core/styles';
 import Header from "../../components/TextComponents/Header1";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdArticle, MdAccountCircle, MdAnalytics, MdHome } from "react-icons/md";
-import { Badge, ThemeProvider, createTheme } from "@mui/material";
+
+import { 
+    IoIosArrowBack, 
+    IoIosArrowForward 
+} from "react-icons/io";
+
+import { 
+    MdArticle,
+    MdAccountCircle, 
+    MdAnalytics, 
+    MdHome, 
+    MdMiscellaneousServices
+} from "react-icons/md";
+
+import { 
+    Badge, 
+    ThemeProvider, 
+    createTheme 
+} from "@mui/material";
+
+import {
+    fetchCanItems,
+    deleteCanItem,
+    addCanItem,
+} from "../../firebase/canItemUtils/canItemUtils"
+
 import { useRouter } from "next/navigation";
 import { RiPagesFill } from "react-icons/ri";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
@@ -45,27 +76,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Page({ params }) {
-    const [signedIn, setSignedIn] = useState(false);
+    const [signedIn, setSignedIn] = useState(true);
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            // Dynamically import ApiSignIn only on the client side
-            console.log("here")
-            import("../../firebase/analitics/analyticsUtils")
-                .then(({ ApiSignIn }) => {
-                    if (!signedIn) {
-                        const response = ApiSignIn();
+    // useEffect(() => {
+    //     if (typeof window !== "undefined") {
+    //         // Dynamically import ApiSignIn only on the client side
+    //         import("../../firebase/analitics/analyticsUtils")
+    //             .then(({ ApiSignIn }) => {
+    //                 if (!signedIn) {
+    //                     const response = ApiSignIn();
 
-                        if (response.error) {
-                            setSignedIn(false);
-                        } else {
-                            setSignedIn(true);
-                        }
-                    }
-                })
-                .catch(error => console.error("Failed to load ApiSignIn", error));
-        }
-    }, [signedIn]);
+    //                     if (response.error) {
+    //                         setSignedIn(false);
+    //                     } else {
+    //                         setSignedIn(true);
+    //                     }
+    //                 }
+    //             })
+    //             .catch(error => console.error("Failed to load ApiSignIn", error));
+    //     }
+    // }, [signedIn]);
 
     // States to hold your dynamically imported components
     const [components, setComponents] = useState({
@@ -74,6 +104,7 @@ export default function Page({ params }) {
         ArticlePanel: null,
         PagePanel: null,
         UserPanel: null,
+        MiscPanel: null,
     });
 
     useEffect(() => {
@@ -86,13 +117,14 @@ export default function Page({ params }) {
                     ArticlePanel: modules.ArticlePanel,
                     PagePanel: modules.PagePanel,
                     UserPanel: modules.UserPanel,
+                    MiscPanel: modules.MiscPanel,
                 });
             });
         }
     }, []);
 
     // Destructure the loaded components for easier usage
-    const { AnalyticPanel, HomePanel, ArticlePanel, PagePanel, UserPanel } = components;
+    const { AnalyticPanel, HomePanel, ArticlePanel, PagePanel, UserPanel, MiscPanel } = components;
 
     let slug = params.slug;
 
@@ -110,6 +142,7 @@ export default function Page({ params }) {
     const [articles, setArticles] = useState([]);
     const [pages, setPages] = useState([]);
     const [users, setUsers] = useState([])
+    const [canItems, setCanItems] = useState([])
 
     //Mui Styles for all panels
     const classes = useStyles();
@@ -174,6 +207,36 @@ export default function Page({ params }) {
         setLoading(false)
     };
 
+    const handleFetchCanItems = async () => {
+        try{
+            const tempCanItems = await fetchCanItems();
+            console.log(tempCanItems)
+            setCanItems(tempCanItems)
+        }catch(error){
+            console.error("Error fetching data:", error)
+        }
+    }
+
+    const handleDeleteCanItem = async (id) => {
+        try{
+            await deleteCanItem(id);
+
+            handleFetchCanItems();
+        }catch(error){
+            console.error("Error deleting data:", error)
+        }
+    }
+
+    const handleAddCanItem = async (canItem) => {
+        try{
+            await addCanItem(canItem);
+
+            handleFetchCanItems();
+        }catch(error){
+            console.error("Error deleting data:", error)
+        }
+    }
+
     const handleFetchPages = async () => {
         const tempPages = await fetchPages()
 
@@ -200,6 +263,12 @@ export default function Page({ params }) {
             handleSearchArticles(search);
         }
     }, [search]);
+
+    useEffect(() => {
+        if(canItems.length <= 0){
+            handleFetchCanItems();
+        }
+    }, [])
 
    
     const windowSize = useWindowSize();
@@ -247,7 +316,7 @@ export default function Page({ params }) {
                 <div className={`flex transition-all duration-200 ${isSideBarOpen ? 'md:w-[79px] lg:w-[252px]' : 'w-0'} md:border-r-3 dark:border-r-2 dark:border-r-[#302c38] ${isSideBarOpen ? '' : 'md:w-0'}`} ref={sidebarRef}>
                     <div className={`flex flex items-end h-max md:h-full justify-center w-full p-3 border-b-3 dark:border-b-2 dark:border-b-[#302c38] dark:md:border-b-0 md:border-b-0 md:p-0 overflow-hidden ${isSideBarOpen ? 'md:w-max' : 'md:w-0'} transition-all duration-200`}>
                         <div className={`h-full dark:bg-base-dark  lg:w-[250px]  flex md:flex-col  gap-[25px] items-start 2xl:items-center 3xl:items-start md:overflow-hidden dark:font-extralight ${isSideBarOpen ? "w-max 2xl:min-w-max md:px-[25px] lg:pl-[50px]  2xl:pl-[25px] md:py-[152px]" : "w-0 overflow-hidden" } transition-all duration-200`}>
-                                <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("home")}>
+                                <button className="flex items-center gap-[15px] w-full " onClick={() => handlePanelChange("home")}>
                                     <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
                                         <MdHome className="text-2.7xl" /> 
                                     </Badge>
@@ -255,11 +324,11 @@ export default function Page({ params }) {
                                         Home
                                     </span>
                                 </button>
-                                <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("analytics")}>
+                                <button className="flex items-center gap-[15px] w-full pointer-events-none " onClick={() => handlePanelChange("analytics")}>
                                     <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
-                                        <MdAnalytics  className="text-2.7xl" /> 
+                                        <MdAnalytics  className="text-2.7xl opacity-70" /> 
                                     </Badge>
-                                    <span className="hidden lg:inline">
+                                    <span className="hidden lg:inline opacity-70">
                                         Analytics
                                     </span>
                                 </button>
@@ -286,6 +355,14 @@ export default function Page({ params }) {
                                 </Badge>
                                 <span className="hidden lg:inline">
                                     Articles
+                                </span>
+                            </button>
+                            <button className="flex items-center gap-[15px] w-full" onClick={() => handlePanelChange("misc")}>
+                                <Badge badgeContent={0} sx={{ '& .MuiBadge-badge': { border: '1px solid black' } }} color="primary">
+                                    <MdMiscellaneousServices className="text-2.7xl"/> 
+                                </Badge>
+                                <span className="hidden lg:inline">
+                                    Misc
                                 </span>
                             </button>
                         </div>
@@ -339,9 +416,13 @@ export default function Page({ params }) {
                                                     <>
                                                     {
                                                         (currentPanel === "users")
-                                                        &&
+                                                        ?
                                                         <>
                                                             Users.
+                                                        </>
+                                                        :
+                                                        <>
+                                                            Misc.
                                                         </>
                                                     }
                                                     </>
@@ -389,12 +470,19 @@ export default function Page({ params }) {
                                     &&
                                     <UserPanel users={users} setUsers={setUsers} classes={classes} handleUpdateUsers={handleFetchUsers}/>
                                 }
-                                {
+                                 {
                                     (currentPanel === "home")
                                     &&
                                     HomePanel
                                     &&
                                     <HomePanel articles={articles} setArticles={setArticles} classes={classes} setNumUnapproved={setNumUnapproved} setSessions={setSessions} sessions={sessions} users={users} setUsers={setUsers}/>
+                                }
+                                                                 {
+                                    (currentPanel === "misc")
+                                    &&
+                                    MiscPanel
+                                    &&
+                                    <MiscPanel canItems={canItems} handleFetchCanItems={handleFetchCanItems} handleDeleteCanItem={handleDeleteCanItem} handleAddCanItem={handleAddCanItem}/>
                                 }
                             </>
                         }

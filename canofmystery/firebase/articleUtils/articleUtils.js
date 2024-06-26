@@ -79,7 +79,7 @@ export const getRecent = async (sliceNumber) => {
     try {
       // Call the async function getApprovedArticles
       const articles = await getApprovedArticles();
-  
+    console.log(articles)
       // Sort articles from closest to the current date and time to the furthest
       const sortedArticles = articles.sort((a, b) => {
         // Parse the timestamps into JavaScript Date objects and compare
@@ -130,6 +130,7 @@ export const getApprovedArticles = async () => {
     const collectionRef = collection(db, "Articles");
     const q = query(collectionRef, where("Approved", "==", true));
     const querySnapshot = await getDocs(q);
+    console.log(querySnapshot)
     const pagesArray = [];
     querySnapshot.forEach((doc) => {
         var image = ""

@@ -57,12 +57,12 @@ const CropUtils = ({ imageToCrop, onImageCropped, ratios, cropType }) => {
   const availableRatios = cropType === "cover" ? ratioOptions.filter(option => option.value === 4 / 3) : ratioOptions.filter(option => option.id >= ratios[0] && option.id <= ratios[1]);
 
   return (
-    <div className='h-full w-full bg-base-200'>
-      <div className='relative h-full w-full flex flex-col items-center'>
+    <div className='grow w-full flex bg-base-200'>
+      <div className='relative grow w-full flex flex-col items-center'>
         <div className='w-full z-10 flex justify-between text-t-header-dark p-[15px] '>
           <div className='h-full flex justify-start items-center gap-[15px] text-t-header-light dark:text-t-header-dark '>
             {/* Inputs and buttons for zoom, rotation, and aspect ratio */}
-            <div className='flex gap-[10px] p-[10px] bg-base-200 dark:bg-[#322e38] rounded-md '>
+            <div className='flex gap-[10px] p-[10px] bg-base-200 dark:bg-[#322e38] rounded-md flex-col xs-sm:flex-row  '>
               <label className='text-t-header-light dark:text-t-header-dark tracking-tighter'>Zoom</label>
               <input
                 type="range"
@@ -88,8 +88,8 @@ const CropUtils = ({ imageToCrop, onImageCropped, ratios, cropType }) => {
             {
                 cropType !== "cover"
                 &&
-            <div className='flex gap-[5px] p-[5px] bg-base-200 dark:bg-[#322e38] rounded-md items-center '>
-              <MdOutlineAspectRatio className='text-2.5xl text-t-header-dark ml-[5px] mr-[10px]'/>
+            <div className='flex gap-[5px] p-[5px] bg-base-200 dark:bg-[#322e38] rounded-md items-center flex-col xs-sm:flex-row  '>
+              <MdOutlineAspectRatio className='text-2.5xl text-t-header-dark ml-[5px] mr-[10px] hidden xs-sm:flex '/>
                 {
                   availableRatios.map((ratio) => (
                     <button key={ratio.id} onClick={() => setRatio(ratio.value)} className="p-[5px] dark:text-t-header-dark hover:text-t-header-dark  dark:hover:bg-base-100-dark hover:bg-base-300 rounded-md transition duration-100">

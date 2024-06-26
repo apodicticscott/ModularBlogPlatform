@@ -345,7 +345,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  letter-spacing: -0.25px;
 }
 
 #article ol, #text-editor ol{
@@ -354,12 +353,20 @@ html {
 }
 
 #article ul, #article ol, #text-editor ul, #text-editor ol { padding-left: 50px; }
-#article li, #text-editor li { 
-  color: #afafaf; 
+#article li, #text-editor li {  
   padding-left: 16px;
   position: relative;
   line-height: content;
   margin-top: 15px;
+  
+}
+
+.dark article li, .dark #text-editor li{
+  color: #afafaf;
+}
+
+.tracking-tighter article li, .tracking-tighter #text-editor li{
+  letter-spacing: -.15em;
 }
 
 #article ol li::before, #text-editor ol li::before{
@@ -374,7 +381,7 @@ html {
   border-radius: 50%;
   border: 2px solid #ddd;
   position: absolute; 
-  left: -25px;
+  left: -35px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
@@ -386,7 +393,7 @@ html {
   border-radius: 50%;
   border: 2px solid #ddd;
   position: absolute; 
-  left: -25px;
+  left: -35px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 

@@ -86,7 +86,6 @@ const DragList = ({ comp, isEnabled, removeComp, updateContent, selected, onClic
                     </div>
                 <TiDelete
                     className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
-                    isdragging={false}
                     onClick={() => removeComp(comp.id)}
                     onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
                 />

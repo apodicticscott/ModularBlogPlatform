@@ -9,6 +9,7 @@ import firebase_app from '../../../firebase/config';
 import { app } from "../../../app/firebase"
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { fetchCanItems } from "../../../firebase/canItemUtils/canItemUtils";
 
 const auth = getAuth(firebase_app);
 const firestore = getFirestore(app);
@@ -36,6 +37,7 @@ export default function Page({ params }) {
     const [user, setUser] = useState('');
     const [articleUser, setArticleUser] = useState('');
     const [article, setArticle] = useState(null);
+    const [canItems, setCanItems] = useState([]);
 
     
 
@@ -104,6 +106,10 @@ export default function Page({ params }) {
 
 
     useEffect(() => {
+        if(isAdmin){
+            return;
+        }
+        
         const fetchUser = async () => {
             try {
                 const userId = await fetchArticleUser(articleId);
@@ -118,6 +124,21 @@ export default function Page({ params }) {
         }
     }, [exists]);
 
+    const handleFetchCanItems = async () => {
+        try{
+            const tempCanItems = await fetchCanItems();
+            setCanItems(tempCanItems)
+        }catch(error){
+            console.error("Error fetching data:", error)
+        }
+    }
+
+    useEffect(() => {
+        if(canItems.length <= 0){
+            handleFetchCanItems();
+        }
+    }, [])  
+
     // Adjustments to handle editorType and articleId states
     useEffect(() => {
         if (editorType !== "new" && editorType !== undefined && articleId === undefined) {
@@ -126,9 +147,7 @@ export default function Page({ params }) {
         }
     }, [editorType, articleId]);
 
-    console.log((hasPublished && !isAdmin && !loading), (pageType !== "page" && pageType !== "blog"), (!isWriter && !isAdmin && !loading), (pageType === "page" && editorType !== "new" && !exists))
     if((hasPublished && !isAdmin && !loading) || (pageType !== "page" && pageType !== "blog") || (!isWriter && !isAdmin && !loading) || (pageType === "page" && editorType !== "new" && !exists)){
-        console.log("here3")
         return <PageNotFound />;
     }
 
@@ -142,20 +161,20 @@ export default function Page({ params }) {
                         !hideLoader
                         &&
                         <div
-                            className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-base-100 ${loading ? "opacity-100" : "opacity-0"} transition-all duration-500`}
+                            className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-base-100 ${loading ? "opacity-100" : "opacity-0"} transition-all duration-500 z-20`}
                         >
-                            <Loader className={`${loading ? "scale-100" : "scale-70"} transition duration-500`}/>
+                            
                         </div>
                     }
 
                     {
                         !loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType}/>
+                            <TextEditor pageType={pageType} editorType={editorType} canItems={canItems}/>
                         )
                     }
                     {
                         loadReady && (
-                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId} article={article} user={user}/>
+                            <TextEditor pageType={pageType} editorType={editorType} articleId={articleId} article={article} user={user} canItems={canItems}/>
                         )
                     }
                 </>

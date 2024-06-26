@@ -1,12 +1,32 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useRef, useEffect } from "react";
 import Compress from "compress.js";
 import { MdOutlineDownloadDone, MdCrop, MdImageNotSupported } from "react-icons/md";
 import axios from 'axios';
 
+const originalConsoleError = console.error;
+
+// Override console.error
+console.error = (...args) => {
+  // Check if the first argument is a string and suppress the specific warning
+  if (
+    typeof args[0] === 'string' &&
+    args[0].includes("Cannot update a component (`TextEditor`) while rendering a different component (`FileUpload`)")
+  ) {
+    // You can either do nothing here or log a custom message
+    return;
+  }
+
+  // Otherwise, use the original console.error function
+  originalConsoleError(...args);
+};
+
 const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageToCrop, croppedImage, setCroppedImage, isImageAddOpen, removeImage, type, setCropType}) => {
     const fileInputRef = useRef(null);
     const compress = new Compress();
-    setCropType(type)
+
+    useEffect(() => {
+        setCropType(type);
+    }, [type, setCropType]);
 
     const handleFileSelect = (event) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -64,7 +84,7 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
 
     return(
         <>  
-        <div className="w-full h-min flex flex-col items-center  " style={{ textAlign: 'center', lineHeight: '180px' }}>
+        <div className="w-full h-full flex flex-col items-center  " style={{ textAlign: 'center', lineHeight: '180px' }}>
             {
             ((!isCropEnabled || type === "cover" || type === "comp") && imageToCrop)
             &&
@@ -87,7 +107,7 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
                     }
 
                 </div>
-                <div className="w-max h-full flex items-center px-[5px]" onClick={() => {(type !== "cover") && handleAddImage()}}>
+                <div className="w-max h-full flex items-center px-[5px] transition-all duration-200" onClick={() => {(type !== "cover") && handleAddImage()}}>
                     {
                         (type === "cover")
                         ?
@@ -111,7 +131,7 @@ const FileUpload = ({addImage, enableCrop, isCropEnabled, imageToCrop, setImageT
             </div>
             }
             <div
-                className={`h-full w-full sm:w-full h-[200px] rounded-md flex justify-center mt-[15px] items-center ${imageToCrop ? "border-[3px] border-base-300 py-[15px] dark:border-2 dark:border-[#322e38] " : "border-dashed border-3 border-base-300 dark:border-2 dark:border-[#322e38]"}`}
+                className={`h-full w-full sm:w-full h-[200px] rounded-md flex justify-center  items-center transition-all duration-200 ${imageToCrop ? "border-[3px] mt-2 border-base-300 py-[15px] dark:border-2 dark:border-[#322e38] " : "border-dashed border-3 border-base-300 dark:border-2 dark:border-[#322e38]"}`}
                 id="drop_zone"
                 
             >

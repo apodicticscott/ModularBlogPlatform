@@ -88,6 +88,7 @@ const Recent = () => {
             // Call your async function `getRecent` with the argument 5
             const result = await getRecent(5);
             // Set the state of `articles` with the result
+            console.log(result)
             setArticles(result);
           } catch (error) {
             // Handle any errors, such as by logging or displaying an error message

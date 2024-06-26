@@ -1,21 +1,33 @@
 'use client'
+import React, { useState, useEffect, useRef } from "react";
 
-import React, { useState, useEffect } from "react";
+//Icons
 import { FaItalic, FaBold, FaStrikethrough, FaUnderline, FaLink, FaListUl, FaListOl, FaCheck, FaCcJcb, FaAlignCenter, FaAlignRight, FaQuestion, FaAlignLeft, FaIndent, FaAlignJustify, FaSubscript, FaSuperscript    } from "react-icons/fa";
 import { MdOutlinePreview, MdOutlineDownloadDone } from "react-icons/md";
 import { RiFontSize, RiFontFamily } from "react-icons/ri";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
 
+import { useRouter } from 'next/navigation';
+
+//other compoenents
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material';
-
-import { AnimatePresence, motion } from "framer-motion";
-import "../../app/homepage.module.css"
-import {  makeStyles  } from '@mui/styles'
-
+import NeoButton from "../TextComponents/NeoButton";
+import Tag from "../TextComponents/NeoTag"
+import Header from "../TextComponents/Header1";
+import Help from "./Help/Help"
+import addLinkHelp from "./Assets/help_add_link.gif"
 import Image from "next/image"
 
+
+//dragable componenets
+import DragHeader from "./DraggableComponents/DragHeader";
+import DragParagraph from "./DraggableComponents/DragParagraph"
+import DragResource from "./DraggableComponents/DragResource";
+import DragImage from "./DraggableComponents/DragImage";
+import DragVideo from "./DraggableComponents/DragVideo"
+
+//dnd library
 import {
     arrayMove,
     SortableContext,
@@ -33,38 +45,25 @@ import {
     useSensors
   } from "@dnd-kit/core";
 
+//animation library
+import { AnimatePresence, motion } from "framer-motion";
+
+//styles
+import "../../app/homepage.module.css"
+import {  makeStyles  } from '@mui/styles'
 import "../../app/globals.css"
 
+//crop util library
 import ControlPanel from "./ControlPanel"
-import Tag from "../TextComponents/NeoTag"
-import Header from "../TextComponents/Header1";
 import CropUtils from "./ImageEditor/CropUtils";
 import {addDocument, setHasPublished, updateArticle, updatePage} from "../../firebase/articleUtils/articleUtils"
-import {fetchArticle, fetchPage}from "../../firebase/articleUtils/articleUtils"
+
+//firebase 
 import firebase_app from '/firebase/config';
 const auth = getAuth(firebase_app);
 import { getAuth } from "@firebase/auth";
 
-import placeholderOne from "../../public/Assets/1.png"
-import placeholderTwo from "../../public/Assets/2.jpg"
-
-import DragHeader from "./DraggableComponents/DragHeader";
-import DragParagraph from "./DraggableComponents/DragParagraph"
-import DragResource from "./DraggableComponents/DragResource";
-import DragImage from "./DraggableComponents/DragImage";
-import DragList from "./DraggableComponents/DragList"
-import DragVideo from "./DraggableComponents/DragVideo"
-
-import NeoButton from "../TextComponents/NeoButton";
-
-import Help from "./Help/Help"
-
-import addLinkHelp from "./Assets/help_add_link.gif"
-
-import {getFirestore, collection, getDoc, doc} from "firebase/firestore"
-import { app } from "../../app/firebase"
 import { Timestamp } from "firebase/firestore";
-import paragraph from "../TextComponents/Paragraph";
 
 const useStyles = makeStyles({
     button: {
@@ -79,9 +78,10 @@ const useStyles = makeStyles({
 }})
 
 
-const SizeDropDown = ({className, onClick, selected}) => {
+import useScrollPosition from "../../hooks/useScrollPosition"
+import useWindowSize from "../../hooks/useWindowSize";
 
-    
+const SizeDropDown = ({className, onClick, selected}) => {
     return(
         <div className={`${className} flex flex-row gap-1 overflow-hidden  h-full min-w-max rounded-md ` }>
             <button id="sm" className="flex flex-row rounded-md justify-center items-end h-full pb-[5px] min-h-[50px] min-w-[50px] bg-base-100 hover:bg-[#a4a4a4] text-t-header-light transition duration-100 dark:bg-[#18161b] dark:hover:bg-[#302c38] dark:text-t-header-dark" onClick={(e) => onClick(e.currentTarget.id)}>
@@ -101,16 +101,34 @@ const SizeDropDown = ({className, onClick, selected}) => {
 }
 
 
-const TextEditor = ({pageType, editorType, articleId, user, article, testing}) => {
+const TextEditor = ({pageType, editorType, articleId, user, article, testing, canItems}) => {
+    
+    const router = useRouter();
+
     const classes = useStyles()
+
+    const scrollPosition = useScrollPosition();
+    const windowSize = useWindowSize();
+
+    const editorRef = useRef(null);
+    const controlPanelRef = useRef(null)
+    const editOptionsRef = useRef(null)
+
+    const [controlPanelOffset, setControlPanelOffset] = useState("0px");
+    const [editOptionsOffset, setEditOptionsOffset] = useState("0px");
+    const [cropUtilsOffset, setCropUtilsOffset] = useState({height: "0px", width: "0px"})
+
+    const [controlPanelFixedPosition, setControlPanelFixedPosition] = useState();
+
+    const [controlPanelFixed, setControlPanelFixed] = useState(false)
 
     const [compArray, setCompArray] = useState([]);
 
-    const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add", html: "HTML"})
+    const [panelOptions, setPanelOptions] = useState({info: "Info", add: "Add"})
     const [Title, setTitle] = useState("")
     const [Author, setAuthor] = useState("")
     const [Tags, setTags] = useState([])
-    const [Category, setCategory] = useState()
+    const [selectedCanItem, setSelectedCanItem] = useState("")
     const [imageData, setImageData] = useState([undefined, undefined])
     const [coverImageData, setCoverImageData] = useState([undefined, undefined])
 
@@ -121,6 +139,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
     const [linkErrorVisible, setLinkErrorVisible] = useState(false);
     const [isLinkAddHelpOpen, setIsLinkAddHelpOpen] = useState(false);
     const [isDoneNotificationOpen, setIsDoneNotificationOpen] = useState(false);
+    const [isPanelOpen, setIsPanelOpen] = useState(true);
 
     const [selectedComp, setSelectedComp] = useState({id: undefined, compType: undefined, eventType: undefined});
     const [sizeDrop, setSizeDrop] = useState(false);
@@ -158,6 +177,7 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
             setAuthor(article.Author)
             setTags(article.Tags)
             setCoverImageData([article.CoverImage, article.CoverImage])
+            setSelectedCanItem(article.CanItem)
             if(pageType === "page"){
                 setPageName(article.PageName)
             }
@@ -172,6 +192,8 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
           coordinateGetter: sortableKeyboardCoordinates
         })
     );
+
+
 
 
 
@@ -207,7 +229,6 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
 
     const handleSubScriptClick = () => {
         textIsSelected && document.execCommand("subscript")
-        
     }
 
     const handleSuperScriptClick = () => {
@@ -292,7 +313,6 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
     }
 
     const handleSelectComponent = (e, id, compType) => {
-        console.log(e.target)
 
         let tagName = e.target.tagName
         let selectionName = window.getSelection().type
@@ -416,6 +436,35 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
         setInnerHtmlContent([innerHtmlContent[0], getContentById[compArray, innerHtmlContent[0]]])
     }, [compArray])
 
+    useEffect(() => {
+        if((editorRef.current.offsetTop + editorRef.current.clientHeight) <= (scrollPosition + windowSize.height)){
+            setControlPanelFixed(true)
+        }else{
+            setControlPanelFixed(false)
+        }
+        if(editorRef.current){
+            setEditOptionsOffset(`${(editorRef.current.clientHeight + (67 * 2)) - (windowSize.height)}px`)
+            setControlPanelOffset(`${(editorRef.current.clientHeight + (67 * 2)) - (windowSize.height - editOptionsRef.current.clientHeight - 4)}px`)  
+            
+            if(isPanelOpen){
+                setCropUtilsOffset({height: `${editOptionsRef.current.clientHeight + 4}px`, width: `${302}px`})
+            }else{
+                setCropUtilsOffset({height: `${editOptionsRef.current.clientHeight + 4}px`, width: `${79}px`})
+            }
+            
+            setControlPanelFixedPosition(`${editOptionsRef.current.clientHeight + 71}px`)
+        }
+    }, [scrollPosition, windowSize])
+
+    useEffect(() => {
+        if(isPanelOpen){
+            setCropUtilsOffset({height: `${editOptionsRef.current.clientHeight + 4}px`, width: `${302}px`})
+        }else{
+            setCropUtilsOffset({height: `${editOptionsRef.current.clientHeight + 4}px`, width: `${79}px`})
+        }
+        
+    }, [isPanelOpen])
+
     const toggleSizeDropdown = () => {
         if (selectedComp) {
             setSizeDrop(prevState => !prevState);
@@ -441,11 +490,11 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                 // Construct the article object
                 let response;
                 // Reference to the 'Articles' collection
-                console.log(user)
                 if(pageType === "blog"){
                     const article = {
                         Title: Title ? Title : "",
                         Tags: Tags,
+                        CanItem: selectedCanItem,
                         Content: compArray.map(comp => ({
                             ID: comp.ID,
                             Content: comp.Content,
@@ -466,9 +515,12 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                     };
                     if(editorType !== "new"){
                         response = await updateArticle(articleId, article)
+
+                        router.push(`/`, undefined, { shallow: true });
                     }else{
                         response = await addDocument("Articles", article) && await setHasPublished("users", userId);
-                        console.log(response)
+
+                        router.push(`/`, undefined, { shallow: true });
                     }    
                 }else if(pageType === "page"){
                     const page = {
@@ -496,9 +548,12 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
     
                     if(editorType !== "new"){
                         response = await updatePage(articleId, page)
+
+                        router.push(`/admin`, undefined, { shallow: true });
                     }else{
                         response = await addDocument("Pages", page) && await setHasPublished("users", userId);
-                        console.log(response)
+
+                        router.push(`/admin`, undefined, { shallow: true });
                     }
                 }
             } catch (error) {
@@ -511,9 +566,9 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
     return (
         <>
 
-            <div className="w-full" id="text-editor">
+            <div className="w-full" id="text-editor" ref={editorRef}>
                 <div className="flex flex-col w-full h-max bg-[#302c38]"> 
-                    <div className="flex  flex-wrap flex-wrap w-full h-max px-1 md:px-[15px] bg-base-300  border-b-3 dark:border-b-[#302c38] gap-1 dark:border-b-2 dark:bg-base-100-dark py-[3px]">
+                    <div ref={editOptionsRef} className={`flex flex-wrap flex-wrap w-full h-max px-1 md:px-[15px] bg-base-300  border-b-3 border-t-10 border-t-black dark:border-b-[#302c38] gap-1 dark:border-b-2 dark:bg-base-100-dark py-[3px] z-10 ${controlPanelFixed ? `absolute` : "fixed"}`} style={{top: controlPanelFixed ? editOptionsOffset : '67px'}}>
                         <div className="h-[50px] w-[50px] flext items-center justify-center">   
                             <button  className={`flex justify-center items-center w-full h-full md:w-[50px] md:h-[50px] rounded-md ${textIsSelected ? "bg-base-100 hover:bg-[#a4a4a4] text-t-header-light dark:text-t-header-dark dark:bg-[#18161b] hover:dark:bg-[#302c38] transition duration-100" : "bg-base-300 dark:bg-base-100-dark text-t-header-dark cursor-not-allowed"}`} onClick={handleBoldClick}>
                                 <FaBold className="text-xl"/>
@@ -712,10 +767,16 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                     }
                     <Help isOpen={isHelpOpen.value} setIsOpen={isOpen => setIsHelpOpen({value: isOpen, type: null})} type={isHelpOpen.type}/>
                 </div>
-                <div className="transition duration-200 flex w-full h-max overflow-x-hidden ">    
-                    <div className={`transition duration-200 h-max flex items-start border-r-[3px] dark:border-r-2 dark:border-r-[#302c38]  xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0"}`}>
-                        <div className={`transition duration-200 h-max overflow-hidden z-10 xs-sm:max-w-max ${isSideBarOpen ? "w-[100vw] " : "w-0" }`}>
+                <div className="w-full " style={{height: cropUtilsOffset.height}}>
+
+                </div>
+                <div className="transition duration-200 flex flex-col xs-sm:flex-row w-full min-h-[90vh] overflow-x-hidden ">
+                        
+                    <div className={`transition duration-200 h-max flex items-center  xs-sm:max-w-max w-max`} ref={controlPanelRef}>
+                        <div className={`transition duration-200 h-max z-10 xs-sm:max-w-max w-max z-10 ${controlPanelFixed ? `absolute` : "fixed"}`} style={{top: controlPanelFixed ? controlPanelOffset : controlPanelFixedPosition}}>
                             <ControlPanel 
+
+
                             enableCrop={(value, type) => setIsCropEnabled({value: value, type: type})} 
 
                             setImageToCrop={imageToCrop => setImageData([imageToCrop, imageData[1]])} 
@@ -737,13 +798,18 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
 
                             setAuthor={setAuthor} 
                             Author={Author}
-
                             currentAuthor={Author} 
+
                             setTags={setTags} 
-                            currentTags={Tags} 
-                            setCategory={setCategory} 
+                            tags={Tags} 
+
+                            setSelectedCanItem={setSelectedCanItem} 
+                            selectedCanItem={selectedCanItem}
+
                             innerHtml={innerHtmlContent} 
                             exportContent={handleExportContent} 
+
+                            canItems={canItems}
 
                             pageName={pageName}
                             setPageName={setPageName}
@@ -752,191 +818,196 @@ const TextEditor = ({pageType, editorType, articleId, user, article, testing}) =
                             setCropType={setCropType}
                             isCropEnabled={isCropEnabled.value}
                             setIsHelpOpen={(value, type) => setIsHelpOpen({value: value, type: type})}
+                            isPanelOpen={isPanelOpen}
+                            setIsPanelOpen={setIsPanelOpen}
+                            
                             />
                         </div>
-                        <div className='w-0 h-[100vh] flex items-center py-[2px] z-10'>
-                            <div className="w-0 h-[45px] py-[2px] z-10">     
-                                <div className={` relative rounded-r w-[30px] justify-center ${isSideBarOpen ? "rounded-l rounded-r-none xs-sm:rounded-r left-[-30px] xs-sm:left-0 w-[30px] xs-sm:w-[25px] " : ""}  h-full flex items-center  bg-base-300 dark:bg-[#302c38]`} onClick={() => toggleSideBar()}>
-                                    {
-                                        (isSideBarOpen)
-                                        ?
-                                        <IoIosArrowBack className="text-t-header-dark text-2xl " />
-                                        :
-                                        <IoIosArrowForward className="text-t-header-dark text-2xl"/>
-                                    }
-                                </div>
-                            </div>
-                        </div> 
-                 
                     </div>
-                    {
-                        isCropEnabled.value
-                        &&
-                        <div className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full z-0`}>
-                            <CropUtils 
-                            imageToCrop={(isCropEnabled.type === "comp") 
-                            ? 
-                            imageData[0] 
-                            : 
-                            coverImageData[0]
-                            } 
 
-                            onImageCropped={(isCropEnabled.type  === "comp") 
-                            ? 
-                            croppedImage => {setImageData([imageData[0], croppedImage]); setIsCropEnabled({value: false, type: ''})}
-                            : 
-                            croppedCoverImage => {setCoverImageData([coverImageData[0], croppedCoverImage]); setIsCropEnabled({value: false, type: ''})}} 
+                    <div className="flex w-full">
+                        <div style={{width: cropUtilsOffset.width, transition: 'width 0.3s ease-in-out'}}>
 
-                            cropType={cropType}
-                            ratios={(isCropEnabled.type  === "comp") ? [1,4] : [2,2]}
-                            />
                         </div>
-                    }
+                        {
+                            isCropEnabled.value
+                            &&
+                            <div className={`flex flex-col items-center lg:w-[${cropUtilsOffset.width}] xs-sm:min-w-[100vw] lg:min-w-0 lg:grow m-2 rounded-md overflow-hidden min-h-[100vh] z-0`}>
+                                <CropUtils 
+                                imageToCrop={(isCropEnabled.type === "comp") 
+                                ? 
+                                imageData[0] 
+                                : 
+                                coverImageData[0]
+                                } 
 
-                    <div  className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] pt-[50px] ${isCropEnabled.value && "hidden"}`}>
+                                onImageCropped={(isCropEnabled.type  === "comp") 
+                                ? 
+                                croppedImage => {setImageData([imageData[0], croppedImage]); setIsCropEnabled({value: false, type: ''})}
+                                : 
+                                croppedCoverImage => {setCoverImageData([coverImageData[0], croppedCoverImage]); setIsCropEnabled({value: false, type: ''})}} 
 
-                        <div className={`flex w-full`}>
-                            <div className={`w-full h-max md:grow flex ${!isPreview && "px-[51px]"} md:px-0 justify-center`}>
-                                <div className="w-full md:w-[800px] h-max flex flex-col items-center">
-                                    <div className={`flexitems-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
-                                        <Header type={"lg"} classes="p-0 text-center" >
-                                            {Title}
-                                        </Header>
-                                    </div>
-                                    <div className={`flex items-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
-                                        <div className="flex w-full items-center">
-                                            {
-                                                Author
-                                                &&
-                                                <Header type={"sm"} classes="w-max">
-                                                    By: <span className="font-normal">{Author}</span>
-                                                </Header>
-                                            }
-
-                                        </div>
-                                    </div>
-                                </div>
+                                cropType={cropType}
+                                ratios={(isCropEnabled.type  === "comp") ? [1,4] : [2,2]}
+                                />
                             </div>
-                        </div>
-                        <div className="w-full h-max flex flex-col justify-between">
-                            <Dialog
-                                open={linkInput}
-                                onClose={() => setLinkInput(prevState => !prevState)}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
+                        }
+                    
+                        <div  className={`flex flex-col items-center min-w-[100vw] lg:min-w-0 lg:grow  h-full min-h-[100vh] overflow-y-scroll px-[25px] md:pl-[30px] pb-[100px] md:pt-[100px] xs:pt-[200px] xs-sm:pt-[150px]  ${isCropEnabled.value && "hidden"}`}>
 
-                            >   
-                                <div className="flex flex-col p-[15px] max-w-[350px] gap-[15px] bg-base-100">
-                                    <Header type="sm" id="alert-dialog-title" >
-                                        {"Enter The URL."}
-                                    </Header>
-                                    <div className="flex gap-[10px]">
-                                        <input id="link-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeholder={"Enter a URL."} onChange={(e) => setCurrentLink(e.currentTarget.value)}>
-                                        </input>
-                                        <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
-                                            <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleSetLink(); setLinkInput(false)}}></MdOutlineDownloadDone>
-                                        </button>   
-                                    </div>
-                                    <AnimatePresence>
-                                        {linkErrorVisible && (
-                                            <motion.div
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
-                                            >
-                                                Please Eneter A URL
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                    <div className="flex justify-between">
-                                        <div className="w-[calc(100%_-_25px)] p-[5px] text-[12px] tracking-tighter">
-                                            Enter the url, then highlight your text, and click the checkmark next to the link icon.
-                                        </div>
-                                        <button className='flex items-center justify-center w-[45px]'>
-                                            <FaQuestion className='text-2.5xl' onClick={() => {setIsHelpOpen({value: true, type: "link_help"})}}></FaQuestion>
-                                        </button>
-                                        {
-                                            isLinkAddHelpOpen
-                                            &&
-                                            <Dialog
-                                                open={isLinkAddHelpOpen}
-                                                onClose={() => setIsLinkAddHelpOpen(prevState => !prevState)}
-                                                aria-labelledby="alert-dialog-title"
-                                                aria-describedby="alert-dialog-description"
-                                                maxWidth="max-content"
-                                            >   
-                                                <div className='overflow-hidden'>
-                                                    <div className='flex justify-end w-full h-0'>
-                                                        <Button  className={`z-10 m-[10px] h-min rounded-[30px] ${classes.button}`} disableRipple >
-                                                            <TiDelete
-                                                                className={`text-[30px] text-base-300`}
-                                                                onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
-                                                                onClick={() => setIsLinkAddHelpOpen(prevState => !prevState)}
-                                                            />
-                                                        </Button>
-                                                    </div>
-                                                    <Image src={addLinkHelp} className="w-auto h-[30vh] object-cover md:w-[800px] md:h-auto  z-0 overflow-hidden" /> 
-                                                </div>
-                                            </Dialog>
-                                        }
-                                    </div>
-                                </div>
-                            </Dialog>
-                            <div className="grow flex flex-col items-center h-full z-1 gap-[10px] ">
-                                <div className="flex-col w-full md:w-[800px]" id="text-editor-container" >
-                                    <DndContext
-                                        sensors={sensors}
-                                        collisionDetection={closestCenter}
-                                        onDragEnd={handleDragEnd}
-                                    >
-                                        <SortableContext items={compArray.map(comp => comp.ID)} strategy={verticalListSortingStrategy}>
-                                            {compArray.map((comp, index) => (
-                                                <>
-                                                    {comp.Type === "header" && (
-                                                        <>
-                                                            <DragHeader key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
-                                                        </>
-                                                    )}
-                                                    {comp.Type === "image" && (
-                                                        <>
-                                                            <DragImage key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
-                                                        </>
-                                                    )}
-                                                    {(comp.Type === "paragraph")&& (
-                                                        <>
-                                                            <DragParagraph  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"} onClick={handleSelectComponent}/>          
-                                                        </>
-                                                    )}
-                                                    {comp.Type === "resource" && (
-                                                        <> 
-                                                            <DragResource  key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
-                                                        </>
-                                                    )}
-                                                   {comp.Type === "youtube" && (
-                                                        <> 
-                                                            <DragVideo key={comp.ID} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
-                                                        </>
-                                                    )} 
-                                                </>
-                                            ))}
-                                        </SortableContext>
-                                    </DndContext>
-                                    <div className={`transition duration-1 flex items-center w-full gap-[30px] ${Tags.length > 0 ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
-                                        <div className="flex flex-col h-max w-full gap-[15px]">
-                                            <Header type="sm" classes="border-b-[2px] border-b-black dark:border-b-2 dark:border-b-[#ebebeb] w-full">
-                                                Tags:
+                            <div className={`flex w-full`}>
+                                <div className={`w-full h-max md:grow flex ${!isPreview && "px-[51px]"} md:px-0 justify-center`}>
+                                    <div className="w-full md:w-[800px] h-max flex flex-col items-center">
+                                        <div className={`flexitems-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                            <Header type={"lg"} classes="p-0 text-center" >
+                                                {Title}
                                             </Header>
-                                            <div className="flex flex-wrap items-center w-full h-max">
-                                                {Tags.map((tag, index) => (
-                                                    <Tag key={`${index}-${tag.Text}`} backgroundColor={tag.Color} tag={tag.Text} />
-                                                ))}
+                                        </div>
+                                        <div className={`flex items-center w-full ${isPreview ? "md:w-full" : "md:w-[692px]"} gap-[30px]`} >
+                                            <div className="flex w-full items-center">
+                                                {
+                                                    Author
+                                                    &&
+                                                    <Header type={"sm"} classes="w-max">
+                                                        By: <span className="font-normal">{Author}</span>
+                                                    </Header>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={`transition duration-1 flex items-center w-full gap-[30px] mt-[15px] ${Category ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
-                                        <div className="flex w-full items-center gap-[15px]">
-                                            <Tag  backgroundColor={"#29ff80"} tag={Category} />
+                                </div>
+                            </div>
+                            <div className="w-full h-max flex flex-col justify-between">
+                                <Dialog
+                                    open={linkInput}
+                                    onClose={() => setLinkInput(prevState => !prevState)}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+
+                                >   
+                                    <div className="flex flex-col p-[15px] max-w-[350px] gap-[15px] bg-base-100">
+                                        <Header type="sm" id="alert-dialog-title" >
+                                            {"Enter The URL."}
+                                        </Header>
+                                        <div className="flex gap-[10px]">
+                                            <input id="link-input" className="w-[calc(100%_-_25px)] p-[5px] rounded" placeholder={"Enter a URL."} onChange={(e) => setCurrentLink(e.currentTarget.value)}>
+                                            </input>
+                                            <button className='flex items-center justify-center w-[45px] bg-primary-dark rounded border-2'>
+                                                <MdOutlineDownloadDone className='text-2.5xl' onClick={() => {handleSetLink(); setLinkInput(false)}}></MdOutlineDownloadDone>
+                                            </button>   
+                                        </div>
+                                        <AnimatePresence>
+                                            {linkErrorVisible && (
+                                                <motion.div
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    style={{ background: '#fd6666', marginTop: "5px", padding: "5px", borderRadius: "5px", color: "black"  }}
+                                                >
+                                                    Please Eneter A URL
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                        <div className="flex justify-between">
+                                            <div className="w-[calc(100%_-_25px)] p-[5px] text-[12px] tracking-tighter">
+                                                Enter the url, then highlight your text, and click the checkmark next to the link icon.
+                                            </div>
+                                            <button className='flex items-center justify-center w-[45px]'>
+                                                <FaQuestion className='text-2.5xl' onClick={() => {setIsHelpOpen({value: true, type: "link_help"})}}></FaQuestion>
+                                            </button>
+                                            {
+                                                isLinkAddHelpOpen
+                                                &&
+                                                <Dialog
+                                                    open={isLinkAddHelpOpen}
+                                                    onClose={() => setIsLinkAddHelpOpen(prevState => !prevState)}
+                                                    aria-labelledby="alert-dialog-title"
+                                                    aria-describedby="alert-dialog-description"
+                                                    maxWidth="max-content"
+                                                >   
+                                                    <div className='overflow-hidden'>
+                                                        <div className='flex justify-end w-full h-0'>
+                                                            <Button  className={`z-10 m-[10px] h-min rounded-[30px] ${classes.button}`} disableRipple >
+                                                                <TiDelete
+                                                                    className={`text-[30px] text-base-300`}
+                                                                    onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
+                                                                    onClick={() => setIsLinkAddHelpOpen(prevState => !prevState)}
+                                                                />
+                                                            </Button>
+                                                        </div>
+                                                        <Image src={addLinkHelp} className="w-auto h-[30vh] object-cover md:w-[800px] md:h-auto  z-0 overflow-hidden" /> 
+                                                    </div>
+                                                </Dialog>
+                                            }
+                                        </div>
+                                    </div>
+                                </Dialog>
+                                <div className="grow flex flex-col items-center h-full z-1 gap-[10px] ">
+                                    <div className="flex-col w-full md:w-[800px]" id="text-editor-container" >
+                                        <DndContext
+                                            sensors={sensors}
+                                            collisionDetection={closestCenter}
+                                            onDragEnd={handleDragEnd}
+                                        >
+                                            <SortableContext items={compArray.map(comp => comp.ID)} strategy={verticalListSortingStrategy}>
+                                                {compArray.map((comp, index) => (
+                                                    <div key={index}>
+                                                        {
+                                                            comp.Type === "header" 
+                                                            ? 
+                                                            <>
+                                                                <DragHeader key={index} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
+                                                            </>
+                                                            :
+                                                            
+                                                            comp.Type === "image" 
+                                                            ? 
+                                                            <>
+                                                                <DragImage key={index} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
+                                                            </>
+                                                            :
+                                                            comp.Type === "paragraph" 
+                                                            ? 
+                                                            <>
+                                                                <DragParagraph  key={index} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"} onClick={handleSelectComponent}/>          
+                                                            </>
+                                                            :
+                                                            comp.Type === "resource" 
+                                                            ? 
+                                                            <>
+                                                                <DragResource  key={index} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
+                                                            </>
+                                                            :
+                                                            comp.Type === "youtube" 
+                                                            && 
+                                                            <>
+                                                                <DragVideo key={index} comp={comp} isEnabled={isPreview} removeComp={handleRemoveComponent} updateContent={updateContent} index={index} selected={selectedComp.id === comp.ID && selectedComp.eventType === "comp-click"}  onClick={handleSelectComponent}/>
+                                                            </>
+                                                        }
+                                                    </div>
+                                                ))}
+                                            </SortableContext>
+                                        </DndContext>
+                                        <div className={`transition duration-1 flex items-center w-full gap-[30px] ${Tags.length > 0 ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
+                                            <div className="flex flex-col h-max w-full gap-[15px]">
+                                                <Header type="sm" classes="border-b-[2px] border-b-black dark:border-b-2 dark:border-b-[#ebebeb] w-full">
+                                                    Tags:
+                                                </Header>
+                                                <div className="flex flex-wrap items-center w-full h-max">
+                                                    {Tags.map((tag, index) => (
+                                                        <Tag key={`${index}-${tag.Text}`} backgroundColor={tag.Color} tag={tag.Text} />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={`transition duration-1 flex items-center w-full gap-[30px] mt-[15px] ${selectedCanItem ? "opacity-1" : "opacity-0"} ${!isPreview && "px-[51px]"}`} >
+                                            <Header type="sm" classes="border-b-black max-w-max">
+                                                Can Item:
+                                            </Header>
+                                            <div className="flex w-full items-center gap-[15px]">
+                                                <Tag  backgroundColor={"#29ff80"} tag={selectedCanItem} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

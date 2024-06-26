@@ -73,8 +73,8 @@ const Footer = () => {
               <div className="flex items-center gap-[15px]">
                 <img className="w-[35px] md:w-[35px] dark:filter dark:invert" src={"/_next/static/media/uscalogo.f84310d7.png"} alt="Usca Logo"/>
                 <div className="h-full flex flex-row justify-center items-center" style={{flexDirection: "column", justifyContent: "center", alignItems: "center",  borderRadius: "50px", height: "50px", width: "50px"}}>
-                  <MdWbSunny className="text-4xl dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{ display:`${!light ? "block" : "none"}` }}/>
-                  <FaMoon className="text-3xl dark:text-t-header-dark text-t-header-light" onClick={() => handleThemeClick()} style={{display:`${light ? "block" : "none"}`}}/>
+                  <MdWbSunny className="text-4xl dark:text-t-header-dark text-t-header-light hover:cursor-pointer" onClick={() => handleThemeClick()} style={{ display:`${!light ? "block" : "none"}` }}/>
+                  <FaMoon className="text-3xl dark:text-t-header-dark text-t-header-light hover:cursor-pointer" onClick={() => handleThemeClick()} style={{display:`${light ? "block" : "none"}`}}/>
                 </div>
               </div>
             </div>
@@ -95,9 +95,6 @@ const Footer = () => {
                 <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/search", undefined, {shallow: true})}>
                   Articles
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/search", undefined, {shallow: true})}>
-                  Can Items
-                </Link>
                 <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
@@ -114,7 +111,7 @@ const Footer = () => {
                 <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/", undefined, {shallow: true})}>
                   Home
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/about", undefined, {shallow: true})}>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/pages/about", undefined, {shallow: true})}>
                   About
                 </Link>
                 <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/login", undefined, {shallow: true})}>
@@ -126,7 +123,7 @@ const Footer = () => {
                 <Link classes="w-full text-t-light tracking-[-2.3px]  decoration-t-light text-t-header-light dark:text-t-header-dark dark:font-light" target="_blank" href="https://github.com/apodicticscott/ModularBlogPlatform/" rel="noopener noreferrer">
                   Our Project
                 </Link>
-                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/instructions", undefined, {shallow: true})}>
+                <Link classes={"text-t-light tracking-[-2.3px]  decoration-t-light dark:font-light"} onClick={() => router.push("/pages/instructions", undefined, {shallow: true})}>
                   Instructions
                 </Link>
               </div>

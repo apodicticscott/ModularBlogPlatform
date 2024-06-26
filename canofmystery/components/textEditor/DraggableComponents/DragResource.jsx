@@ -73,7 +73,6 @@ const DragResource = ({ comp, isEnabled, removeComp, updateContent, selected, on
             </Resource>
             <TiDelete
                 className={`text-[30px] ${isEnabled && "hidden"} text-t-header-light dark:text-t-header-dark`}
-                isdragging={false}
                 onClick={() => removeComp(comp.ID)}
                 onMouseOver={(e) => (e.currentTarget.style.cursor = "pointer")}
             />      

@@ -16,39 +16,11 @@ const LexM = Lexend_Mega(
   }
 )
 
-// export const metadata = {
-//   title: 'Can of Mystery',
-//   description: 'Blog site',
-// }
 
 
 export default function RootLayout({ children  }) {
 
-  // const [cookieConsent, setCookieConsent] = useState(false);
 
-  // let consentCookie = Cookies.get("hasConsent")
-
-  // if(consentCookie === undefined){
-  //   Cookies.set('hasConsent', 'false')
-  //   setCookieConsent(false)
-  // }else if(consentCookie === 'true' && cookieConsent === false){
-  //   setCookieConsent(true)
-  // }
-
-  // const handleGiveConsent = () => {
-  //   Cookies.set('hasConsent', 'true')
-  //   setCookieConsent(true)
-  // }
-  
-  // useEffect(() => {
-  //   if(cookieConsent){
-  //     if(window !== undefined){
-  //       const pagePath = window.location.pathname;
-  //       logPageView(pagePath);
-  //     }
-  //   }
-  // }, [cookieConsent]);
-    
 
   return (
     <html data-theme="mytheme" className="" lang="en">

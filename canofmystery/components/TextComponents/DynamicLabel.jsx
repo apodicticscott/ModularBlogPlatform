@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Divider from '@mui/material/Divider';
 
-const DynamicLabel = ({ labels}) => {
+const DynamicLabel = ({labels}) => {
 
   const handleDividerMove = (label) => (e) => {
     let tempWidth;
@@ -33,6 +33,8 @@ const DynamicLabel = ({ labels}) => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
+
+  
   return (
       labels.map((label, index) => (
         <React.Fragment key={label.key}>
